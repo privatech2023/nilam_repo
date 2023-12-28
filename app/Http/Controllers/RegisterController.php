@@ -10,7 +10,7 @@ class RegisterController extends Controller
 {
     public function index()
     {
-        // 
+        return view('frontend/auth/register');
     }
 
     public function create_user(Request $request)
