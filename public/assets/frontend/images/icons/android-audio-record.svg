@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 358.21 580.19" version="1.0">
+  <defs id="defs4">
+    <pattern id="pattern4331" xlink:href="#pattern4319" patternTransform="matrix(2.3567 0 0 2.3567 356.83 -169.67)"/>
+    <linearGradient id="linearGradient3461">
+      <stop id="stop3463" stop-color="#313131" offset="0"/>
+      <stop id="stop3465" stop-color="#313131" stop-opacity="0" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient3449">
+      <stop id="stop3451" stop-color="#edeff4" offset="0"/>
+      <stop id="stop3453" stop-color="#edeff4" stop-opacity="0" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient3455" x1="276.06" xlink:href="#linearGradient3449" gradientUnits="userSpaceOnUse" y1="265.22" gradientTransform="matrix(2.3567 0 0 2.3567 -297.11 -602.85)" x2="293.76" y2="265.22"/>
+    <linearGradient id="linearGradient3467" x1="316.2" xlink:href="#linearGradient3461" gradientUnits="userSpaceOnUse" y1="265.22" gradientTransform="matrix(2.3567 0 0 2.3567 -297.11 -602.85)" x2="303.12" y2="265.22"/>
+    <linearGradient id="linearGradient3554" x1="316.2" xlink:href="#linearGradient3461" gradientUnits="userSpaceOnUse" y1="265.22" gradientTransform="matrix(2.3567 0 0 2.3567 -295.2 -606.06)" x2="303.12" y2="265.22"/>
+    <linearGradient id="linearGradient3556" x1="276.06" xlink:href="#linearGradient3449" gradientUnits="userSpaceOnUse" y1="265.22" gradientTransform="matrix(2.3567 0 0 2.3567 -301.03 -605.64)" x2="293.76" y2="265.22"/>
+    <pattern id="pattern4319" width="9.0119031" patternUnits="userSpaceOnUse" patternTransform="translate(277.48 183.81)" height="8.0531931">
+      <path id="path3562" transform="matrix(.25566 0 0 .25566 -58.993 -43.107)" fill="#9a8b4f" d="m247.5 176.99a8.375 8.375 0 1 1 -16.75 0 8.375 8.375 0 1 1 16.75 0z"/>
+      <path id="path3558" fill="#e0d5a8" d="m3.7738 1.2445c-0.3018-0.47536-0.8119-0.81571-1.4151-0.87649-1.0434-0.10514-1.9756 0.65639-2.0808 1.6999-0.06895 0.6847 0.242 1.3209 0.7542 1.7076-0.22021-0.3469-0.33616-0.7649-0.2918-1.2051 0.10513-1.0434 1.0373-1.8049 2.0808-1.6998 0.3586 0.03613 0.6844 0.1713 0.9527 0.3739z"/>
+      <path id="path3565" d="m3.7666 1.7143c-0.0414 0.0491-0.0854 0.097-0.131 0.1438l-1.7722 1.8201c-0.0717 0.0736-0.1443 0.1365-0.2219 0.2 0.5909 0.1629 1.2457 0.0119 1.7033-0.4581 0.4539-0.4662 0.594-1.1229 0.4218-1.7058z"/>
+      <path id="path3570" transform="matrix(.25566 0 0 .25566 -54.263 -39.336)" fill="#9a8b4f" d="m247.5 176.99a8.375 8.375 0 1 1 -16.75 0 8.375 8.375 0 1 1 16.75 0z"/>
+      <path id="path3572" fill="#e0d5a8" d="m8.5034 5.0154c-0.3018-0.4753-0.8118-0.8157-1.415-0.8764-1.0435-0.1052-1.9757 0.6563-2.0808 1.6998-0.069 0.6847 0.242 1.321 0.7542 1.7076-0.2203-0.3469-0.3362-0.7648-0.2919-1.205 0.1052-1.0435 1.0374-1.805 2.0808-1.6999 0.3587 0.0362 0.6844 0.1714 0.9527 0.3739z"/>
+      <path id="path3574" d="m8.4963 5.4852c-0.0415 0.0492-0.0854 0.097-0.131 0.1438l-1.7723 1.8201c-0.0717 0.0737-0.1442 0.1365-0.2219 0.2 0.591 0.163 1.2458 0.0119 1.7033-0.458 0.454-0.4662 0.5941-1.123 0.4219-1.7059z"/>
+    </pattern>
+    <linearGradient id="linearGradient4348" x1="288.47" gradientUnits="userSpaceOnUse" y1="364.74" gradientTransform="matrix(2.3567 0 0 2.3567 -301.82 -593.43)" x2="305.79" y2="411.41">
+      <stop id="stop4344" stop-color="#dee1e6" offset="0"/>
+      <stop id="stop4346" stop-color="#dee1e6" stop-opacity="0" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient4361" x1="231.3" gradientUnits="userSpaceOnUse" y1="420.88" gradientTransform="matrix(2.3567 0 0 2.3567 -301.82 -593.43)" x2="332.09" y2="434.67">
+      <stop id="stop4357" stop-color="#cdd2d6" offset="0"/>
+      <stop id="stop4359" stop-color="#cdd2d6" stop-opacity="0" offset="1"/>
+    </linearGradient>
+    <linearGradient id="linearGradient4441" x1="287.79" gradientUnits="userSpaceOnUse" y1="374.13" gradientTransform="matrix(2.3567 0 0 2.3567 -297.11 -602.85)" x2="289.2" y2="374.13">
+      <stop id="stop4437" stop-color="#eceef1" offset="0"/>
+      <stop id="stop4439" stop-color="#eceef1" stop-opacity="0" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="layer1" transform="translate(-219 135.83)">
+    <path id="path4333" transform="matrix(2.3567 0 0 2.5164 -301.82 -663.79)" fill="#828e8f" d="m373 410.86a76 29.5 0 1 1 -152 0 76 29.5 0 1 1 152 0z"/>
+    <path id="path4335" fill="url(#linearGradient4348)" d="m398 301.47c-83.53 0-152.66 25.61-164.14 58.92 0 0 20.8 13.45 169.14-28.33 85.01-23.95 159.13 28.33 159.13 28.33-11.48-33.31-80.61-58.92-164.13-58.92z"/>
+    <path id="path4350" fill="url(#linearGradient4361)" d="m222.44 367.57c1.05 40.61 80.82 73.43 179.03 73.43 84.8 0 155.81-24.48 174.32-57.3-33.78 25.81-96.57 43.16-168.5 43.16-86.01 0-158.99-24.87-184.85-59.29z"/>
+    <path id="path4394" d="m322.4-13.097c-1.88 0-3.39 1.511-3.39 3.3881v5.5971c0 1.8768 1.51 3.3877 3.39 3.3877h17.23v-12.373h-17.23z"/>
+    <rect id="rect4385" ry="3.3877" height="12.373" width="37.049" y="-13.127" x="426.24"/>
+    <path id="rect4367" fill="#828e8f" d="m325.57-20.903v161.13c0 31.77 23.34 57.99 53.83 62.53v209.38h18.85v-209.38c30.49-4.54 53.84-30.76 53.84-62.53v-161.13l-9.43-0.003v161.13c0 29.91-23.92 53.84-53.83 53.84s-53.84-23.93-53.84-53.84v-161.13l-9.42-0.003z"/>
+    <path id="rect2672" fill="#828e8f" d="m388.46-26.942c-1.6 0.005-3.15 0.068-4.71 0.147-8.37 0.424-16.12 1.815-23.06 3.977-6.63 2.068-12.7 4.55-18.11 7.217v148.03c0 25.64 20.6 46.32 46.25 46.32 25.64 0 46.32-20.68 46.32-46.32v-147.81c-15.48-8.314-31.77-11.61-46.69-11.562z"/>
+    <path id="rect2674" fill="url(#linearGradient3455)" d="m366.81-24.438c-2.09 0.484-4.15 1.008-6.12 1.62-4.65 1.452-9.04 3.14-13.1 4.934v147.73c0 23.25 17.31 42.3 39.76 45.15 0 0 9.4-47.59-13.25-119.68-7.76-24.702-9.02-52.918-7.29-79.758z"/>
+    <path id="path3457" fill="url(#linearGradient3467)" d="m401.27-26.206c1.33 4.962 2.78 10.017 4.42 15.245 23.97 76.285-13.25 185.96-13.25 185.96 22.45-2.85 39.77-21.9 39.77-45.15v-146.78c-10.23-5.043-20.75-7.991-30.94-9.276z"/>
+    <path id="rect3501" stroke-linejoin="round" d="m388.66-134.65c-25.65 0-46.25 20.68-46.25 46.323v68.417c14.72-5.462 30.57-8.395 47.06-8.395 15.92 0 31.21 2.768 45.51 7.88v-67.902c0-25.643-20.68-46.323-46.32-46.323z" stroke="#9a8b4f" stroke-linecap="round" stroke-width="2.3567" fill="#d3bc5f"/>
+    <path id="path4329" fill="url(#pattern4331)" d="m388.66-132.15c-24.96 0-45 20.68-45 46.323v68.417c14.33-5.462 29.74-8.396 45.78-8.396 15.5 0 30.38 2.768 44.29 7.88v-67.901c0-25.643-20.12-46.323-45.07-46.323z"/>
+    <path id="path3503" fill="url(#linearGradient3556)" d="m383.43-133.42c-22.45 2.84-39.77 21.89-39.77 45.144v65.766c6.23-2.035 12.67-3.594 19.23-4.714 3.61-56.047 20.54-106.2 20.54-106.2z"/>
+    <path id="path3505" fill="url(#linearGradient3554)" d="m394.35-133.84s-8.12 41.139 8.91 104.8c10.66 0.923 20.99 3.059 30.86 6.334v-65.987c0-23.257-17.32-42.297-39.77-45.147z"/>
+    <path id="path3489" fill-rule="evenodd" d="m390.05-37.253c-1.3 0.005-2.55 0.008-3.83 0.074-6.8 0.351-13.14 1.524-18.78 3.314-9.86 3.131-18.23 7.591-24.6 11.636v30.342c6.27-3.9126 14.32-8.1146 23.79-11.12 5.64-1.7905 11.98-2.9633 18.78-3.3142 1.28-0.0658 2.53-0.0694 3.83-0.0736 14.54-0.0475 31.27 4.0124 45.96 14.287l0.22-31.004c-14.69-10.275-30.83-14.188-45.37-14.141z"/>
+    <path id="path4380" fill="#edeff4" d="m326.74-16.779v156.43c0 34.96 27.77 63.26 62.09 63.26 34.31 0 62.08-28.3 62.08-63.26v-156.43l-1.73 0.001v155.03c0 33.99-26.99 61.49-60.35 61.49s-60.35-27.5-60.35-61.49v-155.03l-1.74 0.001z"/>
+    <path id="path4387" transform="matrix(2.3567 0 0 1.9868 -320.68 -548.28)" d="m328.8 272.51a0.7955 3.0936 0 1 1 -1.59 0 0.7955 3.0936 0 1 1 1.59 0z"/>
+    <path id="rect4389" d="m334.33-13.097c-1.88 0-3.39 1.511-3.39 3.3881v5.5971c0 1.8768 1.51 3.3877 3.39 3.3877h17.23v-12.373h-17.23z"/>
+    <path id="path4396" fill="#eceef1" d="m452.58-12.728c-0.38 0.568-0.69 1.576-0.88 2.7981h9.13c0.58 0 1.14 0.1081 1.62 0.3683-0.12-1.7684-1.59-3.1664-3.39-3.1664h-6.48z"/>
+    <path id="path4401" fill="#eceef1" d="m323.14-12.507c-1.8 0-3.27 1.397-3.39 3.1663 0.48-0.2601 1.03-0.3682 1.62-0.3682h3.39v-2.7981h-1.62z"/>
+    <path id="path4406" fill="#eceef1" d="m335.07-12.655c-1.8 0-3.27 1.398-3.39 3.167 0.48-0.2601 1.03-0.3682 1.62-0.3682h9.43v-2.7988h-7.66z"/>
+    <path id="path4411" fill="#eceef1" d="m434.93-12.507c-1.8 0-3.27 1.397-3.39 3.1663 0.48-0.2601 1.04-0.3682 1.62-0.3682h9.58v-2.7981h-7.81z"/>
+    <path id="rect4427" fill="url(#linearGradient4441)" d="m381.11 202.77v139.21c0 7.11 1.48 12.86 3.34 12.96v-151.2c-0.42 0.39-0.85 0.61-1.29 0.61-0.72 0-1.41-0.56-2.05-1.58z"/>
+    <path id="path4443" fill="#687070" d="m396.94 202.77v139.21c0 7.11-1.48 12.86-3.33 12.96v-151.2c0.41 0.39 0.85 0.61 1.29 0.61 0.71 0 1.4-0.56 2.04-1.58z"/>
+  </g>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://creativecommons.org/licenses/publicdomain/"/>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>old microphone cleanup style</dc:title>
+        <dc:date>2008-11-21T22:53:10</dc:date>
+        <dc:description>clip art, clipart, color, color, image, locutor, locutor, media, microphone, microphone, png, public domain, radio, radio, svg, </dc:description>
+        <dc:source>http://openclipart.org/detail/20335/old-microphone-cleanup-style-by-rg1024-20335</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>rg1024</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>clip art</rdf:li>
+            <rdf:li>clipart</rdf:li>
+            <rdf:li>color</rdf:li>
+            <rdf:li>image</rdf:li>
+            <rdf:li>locutor</rdf:li>
+            <rdf:li>media</rdf:li>
+            <rdf:li>microphone</rdf:li>
+            <rdf:li>png</rdf:li>
+            <rdf:li>public domain</rdf:li>
+            <rdf:li>radio</rdf:li>
+            <rdf:li>svg</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License rdf:about="http://creativecommons.org/licenses/publicdomain/">
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Reproduction"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#Distribution"/>
+        <cc:permits rdf:resource="http://creativecommons.org/ns#DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+</svg>
