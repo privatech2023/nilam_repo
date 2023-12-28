@@ -21,13 +21,9 @@ Route::get('/', function () {
     return view('frontend/pages/index');
 });
 
-route::get('login/client', function () {
-    return view('frontend/auth/login');
-})->name('login');
+route::get('login/client', [LoginController::class, 'index'])->name('login');
 
-route::get('register/client', function () {
-    return view('frontend/auth/register');
-});
+route::get('register/client', [RegisterController::class, 'index']);
 
 route::post('login/client', [LoginController::class, 'login']);
 
