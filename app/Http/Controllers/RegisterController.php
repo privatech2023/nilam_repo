@@ -25,13 +25,7 @@ class RegisterController extends Controller
                 'confirm_password' => 'required|min:8|same:password'
             ]);
 
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
-
-            $newClient = clients::create([
+            clients::create([
                 'name' => $request->input('name'),
                 'mobile_number' => $request->input('mobile_number'),
                 'email' => $request->input('email'),
