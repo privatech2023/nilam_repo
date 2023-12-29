@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\adminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
@@ -21,13 +22,9 @@ Route::get('/', function () {
     return view('frontend/pages/index');
 });
 
-route::get('login/client', function () {
-    return view('frontend/auth/login');
-})->name('login');
+route::get('login/client', [LoginController::class, 'index'])->name('login');
 
-route::get('register/client', function () {
-    return view('frontend/auth/register');
-});
+route::get('register/client', [RegisterController::class, 'index']);
 
 route::post('login/client', [LoginController::class, 'login']);
 
@@ -48,4 +45,16 @@ route::post('login_otp/client', [LoginController::class, 'login_otp']);
 
 //client middleware, not used yet.
 Route::group(['middleware' => 'client.auth'], function () {
+});
+
+
+
+//admin
+route::get('/admin/login', [adminController::class, 'login_index']);
+
+route::post('/admin/login', [adminController::class, 'login']);
+route::get('/admin/logout', [adminController::class, 'logout']);
+
+Route::group(['middleware' => 'user.auth'], function () {
+    route::get('/admin', [adminController::class, 'index'])->name('/admin');
 });

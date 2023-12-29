@@ -5,32 +5,40 @@ namespace App\Http\Controllers;
 use App\Models\clients;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
     public function index()
     {
-        // 
+        return view('frontend/auth/register');
     }
 
     public function create_user(Request $request)
     {
         try {
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'mobile_number' => 'required|string|max:20|unique:clients,mobile_number',
-                'email' => 'required|email|unique:clients,email',
+                'email' => ['required', 'email', 'unique:clients,email', 'regex:/^.+@.+\..+$/i'],
                 'password' => 'required|min:8',
                 'confirm_password' => 'required|min:8|same:password'
             ]);
 
-            clients::create([
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $newClient = clients::create([
                 'name' => $request->input('name'),
                 'mobile_number' => $request->input('mobile_number'),
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password'))
             ]);
-
+            $request->session()->put('user_id', $newClient->client_id);
+            $request->session()->put('user_name', $request->input('name'));
             return redirect('/')->with('success', 'User created successfully');
         } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());
