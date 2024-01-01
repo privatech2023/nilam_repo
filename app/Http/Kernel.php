@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\ClientAuthMiddleware;
+use App\Http\Middleware\UserAuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -65,5 +66,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'client.auth' => ClientAuthMiddleware::class,
+        'user.auth' => UserAuthMiddleware::class,
     ];
 }
