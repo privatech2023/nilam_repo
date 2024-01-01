@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\roles;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -50,5 +51,17 @@ class adminController extends Controller
     {
         Session::flush();
         return Redirect::to('/');
+    }
+
+    public function roles()
+    {
+        $data = roles::all();
+        return view('frontend.admin.pages.roles.index')->with(['data' => $data]);
+    }
+
+    public function create_roles()
+    {
+        $data = roles::all();
+        return view('frontend.admin.pages.roles.create-roles')->with(['data' => $data]);
     }
 }
