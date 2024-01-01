@@ -104,7 +104,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center align-items-center mt-3">
-                                    <a href="{{url('/')}}" class="btn btn-primary btn-block btn-sm mr-2 col-6">I already have a membership</a>
+                                    <a href="{{url('login/client')}}" class="btn btn-primary btn-block btn-sm mr-2 col-6">I already have a membership</a>
                                 </div>
                             </form>
                         </div>

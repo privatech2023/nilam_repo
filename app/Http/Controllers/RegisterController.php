@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\clients;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -16,15 +17,15 @@ class RegisterController extends Controller
     public function create_user(Request $request)
     {
         try {
-            $request->validate([
+            $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
                 'mobile_number' => 'required|string|max:20|unique:clients,mobile_number',
-                'email' => 'required|email|unique:clients,email',
+                'email' => ['required', 'email', 'unique:clients,email', 'regex:/^.+@.+\..+$/i'],
                 'password' => 'required|min:8',
                 'confirm_password' => 'required|min:8|same:password'
             ]);
 
-            $newClient = clients::create([
+            clients::create([
                 'name' => $request->input('name'),
                 'mobile_number' => $request->input('mobile_number'),
                 'email' => $request->input('email'),
