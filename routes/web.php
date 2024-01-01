@@ -3,6 +3,8 @@
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\rolesController;
+use App\Http\Controllers\subscriptionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -57,4 +59,13 @@ route::get('/admin/logout', [adminController::class, 'logout']);
 
 Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin', [adminController::class, 'index'])->name('/admin');
+    route::get('/admin/roles', [adminController::class, 'roles'])->name('/admin/roles');
+    route::get('/admin/create-roles', [adminController::class, 'create_roles'])->name('/admin/create-roles');
+    route::post('/admin/create-roles', [rolesController::class, 'create_roles']);
+    route::post('/admin/delete-roles', [rolesController::class, 'delete_roles']);
+
+    route::get('/admin/subscription/index', [subscriptionController::class, 'index'])->name('roles');
+    route::get('/admin/subscription/active', [subscriptionController::class, 'active']);
+    route::get('/admin/subscription/pending', [subscriptionController::class, 'pending']);
+    route::get('/admin/subscription/expired', [subscriptionController::class, 'expired']);
 });
