@@ -20,6 +20,6 @@ class UserAuthMiddleware
         if ($request->session()->has('admin_id')) {
             return $next($request);
         }
-        return redirect('/')->with('error', 'Unauthorized. You do not have the required role.');
+        return redirect('/admin/login')->with('error', 'Unauthorized. You do not have the required role.');
     }
 }
