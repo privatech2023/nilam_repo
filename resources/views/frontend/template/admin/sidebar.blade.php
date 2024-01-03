@@ -167,6 +167,7 @@
                   <p>Transactions</p>
                 </a>
               </li>
+              @if(session('admin_name') === 'admin')
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-users"></i>
@@ -190,6 +191,7 @@
                   </li>
                 </ul>
               </li>
+              @endif
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
