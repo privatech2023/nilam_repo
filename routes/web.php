@@ -63,6 +63,8 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin/create-roles', [adminController::class, 'create_roles'])->name('/admin/create-roles');
     route::post('/admin/create-roles', [rolesController::class, 'create_roles']);
     route::post('/admin/delete-roles', [rolesController::class, 'delete_roles']);
+    route::get('/admin/roles/update/{id}', [rolesController::class, 'update_roles_index']);
+    route::post('/admin/roles/update', [rolesController::class, 'update_roles']);
 
     route::get('/admin/subscription/index', [subscriptionController::class, 'index']);
     route::get('/admin/subscription/active', [subscriptionController::class, 'active']);

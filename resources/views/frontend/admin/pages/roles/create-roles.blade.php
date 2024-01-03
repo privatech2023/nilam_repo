@@ -48,38 +48,91 @@
                 <div class="form-group">
                     <label for="permission">Permission</label>
                     <table class="table table-sm">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Create</th>
-                            <th>Update</th>
-                            <th >View</th>
-                            <th >Delete</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data as $role)
-                            <tr>
-                                <td>
-                                    <input type="hidden" value="{{ $role->id }}" name="role_id" />
-                                    {{ $role->name }}
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="permission[]" id="permission" value="createClient_{{ $role->id }}" />
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="permission[]" id="permission" value="updateClient_{{ $role->id }}" />
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="permission[]" id="permission" value="viewClient_{{ $role->id }}" />
-                                </td>
-                                <td>
-                                    <input type="checkbox" name="permission[]" id="permission" value="deleteClient_{{ $role->id }}" />
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                      </table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Create</th>
+                          <th>Update</th>
+                          <th>View</th>
+                          <th>Delete</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          
+                          
+                      <tr>
+                          <td>Clients</td>
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="createClient"> </td>  
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="updateClient"> </td>  
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="viewClient"> </td>  
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="deleteClient"> </td>
+                        
+                        </tr>           
+                          
+                      <tr>
+                          <td>Dealers</td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="createDealer"></td>
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="updateDealer"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="viewDealer"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="deleteDealer"></td>
+                      </tr>
+                      
+                      <tr>
+                          <td>Packages</td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="createPackage"></td>
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="updatePackage"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="viewPackage"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="deletePackage"></td>
+                        </tr>   
+                        
+                                       
+                      <tr>
+                          <td>Transactions</td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="createTransaction"></td>
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="updateTransaction"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="viewTransaction"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="deleteTransaction"></td>
+                      </tr>
+                                                            
+                      <tr>
+                          
+                      <td>Reports</td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="createReport"></td>
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="updateReport"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="viewReport"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="deleteReport"></td>
+                      </tr>
+                                                   
+                        <tr>
+                          <td>Users</td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="createUser"></td>
+                          <td> <input type="checkbox" name="permission[]" id="permission" value="updateUser"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="viewUser"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="deleteUser"></td>
+                        </tr>
+                          
+                          
+                      <tr>
+                          <td>Roles</td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="createRole"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="updateRole"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="viewRole"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="deleteRole"></td>
+                      </tr>  
+                   
+                          
+                      <tr>
+                          <td>Settings</td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="createSetting"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="updateSetting"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="viewSetting"></td>
+                          <td><input type="checkbox" name="permission[]" id="permission" value="deleteSetting"></td>
+                        </tr>    
+                          
+                      <tr>                              
+          
+                      </tbody>
+                    </table>
                     </div>
                     <div class="card-footer">
                         <a href="{{ url('/admin/roles')}}" class="btn btn-warning btn-sm">Back</a>

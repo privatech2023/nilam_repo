@@ -82,11 +82,12 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($data as $role)
+                                                @if($role->id != 1)
                                                 <tr style="text-align:center;" role="row">
                                                 <td class="text-center sorting_1">{{ $loop->iteration }}</td>
-                                                <td class="text-center">{{ $role->name }}</td>
+                                                <td class="text-center">{{ $role->group_name }}</td>
                                                 <td style="text-align:center;">
-                                                <a href="{{ url('/admin/users/Roles/update/' . $role->id) }}" class="btn btn-warning btn-sm">
+                                                <a href="{{ url('/admin/roles/update/' . $role->id) }}" class="btn btn-warning btn-sm">
                                                 <i class="fa fa-edit"></i>
                                                 </a>
                                                 <button type="button" data-value="{{ $role->id }}" class="btn btn-danger btn-sm delete-btn" >
@@ -94,6 +95,7 @@
                                                 </button>
                                                 </td>
                                                 </tr>
+                                                @endif
                                                 @endforeach
                                         </tbody>
                                         </table>
@@ -156,18 +158,32 @@
     </div>
    
 
-@if(session()->has('success'))
+    @if(session()->get('success'))
     <script>
         $(document).ready(function () {
             $(document).Toasts('create', {
                 class: 'bg-success',
                 title: 'Success',
-                body: 'Role deleted successfully',
+                body: '{{ session('success') }}',
                 delay: 3000
             });
         });
     </script>
 @endif
+
+
+
+{{-- @php
+    $session = session();
+@endphp
+
+<script type="text/javascript">
+    @if($session->get('success'))
+        toastr.success('{{ $session->get('success') }}')
+    @elseif($session->get('error'))
+        toastr.warning('{!! implode("<br>", $session->get('error')) !!}');
+    @endif
+</script> --}}
 
 
     <script>
