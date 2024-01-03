@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\groups;
 use App\Models\roles;
 use App\Models\User;
 use Exception;
@@ -55,13 +56,13 @@ class adminController extends Controller
 
     public function roles()
     {
-        $data = roles::all();
+        $data = groups::all();
         return view('frontend.admin.pages.roles.index')->with(['data' => $data]);
     }
 
     public function create_roles()
     {
-        $data = roles::all();
+        $data = groups::all();
         return view('frontend.admin.pages.roles.create-roles')->with(['data' => $data]);
     }
 }
