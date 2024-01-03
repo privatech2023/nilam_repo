@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\ClientAuthMiddleware;
+use App\Http\Middleware\rolesPermission;
 use App\Http\Middleware\UserAuthMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'client.auth' => ClientAuthMiddleware::class,
         'user.auth' => UserAuthMiddleware::class,
+        'roles.permission' => rolesPermission::class,
     ];
 }
