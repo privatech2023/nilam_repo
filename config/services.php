@@ -31,4 +31,19 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'textlocal' => [
+        'method' => 'POST',
+        'url' => 'https://api.textlocal.in/send/?',
+        'params' => [
+            'send_to_param_name' => 'numbers',
+            'msg_param_name' => 'message',
+            'others' => [
+                'apikey' => 'YOUR_API_KEY',
+                'sender' => 'YOUR_SENDER_NAME',
+            ],
+        ],
+        'json' => true,
+        'add_code' => false,
+    ]
+
 ];

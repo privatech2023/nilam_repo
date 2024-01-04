@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\clients;
+use App\Models\otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+
+use App\Http\Controllers\FrontendController;
 
 class LoginController extends Controller
 {
@@ -109,38 +112,81 @@ class LoginController extends Controller
         return redirect()->back()->withErrors(['error' => 'Invalid credentials'])->withInput();
     }
 
-    public function generate_otp()
-    {
-        if (session()->has('user_data')) {
-            $otp = rand(1000, 9999);
-            $user_data = session('user_data');
-            $loginField = filter_var($user_data, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_number';
-            clients::where($loginField, $user_data)->update(['otp' => $otp]);
-            return view('frontend.auth.login_otp');
-        } else {
-            return back();
-        }
-    }
-
     public function login_otp(Request $request)
     {
         $user_data = session('user_data');
-        $user = clients::where('email', $user_data)
-            ->orWhere('mobile_number', $user_data)
+        $user = otp::where('email', $user_data)
+            ->orWhere('mobile', $user_data)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $client = clients::where('mobile_number', $user_data)
+            ->orWhere('email', $user_data)
             ->first();
         if ($user) {
-            $loginField = filter_var($user_data, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_number';
             if ($user->otp == $request->input('otp')) {
                 Session::forget('user_id');
                 Session::forget('user_name');
                 Session::forget('user_data');
 
-                $request->session()->put('user_id', $user->client_id);
-                $request->session()->put('user_name', $user->name);
+                $request->session()->put('user_id', $client->client_id);
+                $request->session()->put('user_name', $client->name);
                 return redirect('/')->with('success', 'Login successful');
             }
         } else {
             return redirect()->back()->withErrors(['error' => 'Invalid credentials'])->withInput();
+        }
+    }
+
+
+
+    public function generate_otp()
+    {
+        $session = session();
+        if (session('user_data')) {
+
+            $userInput = session('user_data');
+            $tempOTP = rand(100000, 999999);
+
+            $model = new otp();
+            if (is_numeric($userInput)) {
+
+                $data = [
+                    'otp' => $tempOTP,
+                    'isexpired' => 1,
+                    'mobile' => $userInput,
+                ];
+                //Save OTP in DB
+                $model->create($data);
+
+
+
+                $message = $tempOTP . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
+                //Send OTP
+                $frontendcontroller = new FrontendController;
+                $frontendcontroller->sendOTP($userInput, $message);
+            } else { //send OTP to email id
+
+                $data = [
+                    'otp' => $tempOTP,
+                    'isexpired' => 1,
+                    'email' => $userInput,
+                ];
+                //Save OTP in DB
+                $model->create($data);
+                //Send Email Otp
+
+                $frontendcontroller = new FrontendController;
+                $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
+            }
+
+            $data = array(
+                'pageTitle' => 'PRIVATECH-LOGIN'
+            );
+
+            return view('frontend.auth.login_otp');
+        } else {
+
+            return redirect()->back();
         }
     }
 }
