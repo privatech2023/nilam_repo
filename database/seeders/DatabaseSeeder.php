@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\groups;
+use App\Models\User;
+use App\Models\user_groups;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,10 +20,28 @@ class DatabaseSeeder extends Seeder
     {
 
 
-        \App\Models\User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@privatech.in',
             'password' => bcrypt('password'),
         ]);
+
+        $u_id = $user->id;
+
+
+        $gdata = [
+            'group_name' => 'superadmin',
+            'permissions' => 'a:4:{i:0;s:9:"createAll";i:1;s:7:"viewAll";i:2;s:9:"updateAll";i:3;s:9:"deleteAll";}',
+        ];
+        $group = groups::create($gdata);
+        $g_id = $group->id;
+
+
+        $ugdata = [
+            'u_id' => $u_id,
+            'g_id' => $g_id,
+        ];
+
+        user_groups::create($ugdata);
     }
 }
