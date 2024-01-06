@@ -26,6 +26,7 @@
   <link rel="stylesheet" href="{{ asset('assets/common/plugins/summernote/summernote-bs4.css')}}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="{{ asset('assets/common/plugins/toastr/toastr.min.css')}}" rel="stylesheet">
   
   <script src="{{ asset('assets/common/plugins/jquery/jquery.min.js')}}"></script>
   <!-- jQuery UI 1.11.4 -->
