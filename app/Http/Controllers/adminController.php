@@ -65,4 +65,12 @@ class adminController extends Controller
         $data = groups::all();
         return view('frontend.admin.pages.roles.create-roles')->with(['data' => $data]);
     }
+
+
+    public function roleNameByID($role)
+    {
+        $group = groups::select('group_name')->where('id', $role)->first();
+
+        return $group ? $group->group_name : null;
+    }
 }

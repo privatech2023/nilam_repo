@@ -158,16 +158,9 @@
     </div>
    
 
-    @if(session()->get('success'))
-    <script>
-        $(document).ready(function () {
-            $(document).Toasts('create', {
-                class: 'bg-success',
-                title: 'Success',
-                body: '{{ session('success') }}',
-                delay: 3000
-            });
-        });
+@if(session()->get('success'))
+    <script type="text/javascript">
+        toastr.success('{{session('success')}}')
     </script>
 @endif
 

@@ -21,7 +21,7 @@
                         <!-- Check User Form -->
                         <div id="step-user">
                             <span id="message"></span>
-                            <form action="{{ url('login/password/client')}}" method="post">
+                            <form action="{{ url('login/password/client')}}" method="post" autocomplete="off">
                                 @csrf
                             <div class="container text-center">
                                 @if (session()->has('user_data'))
@@ -48,7 +48,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-10 d-flex justify-content-start">
-                                        <p class="mt-2"><a href="{{ url('/')}}">I forgot my password</a></p>
+                                        <p class="mt-2"><a href="{{ url('login/forgot-password')}}">I forgot my password</a></p>
                                     </div>
                                     <div class="col-2 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary btn-block btn-sm" style="height: 32px;">Login</button>

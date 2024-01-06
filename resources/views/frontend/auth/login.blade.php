@@ -22,7 +22,7 @@
                         <div id="step-user">
                             <span id="message"></span>
         
-                            <form method="post" action="{{url('login/client')}}">
+                            <form method="post" action="{{url('login/client')}}" autocomplete="off">
                                 @csrf
                                 @if ($errors->has('error'))
                                     <span class="text-danger">{{ $errors->first('error')  }}</span>
@@ -77,6 +77,12 @@
 
 
 </div>
+
+@if(session()->get('success'))
+    <script type="text/javascript">
+        toastr.success('{{session('success')}}')
+    </script>
+@endif
 
 <script>
 $(document).ready(function() {

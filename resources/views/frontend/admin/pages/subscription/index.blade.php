@@ -136,7 +136,7 @@
                                                         <td class=" text-center">{{$client->email}}</td>
                                                         <td class=" text-center"><span class="badge bg-warning">NO</span></td>
                                                         <td class=" text-center"><span class="badge bg-success">ACTIVE</span></td>
-                                                        <td class=" text-center"><a href="#" class="btn btn-outline-info btn-xs">VIEW</a></td>
+                                                        <td class=" text-center"><a href="{{ url('/admin/view-client/'.$client->client_id)}}" class="btn btn-outline-info btn-xs">VIEW</a></td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>

@@ -178,7 +178,7 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/forms/general.html" class="nav-link">
+                    <a href="{{ url('/admin/users')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage employees</p>
                     </a>
