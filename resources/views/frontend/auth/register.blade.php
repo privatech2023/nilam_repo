@@ -23,7 +23,7 @@
                         <div id="step-user">
                             <span id="message"></span>
 
-                            <form method="post" id="userForm" action="{{ url('register/client')}}">
+                            <form method="post" id="userForm" action="{{ url('register/client')}}" autocomplete="off">
                                 @csrf
 
                                 <!-- Username Field -->

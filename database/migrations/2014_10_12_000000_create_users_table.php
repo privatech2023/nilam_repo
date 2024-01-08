@@ -17,6 +17,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('mobile')->unique();
+            $table->string('gender')->nullable();
+            $table->string('user_type');
+            $table->integer('created_by');
+            $table->string('image')->nullable();
+            $table->integer('status')->default(1);
+            $table->timestamp('last_login')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

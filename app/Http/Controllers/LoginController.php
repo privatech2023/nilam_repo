@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\FrontendController;
+use Illuminate\Support\Facades\DB;
 
 class LoginController extends Controller
 {
@@ -112,6 +113,11 @@ class LoginController extends Controller
         return redirect()->back()->withErrors(['error' => 'Invalid credentials'])->withInput();
     }
 
+    public function index_otp()
+    {
+        return view('frontend.auth.login_otp');
+    }
+
     public function login_otp(Request $request)
     {
         $user_data = session('user_data');
@@ -131,9 +137,11 @@ class LoginController extends Controller
                 $request->session()->put('user_id', $client->client_id);
                 $request->session()->put('user_name', $client->name);
                 return redirect('/')->with('success', 'Login successful');
+            } else {
+                return redirect()->route('login_otp/client')->withErrors(['error' => 'Invalid OTP'])->withInput();
             }
         } else {
-            return redirect()->back()->withErrors(['error' => 'Invalid credentials'])->withInput();
+            return view('frontend.auth.login_otp');
         }
     }
 
@@ -155,7 +163,6 @@ class LoginController extends Controller
                     'isexpired' => 1,
                     'mobile' => $userInput,
                 ];
-                //Save OTP in DB
                 $model->create($data);
 
 
@@ -164,16 +171,14 @@ class LoginController extends Controller
                 //Send OTP
                 $frontendcontroller = new FrontendController;
                 $frontendcontroller->sendOTP($userInput, $message);
-            } else { //send OTP to email id
+            } else {
 
                 $data = [
                     'otp' => $tempOTP,
                     'isexpired' => 1,
                     'email' => $userInput,
                 ];
-                //Save OTP in DB
                 $model->create($data);
-                //Send Email Otp
 
                 $frontendcontroller = new FrontendController;
                 $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
@@ -183,9 +188,73 @@ class LoginController extends Controller
                 'pageTitle' => 'PRIVATECH-LOGIN'
             );
 
-            return view('frontend.auth.login_otp');
+            return redirect()->route('login_otp/client');
         } else {
 
+            return redirect()->back();
+        }
+    }
+
+    public function forgot_password()
+    {
+        if (session('user_data')) {
+            $userInput = session('user_data');
+            $tempOTP = rand(100000, 999999);
+
+            $model = new otp();
+            if (is_numeric($userInput)) {
+
+                $data = [
+                    'otp' => $tempOTP,
+                    'isexpired' => 1,
+                    'mobile' => $userInput,
+                ];
+                $model->create($data);
+
+
+
+                $message = $tempOTP . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
+                //Send OTP
+                $frontendcontroller = new FrontendController;
+                $frontendcontroller->sendOTP($userInput, $message);
+            } else {
+
+                $data = [
+                    'otp' => $tempOTP,
+                    'isexpired' => 1,
+                    'email' => $userInput,
+                ];
+                $model->create($data);
+
+                $frontendcontroller = new FrontendController;
+                $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
+            }
+
+            return view('frontend.auth.forgot_password');
+        } else {
+            return view('/');
+        }
+    }
+
+    public function reset_password(Request $request)
+    {
+        $user_data = session('user_data');
+        $user = otp::where('email', $user_data)
+            ->orWhere('mobile', $user_data)
+            ->orderBy('created_at', 'desc')
+            ->first();
+        $client = clients::where('mobile_number', $user_data)
+            ->orWhere('email', $user_data)
+            ->first();
+        if ($request->input('otp') == $user->otp) {
+            $request->validate([
+                'password' => 'required|min:3|max:255',
+                'cpassword' => 'required|min:3|max:255|same:password',
+            ]);
+            DB::table('clients')->where('client_id', $client->client_id)->update(['password' => bcrypt($request->input('password'))]);
+            session()->flash('success', 'Password changed');
+            return redirect()->route('login')->with(['success' => 'Password Changed Successfully']);
+        } else {
             return redirect()->back();
         }
     }

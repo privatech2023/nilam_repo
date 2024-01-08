@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\clientController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\rolesController;
 use App\Http\Controllers\subscriptionController;
+use App\Http\Controllers\usersController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -42,9 +44,11 @@ route::get('login_password/client', function () {
 });
 route::post('login/password/client', [LoginController::class, 'login_with_password']);
 route::get('get_otp/client', [LoginController::class, 'generate_otp']);
+route::get('login_otp/client', [LoginController::class, 'index_otp'])->name('login_otp/client');
 route::post('login_otp/client', [LoginController::class, 'login_otp']);
 
-
+route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
+route::post('login/reset-password', [LoginController::class, 'reset_password']);
 //client middleware, not used yet.
 Route::group(['middleware' => 'client.auth'], function () {
 });
@@ -69,8 +73,21 @@ Route::group(['middleware' => 'user.auth'], function () {
         route::post('/admin/roles/update', [rolesController::class, 'update_roles']);
     });
 
-    route::get('/admin/subscription/index', [subscriptionController::class, 'index']);
+    route::get('/admin/subscription/index', [subscriptionController::class, 'index'])->name('all_client');
     route::get('/admin/subscription/active', [subscriptionController::class, 'active']);
     route::get('/admin/subscription/pending', [subscriptionController::class, 'pending']);
     route::get('/admin/subscription/expired', [subscriptionController::class, 'expired']);
+
+    route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
+
+    route::get('/admin/users', [usersController::class, 'index'])->name('admin_users');
+    route::get('/admin/users/add', [usersController::class, 'add_user_index']);
+    route::post('/admin/users/create', [usersController::class, 'create_user']);
+    route::get('/admin/user/update/{id}', [usersController::class, 'update_index']);
+    route::post('/admin/user/update/', [usersController::class, 'update_user']);
+
+    route::post('/admin/delete/user', [usersController::class, 'delete_user']);
+
+    route::post('/admin/client/update', [clientController::class, 'update_client']);
+    route::post('admin/clients/updatePassword', [clientController::class, 'update_client_password']);
 });
