@@ -136,7 +136,7 @@
                                                         <td class=" text-center">{{$client->email}}</td>
                                                         <td class=" text-center"><span class="badge bg-warning">NO</span></td>
                                                         <td class=" text-center"><span class="badge bg-success">ACTIVE</span></td>
-                                                        <td class=" text-center"><a href="#" class="btn btn-outline-info btn-xs">VIEW</a></td>
+                                                        <td class=" text-center"><a href="{{ url('/admin/view-client/'.$client->client_id)}}" class="btn btn-outline-info btn-xs">VIEW</a></td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
@@ -177,4 +177,16 @@
     </section>
     <!-- /.content -->
 </div>
+
+@if(session()->get('success'))
+    <script type="text/javascript">
+        toastr.success('{{session('success')}}')
+    </script>
+@endif
+@if(session()->get('error'))
+    <script type="text/javascript">
+        toastr.warning('{{session('error')}}')
+    </script>
+@endif
+
 @endsection

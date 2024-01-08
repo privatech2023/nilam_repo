@@ -25,15 +25,14 @@ class RegisterController extends Controller
                 'confirm_password' => 'required|min:8|same:password'
             ]);
 
-            clients::create([
+            $newClient = clients::create([
                 'name' => $request->input('name'),
                 'mobile_number' => $request->input('mobile_number'),
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password'))
             ]);
-            $request->session()->put('user_id', $newClient->client_id);
-            $request->session()->put('user_name', $request->input('name'));
-            return redirect('/')->with('success', 'User created successfully');
+            session()->flash('success', 'Registered succesfully');
+            return redirect()->route('login')->with(['success' => 'Registered successfully']);
         } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());
 

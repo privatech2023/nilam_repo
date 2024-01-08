@@ -24,6 +24,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@privatech.in',
             'password' => bcrypt('password'),
+            'mobile' => '9435173626',
+            'gender'   => 'male',
+            'user_type' => 'admin',
+            'created_by' => 1,
+            'status' => 1,
         ]);
 
         $u_id = $user->id;

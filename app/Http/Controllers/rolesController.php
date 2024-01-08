@@ -76,7 +76,7 @@ class rolesController extends Controller
 
             $data = groups::all();
             session()->flash('success', 'Role Updated');
-            return redirect()->route('/admin/roles')->with(['data' => $data]);
+            return redirect()->route('/admin/roles')->with(['data' => $data, 'success' => "Role updated successfully"]);
         }
 
 

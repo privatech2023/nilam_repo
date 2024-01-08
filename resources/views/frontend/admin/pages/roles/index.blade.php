@@ -159,15 +159,13 @@
    
 
     @if(session()->get('success'))
-    <script>
-        $(document).ready(function () {
-            $(document).Toasts('create', {
-                class: 'bg-success',
-                title: 'Success',
-                body: '{{ session('success') }}',
-                delay: 3000
-            });
-        });
+    <script type="text/javascript">
+        toastr.success('{{session('success')}}')
+    </script>
+@endif
+@if(session()->get('error'))
+    <script type="text/javascript">
+        toastr.warning('{{session('error')}}')
     </script>
 @endif
 
