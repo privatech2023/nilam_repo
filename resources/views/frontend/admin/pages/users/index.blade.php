@@ -133,23 +133,19 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 </div>
 <!-- /.content-wrapper -->
 
-
+@if(session()->get('success'))
+    <script type="text/javascript">
+        toastr.success('{{session('success')}}')
+    </script>
+@endif
+@if(session()->get('error'))
+    <script type="text/javascript">
+        toastr.warning('{{session('error')}}')
+    </script>
+@endif
 
 {{-- <script>
 // 

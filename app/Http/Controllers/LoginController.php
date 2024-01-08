@@ -138,7 +138,7 @@ class LoginController extends Controller
                 $request->session()->put('user_name', $client->name);
                 return redirect('/')->with('success', 'Login successful');
             } else {
-                return redirect()->route('login_otp/client')->withErrors(['error' => 'Invalid credentials'])->withInput();
+                return redirect()->route('login_otp/client')->withErrors(['error' => 'Invalid OTP'])->withInput();
             }
         } else {
             return view('frontend.auth.login_otp');

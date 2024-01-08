@@ -73,12 +73,12 @@ Route::group(['middleware' => 'user.auth'], function () {
         route::post('/admin/roles/update', [rolesController::class, 'update_roles']);
     });
 
-    route::get('/admin/subscription/index', [subscriptionController::class, 'index']);
+    route::get('/admin/subscription/index', [subscriptionController::class, 'index'])->name('all_client');
     route::get('/admin/subscription/active', [subscriptionController::class, 'active']);
     route::get('/admin/subscription/pending', [subscriptionController::class, 'pending']);
     route::get('/admin/subscription/expired', [subscriptionController::class, 'expired']);
 
-    route::get('/admin/view-client/{id}', [clientController::class, 'view_client']);
+    route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
 
     route::get('/admin/users', [usersController::class, 'index'])->name('admin_users');
     route::get('/admin/users/add', [usersController::class, 'add_user_index']);
@@ -87,4 +87,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/user/update/', [usersController::class, 'update_user']);
 
     route::post('/admin/delete/user', [usersController::class, 'delete_user']);
+
+    route::post('/admin/client/update', [clientController::class, 'update_client']);
+    route::post('admin/clients/updatePassword', [clientController::class, 'update_client_password']);
 });

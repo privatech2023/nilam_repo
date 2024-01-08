@@ -50,7 +50,7 @@
 
                 <ul class="list-group list-group-unbordered mb-3">
                     <li class="list-group-item">
-                        <b><i class="fa-solid fa-mobile-screen-button"></i></b> <span class="float-right">{{ empty($client_data['mobile']) ? "" : $client_data['mobile'] }}</span>
+                        <b><i class="fa-solid fa-mobile-screen-button"></i></b> <span class="float-right">{{ empty($client_data['mobile_number']) ? "" : $client_data['mobile_number'] }}</span>
                     </li>
                     <li class="list-group-item">
                         <b><i class="fa-solid fa-envelope"></i></b> <span class="float-right">{{ empty($client_data['email']) ? "" : $client_data['email'] }}</span>
@@ -121,26 +121,26 @@
 
                   <div class="tab-pane" id="profile">
 
-                    <form action="#" method="post" class="form-horizontal">
-
+                    <form action="{{ url('/admin/client/update')}}" method="post" class="form-horizontal" autocomplete="off">
+                      @csrf
                       <input type="hidden" name="row_id" value="{{ $client_id }}">
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                         <div class="col-sm-10">
-                        <input type="text" class="form-control" name="name" value="{{ $client_data['name'] ? "" : $client_data['name']}}" placeholder="Name">
+                        <input type="text" class="form-control" name="name" value="{{ empty($client_data['name']) ? "" : $client_data['name']}}" placeholder="Name">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                        <input type="email" class="form-control" name="email" value="{{ $client_data['email'] ? "" : $client_data['email']}}" placeholder="Email">
+                        <input type="email" class="form-control" name="email" value="{{ empty($client_data['email']) ? "" : $client_data['email']}}" placeholder="Email">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Mobile</label>
                         <div class="col-sm-10">
-                        <input type="number" class="form-control" name="mobile" value="{{$client_data['mobile'] ? "" : $client_data['mobile']}}>" placeholder="10 digit mobile no">
+                        <input type="number" class="form-control" name="mobile" value="{{ empty($client_data['mobile_number']) ? "" : $client_data['mobile_number']}}" placeholder="10 digit mobile no">
                         </div>
                     </div>              
 
@@ -230,7 +230,7 @@
                         <div class="form-group row">
                             <label for="inputEmail" class="col-sm-2 col-form-label">Confirm Password</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="passconf" />
+                                <input type="text" class="form-control" name="confirm_password" />
                             </div>
                         </div>
                     
@@ -266,6 +266,16 @@
 
 </div><!-- .content wraper -->
 
+@if(session()->get('success'))
+    <script type="text/javascript">
+        toastr.success('{{session('success')}}')
+    </script>
+@endif
+@if(session()->get('error'))
+    <script type="text/javascript">
+        toastr.warning('{{session('error')}}')
+    </script>
+@endif
 
 <script>
   $(function () {
@@ -284,13 +294,7 @@
       "responsive": true,
     });
   });
-
-
-
-
-
-
-
 </script> 
+
 
 @endsection

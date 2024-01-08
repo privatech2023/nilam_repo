@@ -48,8 +48,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-10 d-flex justify-content-start">
-                                        <p class="mt-2"><span id="timer">60</span> seconds
-                                            <a href="{{ url('get_otp/client')}}" id="resendLink" onclick="startTimer()">Resend OTP</a></p>
+                                        <span id="timerContainer">
+                                            <span class="lead text-md">Resend OTP after </span><span id="timer" class="lead text-md">60</span> <span class="lead text-md">seconds...</span>
+                                        </span>
+                                        <a href="{{ url('get_otp/client')}}" id="resendLink" style="display: none;">Resend OTP</a>
                                     </div>
                                     <div class="col-2 d-flex justify-content-end">
                                         <button type="submit" class="btn btn-primary btn-block btn-sm" style="height: 32px;">Login</button>
@@ -84,7 +86,6 @@
 
     function startTimer() {
         let timerElement = document.getElementById('timer');
-        let timerContainer = document.getElementById('timerContainer');
         let resendLink = document.getElementById('resendLink');
         let time = 60; 
 
@@ -93,8 +94,9 @@
             timerElement.innerText = time;
 
             if (time <= 0) {
-                timerContainer.style.display = 'none';
                 clearInterval(countdown);
+                document.getElementById('timerContainer').style.display = 'none';
+                resendLink.style.display = 'inline'; // Show resend link after timer reaches zero
             }
         }, 1000);
     }
