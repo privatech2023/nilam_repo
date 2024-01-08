@@ -13,6 +13,8 @@ class clients extends Authenticatable
     use HasFactory, Notifiable;
     protected $table = 'clients';
 
+    protected $primaryKey = 'client_id';
+
     protected $fillable = [
         'name',
         'email',

@@ -35,7 +35,7 @@ class usersController extends Controller
         $validator = $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'mobile' => 'required|numeric|min:10|max:10|unique:users,mobile',
+            'mobile' => 'required|numeric|min:10|unique:users,mobile',
             'password' => 'required|min:3|max:255',
             'passconf' => 'required|min:3|max:255|same:password',
             'status' => 'required',
@@ -67,7 +67,9 @@ class usersController extends Controller
                 ];
                 user_groups::create($groupData);
             }
-            return redirect()->back()->withErrors(['success' => 'User created successfully']);
+            session()->flash('success', 'User created successfully');
+            $data = User::where('name', '!=', 'admin')->get();
+            return view('frontend.admin.pages.users.index')->with(['data' => $data, 'success' => 'User created successfully']);
         }
     }
 
@@ -108,8 +110,9 @@ class usersController extends Controller
                     );
                 }
             }
-
-            return redirect()->route('admin_users');
+            session()->flash('success', 'User updated successfully');
+            $data = User::where('name', '!=', 'admin')->get();
+            return view('frontend.admin.pages.users.index')->with(['data' => $data, 'success' => 'User updated successfully']);
         } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());
 
@@ -122,6 +125,7 @@ class usersController extends Controller
         $user = User::find($request->input('row_id'));
         $user->delete();
         session()->flash('success', 'Role Deleted');
-        return redirect()->route('admin_users')->with(['success' => 'Role deleted successfully']);
+        $data = User::where('name', '!=', 'admin')->get();
+        return view('frontend.admin.pages.users.index')->with(['data' => $data, 'success' => 'User deleted successfully']);
     }
 }
