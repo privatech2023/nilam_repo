@@ -8,27 +8,6 @@ use Illuminate\Support\Facades\Mail;
 
 class frontendController extends Controller
 {
-    // public function sendEmailOtp($address, $totp)
-    // {
-
-    //     $email = \Config\Services::email(); // loading for use
-
-    //     $email->setTo($address);
-
-    //     $email->setSubject("Login OTP - Privatech");
-
-    //     // Using a custom template
-    //     $data =  array("otp" => $totp);
-    //     $template = view("email_otp_template", $data);
-
-    //     $email->setMessage($template);
-    //     if ($email->send()) {
-    //         //  echo 'Email successfully sent, please check.';
-    //     } else {
-    //         // $data = $email->printDebugger(['headers']);
-    //         // print_r($data);
-    //     }
-    // }
 
 
     public function sendOTP($number, $message)
