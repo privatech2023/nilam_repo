@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\adminController;
+use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -91,3 +92,5 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/client/update', [clientController::class, 'update_client']);
     route::post('admin/clients/updatePassword', [clientController::class, 'update_client_password']);
 });
+
+route::get('api/test', [ApiAuthController::class, 'test']);
