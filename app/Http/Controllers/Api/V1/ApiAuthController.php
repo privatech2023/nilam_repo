@@ -44,9 +44,9 @@ class ApiAuthController extends Controller
                 ], 401);
             }
 
-            $user = auth('client')->user();
+            $user = clients::where('email', $credentials['email'])->first();
 
-            $token = "2378624828372238";
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'status' => true,
@@ -214,7 +214,7 @@ class ApiAuthController extends Controller
             //     ], 401);
             // }
 
-            $token = "137982379823412";
+            $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
                 'status' => true,
