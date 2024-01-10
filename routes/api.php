@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\ApiAuthController;
+use App\Http\Controllers\Api\V1\SyncController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,5 @@ route::post('/v1/mobile-otp', [ApiAuthController::class, 'mobileOtp']);
 route::post('/v1/email-login', [ApiAuthController::class, 'emailLogin']);
 
 route::post('v1/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify']);
+
+route::post('v1/sync', [SyncController::class, 'sync']);
