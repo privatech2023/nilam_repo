@@ -47,7 +47,6 @@ class ApiAuthController extends Controller
             $user = clients::where('email', $credentials['email'])->first();
 
             $token = $user->createToken('auth_token')->plainTextToken;
-
             session()->put('auth-key', $token);
 
             $syncData = [
@@ -60,21 +59,11 @@ class ApiAuthController extends Controller
             $headers = [
                 'Authorization' => $token,
             ];
-            // return response()->json('hey');
             $sync = new SyncController;
             $syncResponse = $sync->sync(
                 (new Request($syncData))->merge([], [], [], [], [], $headers)
             );
-
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Login Success',
-                'errors' => (object)[],
-                'data' => [
-                    'sync_data' => $syncResponse->getData(),
-                ],
-            ]);
+            return response()->json($syncResponse->getData());
         } catch (\Exception $e) {
             $errors = (object)[];
             if (config('app.debug')) {
@@ -214,7 +203,6 @@ class ApiAuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-
             session()->put('auth-key', $token);
 
             $syncData = [
@@ -232,15 +220,7 @@ class ApiAuthController extends Controller
                 (new Request($syncData))->merge([], [], [], [], [], $headers)
             );
 
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Login Success',
-                'errors' => (object)[],
-                'data' => [
-                    'sync_data' => $syncResponse->getData(),
-                ],
-            ]);
+            return response()->json($syncResponse->getData());
         } catch (\Exception $e) {
             $errors = (object)[];
             if (config('app.debug')) {
