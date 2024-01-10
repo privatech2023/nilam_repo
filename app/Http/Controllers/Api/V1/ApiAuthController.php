@@ -48,22 +48,31 @@ class ApiAuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
+            session()->put('auth-key', $token);
+
+            $syncData = [
+                'email' => $user->email,
+                'mobile_number' => $user->mobile_number,
+                'device_id' => '1221',
+                'device_token' => '29302',
+                'force_sync' => false,
+            ];
+            $headers = [
+                'Authorization' => $token,
+            ];
+            // return response()->json('hey');
+            $sync = new SyncController;
+            $syncResponse = $sync->sync(
+                (new Request($syncData))->merge([], [], [], [], [], $headers)
+            );
+
+
             return response()->json([
                 'status' => true,
                 'message' => 'Login Success',
                 'errors' => (object)[],
-                'data' => (object)[
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'email_verified' => null,
-                    'mobile_number' => $user->mobile_number,
-                    'mobile_number_verified' => null,
-                    'has_active_subscription' => null,
-                    'subscribed_upto' => null,
-                    'purchase_url' => 'in-app-purchase-url',
-                    'device_id' => 0001,
-                    'device_token' => 00012,
-                    'token' => $token,
+                'data' => [
+                    'sync_data' => $syncResponse->getData(),
                 ],
             ]);
         } catch (\Exception $e) {
@@ -203,35 +212,33 @@ class ApiAuthController extends Controller
                 ], 401);
             }
 
-            // if (!$otp_verified) {
-            //     return response()->json([
-            //         'status' => false,
-            //         'message' => 'OTP verification failed',
-            //         'errors' => (object)[
-            //             'otp' => ['OTP verification failed'],
-            //         ],
-            //         'data' => (object)[],
-            //     ], 401);
-            // }
-
             $token = $user->createToken('auth_token')->plainTextToken;
+
+
+            session()->put('auth-key', $token);
+
+            $syncData = [
+                'email' => $user->email,
+                'mobile_number' => $user->mobile_number,
+                'device_id' => '1221',
+                'device_token' => '29302',
+                'force_sync' => false,
+            ];
+            $headers = [
+                'Authorization' => $token,
+            ];
+            $sync = new SyncController;
+            $syncResponse = $sync->sync(
+                (new Request($syncData))->merge([], [], [], [], [], $headers)
+            );
+
 
             return response()->json([
                 'status' => true,
                 'message' => 'Login Success',
                 'errors' => (object)[],
-                'data' => (object)[
-                    'name' => $user->name,
-                    'email' => $user->email,
-                    'email_verified' => null,
-                    'mobile_number' => $user->mobile_number,
-                    'mobile_number_verified' => null,
-                    'has_active_subscription' => null,
-                    'subscribed_upto' => null,
-                    'purchase_url' => 'in-app-purchase-url',
-                    'device_id' => 0002,
-                    'device_token' => 00023,
-                    'token' => $token,
+                'data' => [
+                    'sync_data' => $syncResponse->getData(),
                 ],
             ]);
         } catch (\Exception $e) {
