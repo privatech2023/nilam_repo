@@ -47,6 +47,7 @@ class ApiAuthController extends Controller
             $user = clients::where('email', $credentials['email'])->first();
 
             $token = $user->createToken('auth_token')->plainTextToken;
+
             session()->put('auth-key', $token);
 
             $syncData = [
@@ -64,6 +65,7 @@ class ApiAuthController extends Controller
             $syncResponse = $sync->sync(
                 (new Request($syncData))->merge([], [], [], [], [], $headers)
             );
+
 
             return response()->json([
                 'status' => true,
@@ -212,6 +214,7 @@ class ApiAuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
+
             session()->put('auth-key', $token);
 
             $syncData = [
@@ -224,11 +227,11 @@ class ApiAuthController extends Controller
             $headers = [
                 'Authorization' => $token,
             ];
-            // return response()->json('hey');
             $sync = new SyncController;
             $syncResponse = $sync->sync(
                 (new Request($syncData))->merge([], [], [], [], [], $headers)
             );
+
 
             return response()->json([
                 'status' => true,
