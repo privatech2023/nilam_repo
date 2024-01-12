@@ -1,26 +1,19 @@
 <?php
 
+use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\rolesController;
 use App\Http\Controllers\subscriptionController;
 use App\Http\Controllers\usersController;
+use App\Models\settings;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     Session::forget('user_data');
@@ -90,7 +83,19 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/delete/user', [usersController::class, 'delete_user']);
 
     route::post('/admin/client/update', [clientController::class, 'update_client']);
-    route::post('admin/clients/updatePassword', [clientController::class, 'update_client_password']);
-});
+    route::post('/admin/clients/updatePassword', [clientController::class, 'update_client_password']);
 
-route::get('api/test', [ApiAuthController::class, 'test']);
+    route::get('/admin/managePackages', [PackageController::class, 'index'])->name('/admin/managePackages');
+    route::post('/admin/createPackages', [PackageController::class, 'create']);
+    route::post('/admin/updatePackages', [PackageController::class, 'updatePackage']);
+    route::post('/admin/deletePackages', [PackageController::class, 'deletePackage']);
+    Route::post('/admin/packages/ajaxCallAllPackages', [PackageController::class, 'ajaxCallAllPackages']);
+
+    route::get('/admin/activationCodes', [activationCodeController::class, 'index'])->name('/admin/activationCodes');
+    route::post('/admin/activationCodes/ajaxCallAllCodes', [activationCodeController::class, 'ajaxCallAllCodes']);
+    route::post('/admin/createActivationCode', [activationCodeController::class, 'createCode']);
+    route::post('/admin/deleteActivationCode', [activationCodeController::class, 'deleteCode']);
+
+
+    route::get('/admin/settings', [SettingsController::class, 'index'])->name('/admin/settings');
+});

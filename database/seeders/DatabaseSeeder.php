@@ -8,6 +8,7 @@ use App\Models\groups;
 use App\Models\User;
 use App\Models\user_groups;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -48,5 +49,25 @@ class DatabaseSeeder extends Seeder
         ];
 
         user_groups::create($ugdata);
+
+
+
+        $sdata = [
+            [
+                'key' => 'site_title',
+                'value' => 'MY APP',
+            ],
+            [
+                'key' => 'site_footer',
+                'value' => 'Copyright © 2023',
+            ],
+            [
+                'key' => 'gst_rate',
+                'value' => '18',
+            ],
+        ];
+
+        // Use the DB facade to insert the data into the 'settings' table
+        DB::table('settings')->insert($sdata);
     }
 }

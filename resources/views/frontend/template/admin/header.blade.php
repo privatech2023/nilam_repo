@@ -6,6 +6,8 @@
   <title>Admin</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('assets/common/plugins/fontawesome-free/css/all.min.css')}}">
   <!-- Ionicons -->
@@ -28,7 +30,13 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   
   <link href="{{url('assets/common/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
-  {{-- <script type="text/javascript" src="{{ url('assets/common/plugins/toastr/toastr.min.js') }}"> </script>  --}}
+
+  <link href="{{url('assets/common/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+  <link href="{{url('assets/common/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}" rel="stylesheet">
+  
+  
+  <!-- DataTable Button-->
+  <link href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css" rel="stylesheet">
   
   <script src="{{ asset('assets/common/plugins/jquery/jquery.min.js')}}"></script>
   <!-- jQuery UI 1.11.4 -->
@@ -72,4 +80,16 @@
   <script src="{{ asset('assets/common/dist/js/pages/dashboard.js')}}"></script>
   <!-- AdminLTE for demo purposes -->
   <script src="{{ asset('assets/common/dist/js/demo.js')}}"></script>
+
+  <script type="text/javascript" src="{{ url('assets/common/plugins/datatables/jquery.dataTables.min.js')}}" ></script>   
+
+  <script type="text/javascript" src="{{ url('assets/common/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}" ></script>   
+  
+  <script type="text/javascript" src="{{ url('assets/common/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}" ></script>   
+  
+  <script type="text/javascript" src="{{ url('assets/common/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}" ></script>   
+
+  <!--Datatable Button-->
+
+  <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
 </head>
