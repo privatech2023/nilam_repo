@@ -1,6 +1,8 @@
 @extends('frontend.template.main')
 
 @section('main-container')
+
+<div class="content-wrapper remove-background">
 <div class="content-header">
     <div class="container">
         <div class="row mb-2">
@@ -78,7 +80,7 @@
         </div>
     </div>
 </div>
-
+</div>
 @if(session()->get('success'))
     <script type="text/javascript">
         toastr.success('{{session('success')}}')
