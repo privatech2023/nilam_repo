@@ -32,7 +32,6 @@ class PackageController extends Controller
                 'status' => 'required|in:0,1',
             ]);
             if ($validatedData->fails()) {
-                dd($validatedData->errors());
                 Session::flash('success', $validatedData->error());
                 return redirect()->route('/admin/managePackages');
             }
