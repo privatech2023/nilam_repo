@@ -5,6 +5,8 @@ use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\clientController;
+use App\Http\Controllers\couponsController;
+use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisterController;
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Session;
 Route::get('/', function () {
     Session::forget('user_data');
     return view('frontend/pages/index');
-});
+})->name('home');
 
 route::get('login/client', [LoginController::class, 'index'])->name('login');
 
@@ -43,8 +45,13 @@ route::post('login_otp/client', [LoginController::class, 'login_otp']);
 
 route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
 route::post('login/reset-password', [LoginController::class, 'reset_password']);
-//client middleware, not used yet.
+
+
 Route::group(['middleware' => 'client.auth'], function () {
+    route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
+    route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages']);
+    route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
+    route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout']);
 });
 
 
@@ -95,6 +102,12 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/activationCodes/ajaxCallAllCodes', [activationCodeController::class, 'ajaxCallAllCodes']);
     route::post('/admin/createActivationCode', [activationCodeController::class, 'createCode']);
     route::post('/admin/deleteActivationCode', [activationCodeController::class, 'deleteCode']);
+
+    route::get('/admin/manageCoupons', [couponsController::class, 'index'])->name('/admin/manageCoupons');
+    route::post('/admin/coupons/ajaxCallAllCoupons', [couponsController::class, 'ajaxCallAllCoupons']);
+    route::post('/admin/createCoupon', [couponsController::class, 'createCoupon']);
+    route::post('/admin/updateCoupon', [couponsController::class, 'updateCoupon']);
+    route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
 
 
     route::get('/admin/settings', [SettingsController::class, 'index'])->name('/admin/settings');
