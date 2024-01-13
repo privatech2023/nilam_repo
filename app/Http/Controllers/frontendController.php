@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
@@ -55,9 +57,17 @@ class frontendController extends Controller
             // Email sent successfully
             // You can add your success response or any other logic here
         } catch (\Exception $e) {
-            // Log or handle the exception
-            // You can add your error response or any other logic here
+
             dd($e);
         }
+    }
+
+    public function getSettings($key)
+    {
+
+        $settingsModel = new settings();
+        $setting = $settingsModel->where('key', $key)->first();
+
+        return $setting ? $setting->value : null;
     }
 }
