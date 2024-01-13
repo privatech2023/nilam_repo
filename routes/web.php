@@ -1,31 +1,26 @@
 <?php
 
+use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\clientController;
+use App\Http\Controllers\couponsController;
+use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\rolesController;
 use App\Http\Controllers\subscriptionController;
 use App\Http\Controllers\usersController;
+use App\Models\settings;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     Session::forget('user_data');
     return view('frontend/pages/index');
-});
+})->name('home');
 
 route::get('login/client', [LoginController::class, 'index'])->name('login');
 
@@ -50,8 +45,13 @@ route::post('login_otp/client', [LoginController::class, 'login_otp']);
 
 route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
 route::post('login/reset-password', [LoginController::class, 'reset_password']);
-//client middleware, not used yet.
+
+
 Route::group(['middleware' => 'client.auth'], function () {
+    route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
+    route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages']);
+    route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
+    route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout']);
 });
 
 
@@ -90,7 +90,25 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/delete/user', [usersController::class, 'delete_user']);
 
     route::post('/admin/client/update', [clientController::class, 'update_client']);
-    route::post('admin/clients/updatePassword', [clientController::class, 'update_client_password']);
-});
+    route::post('/admin/clients/updatePassword', [clientController::class, 'update_client_password']);
 
-route::get('api/test', [ApiAuthController::class, 'test']);
+    route::get('/admin/managePackages', [PackageController::class, 'index'])->name('/admin/managePackages');
+    route::post('/admin/createPackages', [PackageController::class, 'create']);
+    route::post('/admin/updatePackages', [PackageController::class, 'updatePackage']);
+    route::post('/admin/deletePackages', [PackageController::class, 'deletePackage']);
+    Route::post('/admin/packages/ajaxCallAllPackages', [PackageController::class, 'ajaxCallAllPackages']);
+
+    route::get('/admin/activationCodes', [activationCodeController::class, 'index'])->name('/admin/activationCodes');
+    route::post('/admin/activationCodes/ajaxCallAllCodes', [activationCodeController::class, 'ajaxCallAllCodes']);
+    route::post('/admin/createActivationCode', [activationCodeController::class, 'createCode']);
+    route::post('/admin/deleteActivationCode', [activationCodeController::class, 'deleteCode']);
+
+    route::get('/admin/manageCoupons', [couponsController::class, 'index'])->name('/admin/manageCoupons');
+    route::post('/admin/coupons/ajaxCallAllCoupons', [couponsController::class, 'ajaxCallAllCoupons']);
+    route::post('/admin/createCoupon', [couponsController::class, 'createCoupon']);
+    route::post('/admin/updateCoupon', [couponsController::class, 'updateCoupon']);
+    route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
+
+
+    route::get('/admin/settings', [SettingsController::class, 'index'])->name('/admin/settings');
+});

@@ -142,19 +142,19 @@
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="pages/UI/general.html" class="nav-link">
+                    <a href="{{ url('/admin/managePackages')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage packages</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="pages/UI/icons.html" class="nav-link">
+                    <a href="{{ url('/admin/activationCodes')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Activation codes</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="pages/UI/buttons.html" class="nav-link">
+                    <a href="{{ url('/admin/manageCoupons')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Coupons</p>
                     </a>
@@ -193,7 +193,7 @@
               </li>
               @endif
               <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
+                <a href="{{ url('/admin/settings')}}" class="nav-link">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
                   <p>
                     Settings
