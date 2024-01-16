@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\clients;
+use App\Models\subscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -31,6 +32,17 @@ class RegisterController extends Controller
                 'email' => $request->input('email'),
                 'password' => bcrypt($request->input('password'))
             ]);
+            $client_id = $newClient->client_id;
+            $subsmodel = new subscriptions();
+            $subsData = [
+                'client_id' => $client_id,
+                'txn_id' => null,
+                'started_at' => null,
+                'ends_on' => null,
+                'validity_days' => null,
+                'status' => 2, //1 Active | 2 Pending                       
+            ];
+            $subsmodel->create($subsData);
             session()->flash('success', 'Registered succesfully');
             return redirect()->route('login')->with(['success' => 'Registered successfully']);
         } catch (\Exception $e) {
