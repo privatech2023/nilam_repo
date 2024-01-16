@@ -56,7 +56,7 @@
                         <b><i class="fa-solid fa-envelope"></i></b> <span class="float-right">{{ empty($client_data['email']) ? "" : $client_data['email'] }}</span>
                     </li>
                     <li class="list-group-item">
-                        <b><i class="fa-solid fa-receipt"></i></b> <span class="float-right"></span>
+                        <b><i class="fa-solid fa-receipt"></i></b> <span class="float-right">{!! $subs_status !!}</span>
                     </li>
                     <li class="list-group-item">
                         <b><i class="fa-regular fa-hard-drive"></i></b> <span class="float-right">Free Plan</span>
@@ -110,7 +110,18 @@
                   </thead>
                   <tbody>          
                       
-                      
+                    @foreach ($txn_data as $index => $list)
+                    <tr>                   
+                        <td>{{ ++$index }}</td>
+                        <td>{{ $list['txn_id'] }}</td>
+                        <td>{{ $list['created_at'] }}</td>
+                        <td>{{ $list['paid_amt'] }}</td>
+                        <td>{{ $list['txn_mode'] }}</td>
+                        <td>{{ $list['txn_type'] }}</td>
+                        <td>{{ $list['plan_validity_days'] }}</td>
+                        <td>{{ $list['status'] == 1 ? 'Pending' : 'Success' }}</td>
+                    </tr>
+                @endforeach
                 
                   </tbody>
                  </table>

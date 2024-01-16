@@ -12,6 +12,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\rolesController;
 use App\Http\Controllers\subscriptionController;
+use App\Http\Controllers\transactionsController;
 use App\Http\Controllers\usersController;
 use App\Models\settings;
 use Illuminate\Support\Facades\Route;
@@ -51,7 +52,10 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
     route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages']);
     route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
-    route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout']);
+    route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
+
+    route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
+    route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
 });
 
 
@@ -79,7 +83,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin/subscription/pending', [subscriptionController::class, 'pending']);
     route::get('/admin/subscription/expired', [subscriptionController::class, 'expired']);
 
-    route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
+
 
     route::get('/admin/users', [usersController::class, 'index'])->name('admin_users');
     route::get('/admin/users/add', [usersController::class, 'add_user_index']);
@@ -89,6 +93,7 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     route::post('/admin/delete/user', [usersController::class, 'delete_user']);
 
+    route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
     route::post('/admin/client/update', [clientController::class, 'update_client']);
     route::post('/admin/clients/updatePassword', [clientController::class, 'update_client_password']);
 
@@ -110,5 +115,13 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
 
 
-    route::get('/admin/settings', [SettingsController::class, 'index'])->name('/admin/settings');
+    Route::match(['get', 'post'], '/admin/settings', [SettingsController::class, 'index']);
+
+    Route::get('/admin/transactions', [transactionsController::class, 'index'])->name('/admin/transactions');
+
+    Route::post('/admin/transactions/ajaxCallAllTxn', [transactionsController::class, 'ajaxCallAllTxn']);
+
+    route::post('/admin/clients/ajaxCallAllClientsActive', [subscriptionController::class, 'ajaxCallAllClientsActive']);
+    route::post('/admin/clients/ajaxCallAllClientsPending', [subscriptionController::class, 'ajaxCallAllClientsPending']);
+    route::post('/admin/clients/ajaxCallAllClients', [subscriptionController::class, 'ajaxCallAllClients']);
 });
