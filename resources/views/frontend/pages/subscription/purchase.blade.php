@@ -69,7 +69,7 @@
                                 <p class="text-center">
                                     <strong>Discount Coupons</strong>
                                 </p>
-                                <form action="#" method="post" class="form-horizontal">
+                                <form action="{{ url('/subscription/checkout')}}" method="post" class="form-horizontal">
                                     @csrf
                                     <input type="hidden" name="user_id" value="{{ session('user_id') }}"  />
                                     <input type="hidden" name="package_id" value="{{ $package['id']}}"  />

@@ -75,7 +75,7 @@ class activationCodeController extends Controller
     {
         try {
             $rules = [
-                'code_name' => 'required|alpha_dash|unique:activation_codes,code',
+                'code_name' => 'required|unique:activation_codes,code',
                 'duration' => 'required|numeric',
                 'amount' => 'required|numeric',
                 'tax' => 'required|numeric',
