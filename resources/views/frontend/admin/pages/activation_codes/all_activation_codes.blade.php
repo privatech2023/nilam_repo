@@ -244,7 +244,7 @@
                 lengthMenu: [
                     [10, 30, -1],
                     [10, 30, "All"]
-                ], // page length options
+                ], 
                 bProcessing: true,
                 serverSide: true,
                 scrollY: "400px",
@@ -265,7 +265,7 @@
                         }
                     },
                     {
-                        data: "code.."
+                        data: "code"
                     },
                     {
                         data: "duration_in_days"
@@ -311,12 +311,12 @@
                     {
                         "targets": [1, 2, 3, 4, 5],
                         "render": function(data) {
-                            return data.toUpperCase();
+                            return data;
                         },
                     },
         
                 ],
-                bFilter: true, // to display datatable search
+                bFilter: true, 
             });
         
         

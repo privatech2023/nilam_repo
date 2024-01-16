@@ -1,7 +1,7 @@
 @extends('layouts.adminFrontend')
 
 @section('main-container')
-
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header mb-4">
         <div class="container-fluid">
@@ -11,7 +11,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{ url('dashboard') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">Dashboard</a></li>
                         <li class="breadcrumb-item active">Settings</li>
                     </ol>
                 </div><!-- /.col -->
@@ -33,9 +33,8 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" method="POST" action="">
+                        <form class="form-horizontal" method="POST" action="{{ url('/admin/settings')}}">
                             @csrf
-                            @method('POST')
 
                             <div class="card-body">
                                 <input type="hidden" name="id" value="{{ $settings[0]['id'] }}">
@@ -63,9 +62,8 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" method="POST" action="">
+                        <form class="form-horizontal" method="POST" action="{{ url('/admin/settings')}}">
                             @csrf
-                            @method('POST')
 
                             <div class="card-body">
                                 <input type="hidden" name="id" value="{{ $settings[1]['id'] }}">
@@ -92,9 +90,8 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form class="form-horizontal" method="POST" action="">
+                        <form class="form-horizontal" method="POST" action="{{ url('/admin/settings')}}">
                             @csrf
-                            @method('POST')
 
                             <div class="card-body">
                                 <input type="hidden" name="id" value="{{ $settings[2]['id'] }}">
@@ -115,7 +112,17 @@
             </div>
         </div>
     </section>
-
+</div>
+@if(session()->get('success'))
+<script type="text/javascript">
+    toastr.success('{{session('success')}}')
+</script>
+@endif
+@if(session()->get('error'))
+<script type="text/javascript">
+    toastr.warning('{{session('error')}}')
+</script>
+@endif
     <script>
         $(document).ready(function() {
             $("#settingsMenu").addClass('active');
