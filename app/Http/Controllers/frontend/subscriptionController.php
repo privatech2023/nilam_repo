@@ -49,14 +49,24 @@ class subscriptionController extends Controller
         return view('Frontend/pages/subscription/purchase', $data);
     }
 
+
+
     public function checkout_activation_code(Request $request)
     {
         try {
             if ($request->input('code_name') != "") {
-                $code = activation_codes::where('code', $request->input('code_name'))->first();
+                // $code = activation_codes::where('code', $request->input('code_name'))->first();
+                $code = activation_codes::whereRaw('BINARY code = ?', [$request->input('code_name')])->first();
+
                 $package = packages::where('id', $request->input('package_id'))->first();
-                if ($code == null) {
-                    return back();
+                if ($code == null || $code->is_active == 0) {
+                    $packageModel = packages::all();
+                    $data = array(
+                        'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
+                        'package' => $packageModel->where('id', $request->input('package_id'))->first(),
+                    );
+                    Session::flash('error', 'Invalid activation code');
+                    return view('Frontend/pages/subscription/purchase', $data);
                 } else {
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
@@ -76,7 +86,7 @@ class subscriptionController extends Controller
                     $transaction->plan_validity_days = $package->duration_in_days;
                     $transaction->package_name = $package->name;
                     $transaction->activation_code = $request->input('code_name');
-                    $transaction->status = 1;
+                    $transaction->status = 2;
                     $transaction->price = $request->input('total_amount');
                     $transaction->created_by = session()->get('user_id');
                     $transaction_id = $transaction->txn_id;
@@ -181,6 +191,34 @@ class subscriptionController extends Controller
 
     public function checkout(Request $request)
     {
+        if ($request->input('coupon_name') != null) {
+            $coupon = coupons::whereRaw('BINARY coupon = ?', [$request->input('coupon_name')])->first();
+            if ($coupon === null || $coupon->is_active == 0) {
+                $id = $request->input('package_id');
+                $amount = $request->input('pay-amount');
+                Session::flash('error', 'Invalid coupon code');
+                return view('frontend.pages.subscription.online_payment')->with(['payableAmount' => $amount, 'packageId' => $id]);
+            } else {
+                $newAmount = (int)($request->input('pay-amount')) - (($coupon->discount_percentage / 100) * $request->input('pay-amount'));
+                $amountInPaise = (int)($newAmount * 100);
+                $api = new ApiApi(getenv('RAZORPAY_KEY_ID'), getenv('RAZORPAY_KEY_SECRET'));
+                $razorCreate = $api->order->create(array(
+                    'receipt' => '123',
+                    'amount' => $amountInPaise,
+                    'currency' => 'INR',
+                    'notes' => array('key1' => 'value3', 'key2' => 'value2')
+                ));
+
+                $data['razorPay'] = $razorCreate;
+                return view('Frontend/razorpay/checkout', $data);
+
+                // $id = $request->input('package_id');
+                // $amount = $request->input('pay-amount');
+                // Session::flash('success', 'Coupon code valid');
+                // return view('frontend.pages.subscription.online_payment')->with(['payableAmount' => $amount, 'packageId' => $id]);
+            }
+        }
+        //add transaction mode to online.
         $amountInPaise = (int)($request->input('pay-amount') * 100);
         $api = new ApiApi(getenv('RAZORPAY_KEY_ID'), getenv('RAZORPAY_KEY_SECRET'));
         $razorCreate = $api->order->create(array(
@@ -194,7 +232,10 @@ class subscriptionController extends Controller
         return view('Frontend/razorpay/checkout', $data);
     }
 
-    public function webhook()
+    public function onlinePayment(Request $request)
     {
+        $id = $request->input('package-id');
+        $amount = $request->input('payable-amount');
+        return view('frontend.pages.subscription.online_payment')->with(['payableAmount' => $amount, 'packageId' => $id]);
     }
 }

@@ -65,38 +65,22 @@
                             </div>
                             <!-- /.col -->
 
-                            <div class="col-md-8">
-                                <p class="text-center">
-                                    <strong>Discount Coupons</strong>
-                                </p>
-                                <form action="{{ url('/subscription/checkout')}}" method="post" class="form-horizontal">
-                                    @csrf
-                                    <input type="hidden" name="user_id" value="{{ session('user_id') }}"  />
-                                    <input type="hidden" name="package_id" value="{{ $package['id']}}"  />
-                                    <div class="form-group row">
-                                        <label for="inputName" class="col-sm-2 col-form-label">Coupon Code</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="coupon_name" value="" placeholder="Have coupon code ?">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="inputEmail" class="col-sm-2 col-form-label">Payable Amount</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" name="pay-amount" value="{{ $package['price'] }}" readonly>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="offset-sm-2 col-sm-10">
-                                            <button type="submit" class="btn btn-danger">Pay Now</button>
-                                        </div>
-                                    </div>
-                                    
-                                </form>
-                                <div class="row">
-                                    <div class="offset-sm-2 col-sm-10">
-                                        <button type="button" id="activation_btn" class="btn btn-primary">Activation code</button>
+                            <div class="form-horizontal col-7">
+                                <div class="form-group row">
+                                    <form action="{{ url('/onlinePayment')}}" class="offset-sm-2 form-horizontal col-10" method="post">
+                                        @csrf
+                                        <input type="hidden" value="{{ $package['id']}}" name="package-id"/>
+                                        <input type="hidden" value="{{ $package['price'] }}" name="payable-amount"/>
+                                        <button type="submit" class="btn btn-danger" style="width:100%;">Online payment</button>                                
+                                    </form>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="offset-sm-2 col-10">
+                                        <button type="button" id="activation_btn" class="btn btn-primary" style="width:100%;">Activation code</button>
                                     </div>
                                 </div>
+                            </div>
+                            
                             </div>
                             <!-- /.col -->
                         </div>
@@ -104,46 +88,6 @@
                     </div>
                     <!-- ./card-body -->
 
-                    <div class="card-footer">
-                        <div class="row">
-                            <div class="col-sm-3 col-6">
-                                <div class="description-block border-right">
-                                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                                    <h5 class="description-header">$35,210.43</h5>
-                                    <span class="description-text">TOTAL REVENUE</span>
-                                </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-3 col-6">
-                                <div class="description-block border-right">
-                                    <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-                                    <h5 class="description-header">$10,390.90</h5>
-                                    <span class="description-text">TOTAL COST</span>
-                                </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-3 col-6">
-                                <div class="description-block border-right">
-                                    <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                                    <h5 class="description-header">$24,813.53</h5>
-                                    <span class="description-text">TOTAL PROFIT</span>
-                                </div>
-                                <!-- /.description-block -->
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-3 col-6">
-                                <div class="description-block">
-                                    <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                                    <h5 class="description-header">1200</h5>
-                                    <span class="description-text">GOAL COMPLETIONS</span>
-                                </div>
-                                <!-- /.description-block -->
-                            </div>
-                        </div>
-                        <!-- /.row -->
-                    </div>
                     <!-- /.card-footer -->
                 </div>
                 <!-- /.card -->
@@ -175,24 +119,27 @@
 
             <div class="card-body">
                 <div class="row">  
-                    <div class="col-sm-6">
-                        <div class="form-group input-group-sm">
+                    <div class="col-10">
+                        <div class="form-group">
                             <label for="name">Code Name *</label>
                             <input type="text" class="form-control" name="code_name"
                                 placeholder="Activation Code" autocomplete="off" required>
                         </div>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group input-group-sm">
+                </div>
+                {{-- <div class="row">
+                    <div class="col-10">
+                        <div class="form-group ">
                             <label for="exampleInputPassword1">Total amount</label>
                             <input type="number" class="form-control" name="total_amount" value="{{ $package['price']}}"
                             min="0" autocomplete="off" readonly>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
           
         </div>
+        <input type="hidden" class="form-control" name="total_amount" value="{{ $package['price']}}">
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           <button type="submit" class="btn btn-primary">SUBMIT</button>
@@ -204,15 +151,22 @@
 
 
 
-@if(session()->get('success'))
-    <script type="text/javascript">
-        toastr.success('{{session('success')}}')
-    </script>
+  @if(session()->has('success'))
+  <script type="text/javascript">
+      toastr.success('{{session('success')}}');
+  </script>
+  @php
+      session()->forget('success');
+  @endphp
 @endif
-@if(session()->get('error'))
-    <script type="text/javascript">
-        toastr.warning('{{session('error')}}')
-    </script>
+
+@if(session()->has('error'))
+  <script type="text/javascript">
+      toastr.warning('{{session('error')}}');
+  </script>
+  @php
+      session()->forget('error');
+  @endphp
 @endif
 
 <script>
