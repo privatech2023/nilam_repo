@@ -112,7 +112,6 @@
         <div class="col-12 col-sm-6 col-md-3">
           <div class="info-box mb-3">
             <span class="info-box-icon bg-danger elevation-1"><i class="fa-solid fa-sitemap"></i></span>
-
             <div class="info-box-content">
               <span class="info-box-text">All dealers</span>
               <span class="info-box-number">XX</span>
@@ -157,31 +156,37 @@
       <h2 class="lead mb-2 mt-2">Subscriptions</h2>
       <div class="row">
         <div class="col-12 col-sm-6 col-md-3">
+          <a href="{{ url('/admin/transactions')}}">
           <div class="info-box">
             <span class="info-box-icon bg-info elevation-1"><i class="fa-solid fa-receipt"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Transactions</span>
               <span class="info-box-number">
-                0
+                {{ $transactions }}
                 <small></small>
               </span>
             </div>
             <!-- /.info-box-content -->
           </div>
+        </a>
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
         <div class="col-12 col-sm-6 col-md-3">
+          <a href="{{ url('/admin/managePackages')}}">
           <div class="info-box mb-3">
             <span class="info-box-icon bg-danger elevation-1"><i class="fa-solid fa-layer-group"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Packages</span>
-              <span class="info-box-number">0</span>
+              <span class="info-box-number">
+                {{ $packages }}
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
+        </a>
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
@@ -190,28 +195,36 @@
         <div class="clearfix hidden-md-up"></div>
 
         <div class="col-12 col-sm-6 col-md-3">
+          <a href="{{ url('/admin/activationCodes')}}">
           <div class="info-box mb-3">
             <span class="info-box-icon bg-success elevation-1"><i class="fa fa-ticket-alt"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Activation codes</span>
-              <span class="info-box-number">0</span>
+              <span class="info-box-number">
+                {{ $activation_codes }}
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
+        </a>
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
         <div class="col-12 col-sm-6 col-md-3">
+          <a href="{{ url('/admin/manageCoupons')}}">
           <div class="info-box mb-3">
             <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-tag"></i></span>
 
             <div class="info-box-content">
               <span class="info-box-text">Discount coupons</span>
-              <span class="info-box-number">0</span>
+              <span class="info-box-number">
+                {{ $coupons }}
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
+        </a>
           <!-- /.info-box -->
         </div>
         <!-- /.col -->

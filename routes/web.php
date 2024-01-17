@@ -54,8 +54,11 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
     route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 
+
     route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
     route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
+
+    route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
 });
 
 
@@ -124,4 +127,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/clients/ajaxCallAllClientsActive', [subscriptionController::class, 'ajaxCallAllClientsActive']);
     route::post('/admin/clients/ajaxCallAllClientsPending', [subscriptionController::class, 'ajaxCallAllClientsPending']);
     route::post('/admin/clients/ajaxCallAllClients', [subscriptionController::class, 'ajaxCallAllClients']);
+
+    route::get('/admin/profile/{id}', [adminController::class, 'profile']);
+    route::post('/admin/profile/update', [adminController::class, 'profile_update']);
 });
