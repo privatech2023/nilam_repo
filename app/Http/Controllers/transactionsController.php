@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Log;
 
 class transactionsController extends Controller
 {
-
-
     public function index()
     {
         $data = array();
@@ -32,17 +30,15 @@ class transactionsController extends Controller
             $search_value = request('search.value', '');
 
             if (!empty($search_value)) {
-                $query = transactions::select('transactions.*', 'users.name', 'users.mobile')
-                    ->join('users', 'transactions.client_id', '=', 'users.id')
-                    ->where('users.id', '!=', 1)
+                $query = transactions::select('transactions.*', 'clients.name', 'clients.mobile_number')
+                    ->join('clients', 'transactions.client_id', '=', 'clients.client_id')
                     ->where('transactions.txn_id', 'like', '%' . $search_value . '%')
                     ->orderBy('transactions.created_at', 'DESC');
                 $total_count = $query->get();
                 $data = $query->skip($start)->take($length)->get();
             } elseif (!empty($valueStatus)) {
-                $query = transactions::select('transactions.*', 'users.name', 'users.mobile')
-                    ->join('users', 'transactions.client_id', '=', 'users.id')
-                    ->where('users.id', '!=', 1)
+                $query = transactions::select('transactions.*', 'clients.name', 'clients.mobile_number')
+                    ->join('clients', 'transactions.client_id', '=', 'clients.client_id')
                     ->where('transactions.status', $valueStatus)
                     ->orderBy('transactions.created_at', 'DESC');
                 $total_count = $query->get();

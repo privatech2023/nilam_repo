@@ -38,14 +38,14 @@
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
               <span class="dropdown-item doropdown-header">Manage User</span>
-              <a href="#" class="dropdown-item">
+              <a href="{{ url('/admin/profile/'.session('admin_id'))}}" class="dropdown-item">
                 <!-- Message Start -->
                 <i class="fas fa-envelope mr-2"></i>
                 Profile
                 <!-- Message End -->
               </a>
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
+              <a href="{{ url('/admin/settings')}}" class="dropdown-item">
                 <!-- Message Start -->
                 <i class="fas fa-users mr-2"></i>
                 Settings
