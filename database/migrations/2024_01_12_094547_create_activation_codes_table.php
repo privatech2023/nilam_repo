@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('tax', 256)->default(0);
             $table->string('price', 256);
             $table->integer('is_active')->default(1);
-            $table->unsignedBigInteger('used_by');
+            $table->unsignedBigInteger('used_by')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->date('expiry_date');
             $table->timestamps();
