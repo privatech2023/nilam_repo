@@ -30,7 +30,7 @@
             <div class="info-box-content">
               <span class="info-box-text">Active</span>
               <span class="info-box-number">
-                
+                {{ $activeClients }}
                 <small></small>
               </span>
             </div>
@@ -47,7 +47,9 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Pending</span>
-              <span class="info-box-number"></span>
+              <span class="info-box-number">
+                {{$pendingClients}}
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -66,7 +68,9 @@
 
             <div class="info-box-content">
               <span class="info-box-text">Expired</span>
-              <span class="info-box-number"></span>
+              <span class="info-box-number">
+                {{ $expiredClients}}
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
@@ -81,7 +85,9 @@
 
             <div class="info-box-content">
               <span class="info-box-text">All clients</span>
-              <span class="info-box-number"></span>
+              <span class="info-box-number">
+                {{ $allClients }}
+              </span>
             </div>
             <!-- /.info-box-content -->
           </div>
