@@ -14,13 +14,11 @@ class ApiAuthController extends Controller
 {
     public function emailLogin(Request $request)
     {
-
         // Validate the request...
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:clients,email',
             'password' => 'required|string',
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -48,12 +46,13 @@ class ApiAuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
             session()->put('auth-key', $token);
-
             $syncData = [
                 'email' => $user->email,
                 'mobile_number' => $user->mobile_number,
-                'device_id' => '1221',
-                'device_token' => '29302',
+                'client_id' => $user->client_id,
+                'device_id' => '123236522',
+                'device_token' => '27162221276',
+                'device_name' => 'device',
                 'force_sync' => false,
             ];
             $headers = [
@@ -61,7 +60,7 @@ class ApiAuthController extends Controller
             ];
             $sync = new SyncController;
             $syncResponse = $sync->sync(
-                (new Request($syncData))->merge([], [], [], [], [], $headers)
+                (new Request($syncData))->merge([], [], [], [], [], [], [], $headers)
             );
             return response()->json($syncResponse->getData());
         } catch (\Exception $e) {
@@ -206,10 +205,12 @@ class ApiAuthController extends Controller
             session()->put('auth-key', $token);
 
             $syncData = [
+                'client_id' => $user->client_id,
                 'email' => $user->email,
                 'mobile_number' => $user->mobile_number,
                 'device_id' => '1221',
                 'device_token' => '29302',
+                'device_name' => 'device',
                 'force_sync' => false,
             ];
             $headers = [
@@ -217,7 +218,7 @@ class ApiAuthController extends Controller
             ];
             $sync = new SyncController;
             $syncResponse = $sync->sync(
-                (new Request($syncData))->merge([], [], [], [], [], $headers)
+                (new Request($syncData))->merge([], [], [], [], [], [], [], $headers)
             );
 
             return response()->json($syncResponse->getData());

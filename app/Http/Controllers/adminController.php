@@ -12,6 +12,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -21,11 +22,52 @@ class adminController extends Controller
 {
     public function index()
     {
+        $query1 = DB::table('clients')
+            ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
+            ->get();
+        $query2 = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription')
+            ->leftJoin('subscriptions', function ($join) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id');
+            })
+            ->where('subscriptions.status', 1)
+            ->where('subscriptions.ends_on', '>=', date('Y-m-d'))
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
+        $query3 = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
+            ->leftJoin('subscriptions', function ($join) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id')
+                    ->where('subscriptions.validity_days', null);
+            })
+            ->havingRaw('COUNT(subscriptions.client_id) > 0')
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
+        $query4 = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
+            ->leftJoin('subscriptions', function ($join) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id')
+                    ->where('subscriptions.ends_on', '<', date('Y-m-d'));
+            })
+            ->havingRaw('COUNT(subscriptions.client_id) > 0')
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
+
+        $total_count_all = $query1->toArray();
+        $total_count_active = $query2->get();
+        $total_count_pending = $query3->get();
+        $total_count_expired = $query4->get();
         $transactions = transactions::all();
         $packages = packages::all();
         $activation_codes = activation_codes::all();
         $coupons = coupons::all();
-        return view('frontend.admin.dashboard')->with(['transactions' => count($transactions), 'packages' => count($packages), 'activation_codes' => count($activation_codes), 'coupons' => count($coupons)]);
+        return view('frontend.admin.dashboard')->with([
+            'transactions' => count($transactions),
+            'packages' => count($packages),
+            'activation_codes' => count($activation_codes),
+            'coupons' => count($coupons),
+            'allClients' => count($total_count_all),
+            'activeClients' => count($total_count_active),
+            'pendingClients' => count($total_count_pending),
+            'expiredClients' => count($total_count_expired)
+        ]);
     }
 
     public function login_index()
