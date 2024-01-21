@@ -28,32 +28,43 @@ class SyncController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Sync failed',
+                    'message' => 'Unauthorized',
                     'errors' => (object)$validator->errors()->toArray(),
                     'data' => (object)[],
                 ], 422);
             }
 
-            $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync', 'client_id', 'device_name']);
-            // Check if authenticated user has the same email and mobile number
-
-            $activeSubscriptionEndDate = subscriptions::where('client_id', $data['client_id'])
+            $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync', 'device_name']);
+            $client = clients::where('email', $data['email'])->where('mobile_number', $data['mobile_number'])->first();
+            if ($client == null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Unauthorized',
+                    'errors' => [
+                        'email' => ['The email and mobile number do not match.'],
+                        'mobile_number' => ['The email and mobile number do not match.'],
+                    ],
+                    'data' => [],
+                ]);
+            }
+            $client_id = $client->client_id;
+            $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
                 ->where('status', 1)
                 ->where('ends_on', '>=', date('Y-m-d'))
                 ->orderByDesc('ends_on')
                 ->value('ends_on');
-            $client = clients::where('client_id', $data['client_id'])->first();
-            $user = device::where('client_id', $data['client_id'])
+            $client = clients::where('client_id', $client_id)->first();
+            $user = device::where('client_id', $client_id)
                 ->first();
             $user_match = device::where('device_token', $data['device_token'])
                 ->first();
-            $user_count = device::where('client_id', $data['client_id'])->count();
+            $user_count = device::where('client_id', $client_id)->count();
 
             // If device_id and device_token are not empty and force_scan is false, then register new device
             try {
                 if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
 
-                    if ($user_match != null) {
+                    if ($user_match != null && $data['device_id'] != $user->device_id) {
                         $count = $user_count;
                         return response()->json([
                             'status' => true,
@@ -74,13 +85,21 @@ class SyncController extends Controller
                                 'device_count_max' => config('devices.max_devices'),
                             ],
                         ], 200);
+                    } else {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'New device',
+                            'errors' => [],
+                            'data' => [],
+                        ]);
                     }
+                } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
                     if ($user_count  < config('devices.max_devices')) {
                         $device = new device();
                         $device->device_id = $data['device_id'];
                         $device->device_token = $data['device_token'];
                         $device->device_name = $data['device_name'];
-                        $device->client_id = $data['client_id'];
+                        $device->client_id = $client_id;
 
                         $count = $user_count;
                         $device->save();
@@ -110,14 +129,12 @@ class SyncController extends Controller
                             'data' => (object)[],
                         ], 409);
                     }
-                }
-                // If device_id or device_token are empty or force_scan is true, then update the device_id and device_token
-                if ($data['force_sync'] == true || $user == null) {
+                } elseif ($data['force_sync'] == true || $user == null) {
                     $device = new device();
                     $device->device_id = $data['device_id'];
                     $device->device_token = $data['device_token'];
                     $device->device_name = $data['device_name'];
-                    $device->client_id = $data['client_id'];
+                    $device->client_id = $client_id;
                     $device->save();
                     $count = $user_count;
 
