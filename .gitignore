@@ -6,7 +6,7 @@
 /vendor
 /.env
 .env
-firebase-credentials.json
+/firebase-credentials.json
 .env.backup
 .env.production
 .phpunit.result.cache
