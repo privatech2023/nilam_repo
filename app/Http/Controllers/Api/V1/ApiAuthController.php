@@ -49,7 +49,6 @@ class ApiAuthController extends Controller
             $syncData = [
                 'email' => $user->email,
                 'mobile_number' => $user->mobile_number,
-                'client_id' => $user->client_id,
                 'device_id' => '123236522',
                 'device_token' => '27162221276',
                 'device_name' => 'device',
@@ -205,7 +204,6 @@ class ApiAuthController extends Controller
             session()->put('auth-key', $token);
 
             $syncData = [
-                'client_id' => $user->client_id,
                 'email' => $user->email,
                 'mobile_number' => $user->mobile_number,
                 'device_id' => '1221',
