@@ -59,6 +59,8 @@
 
     <!-- JQUERY -->
    <script type="text/javascript" src="{{ url('assets/common/plugins/jquery/jquery.min.js') }}"> </script> 
+
+   <script src="/path/to/js/modalbox.min.js"></script>
    <!-- jQuery UI 1.11.4 -->
    <script type="text/javascript" src="{{ url('assets/common/plugins/jquery-ui/jquery-ui.min.js') }}"> </script> 
    
@@ -152,6 +154,14 @@
             opacity: 1
         }
     }
+
+    #draggableResizableDiv {
+            width: 200px;
+            height: 200px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
     </style>
 
 
