@@ -101,7 +101,6 @@ class activationCodeController extends Controller
                 'created_by' => session()->get('admin_id'),
             ];
             activation_codes::create($data);
-
             Session::flash('success', 'Code Created');
             return redirect()->route('/admin/activationCodes');
         } catch (\Exception $e) {
