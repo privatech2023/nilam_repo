@@ -27,7 +27,7 @@
                                         <div class="row">
 
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @else id="openCustomWindowButton" @endif >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
                                                     title="SMS" />
@@ -120,6 +120,9 @@
     </div>
 
 
+    <div id="resizeDiv"></div>
+
+
 
     {{-- Modal --}}
     <div class="modal fade" role="dialog" id="modalLoginPrompt">
@@ -178,7 +181,7 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-
+    
 
     @if(session()->get('success'))
     <script type="text/javascript">
@@ -192,6 +195,26 @@
 @endif
     <script>
         $(document).ready(function() {
+
+            $('#resizeDiv')
+	        .draggable()
+	        .resizable();
+
+            $('#resizeDiv')
+	.resizable({
+		start: function(e, ui) {
+			alert('resizing started');
+		},
+		resize: function(e, ui) {
+		
+		},
+		stop: function(e, ui) {
+			alert('resizing stopped');
+		}
+	});
+
+
+
             window.addEventListener('beforeunload', function (event) {
             $('.loader_bg').hide();
             $('#modalLoginPrompt').modal('hide');
@@ -199,8 +222,9 @@
             });
             //defaule hide email login btn 
             //hide mobile-part
+            // Get references to the button and window elements
+
             
-        
             $('#mobile-part').hide();
             $('#emailBtn').hide();
         
