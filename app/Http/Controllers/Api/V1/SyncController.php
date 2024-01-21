@@ -16,6 +16,14 @@ class SyncController extends Controller
 {
     public function sync(Request $request)
     {
+        if (!$request->hasHeader('Authorization')) {
+        return response()->json([
+        'status' => false,
+        'message' => 'Unauthorized: Missing Authorization header',
+        'errors' => [],
+        'data' => [],
+        ], 401);
+        }
         if (session('auth-key') != $request->header('Authorization')) {
             // Validate the request...
             $validator = Validator::make($request->all(), [
