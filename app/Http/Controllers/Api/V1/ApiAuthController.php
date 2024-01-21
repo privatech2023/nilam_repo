@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\frontendController;
 use App\Models\clients;
 use App\Models\otp;
+use App\Models\subscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -40,28 +41,32 @@ class ApiAuthController extends Controller
                     ],
                     'data' => (object)[],
                 ], 401);
+            } else {
+                $user = clients::where('email', $credentials['email'])->first();
+
+                $token = $user->createToken('auth_token')->plainTextToken;
+                session()->put('auth-key', $token);
+                $activeSubscriptionEndDate = subscriptions::where('client_id', $user->client_id)
+                    ->where('status', 1)
+                    ->where('ends_on', '>=', date('Y-m-d'))
+                    ->orderByDesc('ends_on')
+                    ->value('ends_on');
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Login Success',
+                    'errors' => [],
+                    'data' => [
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'email_verified' => null,
+                        'mobile_number' => $user->mobile_number,
+                        'mobile_number_verified' => null,
+                        'has_active_subscription' => $activeSubscriptionEndDate ? true : false,
+                        'subscribed_upto' => $activeSubscriptionEndDate,
+                        'token' => $token,
+                    ],
+                ]);
             }
-
-            $user = clients::where('email', $credentials['email'])->first();
-
-            $token = $user->createToken('auth_token')->plainTextToken;
-            session()->put('auth-key', $token);
-            $syncData = [
-                'email' => $user->email,
-                'mobile_number' => $user->mobile_number,
-                'device_id' => '123236522',
-                'device_token' => '27162221276',
-                'device_name' => 'device',
-                'force_sync' => false,
-            ];
-            $headers = [
-                'Authorization' => $token,
-            ];
-            $sync = new SyncController;
-            $syncResponse = $sync->sync(
-                (new Request($syncData))->merge([], [], [], [], [], [], [], $headers)
-            );
-            return response()->json($syncResponse->getData());
         } catch (\Exception $e) {
             $errors = (object)[];
             if (config('app.debug')) {
@@ -202,24 +207,22 @@ class ApiAuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             session()->put('auth-key', $token);
-
-            $syncData = [
-                'email' => $user->email,
-                'mobile_number' => $user->mobile_number,
-                'device_id' => '1221',
-                'device_token' => '29302',
-                'device_name' => 'device',
-                'force_sync' => false,
-            ];
-            $headers = [
-                'Authorization' => $token,
-            ];
-            $sync = new SyncController;
-            $syncResponse = $sync->sync(
-                (new Request($syncData))->merge([], [], [], [], [], [], [], $headers)
-            );
-
-            return response()->json($syncResponse->getData());
+            $activeSubscriptionEndDate = subscriptions::where('client_id', $user->client_id);
+            return response()->json([
+                'status' => true,
+                'message' => 'Login Success',
+                'errors' => [],
+                'data' => [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'email_verified' => null,
+                    'mobile_number' => $user->mobile_number,
+                    'mobile_number_verified' => null,
+                    'has_active_subscription' => $activeSubscriptionEndDate ? true : false,
+                    'subscribed_upto' => $activeSubscriptionEndDate,
+                    'token' => $token,
+                ],
+            ]);
         } catch (\Exception $e) {
             $errors = (object)[];
             if (config('app.debug')) {
