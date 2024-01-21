@@ -4,7 +4,6 @@ use App\Http\Controllers\Actions\Functions\SendFcmNotification as FunctionsSendF
 use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
-use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\frontend\messageController;
@@ -14,6 +13,7 @@ use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\rolesController;
 use App\Http\Controllers\SendFcmNotification;
+use App\Http\Controllers\settingsController;
 use App\Http\Controllers\subscriptionController;
 use App\Http\Controllers\transactionsController;
 use App\Http\Controllers\usersController;
@@ -123,7 +123,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
 
 
-    Route::match(['get', 'post'], '/admin/settings', [SettingsController::class, 'index']);
+    Route::match(['get', 'post'], '/admin/settings', [settingsController::class, 'index']);
 
     Route::get('/admin/transactions', [transactionsController::class, 'index'])->name('/admin/transactions');
 

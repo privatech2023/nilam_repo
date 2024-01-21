@@ -3,8 +3,9 @@
 /public/hot
 /public/storage
 /storage/*.key
-/firebase-credentials.json
-
+/vendor
+/.env
+/.firebase-credentials.json
 .env.backup
 .env.production
 .phpunit.result.cache
