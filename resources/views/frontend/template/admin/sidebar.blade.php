@@ -193,6 +193,14 @@
               </li>
               @endif
               <li class="nav-item has-treeview">
+                <a href="{{ url('/admin/apk-versions')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Apk versions
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/settings')}}" class="nav-link">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
                   <p>
