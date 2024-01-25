@@ -56,15 +56,14 @@ class SyncController extends Controller
             $client = clients::where('client_id', $client_id)->first();
             $user = device::where('client_id', $client_id)
                 ->first();
-            $user_match = device::where('device_token', $data['device_token'])
+            $user_match = device::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])
                 ->first();
             $user_count = device::where('client_id', $client_id)->count();
 
             // If device_id and device_token are not empty and force_scan is false, then register new device
             try {
                 if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
-
-                    if ($user_match != null && $data['device_id'] != $user->device_id) {
+                    if ($user_match != null) {
                         $count = $user_count;
                         return response()->json([
                             'status' => true,
@@ -94,6 +93,28 @@ class SyncController extends Controller
                         ]);
                     }
                 } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
+                    if ($user_match != null) {
+                        $count = $user_count;
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'Sync successful.',
+                            'errors' => (object)[],
+                            'data' => (object)[
+                                'name' => $client->name,
+                                'email' => $client->email,
+                                'email_verified' => null,
+                                'mobile_number' => $client->mobile_number,
+                                'mobile_number_verified' =>  null,
+                                'has_active_subscription' => $activeSubscriptionEndDate ? true : false,
+                                'subscribed_upto' => $activeSubscriptionEndDate,
+                                'purchase_url' => 'in-app-purchase-url',
+                                'device_id' => $data['device_id'],
+                                'device_token' => $data['device_token'],
+                                'device_count' => $count,
+                                'device_count_max' => config('devices.max_devices'),
+                            ],
+                        ], 200);
+                    }
                     if ($user_count  < config('devices.max_devices')) {
                         $device = new device();
                         $device->device_id = $data['device_id'];

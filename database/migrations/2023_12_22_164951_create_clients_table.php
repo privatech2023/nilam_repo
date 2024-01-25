@@ -26,9 +26,6 @@ return new class extends Migration
             $table->integer('status')->default(1);
             $table->string('device_name')->nullable();
             $table->string('device_id')->nullable();
-            $table->string('device_token')->nullable();
-            $table->integer('device_count')->nullable();
-            $table->timestamp('device_status_updated_at')->nullable();
             $table->rememberToken();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
