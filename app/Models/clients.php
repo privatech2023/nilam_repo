@@ -23,4 +23,9 @@ class clients extends Authenticatable
         'password',
         'mobile_number',
     ];
+
+    public function messages()
+    {
+        return $this->hasMany(messages::class);
+    }
 }

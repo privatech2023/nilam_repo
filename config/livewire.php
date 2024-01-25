@@ -56,6 +56,7 @@ return [
 
     'asset_url' => null,
 
+    'full_page_script' => true,
     /*
     |--------------------------------------------------------------------------
     | Livewire App URL

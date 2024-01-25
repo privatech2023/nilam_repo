@@ -2,12 +2,12 @@
 
 @section('main-container')
 @if(session('user_name'))
-<div class="row mt-3">
+<div class="row mt-3 welcome">
     <div class="col-9">
-        <h2 style="margin-left: 12.5rem; color:beige; font-size: 2rem;">Welcome, {{session('user_name')}}</h2>
+        <h2  class="welcome-text">Welcome, {{session('user_name')}}</h2>
     </div>
     <div>
-        <span class="text-md" style="color:dimgrey"><a href="{{ url('/')}}">Home </a>/ Dashboard</span>
+        <span class="text-md breadcrumb-text" ><a href="{{ url('/')}}">Home </a>/ Dashboard</span>
     </div>
 </div>
 @endif
@@ -26,86 +26,176 @@
                                     <div class="col-12 col-lg-12">
                                         <div class="row">
 
-
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @else id="openCustomWindowButton" @endif >
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt"  >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
                                                     title="SMS" />
-
                                             </div>
+                                            @else                                            
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                                                <a href="{{ url('/message'.'/'.session('user_id'))}}"> <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
+                                                    title="SMS" /></a>
+                                            </div>                                            
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-contact.svg') }}"
                                                     title="CONTACTS" />
                                             </div>       
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                                                <a href="{{ url('/contacts'.'/'.session('user_id'))}}"> <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-contact.svg') }}"
+                                                    title="CONTACTS" /></a>
+                                            </div>
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-camera.svg') }}"
                                                     title="CAMERA" />
                                             </div>
-
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                                                <a href="{{ url('/camera'.'/'.session('user_id'))}}"> <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-camera.svg')  }}"
+                                                    title="CAMERA" /></a>
+                                            </div>
+                                            @endif
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-location.svg') }}"
                                                     title="LOCATION" />
                                             </div>
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-call-logs.svg') }}"
                                                     title="CALL LOG" />
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
+                                                <a href="{{ url('/call-log'.'/'.session('user_id'))}}"> <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-call-logs.svg') }}"
+                                                    title="CALL LOG" /></a>
+                                            </div>
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
                                                     title="FILE MANAGER" />
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
+                                                <a href="{{ url('/filemanager'.'/'.session('user_id'))}}"> <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
+                                                    title="FILE MANAGER" /></a>
+                                            </div>
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}"
                                                     title="VIBRATE" />
                                             </div>
-
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
+                                                <a href="{{ url('/vibrate-device'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}"
+                                                    title="VIBRATE" /></a>
+                                            </div>
+                                            @endif
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}"
                                                     title="LOST MESSAGE" />
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
+                                                <a href="{{ url('/lost-messages'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}"
+                                                    title="LOST MESSAGE" /></a>
+                                            </div>
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-audio-record.svg') }}"
                                                     title="AUDIO RECORD" />
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
+                                                <a href="{{ url('/audio-record'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-audio-record.svg') }}"
+                                                    title="AUDIO RECORD" /></a>
+                                            </div>
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-alert.svg') }}"
                                                     title="ALERT" />
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
+                                                <a href="{{ url('/alert-device'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-alert.svg') }}"
+                                                    title="ALERT" /></a>
+                                            </div>
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-screen-record.svg') }}"
                                                     title="SCREEN RECORD" />
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
+                                                <a href="{{ url('/screen-record'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-screen-record.svg') }}"
+                                                    title="SCREEN RECORD" /></a>
+                                            </div>
+                                            @endif
 
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-video-record.svg') }}"
                                                     title="VIDEO RECORD" />
-                                            </div>    
-
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+                                            </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"data-toggle="modal" >
+                                                <a href="{{ url('/video-record'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-video-record.svg') }}"
+                                                    title="VIDEO RECORD" /></a>
+                                            </div> 
+                                            @endif
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-gallery.svg') }}"
                                                     title="GALLERY" />
                                             </div>
-
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                                                <a href="{{ url('/gallery'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-gallery.svg') }}"
+                                                    title="GALLERY" /></a>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

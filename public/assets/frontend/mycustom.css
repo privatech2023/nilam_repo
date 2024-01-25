@@ -109,3 +109,34 @@ input[type=number] {
 
     height:66px!important;
 }
+
+.welcome-text {
+    color: beige;
+    font-size: 2rem;
+    margin-left: 12.5rem;
+}
+
+.breadcrumb-text {
+    color: dimgrey;
+}
+
+@media only screen and (max-width: 576px) {
+    .welcome{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .welcome-text {
+        
+        font-size: 1.5rem;
+        margin-left: 0; /* Adjust margin for smaller screens */
+    }
+
+    .breadcrumb-text {
+        
+        display: block;
+        margin-top: 10px; /* Adjust spacing for smaller screens */
+    }
+}
