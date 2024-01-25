@@ -63,6 +63,7 @@ class SyncController extends Controller
             // If device_id and device_token are not empty and force_scan is false, then register new device
             try {
                 if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
+
                     if ($user_match != null) {
                         $count = $user_count;
                         return response()->json([
