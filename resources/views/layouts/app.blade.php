@@ -7,11 +7,12 @@
     display:none;
   }
   .content-wrapper{
-    margin-top: 1rem;
+    margin-top: 0rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    /* min-height: 200vh; */
+    height: 100vh;
     background: #27ae60;
     font-family: "Source Sans Pro";
     font-size: 1em;
@@ -21,6 +22,8 @@
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
     -webkit-font-smoothing: antialiased;
   }
+
+
   #frame {
     width: 100%;
     min-width: 360px;
@@ -31,10 +34,18 @@
     background: #e6eaea;
   }
   @media screen and (max-width: 360px) {
+    .content-wrapper{
+      align-items: unset;
+      height: 70vh;
+    }
     #frame {
+      margin-top: 30px;
       width: 100%;
-      height: 80vh;
+      height: 70vh;
       font-size: 0.8em;
+      border-radius: 10px;
+      margin-left: 3px;
+      margin-right: 3px;
     }
   }
 
@@ -55,7 +66,7 @@
   }
   @media screen and (max-width: 735px) {
     #frame #sidepanel {
-      width: 70px;
+      width: 90px;
       min-width: 70px;
     }
   }
@@ -474,7 +485,7 @@
   }
   @media screen and (max-width: 735px) {
 
-    #hide-btn{
+    .hide-btn{
       display: none;
     }
     .sec-center{
@@ -524,7 +535,7 @@
   }
   @media screen and (max-width: 735px) {
     #frame .content {
-      width: calc(100% - 70px);
+      width: calc(100% - 90px);
       min-width: 200px !important;
     }
   }
@@ -921,10 +932,11 @@ audio::-webkit-media-controls-play-button:hover {
   font-weight: 500;
   font-size: 15px;
   line-height: 2;
-  height: 50px;
+  height: 40px;
   transition: all 200ms linear;
   border-radius: 4px;
-  width: 220px;
+  width: 120px;
+  margin-left: 6rem;
   letter-spacing: 1px;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;

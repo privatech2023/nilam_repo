@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class messages extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'user_id',
         'device_id',
@@ -18,14 +17,4 @@ class messages extends Model
         'body',
         'is_inbox',
     ];
-
-    protected $casts = [
-        'date' => 'datetime',
-        'is_inbox' => 'boolean',
-    ];
-
-    public function user()
-    {
-        return $this->belongsTo(clients::class);
-    }
 }

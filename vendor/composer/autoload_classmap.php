@@ -12,6 +12,7 @@ return array(
     'App\\Http\\Controllers\\Actions\\Functions\\SendFcmNotification' => $baseDir . '/app/Http/Controllers/Actions/Functions/SendFcmNotification.php',
     'App\\Http\\Controllers\\Api\\V1\\ApiAuthController' => $baseDir . '/app/Http/Controllers/Api/V1/ApiAuthController.php',
     'App\\Http\\Controllers\\Api\\V1\\SyncController' => $baseDir . '/app/Http/Controllers/Api/V1/SyncController.php',
+    'App\\Http\\Controllers\\ApkVersionController' => $baseDir . '/app/Http/Controllers/ApkVersionController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\LoginController' => $baseDir . '/app/Http/Controllers/LoginController.php',
     'App\\Http\\Controllers\\PackageController' => $baseDir . '/app/Http/Controllers/PackageController.php',
