@@ -59,7 +59,7 @@
                       </svg>abc</p>  
                 </div>             
                 <div class="text-right" style="margin-right: 8px;">
-                    <button type="button" class="btn btn-outline-danger">Delete</button>
+                    <button  type="button" class="btn btn-outline-danger">Delete</button>
                     <button type="button" class="btn btn-outline-primary">New contact</button>
                     <div class="btn-group dropdown" >
                         <button type="button" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
