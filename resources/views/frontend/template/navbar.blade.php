@@ -10,7 +10,6 @@
                             class="brand-image img-rectangle elevation-1 my-logo" style="opacity: .8">
                         <span class="brand-text font-weight-dark text-white">PRIVATECH</span>
                     </a>
-
                 </ul>
 
                 <!-- SEARCH FORM -->

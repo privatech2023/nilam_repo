@@ -654,6 +654,7 @@ class ComposerStaticInit699f9a7b680380e2c4fda790a0cb8db4
         'App\\Http\\Controllers\\Actions\\Functions\\SendFcmNotification' => __DIR__ . '/../..' . '/app/Http/Controllers/Actions/Functions/SendFcmNotification.php',
         'App\\Http\\Controllers\\Api\\V1\\ApiAuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/ApiAuthController.php',
         'App\\Http\\Controllers\\Api\\V1\\SyncController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/V1/SyncController.php',
+        'App\\Http\\Controllers\\ApkVersionController' => __DIR__ . '/../..' . '/app/Http/Controllers/ApkVersionController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/LoginController.php',
         'App\\Http\\Controllers\\PackageController' => __DIR__ . '/../..' . '/app/Http/Controllers/PackageController.php',

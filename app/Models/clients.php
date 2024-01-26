@@ -22,10 +22,13 @@ class clients extends Authenticatable
         'email',
         'password',
         'mobile_number',
+        'device_id',
+        'device_token',
+        'auth_token'
     ];
 
-    public function messages()
-    {
-        return $this->hasMany(messages::class);
-    }
+    // public function messages()
+    // {
+    //     return $this->hasMany(messages::class);
+    // }
 }

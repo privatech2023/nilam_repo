@@ -51,6 +51,8 @@ class ApiAuthController extends Controller
                     ->where('ends_on', '>=', date('Y-m-d'))
                     ->orderByDesc('ends_on')
                     ->value('ends_on');
+
+                $user->update(['auth_token' => $token]);
                 return response()->json([
                     'status' => true,
                     'message' => 'Login Success',
