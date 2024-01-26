@@ -156,7 +156,7 @@ class SyncController extends Controller
                             'data' => (object)[],
                         ], 409);
                     }
-                } elseif ($data['force_sync'] == true || $user == null) {
+                } elseif ($data['force_sync'] == true && $user == null) {
                     $device = new device();
                     $device->device_id = $data['device_id'];
                     $device->device_token = $data['device_token'];
