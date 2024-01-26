@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->references('client_id')->on('clients')->onDelete('cascade');
             $table->string('device_id');
             $table->bigInteger('message_id')->index();
             $table->string('number');
