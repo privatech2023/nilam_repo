@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->id('client_id');
             $table->string('name');
-            $table->string('email')->nullable();;
+            $table->string('email')->nullable();
             $table->text('address')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('mobile_number')->unique();
@@ -26,6 +26,8 @@ return new class extends Migration
             $table->integer('status')->default(1);
             $table->string('device_name')->nullable();
             $table->string('device_id')->nullable();
+            $table->string('device_token')->nullable();
+            $table->string('auth_token')->nullable();
             $table->rememberToken();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();

@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
 use App\Models\device;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 
@@ -31,16 +32,17 @@ class MessageComponent extends Component
 
     public function sendNotification($action_to)
     {
-        if (empty(auth()->user()->device_token)) {
+        $client = clients::where('client_id', session('user_id'))->select('device_token')->first();
+        if ($client->device_token == null) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'No Device token! Please register your device first',
             ]);
-            return;
+            Log::error(' err done 1 ' . $action_to . ' notification! - ');
         }
 
         $data = [
-            'device_token' => auth()->user()->device_token,
+            'device_token' => $client->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
@@ -50,11 +52,13 @@ class MessageComponent extends Component
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
+            Log::error('done ' . $action_to . ' notification! - ');
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
             ]);
         } catch (\Throwable $th) {
+            Log::error('Failed to send ' . $action_to . ' notification! - ' . $th->getMessage());
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
