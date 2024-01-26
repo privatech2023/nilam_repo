@@ -54,7 +54,7 @@ class ApiAuthController extends Controller
                 return response()->json([
                     'status' => true,
                     'message' => 'Login Success',
-                    'errors' => [],
+                    'errors' => (object) [],
                     'data' => [
                         'name' => $user->name,
                         'email' => $user->email,
@@ -211,7 +211,7 @@ class ApiAuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Login Success',
-                'errors' => [],
+                'errors' => (object) [],
                 'data' => [
                     'name' => $user->name,
                     'email' => $user->email,
