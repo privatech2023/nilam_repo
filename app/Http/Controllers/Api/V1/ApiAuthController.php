@@ -45,14 +45,18 @@ class ApiAuthController extends Controller
                 $user = clients::where('email', $credentials['email'])->first();
 
                 $token = $user->createToken('auth_token')->plainTextToken;
-                session()->put('auth-key', $token);
+                session()->put('auth_token', $token);
                 $activeSubscriptionEndDate = subscriptions::where('client_id', $user->client_id)
                     ->where('status', 1)
                     ->where('ends_on', '>=', date('Y-m-d'))
                     ->orderByDesc('ends_on')
                     ->value('ends_on');
 
-                $user->update(['auth_token' => $token]);
+                // $user->update(['auth_token' => $token]);
+
+                $existingTokens = $user->auth_token ?: '';
+                $newTokenString = $existingTokens ? "$existingTokens,$token" : $token;
+                $user->update(['auth_token' => $newTokenString]);
                 return response()->json([
                     'status' => true,
                     'message' => 'Login Success',
@@ -208,7 +212,9 @@ class ApiAuthController extends Controller
 
             $token = $user->createToken('auth_token')->plainTextToken;
 
-            session()->put('auth-key', $token);
+            $existingTokens = $user->auth_token ?: '';
+            $newTokenString = $existingTokens ? "$existingTokens,$token" : $token;
+            $user->update(['auth_token' => $newTokenString]);
             $activeSubscriptionEndDate = subscriptions::where('client_id', $user->client_id);
             return response()->json([
                 'status' => true,
@@ -240,5 +246,27 @@ class ApiAuthController extends Controller
                 'data' => (object)[],
             ], 500);
         }
+    }
+
+    public function logout(Request $request)
+    {
+        // $validator = Validator::make($request->all(), [
+        //     'device_token' => 'required|numeric|min:10',
+        // ]);
+
+
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Validation error',
+        //         'errors' => (object)$validator->errors()->toArray(),
+        //         'data' => (object)[],
+        //     ], 404);
+        // }
+
+        // $user = clients::where('mobile_number')
+        return response()->json([
+            session('auth_token')
+        ]);
     }
 }

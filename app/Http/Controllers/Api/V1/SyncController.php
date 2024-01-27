@@ -48,7 +48,10 @@ class SyncController extends Controller
                 'data' => (object)[],
             ], 401);
         }
-        if ($client->auth_token != $request->header('Authorization')) {
+
+        $token = str_replace('Bearer ', '', $request->header('Authorization'));
+
+        if (!in_array($token, explode(',', $client->auth_token))) {
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid token header',
@@ -56,6 +59,7 @@ class SyncController extends Controller
                 'data' => (object) [],
             ], 401);
         }
+
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
@@ -101,8 +105,8 @@ class SyncController extends Controller
                     return response()->json([
                         'status' => false,
                         'message' => 'New device',
-                        'errors' => [],
-                        'data' => [],
+                        'errors' => (object)[],
+                        'data' => (object) [],
                     ], 404);
                 }
             } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
