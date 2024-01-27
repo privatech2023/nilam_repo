@@ -298,7 +298,6 @@
             $('#resizeDiv')
 	        .draggable()
 	        .resizable();
-
             $('#resizeDiv')
 	.resizable({
 		start: function(e, ui) {
