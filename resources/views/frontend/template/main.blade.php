@@ -1,5 +1,5 @@
 @include('frontend.template.header')
-
+@yield('styles')
 @include('frontend.template.navbar')
 @yield('main-container')
 @include('frontend.template.footer')
