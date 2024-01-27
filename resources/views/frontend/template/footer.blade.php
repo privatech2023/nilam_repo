@@ -46,9 +46,17 @@
 
                 <span id="message"></span>
 
-                <form method="post" id="passwordForm">
-
-
+                <form method="post" id="passwordForm" action="{{ url('/profile-update')}}">
+                    @csrf
+                    @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" name="password" placeholder="Password">
                         <div class="input-group-append">
@@ -60,7 +68,7 @@
                     <span id="password_error" class="text-danger"></span>
 
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="passconf" placeholder="Confirm Password">
+                        <input type="text" class="form-control" name="confirm_password" placeholder="Confirm Password">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -73,7 +81,7 @@
                         <div class="col-8"></div>
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" onClick="resetPasswordForm()" id="passwordFormBtn"
+                            <button type="submit" 
                                 class="btn btn-success btn-block btn-sm">Reset</button>
                         </div>
                         <!-- /.col -->
