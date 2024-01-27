@@ -271,8 +271,14 @@
         <!-- /.modal-dialog -->
     </div>
     <!-- /.modal -->
-    
-
+    {{-- @if($errors->any())
+    <script>
+        $('#modal-password').modal('show');
+    </script>
+    @endif --}}
+    <script>
+        var errors = @json($errors->all());
+    </script>
     @if(session()->get('success'))
     <script type="text/javascript">
         toastr.success('{{session('success')}}')
@@ -286,6 +292,9 @@
     <script>
         $(document).ready(function() {
 
+            if (errors.length > 0) {
+                $('#modal-password').modal('show');
+        }
             $('#resizeDiv')
 	        .draggable()
 	        .resizable();

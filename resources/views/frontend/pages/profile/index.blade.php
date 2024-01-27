@@ -129,14 +129,14 @@
                 <input type="text" class="form-control item" name="mobile_nmber" value="{{ $data['mobile_number']}}" id="phone-number" placeholder="Phone Number" readonly>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control item" name="password" value="{{ $data['password']}}" id="password" placeholder="Password">
+                <input type="password" class="form-control item" name="password" value="{{ $data['password']}}" id="password" placeholder="Password" readonly>
             </div>
             <div id="cnf">
 
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <button type="submit" class="btn btn-block create-account">Update</button>
-            </div>
+            </div> --}}
         </form>
     </div>
 </div>
