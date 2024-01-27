@@ -46,7 +46,7 @@ class subscriptionController extends Controller
             'package' => $packageModel->where('id', $id)->first(),
         );
 
-        return view('Frontend/pages/subscription/purchase', $data);
+       return view('frontend.pages.subscription.purchase', $data);
     }
 
 
