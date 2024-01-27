@@ -27,7 +27,6 @@ class MessageSyncController extends Controller
                 'data' => (object)[],
             ], 422);
         }
-
         $data = $request->only(['device_id', 'inbox']);
 
         // $user = clients::where('client_id', session('user_id'))->first();

@@ -102,6 +102,22 @@
 @endsection
 @section('main-container')
 <div class="content-wrapper remove-background">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-light"> Welcome, <small>{{ session('user_name') }}</small></h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+                        <li class="breadcrumb-item active">Subscription</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div>
+    </div>
+    <div class="content">
     <div class="registration-form">
             
             <form action="{{ url('/profile-update')}}" method="post">
@@ -139,6 +155,7 @@
             </div> --}}
         </form>
     </div>
+</div>
 </div>
 
 @if(session()->get('success'))

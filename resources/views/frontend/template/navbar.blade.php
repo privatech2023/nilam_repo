@@ -59,6 +59,12 @@
                             <a href="#" class="dropdown-item" data-toggle="modal" data-target="#modal-password">
                                 <i class="fa-solid fa-key"></i> Change Password
                             </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <a href="{{ url('/issue-token')}}" class="dropdown-item" >
+                                <i class="fa-solid fa-tags"></i> Issue token
+                            </a>
                             
                             @endif
 

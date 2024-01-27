@@ -30,7 +30,6 @@ class subscriptionController extends Controller
     public function packages()
     {
         $packages = packages::all();
-
         $data = [
             'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
             'packages' => $packages,
@@ -46,7 +45,9 @@ class subscriptionController extends Controller
             'package' => $packageModel->where('id', $id)->first(),
         );
 
-       return view('frontend.pages.subscription.purchase', $data);
+
+        return view('frontend.pages.subscription.purchase', $data);
+
     }
 
 

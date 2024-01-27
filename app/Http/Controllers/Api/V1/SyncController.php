@@ -50,7 +50,10 @@ class SyncController extends Controller
         }
 
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        if ($client->auth_token != $token) {
+
+
+        if (!in_array($token, explode(',', $client->auth_token))) {
+
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid token header',
@@ -58,6 +61,7 @@ class SyncController extends Controller
                 'data' => (object) [],
             ], 401);
         }
+
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
