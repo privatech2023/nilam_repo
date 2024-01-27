@@ -33,6 +33,7 @@ class SyncController extends Controller
                 'errors' => (object)$validator->errors()->toArray(),
                 'data' => (object)[],
             ], 401);
+
         }
 
         $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync', 'device_name']);
@@ -47,6 +48,7 @@ class SyncController extends Controller
                 ],
                 'data' => (object)[],
             ], 401);
+
         }
         if ($client->auth_token != $request->header('Authorization')) {
             return response()->json([
@@ -164,6 +166,7 @@ class SyncController extends Controller
                         'errors' => (object)[],
                         'data' => (object)[],
                     ], 404);
+
                 }
             } elseif ($data['force_sync'] == true && $user == null) {
                 $device = new device();
