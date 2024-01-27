@@ -117,12 +117,12 @@ class clientController extends Controller
                 $client->password = bcrypt($request->input('password'));
                 $client->save();
                 session()->flash('success', 'Password updated successfully');
-                return redirect()->route('profile');
+                return redirect()->route('home');
             }
             return redirect()->route('profile');
         } catch (ValidationException $e) {
 
-            return redirect()->route('profile')->withErrors($e->errors())->withInput();
+            return redirect()->route('home')->withErrors($e->errors())->withInput();
         }
     }
 }

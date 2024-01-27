@@ -56,7 +56,7 @@ class SyncController extends Controller
                 'message' => 'Invalid token header',
                 'errors' => (object)[],
                 'data' => (object) [],
-            ], 404);
+            ], 401);
         }
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
