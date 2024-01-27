@@ -1,3 +1,4 @@
+</head>
 <body class="hold-transition layout-top-nav">
 
     <div class="wrapper wrapper-background">
@@ -48,7 +49,7 @@
 
                             <div class="dropdown-divider"></div>
 
-                            <a href="<?= url('profile') ?>" class="dropdown-item">
+                            <a href="{{url('/profile')}}" class="dropdown-item">
                                 <i class="fas fa-user mr-2"></i> Profile
 
                             </a>

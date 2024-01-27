@@ -15,6 +15,7 @@
 
 
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url('assets/frontend/images/favicon/favicon-16x16.png') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -178,6 +179,4 @@
             padding: 10px;
         }
     </style>
-    
 
-</head>
