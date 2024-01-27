@@ -66,7 +66,7 @@ class subscriptionController extends Controller
                         'package' => $packageModel->where('id', $request->input('package_id'))->first(),
                     );
                     Session::flash('error', 'Invalid activation code');
-                    return view('Frontend/pages/subscription/purchase', $data);
+                    return view('frontend.pages.subscription.purchase', $data);
                 } else {
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
