@@ -8,6 +8,7 @@ use App\Models\subscriptions;
 use App\Models\transactions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class clientController extends Controller
 {
@@ -92,6 +93,36 @@ class clientController extends Controller
             );
             session()->flash('success', 'Password updated successfully');
             return view('frontend.admin.pages.clients.view_client', $data);
+        }
+    }
+
+    public function profile_index()
+    {
+        $data = clients::where('client_id', session('user_id'))->first();
+        return view('frontend.pages.profile.index')->with(['data' => $data]);
+    }
+
+    public function profile_update_frontend(Request $request)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'password' => 'required|min:8',
+                'confirm_password' => 'required|same:password'
+            ]);
+
+            if ($validator->fails()) {
+                throw new ValidationException($validator);
+            } else {
+                $client = clients::where('client_id', '=', session('user_id'))->first();
+                $client->password = bcrypt($request->input('password'));
+                $client->save();
+                session()->flash('success', 'Password updated successfully');
+                return redirect()->route('profile');
+            }
+            return redirect()->route('profile');
+        } catch (ValidationException $e) {
+
+            return redirect()->route('profile')->withErrors($e->errors())->withInput();
         }
     }
 }

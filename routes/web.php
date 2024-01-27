@@ -78,6 +78,9 @@ Route::group(['middleware' => 'client.auth'], function () {
 
     route::post('/messages', [messageController::class, 'index'])->name('/messages');
 
+    route::get('/profile', [clientController::class, 'profile_index'])->name('profile');
+    route::post('/profile-update', [clientController::class, 'profile_update_frontend']);
+
     // features
     route::get('/message/{userId}', MessageComponent::class);
     route::get('/contacts/{userId}', ContactsComponent::class);

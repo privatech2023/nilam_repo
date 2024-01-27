@@ -32,7 +32,8 @@ class SyncController extends Controller
                 'message' => 'Unauthorized',
                 'errors' => (object)$validator->errors()->toArray(),
                 'data' => (object)[],
-            ], 422);
+            ], 401);
+
         }
 
         $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync', 'device_name']);
@@ -46,7 +47,8 @@ class SyncController extends Controller
                     'mobile_number' => ['The email and mobile number do not match.'],
                 ],
                 'data' => (object)[],
-            ], 404);
+            ], 401);
+
         }
         if ($client->auth_token != $request->header('Authorization')) {
             return response()->json([
@@ -163,7 +165,8 @@ class SyncController extends Controller
                         'message' => 'Device limit exceeded',
                         'errors' => (object)[],
                         'data' => (object)[],
-                    ], 409);
+                    ], 404);
+
                 }
             } elseif ($data['force_sync'] == true && $user == null) {
                 $device = new device();
