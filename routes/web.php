@@ -9,6 +9,7 @@ use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\frontend\messageController;
 use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
+use App\Http\Controllers\issueTokenController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RegisterController;
@@ -80,6 +81,9 @@ Route::group(['middleware' => 'client.auth'], function () {
 
     route::get('/profile', [clientController::class, 'profile_index'])->name('profile');
     route::post('/profile-update', [clientController::class, 'profile_update_frontend']);
+
+    route::get('/issue-token', [issueTokenController::class, 'index'])->name('issue_token');
+    route::post('/raise-issue', [issueTokenController::class, 'create']);
 
     // features
     route::get('/message/{userId}', MessageComponent::class);
