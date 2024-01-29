@@ -161,6 +161,18 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/updateCoupon', [couponsController::class, 'updateCoupon']);
     route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
 
+    route::get('/admin/tokens', [issueTokenController::class, 'admin_index'])->name('/admin/tokens');
+    route::get('/admin/add-token', [issueTokenController::class, 'add_index'])->name('add-token');
+    route::get('/admin/token-type', [issueTokenController::class, 'type_index'])->name('token-type');
+    route::post('/admin/create/token-type', [issueTokenController::class, 'type_create']);
+    route::post('/admin/delete/token-type', [issueTokenController::class, 'type_delete']);
+    route::post('/admin/token/device', [issueTokenController::class, 'fetch_device']);
+    route::post('/admin/token/create', [issueTokenController::class, 'create_token_admin']);
+    route::post('/admin/token/get/{id}', [issueTokenController::class, 'token_get']);
+    route::post('/admin/token/update', [issueTokenController::class, 'token_update']);
+    route::post('/admin/delete/token', [issueTokenController::class, 'token_delete']);
+
+
 
     Route::match(['get', 'post'], '/admin/settings', [settingsController::class, 'index']);
 

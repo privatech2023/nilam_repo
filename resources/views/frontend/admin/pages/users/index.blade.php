@@ -9,11 +9,11 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>All Clients</h1>
+                    <h1>All Employees</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Clients</a></li>
+                        <li class="breadcrumb-item"><a href="#">Employee</a></li>
                         <li class="breadcrumb-item active">Manage</li>
                     </ol>
                 </div>
