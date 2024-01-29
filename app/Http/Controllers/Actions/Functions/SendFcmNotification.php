@@ -6,49 +6,52 @@ use Kreait\Firebase\Factory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification;
 
 class SendFcmNotification extends Controller
 {
     public function sendNotification($deviceToken = null, $action_to = 'device_status', $title = null, $body = null)
     {
-        $firebase = (new Factory)->withServiceAccount(base_path($_ENV['FIREBASE_CREDENTIALS']));
 
-        // $response = Http::withOptions([
-        //     'verify' => 'C:\xampp\php\cacert.pem', 
-        // ])->get('https://example.com');
+        $firebaseCredentialsPath = base_path($_ENV['FIREBASE_CREDENTIALS'] ?? 'firebase-credentials.json');
 
-        // if ($response->successful()) {
-        $deviceToken = 'foara0OrT9iTXobyvdK70o:APA91bFIDvimDi_AHc_A0jl5PVzBd3Okkr4XXM8cR-2zE4m4K1PGWvcOuKeCBITYWwdlcS9iL9MX9W3tEoFDGdwcMDVWS2RnOqO5zgGFu8h4pEBbOh6cZbUliVInuLM49Vvh8TfbOIDa';
-        $title = "Title";
-        $body = "Notification";
-        $actionTo = "alert_device_stop";
-        $topic = 'news_broadcast';
-
-        $notification = [
-            'title' => 'Good Night!',
-            'body' => 'Your device is secured',
-        ];
-
+        if (!file_exists($firebaseCredentialsPath)) {
+            Log::error('Firebase Credentials file not found or not readable.');
+        } else {
+            $firebase = (new Factory)->withServiceAccount($firebaseCredentialsPath);
+        }
         $data = [
             'device_token' => $deviceToken,
-            'action_to' => $actionTo,
             'title' => $title,
-            'topic' => $topic,
+            'body' => $body,
+            'action_to' => $action_to,
         ];
 
-        $messaging = $firebase->createMessaging();
+        try {
+            $message = CloudMessage::withTarget('token', $data['device_token'])
+                ->withNotification(Notification::create($data['title'], $data['body']))
+                ->withData(['action_to' => $data['action_to']])
+                ->withAndroidConfig([
+                    'priority' => 'high',
+                    'direct_boot_ok' => true,
+                ]);
 
-        $message = CloudMessage::withTarget('token', $data['device_token'])
-            ->withNotification($notification) // optional
-            ->withData($data);
+            $messaging = $firebase->createMessaging();
+            $messaging->send($message);
 
-
-
-        // Send the FCM message
-        $response = $messaging->send($message);
-
-        dd($response);
-        // } else print_r($response->body());
+            $res = [
+                'status' => true,
+                'message' => 'Notification sent for: ' . $action_to . '!',
+            ];
+            return $res;
+        } catch (\Throwable $th) {
+            $res = [
+                'status' => false,
+                'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
+            ];
+            return $res;
+        }
     }
 }
