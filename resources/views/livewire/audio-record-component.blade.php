@@ -21,18 +21,7 @@
         </nav>
         <nav class="navbar navbar-light bg-light">
               <button class="btn btn-outline-success" type="button">Record Audio</button>
-              <div class="text-right" style="margin-right: 8px;">
-                <div class="btn-group dropdown" >
-                    <button type="button" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Device
-                    </button>
-                    <div class="dropdown-menu">
-                      @foreach ($devices as $device)
-                        <a class="dropdown-item" href="#">{{ $device->device_name }}</a>
-                      @endforeach
-                    </div>
-                  </div>
-            </div>
+              
         </nav>
         <div style="display: flex; margin-top: 20px; margin-left: 10px;" class="audio">
             <div>

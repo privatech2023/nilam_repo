@@ -5,16 +5,13 @@
         <h2 class="welcome-text">Welcome, {{session('user_name')}}</h2>
     </div>
     <div>
-        <span class="text-md breadcrumb-text"><a href="{{ url('/')}}">Home </a>/ Dashboard</span>
+        @livewire('dropdown')
     </div>
 </div>
-
 @endif
 
 <div class="content-wrapper remove-background">
-
-    <div id="frame">
-        
+    <div id="frame">        
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap-1">
@@ -27,26 +24,16 @@
             </div>
             <div id="contacts">
                 <ul>
-                    <li class="contact"  wire:click="populateMessage('{{ 23 }}')" >
+                    @foreach($messageList as $key => $value)
+                        <li class="contact" wire:click="populateMessage('{{ $key }}')" >
                         <div class="wrap">
-                            <span class="contact-status"></span>
-                            <img src="#" alt="" />
-                            <div class="meta">
-                            <p class="name">ABC</p>
-                            <p class="preview">ABSAJ AJH ASJ</p>
-                            </div>
+                        <div class="meta">
+                        <p class="name">{{ $key }}</p>
+                        <p class="preview">{{ $messageList[$key][0]['body'] }}</p>
                         </div>
-                    </li>
-                    <li class="contact" wire:click="populateMessage('{{ 23 }}')" >
-                        <div class="wrap">
-                            <span class="contact-status busy"></span>
-                            <img src="#" alt="" />
-                            <div class="meta">
-                                <p class="name">XXXX</p>
-                                <p class="preview">Wrong. You take the gun, or you pull out a bigger one. </p>
-                            </div>
                         </div>
-                    </li>                    
+                        </li>
+                    @endforeach                    
                 </ul>
             </div>
         </div>
@@ -57,9 +44,6 @@
                     <p style="margin-left: 5px;">ABC</p>
                 </div>  
                 {{--  --}}
-                
-                
-          
                 <div class="sec-center"> 	
                     <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
                     <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
@@ -81,7 +65,7 @@
                     <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
                     <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync outbox</button>
                     <button  type="button" class="btn btn-sm btn-outline-primary hide-btn">New message</button>
-                    <div  class="btn-group dropdown hide-btn" >
+                    {{-- <div  class="btn-group dropdown hide-btn" >
                         <button type="button" class="btn btn-sm btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Device
                         </button>
@@ -90,11 +74,11 @@
                             <a class="dropdown-item" href="#">{{ $device->device_name }}</a>
                           @endforeach
                         </div>
-                      </div>
+                    </div> --}}
                 </div>                
             </div>
             <div class="messages">
-                @if ($message)
+                {{-- @if ($message)
                 <ul>
                     <li class="sent">
                         <img src="#" alt="" />
@@ -114,6 +98,9 @@
                     </li>
                     
                 </ul>
+                @endif --}}
+                @if($selectedKey)
+                    @livewire('message-populate', ['key' => $selectedKey], key($selectedKey))
                 @endif
             </div>
             <div class="message-input">
