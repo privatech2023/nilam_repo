@@ -2,6 +2,8 @@
 
 
 @section('styles')
+{{-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'> --}}
+<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
 <style class="cp-pen-styles">
   .sec-center{
     display:none;
@@ -585,6 +587,7 @@
     max-height: calc(100% - 93px);
     overflow-y: scroll;
     overflow-x: hidden;
+    width: 100%;
   }
   audio::-webkit-media-controls-panel {
   background-color: #56AEFF;
@@ -621,9 +624,9 @@ audio::-webkit-media-controls-play-button:hover {
   #frame .content .messages ul li:nth-last-child(1) {
     margin-bottom: 20px;
   }
-  #frame .content .messages ul li.sent img {
-    margin: 6px 8px 0 0;
-  }
+  /* #frame .content .messages ul li.sent img {
+    margin: 2px 2px 0 0;
+  } */
   #frame .content .messages ul li.sent p {
     background: #435f7a;
     color: #f5f5f5;

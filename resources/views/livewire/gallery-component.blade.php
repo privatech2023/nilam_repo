@@ -4,7 +4,7 @@
         <h2 class="welcome-text">Welcome, {{session('user_name')}}</h2>
     </div>
     <div>
-        <span class="text-md breadcrumb-text"><a href="{{ url('/')}}">Home </a>/ Dashboard</span>
+        @livewire('dropdown')
     </div>
 </div>
 

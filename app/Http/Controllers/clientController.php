@@ -125,4 +125,9 @@ class clientController extends Controller
             return redirect()->route('home')->withErrors($e->errors())->withInput();
         }
     }
+
+    public function default_device($id)
+    {
+        return redirect()->route('messages', ['userId' => session('user_id')]);
+    }
 }

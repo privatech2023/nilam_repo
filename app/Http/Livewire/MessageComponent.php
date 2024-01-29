@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
 use App\Models\device;
+use App\Models\messages;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
@@ -14,14 +15,36 @@ class MessageComponent extends Component
 
     public $userId;
     public $messageId;
-    public $message;
+    public $messageList = [];
+    public $selectedKey;
+
     public function mount($userId)
     {
         if ($userId == null) {
             $userId = session('user_id');
         }
         $this->userId = $userId;
-        $this->message;
+        $device = clients::where('client_id', $this->userId)->first();
+        $message = messages::where('device_id', $device->device_id)->get();
+        foreach ($message as $msg) {
+            if (isset($this->messageList[$msg->number])) {
+                $this->messageList[$msg->number][] = [
+                    'message_id' => $msg->message_id,
+                    'date' => $msg->date,
+                    'body' => $msg->body,
+                    'is_inbox' => $msg->is_inbox,
+                ];
+            } else {
+                $this->messageList[$msg->number] = [
+                    [
+                        'message_id' => $msg->message_id,
+                        'date' => $msg->date,
+                        'body' => $msg->body,
+                        'is_inbox' => $msg->is_inbox,
+                    ]
+                ];
+            }
+        }
     }
 
     public function render()
@@ -75,9 +98,8 @@ class MessageComponent extends Component
         $this->sendNotification('sync_outbox');
     }
 
-    public function populateMessage($messageId)
+    public function populateMessage($key)
     {
-        $this->message = "clicked";
-        $this->messageId = $messageId;
+        $this->selectedKey = $key;
     }
 }
