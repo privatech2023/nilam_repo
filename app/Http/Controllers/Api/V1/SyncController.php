@@ -48,7 +48,6 @@ class SyncController extends Controller
                 'data' => (object)[],
             ], 401);
         }
-
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
 
         if (!in_array($token, explode(',', $client->auth_token))) {
@@ -109,6 +108,13 @@ class SyncController extends Controller
                         'data' => (object) [],
                     ], 404);
                 }
+            } elseif ($data['force_sync'] ==  false && $user == null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'New device',
+                    'errors' => (object)[],
+                    'data' => (object) [],
+                ], 404);
             } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
                     $count = $user_count;
@@ -140,7 +146,7 @@ class SyncController extends Controller
                     $device->device_name = $data['device_name'];
                     $device->client_id = $client_id;
 
-                    $count = $user_count;
+                    $count = $user_count + 1;
                     $device->save();
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
                     return response()->json([
@@ -176,7 +182,7 @@ class SyncController extends Controller
                 $device->device_name = $data['device_name'];
                 $device->client_id = $client_id;
                 $device->save();
-                $count = $user_count;
+                $count = $user_count + 1;
                 $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
                 return response()->json([
                     'status' => true,
