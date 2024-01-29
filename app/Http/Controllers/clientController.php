@@ -126,8 +126,10 @@ class clientController extends Controller
         }
     }
 
-    public function default_device($id)
+    public function default_device($id, $token)
     {
+        $client = clients::where('client_id', session('user_id'))->first();
+        $client->update(['device_id' => $id, 'device_token' => $token]);
         return redirect()->route('messages', ['userId' => session('user_id')]);
     }
 }

@@ -102,7 +102,7 @@ Route::group(['middleware' => 'client.auth'], function () {
 
     Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
 
-    route::get('/default-device/{id}', [clientController::class, 'default_device']);
+    route::get('/default-device/{id}/{token}', [clientController::class, 'default_device']);
 });
 
 
