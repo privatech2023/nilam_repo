@@ -175,6 +175,7 @@ Route::group(['middleware' => 'user.auth'], function () {
 
 
     Route::match(['get', 'post'], '/admin/settings', [settingsController::class, 'index']);
+    route::post('/admin/settings/client', [settingsController::class, 'client_creds']);
 
     Route::get('/admin/transactions', [transactionsController::class, 'index'])->name('/admin/transactions');
 

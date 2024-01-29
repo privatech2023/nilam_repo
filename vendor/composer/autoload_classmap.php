@@ -64,6 +64,7 @@ return array(
     'App\\Models\\apk_versions' => $baseDir . '/app/Models/apk_versions.php',
     'App\\Models\\clients' => $baseDir . '/app/Models/clients.php',
     'App\\Models\\coupons' => $baseDir . '/app/Models/coupons.php',
+    'App\\Models\\default_client_creds' => $baseDir . '/app/Models/default_client_creds.php',
     'App\\Models\\device' => $baseDir . '/app/Models/device.php',
     'App\\Models\\groups' => $baseDir . '/app/Models/groups.php',
     'App\\Models\\issue_token' => $baseDir . '/app/Models/issue_token.php',

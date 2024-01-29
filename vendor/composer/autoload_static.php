@@ -706,6 +706,7 @@ class ComposerStaticInit699f9a7b680380e2c4fda790a0cb8db4
         'App\\Models\\apk_versions' => __DIR__ . '/../..' . '/app/Models/apk_versions.php',
         'App\\Models\\clients' => __DIR__ . '/../..' . '/app/Models/clients.php',
         'App\\Models\\coupons' => __DIR__ . '/../..' . '/app/Models/coupons.php',
+        'App\\Models\\default_client_creds' => __DIR__ . '/../..' . '/app/Models/default_client_creds.php',
         'App\\Models\\device' => __DIR__ . '/../..' . '/app/Models/device.php',
         'App\\Models\\groups' => __DIR__ . '/../..' . '/app/Models/groups.php',
         'App\\Models\\issue_token' => __DIR__ . '/../..' . '/app/Models/issue_token.php',

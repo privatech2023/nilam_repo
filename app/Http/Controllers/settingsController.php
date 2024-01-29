@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\default_client_creds;
 use App\Models\settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,8 @@ class settingsController extends Controller
                 }
                 unset($settingsData);
             }
-            $data = ['settings' => $store];
+            $client = default_client_creds::first();
+            $data = ['settings' => $store,];
 
             return view('frontend.admin.settings', $data);
         } catch (\Exception $e) {
@@ -54,5 +56,10 @@ class settingsController extends Controller
             $model->update($updateData);
             session()->flash('success', 'Value Updated');
         }
+    }
+
+
+    public function client_creds(Request $request)
+    {
     }
 }
