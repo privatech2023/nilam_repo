@@ -28,6 +28,7 @@ use App\Http\Livewire\FilemanagerComponent;
 use App\Http\Livewire\GalleryComponent;
 use App\Http\Livewire\LostMessagesComponent;
 use App\Http\Livewire\MessageComponent;
+use App\Http\Livewire\MessagePopulate;
 use App\Http\Livewire\ScreenRecordComponent;
 use App\Http\Livewire\VibrateComponent;
 use App\Http\Livewire\VideoRecordComponent;
@@ -86,7 +87,7 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::post('/raise-issue', [issueTokenController::class, 'create']);
 
     // features
-    route::get('/message/{userId}', MessageComponent::class);
+    route::get('/message/{userId}', MessageComponent::class)->name('messages');
     route::get('/contacts/{userId}', ContactsComponent::class);
     route::get('/camera/{userId}', CameraComponent::class);
     route::get('/call-log/{userId}', CallLogComponent::class);
@@ -98,6 +99,10 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::get('/gallery/{userId}', GalleryComponent::class);
     route::get('/filemanager/{userId}', FilemanagerComponent::class);
     route::get('/lost-messages/{userId}', LostMessagesComponent::class);
+
+    Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
+
+    route::get('/default-device/{id}', [clientController::class, 'default_device']);
 });
 
 
