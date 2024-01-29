@@ -72,24 +72,18 @@
                                     <input type="text" class="form-control" name="value" value="{{ $settings[1]['site_footer'] }}">
                                 </div>
                             </div>
-                            <!-- /.card-body -->
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-default float-right">Save</button>
                             </div>
-                            <!-- /.card-footer -->
                         </form>
                     </div>
-                    <!-- /.card -->
                 </div>
 
                 <div class="col-sm-6 col-md-4">
-                    <!-- Horizontal Form -->
                     <div class="card card-primary">
                         <div class="card-header bg-lightblue">
                             <h3 class="card-title">GST Rate</h3>
                         </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
                         <form class="form-horizontal" method="POST" action="{{ url('/admin/settings')}}">
                             @csrf
 
@@ -100,14 +94,37 @@
                                     <input type="text" class="form-control" name="value" value="{{ $settings[2]['gst_rate'] }}">
                                 </div>
                             </div>
-                            <!-- /.card-body -->
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-default float-right">Save</button>
                             </div>
-                            <!-- /.card-footer -->
                         </form>
                     </div>
-                    <!-- /.card -->
+                </div>
+
+                <div class="col-sm-6 col-md-4">
+                    <div class="card card-primary">
+                        <div class="card-header bg-lightblue">
+                            <h3 class="card-title">Default client credentials</h3>
+                        </div>
+                        <form class="form-horizontal" method="POST" action="{{ url('/admin/settings/client')}}">
+                            @csrf
+
+                            <div class="card-body">
+                                <input type="hidden" name="id" value="{{ $settings[2]['id'] }}">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">User Id</label>
+                                    <input type="text" class="form-control" name="value" value="{{ $settings[2]['gst_rate'] }}">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Password</label>
+                                    <input type="text" class="form-control" name="value" value="{{ $settings[2]['gst_rate'] }}">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="submit" class="btn btn-default float-right">Save</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
