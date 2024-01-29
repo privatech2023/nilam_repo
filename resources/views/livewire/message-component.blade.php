@@ -42,8 +42,7 @@
                 <div style="margin-left: 10px;">
                     <p class="text-secondary">To:</p> 
                     <p style="margin-left: 5px;">ABC</p>
-                </div>  
-                {{--  --}}
+                </div> 
                 <div class="sec-center"> 	
                     <input class="dropdown" type="checkbox" id="dropdown" name="dropdown"/>
                     <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
@@ -60,7 +59,6 @@
                         </div>
                     </div>
                 </div>
-                  {{--  --}}
                 <div class="text-right" style="margin-right: 8px;">
                     <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
                     <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync outbox</button>
