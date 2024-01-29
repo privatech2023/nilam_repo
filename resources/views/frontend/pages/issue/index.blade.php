@@ -74,11 +74,11 @@
                         </div>
                         <div class="card-body" >
                             <div class="row" >
-                                <div  class="col-12 col-md-12 col-lg-8 order-2 table-responsive">
+                                <div  class="table-responsive">
                                         <table class="table table-striped table-light" style="font-size: 16px; ">
                                             <thead>
                                             <tr>
-                                                <th scope="col">Name</th>
+                                                <th scope="col">Type</th>
                                                 <th scope="col">Contact number</th>
                                                 <th scope="col">Detail</th>
                                                 <th scope="col">Status</th>
@@ -89,7 +89,11 @@
                                             <tbody>
                                                 @foreach($data as $issue)
                                             <tr>
-                                                <th scope="row">{{ $issue->name}}</th>
+                                                <th scope="row">
+                                                    @foreach($type as $t)
+                                                    {{ $issue->issue_type == $t->id ? $t->name : ''}}
+                                                    @endforeach
+                                                </th>
                                                 <td>{{ $issue->mobile_number}}</td>
                                                 <td>{{ $issue->detail}}</td>
                                                 <td>
@@ -114,8 +118,7 @@
 
                                     
                                 </div>
-                            </div> <!-- Row -->
-                        
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,13 +145,11 @@
                 @csrf
                 <div class="form-group">
                   <label for="exampleFormControlSelect1">Issue type</label>
-                  <select name="name" class="form-control" id="exampleFormControlSelect1" required>
+                  <select name="type" class="form-control" id="exampleFormControlSelect1" required>
                     <option selected>Select issue</option>
-                    <option>Payment issue</option>
-                    <option>Subscription issue</option>
-                    <option>Other</option>
-                    <option>4</option>
-                    <option>5</option>
+                    @foreach($type as $t)
+                    <option value="{{ $t->id}}">{{$t->name}}</option>
+                    @endforeach
                   </select>
                 </div>
                 <div class="form-group">
