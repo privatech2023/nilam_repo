@@ -48,35 +48,9 @@
                         
                     </li>
 
-                    {{-- <div tabindex="0" role="button" class="i-width100p vh-item vh-item-selected" title="Folder:WallCandy
-Photos:1" bucketid="123002075" bucketname="WallCandy">
-    <div class="vh-item-thumb-wrapper i-float-left">
-        <img aria-hidden="true" imgsrc="https://jp-1-bd.airdroid.com:9980/sdctl/media/image/thumb/1000082312?max=62&amp;7bb=814fda0cb50fb3c91070cb8c80ae052f&amp;des=1&amp;token=814fda0cb50fb3c91070cb8c80ae052ftoken_end&amp;matchid=b17820fdb584966341dfe6bd80171b54mid_end&amp;dfurl=https%3A%2F%2Fjp-4-data.airdroid.com%3A9088dfurl_end&amp;dsurl=jp-1-bd.airdroid.comdsurl_end&amp;dsport=9991dsport_end&amp;bitdata=1" width="62" height="62" src="https://jp-1-bd.airdroid.com:9980/sdctl/media/image/thumb/1000082312?max=62&amp;7bb=814fda0cb50fb3c91070cb8c80ae052f&amp;des=1&amp;token=814fda0cb50fb3c91070cb8c80ae052ftoken_end&amp;matchid=b17820fdb584966341dfe6bd80171b54mid_end&amp;dfurl=https%3A%2F%2Fjp-4-data.airdroid.com%3A9088dfurl_end&amp;dsurl=jp-1-bd.airdroid.comdsurl_end&amp;dsport=9991dsport_end&amp;bitdata=1">
-    </div>
-    <div style="padding-top: 15px;">
-        <div class="name over-ellipsis">WallCandy</div>
-        <div><div class="mod-photo-folderNum">1</div>item(s)</div>
-        <div></div>
-    </div>
-</div> --}}
-
-                    {{-- <div tabindex="0" role="button" class="i-width100p vh-item" title="Folder:Facebook
-                    Photos:68" bucketid="-532863272" bucketname="Facebook">
-                    <div class="vh-item-thumb-wrapper i-float-left">
-                    <img aria-hidden="true" imgsrc="https://jp-1-bd.airdroid.com:9980/sdctl/media/image/thumb/1000089383?max=62&amp;7bb=814fda0cb50fb3c91070cb8c80ae052f&amp;des=1&amp;token=814fda0cb50fb3c91070cb8c80ae052ftoken_end&amp;matchid=b17820fdb584966341dfe6bd80171b54mid_end&amp;dfurl=https%3A%2F%2Fjp-4-data.airdroid.com%3A9088dfurl_end&amp;dsurl=jp-1-bd.airdroid.comdsurl_end&amp;dsport=9991dsport_end&amp;bitdata=1" width="62" height="62" src="https://jp-1-bd.airdroid.com:9980/sdctl/media/image/thumb/1000089383?max=62&amp;7bb=814fda0cb50fb3c91070cb8c80ae052f&amp;des=1&amp;token=814fda0cb50fb3c91070cb8c80ae052ftoken_end&amp;matchid=b17820fdb584966341dfe6bd80171b54mid_end&amp;dfurl=https%3A%2F%2Fjp-4-data.airdroid.com%3A9088dfurl_end&amp;dsurl=jp-1-bd.airdroid.comdsurl_end&amp;dsport=9991dsport_end&amp;bitdata=1">
-                    </div>
-                    <div style="padding-top: 15px;">
-                        <div class="name over-ellipsis">Facebook</div>
-                    <div><div class="mod-photo-folderNum">68</div>item(s)</div>
-                    <div></div>
-                    </div>
-                    </div> --}}
+                    
                 </ul>
             </div>
-            {{-- <div id="bottom-bar">
-                <button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
-                <button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Settings</span></button>
-            </div> --}}
         </div>
         <div class="content">
             <div class="contact-profile">
@@ -88,16 +62,6 @@ Photos:1" bucketid="123002075" bucketname="WallCandy">
                 </div>                
                 <div class="text-right" style="margin-right: 8px;">
                     <button type="button" class="btn btn-outline-primary">Download</button>
-                    <div class="btn-group dropdown" >
-                        <button type="button" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          Device
-                        </button>
-                        <div class="dropdown-menu">
-                          @foreach ($devices as $device)
-                            <a class="dropdown-item" href="#">{{ $device->device_name }}</a>
-                          @endforeach
-                        </div>
-                      </div>
                 </div>
                 
             </div>
