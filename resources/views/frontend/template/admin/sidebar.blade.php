@@ -9,7 +9,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
-            <a href="index3.html" class="nav-link">Home</a>
+            <a href="{{ url('/admin')}}" class="nav-link">Home</a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Contact</a>
@@ -161,12 +161,7 @@
                   </li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a href="{{ url('/admin/transactions')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Transactions</p>
-                </a>
-              </li>
+              
               @if(session('admin_name') === 'admin')
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -192,6 +187,31 @@
                 </ul>
               </li>
               @endif
+
+              <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-users"></i>
+                  <p>
+                    Tokens
+                    <i class="fas fa-angle-left right"></i>
+                  </p>
+                </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/tokens')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Issue tokens</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/token-type')}}" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Token types</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/apk-versions')}}" class="nav-link">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
@@ -200,6 +220,15 @@
                   </p>
                 </a>
               </li>
+
+              
+              <li class="nav-item">
+                <a href="{{ url('/admin/transactions')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Transactions</p>
+                </a>
+              </li>
+
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/settings')}}" class="nav-link">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
