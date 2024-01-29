@@ -6,7 +6,7 @@
           {{ $device->device_id == $defaultDevice->device_id ? $device->device_name : 'Select device' }}
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item"  href="{{ url('/default-device'.'/'.$device->device_id)}}">{{ $device->device_name }}</a>
+          <a class="dropdown-item"  href="{{ url('/default-device'.'/'.$device->device_id.'/'.$device->device_token)}}">{{ $device->device_name }}</a>
           @endforeach
         </div>
     </div>    
