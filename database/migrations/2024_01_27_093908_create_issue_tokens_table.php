@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('issue_tokens', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->integer('issue_type');
             $table->string('device_id');
             $table->string('device_token');
             $table->integer('client_id');
