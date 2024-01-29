@@ -7,6 +7,7 @@ use App\Models\clients;
 use App\Models\device;
 use App\Models\messages;
 use Illuminate\Support\Facades\Log;
+use Kreait\Firebase\Factory;
 use Livewire\Component;
 
 
@@ -61,7 +62,6 @@ class MessageComponent extends Component
                 'style' => 'danger',
                 'message' => 'No Device token! Please register your device first',
             ]);
-            Log::error(' err done 1 ' . $action_to . ' notification! - ');
         }
 
         $data = [
@@ -70,12 +70,10 @@ class MessageComponent extends Component
             'body' => null,
             'action_to' => $action_to,
         ];
-
-        // Send notification to device
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-            Log::error('done ' . $action_to . ' notification! - ');
+            Log::error('done ' . $res['message'] . ' notification! - ');
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
