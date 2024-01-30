@@ -17,6 +17,7 @@ class MessageSyncController extends Controller
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'inbox' => 'required|boolean',
+            'device_token' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -30,7 +31,7 @@ class MessageSyncController extends Controller
         $data = $request->only(['device_id', 'inbox']);
 
         // $user = clients::where('client_id', session('user_id'))->first();
-        $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->first();
+        $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
         $device_id = $data['device_id'] ?? $user->device_id;
         if ($user == null) {
             return response()->json([
@@ -84,13 +85,12 @@ class MessageSyncController extends Controller
 
     public function uploadMessages(Request $request)
     {
-        
+        // return response()->json([$request->header('Authorization')]);
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'device_token' => 'required',
             'inbox' => 'required|boolean',
             'json_file' => 'required|file|mimes:json,txt|max:10000',
-            'device_token' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -104,7 +104,7 @@ class MessageSyncController extends Controller
 
         $data = $request->only(['device_id', 'inbox', 'json_file']);
 
-        $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->first();
+        $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,
