@@ -61,7 +61,7 @@
                 </div>
                 <div class="text-right" style="margin-right: 8px;">
                     <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
-                    <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync outbox</button>
+                    <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncOutbox">Sync outbox</button>
                     <button  type="button" class="btn btn-sm btn-outline-primary hide-btn">New message</button>
                     {{-- <div  class="btn-group dropdown hide-btn" >
                         <button type="button" class="btn btn-sm btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
