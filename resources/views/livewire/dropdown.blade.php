@@ -7,16 +7,21 @@
       </button>
   </div>
     @else
-    @foreach ($devices as $device)
-    <div  class="btn-group dropdown ">
-        <button type="button" style="color:white; margin-left: 100%;" class="btn btn-sm btn-outline dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{ $device->device_id == $defaultDevice->device_id ? $device->device_name : 'Select device' }}
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item"  href="{{ url('/default-device'.'/'.$device->device_id.'/'.$device->device_token)}}">{{ $device->device_name }}</a>
-        </div>
-    </div>
-    @endforeach 
+    
+    <div class="btn-group dropdown">
+      <button type="button" style="color:white; margin-left: 100%;" class="btn btn-sm btn-outline dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          @foreach ($devices as $device)
+              {{ $device->device_id == $defaultDevice->device_id ? $device->device_name : ''}}
+          @endforeach
+      </button>
+      <div class="dropdown-menu">
+          @foreach ($devices as $device)
+              <a class="dropdown-item" href="{{ url('/default-device'.'/'.$device->device_id.'/'.$device->device_token) }}">{{ $device->device_name }}</a>
+          @endforeach
+      </div>
+  </div>
+  
+    
     @endif   
 </span>
 </div>
