@@ -194,4 +194,4 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin/test-api', [adminController::class, 'test_api']);
 });
 
-Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification']);
+Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);
