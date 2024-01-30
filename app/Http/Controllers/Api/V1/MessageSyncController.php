@@ -28,7 +28,7 @@ class MessageSyncController extends Controller
                 'data' => (object)[],
             ], 422);
         }
-        $data = $request->only(['device_id', 'inbox']);
+        $data = $request->only(['device_id', 'inbox','device_token']);
 
         // $user = clients::where('client_id', session('user_id'))->first();
         $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
@@ -102,7 +102,7 @@ class MessageSyncController extends Controller
             ], 422);
         }
 
-        $data = $request->only(['device_id', 'inbox', 'json_file']);
+        $data = $request->only(['device_id', 'inbox', 'json_file','device_token']);
 
         $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
         if ($user == null) {
