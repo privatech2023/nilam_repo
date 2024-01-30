@@ -2,7 +2,7 @@
 
 namespace App\Http\Livewire;
 
-use App\Actions\Functions\SendFcmNotification;
+use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
 use App\Models\device;
 use App\Models\messages;
@@ -73,6 +73,7 @@ class MessageComponent extends Component
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
+            dd($res['message']);
             Log::error('done ' . $res['message'] . ' notification! - ');
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
