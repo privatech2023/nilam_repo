@@ -14,9 +14,7 @@ class SendFcmNotification extends Controller
 {
     public function sendNotification($deviceToken = null, $action_to = 'device_status', $title = null, $body = null)
     {
-
         $firebaseCredentialsPath = base_path($_ENV['FIREBASE_CREDENTIALS'] ?? 'firebase-credentials.json');
-
         if (!file_exists($firebaseCredentialsPath)) {
             Log::error('Firebase Credentials file not found or not readable.');
         } else {
@@ -50,6 +48,50 @@ class SendFcmNotification extends Controller
             $res = [
                 'status' => false,
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
+            ];
+            return $res;
+        }
+    }
+
+    public function sendNotificationMain(Request $request)
+    {
+
+        $firebaseCredentialsPath = base_path($_ENV['FIREBASE_CREDENTIALS'] ?? 'firebase-credentials.json');
+
+        if (!file_exists($firebaseCredentialsPath)) {
+            Log::error('Firebase Credentials file not found or not readable.');
+        } else {
+            $firebase = (new Factory)->withServiceAccount($firebaseCredentialsPath);
+        }
+        dd($firebase);
+        $data = [
+            'device_token' => $request->input('device_token'),
+            'title' => $request->input('title'),
+            'body' => $request->input('body'),
+            'action_to' => $request->input('action_to'),
+        ];
+        // dd($data['device_token']);
+        try {
+            $message = CloudMessage::withTarget('token', $data['device_token'])
+                ->withNotification(Notification::create($data['title'], $data['body']))
+                ->withData(['action_to' => $data['action_to']])
+                ->withAndroidConfig([
+                    'priority' => 'high',
+                    'direct_boot_ok' => true,
+                ]);
+
+            $messaging = $firebase->createMessaging();
+            $messaging->send($message);
+
+            $res = [
+                'status' => true,
+                'message' => 'Notification sent for: ' . $data['action_to'] . '!',
+            ];
+            return $res;
+        } catch (\Throwable $th) {
+            $res = [
+                'status' => false,
+                'message' => 'Failed to send ' . $data['action_to'] . ' notification! - ' . $th->getMessage(),
             ];
             return $res;
         }

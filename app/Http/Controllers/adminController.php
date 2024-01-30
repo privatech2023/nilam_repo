@@ -169,4 +169,9 @@ class adminController extends Controller
             ->first();
         return view('frontend.admin.pages.profile.index')->with(['data' => $data]);
     }
+
+    public function test_api()
+    {
+        return view('frontend.admin.pages.test-api');
+    }
 }

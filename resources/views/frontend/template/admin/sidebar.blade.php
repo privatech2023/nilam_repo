@@ -237,6 +237,15 @@
                   </p>
                 </a>
               </li>
+
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/admin/test-api')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Test Api
+                  </p>
+                </a>
+              </li>
               
             </ul>
           </nav>
