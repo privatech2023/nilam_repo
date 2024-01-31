@@ -68,7 +68,7 @@ route::post('login/reset-password', [LoginController::class, 'reset_password']);
 
 Route::group(['middleware' => 'client.auth'], function () {
     route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
-    route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages']);
+    route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
     route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
     route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 

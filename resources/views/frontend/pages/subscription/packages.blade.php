@@ -70,7 +70,7 @@
                                             </div>
                                         </div>
                                     @endforeach
-
+                                    <button type="button" id="activation_btn" class="btn btn-primary" style="width:100%;">I have an ctivation code</button>
                                 </div>
                             </div>
                         </div>
@@ -81,6 +81,47 @@
     </div>
 </div>
 </div>
+
+{{-- activation modal --}}
+<div class="modal fade" id="activation-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Activation Code</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ url('subscription/pay') }}" method="post">
+            @csrf
+            <input type="hidden" name="user_id" value="{{ session('user_id') }}"  />
+            <input type="hidden" name="package_id" value=""  />
+
+            <div class="card-body">
+                <div class="row">  
+                    <div class="col-10">
+                        <div class="form-group">
+                            <label for="name">Code Name *</label>
+                            <input type="text" class="form-control" name="code_name"
+                                placeholder="Activation Code" autocomplete="off" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+        </div>
+        <input type="hidden" class="form-control" name="total_amount" value="">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">SUBMIT</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+
+
 @if(session()->get('success'))
     <script type="text/javascript">
         toastr.success('{{session('success')}}')
@@ -91,4 +132,14 @@
         toastr.warning('{{session('error')}}')
     </script>
 @endif
+
+
+<script>
+    $(document).ready(function () {
+        $(document).on('click','#activation_btn', function () {
+            $('#activation-modal').modal('show');
+        });
+    });
+</script>
 @endsection
+
