@@ -17,6 +17,7 @@ class MessageSyncController extends Controller
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'inbox' => 'required|boolean',
+            'device_token' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -27,10 +28,11 @@ class MessageSyncController extends Controller
                 'data' => (object)[],
             ], 422);
         }
-        $data = $request->only(['device_id', 'inbox']);
+        $data = $request->only(['device_id', 'inbox', 'device_token']);
 
         // $user = clients::where('client_id', session('user_id'))->first();
-        $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->first();
+        $token = str_replace('Bearer ', '', $request->header('Authorization'));
+        $user = clients::where('auth_token', $token)->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
         $device_id = $data['device_id'] ?? $user->device_id;
         if ($user == null) {
             return response()->json([
@@ -101,9 +103,9 @@ class MessageSyncController extends Controller
             ], 422);
         }
 
-        $data = $request->only(['device_id', 'inbox', 'json_file']);
-
-        $user = clients::where('auth_token', $request->header('Authorization'))->where('device_id', $data['device_id'])->first();
+        $data = $request->only(['device_id', 'inbox', 'json_file', 'device_token']);
+        $token = str_replace('Bearer ', '', $request->header('Authorization'));
+        $user = clients::where('auth_token', $token)->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,

@@ -54,11 +54,9 @@ class subscriptionController extends Controller
     {
         try {
             if ($request->input('code_name') != "") {
-                // $code = activation_codes::where('code', $request->input('code_name'))->first();
                 $code = activation_codes::whereRaw('BINARY code = ?', [$request->input('code_name')])->first();
 
-                $package = packages::where('id', $request->input('package_id'))->first();
-                if ($code == null || $code->is_active == 0) {
+                if ($code == null && $request->input('package_id') != '') {
                     $packageModel = packages::all();
                     $data = array(
                         'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
@@ -66,31 +64,34 @@ class subscriptionController extends Controller
                     );
                     Session::flash('error', 'Invalid activation code');
                     return view('frontend.pages.subscription.purchase', $data);
+                } elseif ($code == null || $code->is_active == 0 && $request->input('package_id') == '') {
+                    Session::flash('error', 'Invalid activation code');
+                    return redirect()->route('/subscription/packages');
                 } else {
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
-                        return redirect()->route('home');
+                        return redirect()->route('/subscription/packages');
                     } elseif ($code->expiry_date < date('Y-m-d')) {
                         Session::flash('error', 'Activation code is expired');
-                        return redirect()->route('home');
+                        return redirect()->route('/subscription/packages');
                     }
                     $transaction = new transactions();
                     $transaction->txn_id = $this->generateTxnId();
                     $transaction->client_id = $request->input('user_id');
                     $transaction->txn_type = 'Activation_code';
                     $transaction->txn_mode = 'Activation_code';
-                    $transaction->net_amount = $request->input('total_amount');
+                    $transaction->net_amount = $code->net_amount;
                     $transaction->tax_amt = $code->tax;
-                    $transaction->paid_amt =  $request->input('total_amount');
-                    $transaction->plan_validity_days = $package->duration_in_days;
-                    $transaction->package_name = $package->name;
+                    $transaction->paid_amt =  $code->price;
+                    $transaction->plan_validity_days = $code->duration_in_days;
+                    $transaction->package_name = null;
                     $transaction->activation_code = $request->input('code_name');
                     $transaction->status = 2;
-                    $transaction->price = $request->input('total_amount');
+                    $transaction->price = $code->price;
                     $transaction->created_by = session()->get('user_id');
                     $transaction_id = $transaction->txn_id;
                     $transaction->save();
-                    $daysToAdd = $package->duration_in_days;
+                    $daysToAdd = $code->duration_in_days;
 
 
                     $lastSubscription = Subscriptions::where('client_id', $request->input('user_id'))
@@ -102,7 +103,7 @@ class subscriptionController extends Controller
                         $lastSubscription->started_at = now();
                         $lastSubscription->ends_on = now()->addDays($daysToAdd);
                         $lastSubscription->status = 1;
-                        $lastSubscription->validity_days = $package->duration_in_days;
+                        $lastSubscription->validity_days = $code->duration_in_days;
                         $lastSubscription->save();
                     } else {
 
@@ -118,7 +119,7 @@ class subscriptionController extends Controller
                         $subscription->started_at = date('Y-m-d', strtotime($update_date->ends_on));
                         $subscription->status = 1;
                         $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
-                        $subscription->validity_days = $package->duration_in_days;
+                        $subscription->validity_days = $code->duration_in_days;
                         $subscription->save();
                     }
 

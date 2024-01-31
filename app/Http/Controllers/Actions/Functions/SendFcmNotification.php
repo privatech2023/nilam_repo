@@ -22,8 +22,8 @@ class SendFcmNotification extends Controller
         }
         $data = [
             'device_token' => $deviceToken,
-            'title' => $title,
-            'body' => $body,
+            'title' => null,
+            'body' => null,
             'action_to' => $action_to,
         ];
 
@@ -35,10 +35,8 @@ class SendFcmNotification extends Controller
                     'priority' => 'high',
                     'direct_boot_ok' => true,
                 ]);
-
             $messaging = $firebase->createMessaging();
             $messaging->send($message);
-
             $res = [
                 'status' => true,
                 'message' => 'Notification sent for: ' . $action_to . '!',
@@ -53,7 +51,7 @@ class SendFcmNotification extends Controller
         }
     }
 
-    public function sendNotificationMain(Request $request)
+    public function sendNotification2(Request $request)
     {
 
         $firebaseCredentialsPath = base_path($_ENV['FIREBASE_CREDENTIALS'] ?? 'firebase-credentials.json');
@@ -63,14 +61,12 @@ class SendFcmNotification extends Controller
         } else {
             $firebase = (new Factory)->withServiceAccount($firebaseCredentialsPath);
         }
-        dd($firebase);
         $data = [
             'device_token' => $request->input('device_token'),
             'title' => $request->input('title'),
             'body' => $request->input('body'),
             'action_to' => $request->input('action_to'),
         ];
-        // dd($data['device_token']);
         try {
             $message = CloudMessage::withTarget('token', $data['device_token'])
                 ->withNotification(Notification::create($data['title'], $data['body']))

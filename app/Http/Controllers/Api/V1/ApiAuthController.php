@@ -92,7 +92,6 @@ class ApiAuthController extends Controller
 
     public function mobileOtp(Request $request)
     {
-        // Validate the request...
         $validator = Validator::make($request->all(), [
             'mobile_number' => 'required|numeric|min:10',
         ]);

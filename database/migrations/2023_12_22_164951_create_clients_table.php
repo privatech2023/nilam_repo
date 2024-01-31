@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('device_name')->nullable();
             $table->string('device_id')->nullable();
             $table->string('device_token')->nullable();
-            $table->string('auth_token')->nullable();
+            $table->text('auth_token')->nullable();
             $table->rememberToken();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
