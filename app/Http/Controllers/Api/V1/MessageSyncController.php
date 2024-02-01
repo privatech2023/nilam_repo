@@ -32,7 +32,8 @@ class MessageSyncController extends Controller
 
         // $user = clients::where('client_id', session('user_id'))->first();
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user = clients::where('auth_token', $token)->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
+        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
+
         $device_id = $data['device_id'] ?? $user->device_id;
         if ($user == null) {
             return response()->json([
@@ -105,7 +106,7 @@ class MessageSyncController extends Controller
 
         $data = $request->only(['device_id', 'inbox', 'json_file', 'device_token']);
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user = clients::where('auth_token', $token)->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
+        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -159,10 +160,8 @@ class MessageSyncController extends Controller
                 DB::table('messages')->insert($chunk);
             }
 
-            // Delete the file
             unlink(storage_path('app/' . $json_file_path));
         } catch (\Exception $e) {
-            // Delete the file
             unlink(storage_path('app/' . $json_file_path));
 
             $errors = (object)[];

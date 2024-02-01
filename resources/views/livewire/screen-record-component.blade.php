@@ -20,7 +20,6 @@
         </nav>
         <nav class="navbar navbar-light bg-light">
               <button class="btn btn-outline-success" type="button">Record Screen</button>
-              
         </nav>
         <div style=" margin-top: 20px; margin-left: 20px;" id="screen">
             <div>

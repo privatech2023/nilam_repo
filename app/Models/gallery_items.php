@@ -5,11 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class default_client_creds extends Model
+class gallery_items extends Model
 {
     use HasFactory;
+
     public $fillable = [
+        'device_gallery_id',
+        'device_id',
         'user_id',
-        'password'
+        'media_type',
+        'media_url'
     ];
 }

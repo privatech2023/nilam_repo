@@ -78,7 +78,7 @@
 {{-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'> --}}
 
     <style>
-        body {
+        /* body {
     margin: 0;
     font-family: "Source Sans Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
     font-size: 1rem;
@@ -87,7 +87,7 @@
     color: #212529;
     text-align: left;
     background-color: #fff;
-}
+} */
     /* Center the loader */
     .loader_bg {
         position: fixed;

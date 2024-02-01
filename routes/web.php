@@ -26,6 +26,7 @@ use App\Http\Livewire\CameraComponent;
 use App\Http\Livewire\ContactsComponent;
 use App\Http\Livewire\FilemanagerComponent;
 use App\Http\Livewire\GalleryComponent;
+use App\Http\Livewire\LocatePhone;
 use App\Http\Livewire\LostMessagesComponent;
 use App\Http\Livewire\MessageComponent;
 use App\Http\Livewire\MessagePopulate;
@@ -99,6 +100,7 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::get('/gallery/{userId}', GalleryComponent::class);
     route::get('/filemanager/{userId}', FilemanagerComponent::class);
     route::get('/lost-messages/{userId}', LostMessagesComponent::class);
+    route::get('/locate-phone/{userId}', LocatePhone::class);
 
     Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
 
@@ -172,9 +174,11 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/token/update', [issueTokenController::class, 'token_update']);
     route::post('/admin/delete/token', [issueTokenController::class, 'token_delete']);
 
+    route::post('/admin/user-creds/update', [settingsController::class, 'user_creds_update']);
 
 
-    Route::match(['get', 'post'], '/admin/settings', [settingsController::class, 'index']);
+
+    Route::match(['get', 'post'], '/admin/settings', [settingsController::class, 'index'])->name('settings_admin');
     route::post('/admin/settings/client', [settingsController::class, 'client_creds']);
 
     Route::get('/admin/transactions', [transactionsController::class, 'index'])->name('/admin/transactions');
