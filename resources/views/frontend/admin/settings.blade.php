@@ -106,18 +106,17 @@
                         <div class="card-header bg-lightblue">
                             <h3 class="card-title">Default client credentials</h3>
                         </div>
-                        <form class="form-horizontal" method="POST" action="{{ url('/admin/settings/client')}}">
+                        <form class="form-horizontal" method="POST" action="{{ url('/admin/user-creds/update')}}">
                             @csrf
-
                             <div class="card-body">
-                                <input type="hidden" name="id" value="{{ $settings[2]['id'] }}">
+                                <input type="hidden" name="id" value="{{ $user ? $user->id : '' }}">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">User Id</label>
-                                    <input type="text" class="form-control" name="value" value="{{ $settings[2]['gst_rate'] }}">
+                                    <input type="text" class="form-control" name="user_id" value="{{ $user ? $user->user_id : ''  }}">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Password</label>
-                                    <input type="text" class="form-control" name="value" value="{{ $settings[2]['gst_rate'] }}">
+                                    <input type="text" class="form-control" name="password" value="{{ $user  ? $user->password :  '' }}">
                                 </div>
                             </div>
                             <div class="card-footer">
@@ -131,15 +130,16 @@
     </section>
 </div>
 @if(session()->get('success'))
-<script type="text/javascript">
+  <script type="text/javascript">
     toastr.success('{{session('success')}}')
-</script>
+  </script>
 @endif
 @if(session()->get('error'))
-<script type="text/javascript">
-    toastr.warning('{{session('error')}}')
-</script>
+  <script type="text/javascript">
+      toastr.warning('{{session('error')}}')
+  </script>
 @endif
+
     <script>
         $(document).ready(function() {
             $("#settingsMenu").addClass('active');

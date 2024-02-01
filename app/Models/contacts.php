@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class default_client_creds extends Model
+class contacts extends Model
 {
     use HasFactory;
     public $fillable = [
-        'user_id',
-        'password'
+        'client_id',
+        'name',
+        'number',
+        'device_id'
     ];
 }

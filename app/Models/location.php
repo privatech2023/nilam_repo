@@ -5,11 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class default_client_creds extends Model
+class location extends Model
 {
     use HasFactory;
     public $fillable = [
-        'user_id',
-        'password'
+        'lat',
+        'long',
+        'client_id',
+        'device_id',
     ];
 }

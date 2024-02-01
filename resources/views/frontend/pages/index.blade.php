@@ -67,11 +67,20 @@
                                                     title="CAMERA" /></a>
                                             </div>
                                             @endif
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" @if(!session('user_name')) data-toggle="modal" data-target="#modalLoginPrompt" @endif>
+
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-location.svg') }}"
                                                     title="LOCATION" />
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
+                                                <a href="{{ url('/locate-phone'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-location.svg') }}"
+                                                    title="LOCATION" /></a>
+                                            </div>
+                                            @endif
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt" >

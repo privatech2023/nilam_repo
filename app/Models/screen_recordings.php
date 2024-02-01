@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class default_client_creds extends Model
+class screen_recordings extends Model
 {
     use HasFactory;
     public $fillable = [
         'user_id',
-        'password'
+        'device_id',
+        'filename'
     ];
 }

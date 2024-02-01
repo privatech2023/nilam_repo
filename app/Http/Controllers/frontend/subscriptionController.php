@@ -44,12 +44,8 @@ class subscriptionController extends Controller
             'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
             'package' => $packageModel->where('id', $id)->first(),
         );
-
         return view('frontend.pages.subscription.purchase', $data);
     }
-
-
-
     public function checkout_activation_code(Request $request)
     {
         try {
@@ -93,7 +89,6 @@ class subscriptionController extends Controller
                     $transaction->save();
                     $daysToAdd = $code->duration_in_days;
 
-
                     $lastSubscription = Subscriptions::where('client_id', $request->input('user_id'))
                         ->whereNull('validity_days')
                         ->latest()
@@ -106,7 +101,6 @@ class subscriptionController extends Controller
                         $lastSubscription->validity_days = $code->duration_in_days;
                         $lastSubscription->save();
                     } else {
-
                         $update_date = Subscriptions::where('client_id', $request->input('user_id'))
                             ->select('ends_on')
                             ->orderByDesc('ends_on')
