@@ -26,28 +26,15 @@
             </div>
             <div id="contacts">
                 <ul>
-                    <li class="contact" wire:click="populateProfile('{{ 23 }}')">
+                    @foreach($contactsList as $key => $value)
+                        <li class="contact" wire:click="populateContacts('{{ $key }}')" >
                         <div class="wrap">
-                            <span class="contact-status"></span>
-                            <img src="#" alt="" />
-                            <div class="meta">
-                                <p class="name">ABC</p>
-                                <p class="preview">ABSAJ AJH ASJ</p>
-                            </div>
+                        <div class="meta">
+                        <p class="name">{{ $contactsList[$key][0]['name'] }}</p>
                         </div>
-                    </li>
-                    <li class="contact" wire:click="populateProfile('{{ 23 }}')">
-                        <div class="wrap">
-                            <span class="contact-status busy"></span>
-                            <img src="#" alt="" />
-                            <div class="meta">
-                                <p class="name">XXXX</p>
-                                <p class="preview">Wrong. You take the gun, or you pull out a bigger one. </p>
-                            </div>
                         </div>
-                    </li>
-                    
-                    
+                        </li>
+                    @endforeach  
                 </ul>
             </div>
         </div>
@@ -58,39 +45,16 @@
                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
                       </svg>abc</p>  
                 </div>             
-                
-                
+                <div class="text-right" style="margin-right: 8px;">
+                    <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="SyncContacts">Sync contacts</button>
+                </div>
             </div>
             <div class="messages">
-                @if($profile)
-                <div class="card card-primary card-outline">
-                    <div class="card-body box-profile">
-                      <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle"
-                            src="{{url('assets/common/img/default_user.png')}}"
-                            alt="User profile picture">
-                      </div>
-      
-                      <h3 class="profile-username text-center">abc</h3>
-      
-      
-                      <p class="text-muted text-center"></p>
-                      <p class="text-muted text-center"></p>
-      
-                      <ul class="list-group list-group-unbordered mb-3">
-                          <li class="list-group-item">
-                              <b><i class="fa-solid fa-mobile-screen-button"></i></b><span class="text-md">Mobile number</span> <span class="float-right">7364836283</span>
-                          </li>
-                          <li class="list-group-item">
-                              <b><i class="fa-solid fa-envelope"></i></b><span class="text-md">Email</span> <span class="float-right">abc@abc.com</span>
-                          </li>
-                          <li class="list-group-item">
-                              <b><i class="fa-solid fa-receipt"></i></b><span class="text-md">Address</span> <span class="float-right">Address</span>
-                          </li>
-                      </ul>                
-                    </div>                    <!-- /.card-body -->
-                  </div>
-                  @endif
+                {{-- @if($profile) --}}
+                @if($selectedKey)
+                    @livewire('contacts-populate', ['key' => $selectedKey], key($selectedKey))
+                @endif
+                  {{-- @endif --}}
             </div>
         </div>
     </div>

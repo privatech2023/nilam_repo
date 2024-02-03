@@ -202,7 +202,6 @@
                                 <input type="number" class="form-control" name="validity_days" value="#" />
                             </div>
                         </div>
-                    
                         <div class="form-group row">
                             <label for="inputName2" class="col-sm-2 col-form-label">Status</label>
                             <div class="col-sm-10">
@@ -213,22 +212,16 @@
                                 </select>
                             </div>
                         </div>
-                    
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
                                 <button type="submit" class="btn btn-danger">Update</button>
                             </div>
                         </div>
                     </form>
-                    
-
-
                   </div>
 
 
                   <div class="tab-pane" id="password">
-
-
                     <form action="{{ url('admin/clients/updatePassword') }}" method="post" class="form-horizontal">
                         @csrf
                         <input type="hidden" name="row_id" value="{{ $client_id }}">
@@ -244,18 +237,13 @@
                                 <input type="text" class="form-control" name="confirm_password" />
                             </div>
                         </div>
-                    
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
                                 <button type="submit" class="btn btn-danger">Update</button>
                             </div>
                         </div>
                     </form>                    
-
-
                   </div>
-
-
                   <!-- /.tab-pane -->
                 </div>
                 <!-- /.tab-content -->
