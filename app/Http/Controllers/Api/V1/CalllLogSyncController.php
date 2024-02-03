@@ -39,7 +39,7 @@ class CalllLogSyncController extends Controller
                 'data' => (object)[],
             ]);
         }
-        $user = clients::where('device_token', $data['device_token'])->first();
+        $user = clients::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -67,7 +67,7 @@ class CalllLogSyncController extends Controller
             $callLogsToInsert = [];
             $now = now();
 
-            $user_id = auth()->user()->id;
+            $user_id = $user->client_id;
 
             foreach ($callLogs as $callLog) {
                 $callLog['user_id'] = $user->client_id;
@@ -80,7 +80,6 @@ class CalllLogSyncController extends Controller
                 $callLog['updated_at'] = $now;
                 $callLogsToInsert[] = $callLog;
             }
-
             foreach (array_chunk($callLogsToInsert, 1000) as $chunk) {
                 DB::table('call_logs')->insert($chunk);
             }

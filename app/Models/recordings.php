@@ -12,6 +12,6 @@ class recordings extends Model
     public $fillable = [
         'user_id',
         'device_id',
-        'file_name',
+        'filename',
     ];
 }

@@ -15,8 +15,9 @@ class UploadRecordingController extends Controller
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'recording' => 'required|file|mimes:mp3,wav,ogg,aac|max:2048',
-            'device_token' => 'required'
+            'device_token' => 'required',
         ]);
+
 
         if ($validator->fails()) {
             return response()->json([
@@ -26,7 +27,6 @@ class UploadRecordingController extends Controller
                 'data' => (object)[],
             ], 422);
         }
-
         $data = $request->only(['device_id', 'recording', 'device_token']);
 
         // Get user
@@ -41,8 +41,7 @@ class UploadRecordingController extends Controller
                 'data' => (object)[],
             ]);
         }
-        $user = clients::where('device_token', $data['device_token'])->first();
-
+        $user = clients::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -62,10 +61,10 @@ class UploadRecordingController extends Controller
 
             // Save to database
             $record = new recordings();
-            $record->recordings()->create([
+            $record->create([
                 'user_id' => $user->client_id,
                 'filename' => $filename,
-                'device_id' => $user->device_id,
+                'device_id' => $data['device_id'],
             ]);
         } catch (\Throwable $th) {
             $errors = (object)[];

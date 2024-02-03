@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\GalleryController;
 use App\Http\Controllers\Api\v1\MessageSyncController;
 use App\Http\Controllers\Api\V1\SyncController;
 use App\Http\Controllers\Api\V1\UpdateLocationController;
+use App\Http\Controllers\Api\V1\UploadPhotoController;
 use App\Http\Controllers\Api\V1\UploadRecordingController;
 use App\Http\Controllers\Api\V1\UploadScreenRecordingController;
 use App\Http\Controllers\Api\V1\UploadVideoController;
@@ -57,3 +58,5 @@ Route::post('/v1/upload-call-logs', [CalllLogSyncController::class, 'uploadCallL
 Route::post('/v1/gallery/photo', [GalleryController::class, 'listPhotos'])->name('list-gallery-photos');
 
 Route::post('/v1/gallery/photo-upload', [GalleryController::class, 'uploadPhoto'])->name('upload-gallery-photo');
+
+Route::post('/v1/upload-photo', [UploadPhotoController::class, 'uploadPhoto'])->name('upload.photo');

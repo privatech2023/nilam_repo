@@ -130,6 +130,6 @@ class clientController extends Controller
     {
         $client = clients::where('client_id', session('user_id'))->first();
         $client->update(['device_id' => $id, 'device_token' => $token]);
-        return redirect()->route('messages', ['userId' => session('user_id')]);
+        return redirect()->back()->with(['userId' => session('user_id')]);
     }
 }

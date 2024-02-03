@@ -22,7 +22,7 @@ class MessageComponent extends Component
     public function mount($userId)
     {
         if ($userId == null) {
-            $userId = session('user_id');
+            $this->userId = session('user_id');
         }
         $this->userId = $userId;
         $device = clients::where('client_id', $this->userId)->first();
@@ -73,8 +73,7 @@ class MessageComponent extends Component
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-            dd($res['message']);
-            Log::error('done ' . $res['message'] . ' notification! - ');
+
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
