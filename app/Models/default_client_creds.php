@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class default_client_creds extends Model
 {
     use HasFactory;
+    public $fillable = [
+        'user_id',
+        'password'
+    ];
 }

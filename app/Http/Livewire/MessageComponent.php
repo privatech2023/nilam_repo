@@ -22,7 +22,7 @@ class MessageComponent extends Component
     public function mount($userId)
     {
         if ($userId == null) {
-            $userId = session('user_id');
+            $this->userId = session('user_id');
         }
         $this->userId = $userId;
         $device = clients::where('client_id', $this->userId)->first();
@@ -65,7 +65,7 @@ class MessageComponent extends Component
         }
 
         $data = [
-            'device_token' => 'dzWryxeLSdqLHQ4a-WrpI5:APA91bGZI1G6Nf8jjzfu2kgBaJ7O4XCL2yMj1wJmcdLA3z7VqYN_z3elBzwp2MSxaNP1OCKVQm_BCX2tycLRx7Ahv5kiOU9wdk5wxBKi4ReCCww7ykfHoRgazx5udppcWler6jQNAPyq',
+            'device_token' => $client->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,

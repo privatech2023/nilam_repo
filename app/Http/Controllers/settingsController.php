@@ -7,6 +7,8 @@ use App\Models\settings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class settingsController extends Controller
 {
@@ -14,35 +16,32 @@ class settingsController extends Controller
     {
         try {
             $data = [];
-
             $model = new settings();
-
             $this->postChecker();
 
             $settingsData = $model->get();
 
             if (!is_null($settingsData)) {
                 $store = [];
-
                 foreach ($settingsData as $valueSettings) {
                     if (!array_key_exists($valueSettings->key, $data)) {
                         $data['id'] = $valueSettings->id;
                         $data[$valueSettings->key] = $valueSettings->value;
-
                         $store[] = $data;
                     }
                 }
                 unset($settingsData);
             }
-            $client = default_client_creds::first();
-            $data = ['settings' => $store,];
+            $user = default_client_creds::first();
+            $data = ['settings' => $store, 'user' => $user];
 
             return view('frontend.admin.settings', $data);
         } catch (\Exception $e) {
             Log::error('error: ' . $e->getMessage());
             $data = settings::all();
+            $user = default_client_creds::first();
             session()->flash('error', $e->getMessage());
-            return view('frontend.admin.settings', $data);
+            return view('frontend.admin.settings', $data)->with(['data' => $data, 'user' => $user]);
         }
     }
 
@@ -58,8 +57,29 @@ class settingsController extends Controller
         }
     }
 
-
-    public function client_creds(Request $request)
+    public function user_creds_update(Request $request)
     {
+        $creds = default_client_creds::first();
+        if ($creds == null) {
+            $creds = new default_client_creds();
+            $validatedData =  Validator::make($request->all(), [
+                'user_id' => 'required',
+                'password' => 'required|string',
+            ]);
+            if ($validatedData->fails()) {
+                Session::flash('error', $validatedData->errors());
+                return redirect()->route('settings_admin');
+            }
+            $creds->user_id = $request->input('user_id');
+            $creds->password = $request->input('password');
+            $creds->save();
+        } else {
+            $creds->update([
+                'user_id' => $request->input('user_id'),
+                'password' => $request->input('password')
+            ]);
+            Session::flash('success', 'Client creds updated successfully');
+            return redirect()->route('settings_admin');
+        }
     }
 }
