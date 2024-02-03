@@ -44,6 +44,7 @@ class subscriptionController extends Controller
             'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
             'package' => $packageModel->where('id', $id)->first(),
         );
+
         return view('frontend.pages.subscription.purchase', $data);
     }
     public function checkout_activation_code(Request $request)
