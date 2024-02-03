@@ -43,7 +43,7 @@ class GalleryController extends Controller
             ]);
         }
         // Get user
-        $user = clients::where('device_token', $data['device_token'])->first();
+        $user = clients::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])->first();
 
         if ($user == null) {
             return response()->json([
@@ -103,7 +103,7 @@ class GalleryController extends Controller
             'photo_id' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:25000',
             'overwrite' => 'nullable|boolean',
-            'device_token', 'required'
+            'device_token' => 'required'
         ]);
 
         if ($validator->fails()) {

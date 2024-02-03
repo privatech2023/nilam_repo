@@ -4,16 +4,35 @@ namespace App\Http\Livewire;
 
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
+use App\Models\contacts;
 use App\Models\device;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class ContactsComponent extends Component
 {
-    public $user;
+    public $userId;
+    public $contactsList = [];
+    public $selectedKey;
 
-    public function mount($user)
+    public function mount($userId)
     {
-        $this->user = $user;
+        $this->userId = $userId;
+        $device = clients::where('client_id', $this->userId)->first();
+        $contacts = contacts::where('device_id', $device->device_id)->get();
+        foreach ($contacts as $ct) {
+            if (isset($this->messageList[$ct->number])) {
+                $this->contactsList[$ct->number][] = [
+                    'name' => $ct->name,
+                ];
+            } else {
+                $this->contactsList[$ct->number] = [
+                    [
+                        'name' => $ct->name,
+                    ]
+                ];
+            }
+        }
     }
     public function sendNotification($action_to)
     {
@@ -35,6 +54,7 @@ class ContactsComponent extends Component
 
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
+
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
@@ -56,5 +76,10 @@ class ContactsComponent extends Component
     {
         $devices = device::where('client_id', $this->userId)->select('device_id', 'device_name')->get();
         return view('livewire.contacts-component', ['devices' => $devices]);
+    }
+
+    public function populateContacts($key)
+    {
+        $this->selectedKey = $key;
     }
 }
