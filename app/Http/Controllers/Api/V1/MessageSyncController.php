@@ -77,7 +77,7 @@ class MessageSyncController extends Controller
                 'number' => $last_message->number,
                 'date' => $last_message->date,
                 'body' => $last_message->body,
-                'is_inbox' => $last_message->is_inbox
+                'is_inbox' => $last_message->is_inbox == 1 ? true : false
             ],
         ], 200);
     }
