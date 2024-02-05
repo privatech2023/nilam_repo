@@ -111,10 +111,6 @@
                             <div class="card-body">
                                 <input type="hidden" name="id" value="{{ $user ? $user->id : '' }}">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">User Id</label>
-                                    <input type="text" class="form-control" name="user_id" value="{{ $user ? $user->user_id : ''  }}">
-                                </div>
-                                <div class="form-group">
                                     <label for="exampleInputEmail1">Password</label>
                                     <input type="text" class="form-control" name="password" value="{{ $user  ? $user->password :  '' }}">
                                 </div>

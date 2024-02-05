@@ -69,11 +69,12 @@
     color: #f5f5f5;
     overflow: hidden;
     position: relative;
+    z-index: 1;
   }
   @media screen and (max-width: 735px) {
     #frame #sidepanel {
-      width: 90px;
-      min-width: 70px;
+      width: 100%;
+      /* min-width: 70px; */
     }
   }
   #frame #sidepanel #profile {
@@ -152,11 +153,7 @@
     float: left;
     margin-left: 15px;
   }
-  @media screen and (max-width: 735px) {
-    #frame #sidepanel #profile .wrap p {
-      display: none;
-    }
-  }
+
   #frame #sidepanel #profile .wrap i.expand-button {
     float: right;
     margin-top: 23px;
@@ -445,9 +442,9 @@
     padding: 5px 0 0 0;
   }
   @media screen and (max-width: 735px) {
-    #frame #sidepanel #contacts ul li.contact .wrap .meta {
+    /* #frame #sidepanel #contacts ul li.contact .wrap .meta {
       display: none;
-    }
+    } */
   }
   #frame #sidepanel #contacts ul li.contact .wrap .meta .name {
     font-weight: 600;
@@ -1191,28 +1188,33 @@ audio::-webkit-media-controls-play-button:hover {
   right: 20px;
 }
 }
-    /* **********************************
-Reset CSS
-************************************** */
 
 
+@media screen and (max-width: 1080px){
+  #frame{
+    height: 80vh;
+    font-size: 16px;
+    border-radius: 2px;
+  }
+  .content{
+    display:none;
+  }
+
+  #content{
+    display: block;
+    margin: auto;
+    float: center;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    z-index: 2;
+  }
+}
   </style>
   @livewireScripts
   @livewireStyles
 @endsection
 @section('main-container')
 {{ $slot }}
-<script>
-    jQuery(document).ready(function() {
-        $(".chat-list a").click(function() {
-          console.log('hey');
-            $(".chatbox").addClass('showbox');
-            return false;
-        });
-
-        $(".chat-icon").click(function() {
-            $(".chatbox").removeClass('showbox');
-        });
-    });
-</script>
 @endsection
