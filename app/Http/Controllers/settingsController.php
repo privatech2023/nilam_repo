@@ -63,19 +63,16 @@ class settingsController extends Controller
         if ($creds == null) {
             $creds = new default_client_creds();
             $validatedData =  Validator::make($request->all(), [
-                'user_id' => 'required',
                 'password' => 'required|string',
             ]);
             if ($validatedData->fails()) {
                 Session::flash('error', $validatedData->errors());
                 return redirect()->route('settings_admin');
             }
-            $creds->user_id = $request->input('user_id');
             $creds->password = $request->input('password');
             $creds->save();
         } else {
             $creds->update([
-                'user_id' => $request->input('user_id'),
                 'password' => $request->input('password')
             ]);
             Session::flash('success', 'Client creds updated successfully');
