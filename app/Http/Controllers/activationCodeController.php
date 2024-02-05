@@ -16,7 +16,6 @@ class activationCodeController extends Controller
         $data['gst_rate'] = $frontend->getSettings('gst_rate');
         return view('frontend.admin.pages.activation_codes.all_activation_codes', $data);
     }
-
     public function ajaxCallAllCodes(Request $request)
     {
         $params['draw'] = $request->input('draw');

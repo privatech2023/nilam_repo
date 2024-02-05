@@ -126,7 +126,7 @@
                   </tbody>
                  </table>
 
-   
+  
                 </div>
                   <!-- /.tab-pane -->
 
@@ -169,7 +169,11 @@
 
                      <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Update</button>
+                          @if(in_array('updateClient', session('user_permissions')))
+                      <button type="submit" class="btn btn-danger">Update</button>
+                          @else
+                      <button type="button" class="btn btn-danger" disabled>Update</button>
+                          @endif
                         </div>
                       </div>
                     </form>
@@ -214,7 +218,11 @@
                         </div>
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
+                              @if(in_array('updateClient', session('user_permissions')))
                                 <button type="submit" class="btn btn-danger">Update</button>
+                              @else
+                              <button type="submit" class="btn btn-danger" disabled>Update</button>
+                              @endif
                             </div>
                         </div>
                     </form>
@@ -239,7 +247,11 @@
                         </div>
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
-                                <button type="submit" class="btn btn-danger">Update</button>
+                              @if(in_array('updateClient', session('user_permissions')))
+                              <button type="submit" class="btn btn-danger">Update</button>
+                            @else
+                            <button type="submit" class="btn btn-danger" disabled>Update</button>
+                            @endif
                             </div>
                         </div>
                     </form>                    

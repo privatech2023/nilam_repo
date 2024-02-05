@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                                 @if ($errors->has('error'))
-                                    <span class="text-danger">{{ $errors->first('error')  }}</span>
+                                    <span class="text-danger">{{ $errors->first('error') }}</span>
                                 @endif
                                 <div class="input-group mb-3 mt-3">
                                     <input type="password" name="password" class="form-control" placeholder="Password">

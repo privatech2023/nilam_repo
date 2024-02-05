@@ -9,6 +9,7 @@ use App\Models\packages;
 use App\Models\roles;
 use App\Models\transactions;
 use App\Models\User;
+use App\Models\user_groups;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,6 +89,12 @@ class adminController extends Controller
             if ($user && password_verify($credentials['password'], $user->password)) {
                 $request->session()->put('admin_id', $user->id);
                 $request->session()->put('admin_name', $user->name);
+
+                $group = user_groups::where('u_id', $user->id)->first();
+                $permissions = groups::where('id', $group->g_id)->first();
+                $unserializedPermissions = unserialize($permissions->permissions);
+                session(['user_permissions' => $unserializedPermissions]);
+
                 return redirect('/admin')->with('success', 'Login successful');
             } else {
                 Log::info('Login failed for email: ' . $credentials['email']);
