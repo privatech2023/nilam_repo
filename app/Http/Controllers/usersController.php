@@ -94,6 +94,15 @@ class usersController extends Controller
             $user->status = $request->input('status');
             $user->user_type = $user_type;
             $user->created_by = $logged_user;
+            if ($request->input('password') != '') {
+                if ($request->input('password') != $request->input('passconf')) {
+                    session()->flash('error', 'Confirm password mismatch');
+                    $data = User::where('name', '!=', 'admin')->get();
+                    return view('frontend.admin.pages.users.index')->with(['data' => $data, 'success' => 'User updated successfully']);
+                } else {
+                    $user->password = bcrypt($request->input('password'));
+                }
+            }
             // $user->password = bcrypt($request->input('password'));
             $user->save();
 

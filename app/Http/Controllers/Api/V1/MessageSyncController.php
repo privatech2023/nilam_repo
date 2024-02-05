@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\clients;
@@ -72,14 +72,12 @@ class MessageSyncController extends Controller
             'message' => 'Last message retrieved',
             'errors' => (object)[],
             'data' => (object)[
-                'last_message' => (object)[
-                    'message_id' => $last_message->message_id,
-                    'device_id' => $last_message->device_id,
-                    'number' => $last_message->number,
-                    'date' => $last_message->date,
-                    'body' => $last_message->body,
-                    'is_inbox' => $last_message->is_inbox,
-                ]
+                'last_message_id' => $last_message->message_id,
+                'device_id' => $last_message->device_id,
+                'number' => $last_message->number,
+                'date' => $last_message->date,
+                'body' => $last_message->body,
+                'is_inbox' => $last_message->is_inbox
             ],
         ], 200);
     }

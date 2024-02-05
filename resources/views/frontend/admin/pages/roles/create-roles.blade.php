@@ -66,7 +66,6 @@
                           <td> <input type="checkbox" name="permission[]" id="permission" value="updateClient"> </td>  
                           <td> <input type="checkbox" name="permission[]" id="permission" value="viewClient"> </td>  
                           <td> <input type="checkbox" name="permission[]" id="permission" value="deleteClient"> </td>
-                        
                         </tr>           
                           
                       <tr>
@@ -83,54 +82,57 @@
                           <td> <input type="checkbox" name="permission[]" id="permission" value="updatePackage"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="viewPackage"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="deletePackage"></td>
-                        </tr>   
-                        
-                                       
+                        </tr>                 
                       <tr>
                           <td>Transactions</td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="createTransaction"></td>
                           <td> <input type="checkbox" name="permission[]" id="permission" value="updateTransaction"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="viewTransaction"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="deleteTransaction"></td>
-                      </tr>
-                                                            
-                      <tr>
-                          
+                      </tr>                                      
+                      <tr>     
                       <td>Reports</td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="createReport"></td>
                           <td> <input type="checkbox" name="permission[]" id="permission" value="updateReport"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="viewReport"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="deleteReport"></td>
                       </tr>
-                                                   
                         <tr>
                           <td>Users</td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="createUser"></td>
                           <td> <input type="checkbox" name="permission[]" id="permission" value="updateUser"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="viewUser"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="deleteUser"></td>
-                        </tr>
-                          
-                          
+                        </tr>    
                       <tr>
                           <td>Roles</td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="createRole"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="updateRole"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="viewRole"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="deleteRole"></td>
-                      </tr>  
-                   
-                          
+                      </tr>                          
                       <tr>
                           <td>Settings</td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="createSetting"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="updateSetting"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="viewSetting"></td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="deleteSetting"></td>
-                        </tr>    
+                      </tr>                     
+                      <tr>
+                        <td>Token</td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="createToken"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="updateToken"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="viewToken"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="deleteToken"></td>
+                      </tr>    
                           
-                      <tr>                              
-          
+                      <tr>
+                        <td>Token to IT department</td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="createITToken"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="updateITToken"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="viewITToken"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="deleteITToken"></td>
+                      </tr>                              
                       </tbody>
                     </table>
                     </div>
