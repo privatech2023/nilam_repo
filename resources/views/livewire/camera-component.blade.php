@@ -14,24 +14,15 @@
 <div class="content-wrapper remove-background">
     <div id="frame">
         <nav class="navbar navbar-light bg-light">
-              <button class="btn btn-primary" type="button" wire:click="takePicture">Take picture</button>
+              <button class="btn btn-outline-success" type="button" wire:click="takePicture">Take picture</button>
         </nav>
-
-        {{-- @foreach ($images as $image) --}}
-        {{-- <div style=" margin-top: 20px; margin-left: 10px;"> --}}
-            {{-- <img src="{{ $image->s3Url() }}" alt="Placeholder Image 1" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;"> --}}
-            {{-- <a href="{{ $image->s3Url() }}" data-lightbox="photo"
-                data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
-                <img src="{{ $image->s3Url() }}" alt="Tools" class="w-full h-56 object-contain">
-            </a>
-        </div> --}}
-        {{-- @endforeach --}}
-        
+        <div class="image-container">
+            {{-- <img src="https://picsum.photos/100/100" alt="Placeholder Image 1" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;"> --}}
+            
+        </div>
     </div>
-
-    </div>
-
-    
+</div>
 </div>
     
-
+    
+    

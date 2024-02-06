@@ -5,6 +5,8 @@
 {{-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'> --}}
 <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
 <style class="cp-pen-styles">
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
   .sec-center{
     display:none;
   }
@@ -59,9 +61,11 @@
         /* background-color: white; */
         border: 1px solid grey;
     }
-  #frame #sidepanel {
+
+
+    /* ------------------------- */
+    #frame #sidepanel {
     float: left;
-    min-width: 280px;
     max-width: 340px;
     width: 40%;
     height: 100%;
@@ -70,7 +74,12 @@
     overflow: hidden;
     position: relative;
     z-index: 1;
-  }
+    transition: width 0.3s ease; /* Add transition for smooth animation */
+}
+
+#frame #sidepanel.expanded {
+    width: 100%;
+}
   @media screen and (max-width: 735px) {
     #frame #sidepanel {
       width: 100%;
@@ -293,7 +302,7 @@
   #frame #sidepanel #profile .wrap #expanded {
     padding: 100px 0 0 0;
     display: block;
-    line-height: initial !important;
+    line-height: initial;
   }
   #frame #sidepanel #profile .wrap #expanded label {
     float: left;
@@ -396,7 +405,7 @@
     border-right: 5px solid #435f7a;
   }
   #frame #sidepanel #contacts ul li.contact.active span.contact-status {
-    border: 2px solid #32465a !important;
+    border: 2px solid #32465a ;
   }
   #frame #sidepanel #contacts ul li.contact .wrap {
     width: 88%;
@@ -538,8 +547,8 @@
   }
   @media screen and (max-width: 735px) {
     #frame .content {
-      width: calc(100% - 90px);
-      min-width: 200px !important;
+      width: calc(100% - 10px);
+      min-width: 200px ;
     }
   }
 
@@ -826,7 +835,6 @@ audio::-webkit-media-controls-play-button:hover {
 /* Please ❤ this if you like it! */
 
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
 
 *,
 *::before,
@@ -939,8 +947,9 @@ audio::-webkit-media-controls-play-button:hover {
   height: 40px;
   transition: all 200ms linear;
   border-radius: 4px;
-  width: 120px;
+  width: 110px;
   margin-left: 6rem;
+  margin-right: 1px;
   letter-spacing: 1px;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -1189,8 +1198,50 @@ audio::-webkit-media-controls-play-button:hover {
 }
 }
 
+#backButton{
+  display: none;
+}
 
-@media screen and (max-width: 1080px){
+.sec-center{
+  display:none;
+}
+
+@media screen and (max-width: 760px) and (min-width: 320px){
+  .contact-profile{
+    width: 98%;
+    display:flex;
+  }
+
+  .sec-center{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    width: auto;
+}
+  #backButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    width: 3rem;
+    background-color: none;
+    border: none; 
+    outline: none; 
+    cursor: pointer;
+    margin-top: 0px;
+}
+
+.bttns{
+  margin: auto;
+  display: flex
+}
+
+#backButton svg {
+    width: 20px; 
+    height: 20px; 
+    fill: currentColor; 
+}
   #frame{
     height: 80vh;
     font-size: 16px;
@@ -1199,7 +1250,6 @@ audio::-webkit-media-controls-play-button:hover {
   .content{
     display:none;
   }
-
   #content{
     display: block;
     margin: auto;
@@ -1210,11 +1260,79 @@ audio::-webkit-media-controls-play-button:hover {
     position: relative;
     z-index: 2;
   }
+  
+  .to{
+    width: auto;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    margin-top: 9px;
+  }
+  .to p{
+    margin-left: auto;
+  }
+  .to p p{
+    margin-right: auto;
+  }
+}
+
+@media screen and (max-width: 1080px) and (min-width: 768px){
+  #frame .content {
+    width: calc(100% - 295px);
+}
+  .bttns{
+    width: 100%;
+  }
+  .butts{
+    
+  }
+}
+
+
+
+
+/* camera */
+.image-container {
+    max-height: 90%;
+    overflow-y: auto;
+    margin-left:10px;
+    margin-top: 10px;
+}
+
+.image-container img{
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+
+}
+
+/* call logs */
+.scrollable-content_call_log {
+    max-height: 80%; /* Adjust the max height as needed */
+    overflow-y: auto;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+
+.message-text {
+    display: block;
+    padding: 10px;
+    background-color: #f8d7da; /* Light red background */
+    color: #721c24; /* Dark red text color */
+    border: 1px solid #f5c6cb; /* Border color */
+    border-radius: 4px; /* Rounded corners */
+    text-align: center; /* Center text */
+    font-weight: bold; /* Bold text */
 }
   </style>
-  @livewireScripts
+  
   @livewireStyles
 @endsection
 @section('main-container')
+@livewireScripts
 {{ $slot }}
 @endsection

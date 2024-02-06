@@ -1,17 +1,13 @@
 <div>
     <ul>
         @foreach($messagesL as $key => $value)
-        <li class="sent">
-            <p>{{$value}}</p>
-        </li>
-        {{-- <li class="replies">
-            <img src="#" alt="" />
-            <p>Hka</p>
-        </li>
-        <li class="sent">
-            <img src="#" alt="" />
-            <p>okay !</p>
-        </li> --}}
-        @endforeach
+        @if($value['is_inbox'] == 1)
+            <li class="replies">
+        @else
+            <li class="sent">
+        @endif
+                <p>{{ $value['body'] }}</p>
+            </li>
+    @endforeach
     </ul>
 </div>

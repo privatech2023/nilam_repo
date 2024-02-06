@@ -26,6 +26,15 @@ class RegisterController extends Controller
                 'confirm_password' => 'required|min:8|same:password'
             ]);
 
+            $user = clients::where('email', $request->input('email'))
+                ->orWhere('mobile_number', $request->input('mobile_number'))
+                ->first();
+
+            if ($user != null) {
+                session()->flash('error', 'User already exists');
+                return redirect()->back();
+            }
+
             $newClient = clients::create([
                 'name' => $request->input('name'),
                 'mobile_number' => $request->input('mobile_number'),

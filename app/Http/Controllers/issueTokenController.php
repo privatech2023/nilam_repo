@@ -7,6 +7,7 @@ use App\Models\device;
 use App\Models\issue_token;
 use App\Models\issue_type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,10 +43,10 @@ class issueTokenController extends Controller
 
     public function admin_index()
     {
-        $type = issue_type::all();
-        $data = issue_token::all();
-        $client = clients::all();
-        return view('frontend.admin.pages.tokens.index')->with(['data' => $data, 'type' => $type, 'client' => $client]);
+        // $type = issue_type::all();
+        // $data = issue_token::all();
+        // $client = clients::all();
+        return view('frontend.admin.pages.tokens.index');
     }
 
     public function add_index()
@@ -102,7 +103,8 @@ class issueTokenController extends Controller
             'type' => 'required',
             'client' => 'required',
             'device' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'mobile_number' => 'required'
         ]);
         if ($validator->fails()) {
             return back()
@@ -116,12 +118,14 @@ class issueTokenController extends Controller
         } else {
             $start_date = $request->input('start_date');
         }
+
+        $client_id = clients::where('mobile_number', $request->input('client'))->first();
         $issue = new issue_token();
         $issue->issue_type = $request->input('type');
         $issue->detail = $request->input('description');
         $issue->device_id = $request->input('device');
         $issue->device_token = $device->device_token;
-        $issue->client_id = $request->input('client');
+        $issue->client_id = $client_id->client_id;
         $issue->start_date = $start_date;
         $issue->end_date = $request->input('end_date') ? $request->input('end_date') : null;
         $issue->mobile_number = $request->input('mobile_number');
@@ -162,5 +166,69 @@ class issueTokenController extends Controller
         $token->delete();
         session()->flash('success', 'Issue token deleted successfully');
         return redirect()->route('/admin/tokens');
+    }
+
+    public function ajaxCallAllTokens(Request $request)
+    {
+        $params['draw'] = $request->input('draw');
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $valueStatus = $request->input('status');
+        $search_value = $request->input('search.value');
+
+        if (!empty($search_value)) {
+            $query = DB::table('clients')
+                ->select('*')
+                ->where('name', 'like', '%' . $search_value . '%')
+                ->get();
+
+            $total_count = count($query);
+
+            $data = DB::table('clients')
+                ->select('*')
+                ->where('name', 'like', '%' . $search_value . '%')
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } elseif (!empty($valueStatus)) {
+            $query = DB::table('issue_tokens')
+                ->select('*')
+                ->where('status', $valueStatus)
+                ->get();
+
+            $total_count = count($query);
+
+            $data = DB::table('issue_tokens')
+                ->select('*')
+                ->where('status', $valueStatus)
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } else {
+            $total_count = count(DB::table('issue_tokens')->get());
+            $data = DB::table('issue_tokens')
+                ->select('*')
+                ->skip($start)
+                ->take($length)
+                ->get();
+        }
+        $type = issue_type::all();
+        $client = clients::all();
+
+        $json_data = [
+            "draw" => intval($params['draw']),
+            "recordsTotal" => $total_count,
+            "recordsFiltered" => $total_count,
+            "data" => $data,
+            'type' => $type,
+            'client' => $client,
+        ];
+        return response()->json($json_data);
+    }
+
+    public function search_client(Request $request)
+    {
+        $data = clients::where('mobile_number', $request->input('client'))->first();
+        return response()->json($data);
     }
 }

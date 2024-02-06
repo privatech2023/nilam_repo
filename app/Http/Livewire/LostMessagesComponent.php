@@ -8,6 +8,7 @@ use Livewire\Component;
 class LostMessagesComponent extends Component
 {
     public $userId;
+    public $lostMessagesCount = 0;
 
     public function mount($userId)
     {

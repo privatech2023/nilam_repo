@@ -14,6 +14,7 @@ class GalleryComponent extends Component
     public $userId;
 
     public $gallery_items;
+    public $galleryCount = 0;
 
     public function mount($userId)
     {
@@ -28,6 +29,7 @@ class GalleryComponent extends Component
     {
         $clients = clients::where('client_id', $this->userId)->first();
         $this->gallery_items = gallery_items::where('user_id', $clients->client_id)->where('device_id', $clients->device_id)->orderBy('created_at', 'desc')->get();
+        // $this->galleryCount = count($this->gallery_items);
     }
 
     public function sendNotification($action_to)

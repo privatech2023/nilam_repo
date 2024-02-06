@@ -8,6 +8,7 @@ use Livewire\Component;
 class FilemanagerComponent extends Component
 {
     public $userId;
+    public $filesCount = 0;
 
     public function mount($userId)
     {

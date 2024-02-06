@@ -1,148 +1,116 @@
-@if(session('user_name'))
-<div class="row mt-3 welcome">
-    <div class="col-9 ">
-        <h2 class="welcome-text">Welcome, {{session('user_name')}}</h2>
-    </div>
-    <div>
-        @livewire('dropdown')
-    </div>
-</div>
-@endif
-
-<div class="content-wrapper remove-background">
-    <div id="frame">
-        <div id="sidepanel">
-            <div id="profile">
-                <div class="wrap-1">
-                    <p>Messages(2)</p>
-                </div>
-            </div>
-            <div id="search">
-                <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
-            </div>
-            <div id="contacts">
-                <ul>
-                    <li class="contact">
-                        <div class="wrap">
-                            <span class="contact-status"></span>
-                            <img src="#" alt="" />
-                            <div class="meta">
-                                <p class="name">ABC</p>
-                                <p class="preview">ABSAJ AJH ASJ</p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="contact">
-                        <div class="wrap">
-                            <span class="contact-status busy"></span>
-                            <img src="#" alt="" />
-                            <div class="meta">
-                                <p class="name">XXXX</p>
-                                <p class="preview">Wrong. You take the gun, or you pull out a bigger one. </p>
-                            </div>
-                        </div>
-                    </li>
-                    
-                    
-                </ul>
-            </div>
+<div>
+    @if(session('user_name'))
+    <div class="row mt-3 welcome">
+        <div class="col-9 ">
+            <h2 class="welcome-text">Welcome, {{session('user_name')}}</h2>
         </div>
-        <div class="content">
-            <div class="contact-profile">
-                <div style="margin-left: 10px;">
-                    <p class="text-secondary">To:</p> 
-                    <p style="margin-left: 5px;">ABC</p>
-                </div>               
-                @livewire('dropdown')
-                
-            </div>
-            <div class="messages">
-                <ul>
-                    <li class="sent">
-                        <img src="#" alt="" />
-                        <p>HELLO asdjh asjdk kjasdn</p>
-                    </li>
-                    <li class="replies">
-                        <img src="#" alt="" />
-                        <p>HI asdkj jkwq kjx as jksa</p>
-                    </li>
-                    <li class="replies">
-                        <img src="#" alt="" />
-                        <p>Hka</p>
-                    </li>
-                    <li class="sent">
-                        <img src="#" alt="" />
-                        <p>okay !</p>
-                    </li>
-                </ul>
-            </div>
-            <div class="message-input">
-                <div class="wrap">
-                <input type="text" placeholder="Write your message..." />
-                <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
-                </div>
-            </div>
+        <div>
+            @livewire('dropdown')
         </div>
     </div>
-    </div>
-    <script >$(".messages").animate({ scrollTop: $(document).height() }, "fast");
-
-        $("#profile-img").click(function() {
-            $("#status-options").toggleClass("active");
-        });
-        
-        $(".expand-button").click(function() {
-          $("#profile").toggleClass("expanded");
-            $("#contacts").toggleClass("expanded");
-        });
-        
-        $("#status-options ul li").click(function() {
-            $("#profile-img").removeClass();
-            $("#status-online").removeClass("active");
-            $("#status-away").removeClass("active");
-            $("#status-busy").removeClass("active");
-            $("#status-offline").removeClass("active");
-            $(this).addClass("active");
-            
-            if($("#status-online").hasClass("active")) {
-                $("#profile-img").addClass("online");
-            } else if ($("#status-away").hasClass("active")) {
-                $("#profile-img").addClass("away");
-            } else if ($("#status-busy").hasClass("active")) {
-                $("#profile-img").addClass("busy");
-            } else if ($("#status-offline").hasClass("active")) {
-                $("#profile-img").addClass("offline");
-            } else {
-                $("#profile-img").removeClass();
-            };
-            
-            $("#status-options").removeClass("active");
-        });
-        
-        function newMessage() {
-            message = $(".message-input input").val();
-            if($.trim(message) == '') {
-                return false;
-            }
-            $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
-            $('.message-input input').val(null);
-            $('.contact.active .preview').html('<span>You: </span>' + message);
-            $(".messages").animate({ scrollTop: $(document).height() }, "fast");
-        };
-        
-        $('.submit').click(function() {
-          newMessage();
-        });
-        
-        $(window).on('keydown', function(e) {
-          if (e.which == 13) {
-            newMessage();
-            return false;
-          }
-        });
-        //# sourceURL=pen.js
-        </script>
+    @endif
     
+    <div class="content-wrapper remove-background">
+        @if($lostMessagesCount == 0)
+            <div class="container">
+                <span class="message-text">No lost messages found</span>
+            </div>
+        @else
+        <div id="frame">        
+            <div id="sidepanel">
+                <div id="profile">
+                    <div class="wrap">
+                        <p class="lead text-md">LOST MESSAGES </p>
+                    </div>
+                </div>
+                <div id="contacts">
+                    <ul>
+                        {{-- @foreach($messageList as $key => $value)
+                            <li class="contact" wire:click="populateMessage('{{ $key }}')" >
+                            <div class="wrap">
+                            <div class="meta">
+                            <p class="name">{{ $key }}</p>
+                            <p class="preview">{{ $messageList[$key][0]['body'] }}</p>
+                            </div>
+                            </div>
+                            </li>
+                            <hr>
+                        @endforeach                     --}}
+                    </ul>
+                </div>
+            </div>
+            <div class="content">
+                <div class="contact-profile">
+                    <div class="bttns">
+                        <button id="backButton" type="button" class="btn btn-outline-secondary" wire:click="backButton">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                            </svg>
+                        </button>
+                        <div class="to text-sm">
+                        <p class="text-secondary" style="margin-left: 5px;">To:</p> 
+                        <p style="margin-left: 5px;"></p>
+                        </div>
+                        {{-- <div class="text-right" >
+                            <div class="butts">
+                            <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
+                            <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncOutbox">Sync outbox</button>
+                            </div>
+                        </div>  --}}
+                    </div> 
+                    <div class="sec-center" style="align-items:right;"> 	
+                        <input class="dropdown"  type="checkbox"  id="dropdown" name="dropdown"/>
+                        <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
+                        <div class="section-dropdown"> 
+                            {{-- <div class="a" style="cursor: pointer;" wire:click="syncInbox">Sync inbox <i class="uil uil-arrow-right"></i></div>
+                            <div class="a" style="cursor: pointer;" wire:click="syncOutbox">Sync outbox<i class="uil uil-arrow-right"></i></div>
+                            <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/> --}}
+
+                        </div>
+                    </div>               
+                </div>
+                <div class="messages">
+                    {{-- @if($selectedKey)
+                        @livewire('message-populate', ['key' => $selectedKey], key($selectedKey))
+                    @endif --}}
+                </div>
+                <div class="message-input">
+                    <div class="wrap">
+                    <input type="text" placeholder="Write your message..." />
+                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+                    <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif    
+        </div>
+        <script>
+        document.addEventListener("livewire:load", function () {
+        var screenWidth = window.innerWidth;
+        var isContentOpen = false;
+    
+        Livewire.on('toggleSidepanel', () => {
+            if (screenWidth <= 760 && !isContentOpen) {
+                $('#frame #sidepanel').css('width', '1px');
+                isContentOpen = true;
+                console.log('hey');
+            }
+            $('#frame .content').attr('id', 'content');
+            });
+    
+        Livewire.on('back', () => {
+            if (isContentOpen) {
+                $('#frame #sidepanel').css('width', '100%');
+                $('#frame .content').removeAttr('id');
+                isContentOpen = false;
+            }
+        });
+    });
+    </script>
+    
+        
+    </div>
+        
+        
     

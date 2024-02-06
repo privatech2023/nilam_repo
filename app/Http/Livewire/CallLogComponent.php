@@ -77,4 +77,9 @@ class CallLogComponent extends Component
         $devices = device::where('client_id', $this->userId)->select('device_id', 'device_name')->get();
         return view('livewire.call-log-component', ['devices' => $devices]);
     }
+
+    public function backButton()
+    {
+        $this->emit('back');
+    }
 }
