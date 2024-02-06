@@ -11,17 +11,22 @@
 @endif
 
 <div class="content-wrapper remove-background">
+    @if($msgCount == 0)
+    <div class="container">
+        <span class="message-text">No messages found</span>
+    </div>
+    @else
     <div id="frame">        
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap">
-                    <p>MESSAGES (2)</p>
+                    <p class="lead text-md">MESSAGES ({{$msgCount}})</p>
                 </div>
             </div>
-            <div id="search">
+            {{-- <div id="search">
                 <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
-            </div>
+                <input type="text" placeholder="Search..." />
+            </div> --}}
             <div id="contacts">
                 <ul>
                     @foreach($messageList as $key => $value)
@@ -40,41 +45,45 @@
         </div>
         <div class="content">
             <div class="contact-profile">
-                <div style="margin-left: 10px;">
-                    <p class="text-secondary">To:</p> 
-                    <p style="margin-left: 5px;">ABC</p>
+                <div class="bttns">
+                    <button id="backButton" type="button" class="btn btn-outline-secondary" wire:click="backButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                        </svg>
+                    </button>
+                    <div class="to text-sm">
+                    <p class="text-secondary" style="margin-left: 5px;">To:</p> 
+                    <p style="margin-left: 5px;">{{ $selectedKey}}</p>
+                    </div>
+                    <div class="text-right" >
+                        <div class="butts">
+                        <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
+                        <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncOutbox">Sync outbox</button>
+                        </div>
+                        
+                    </div> 
                 </div> 
-                <div class="sec-center"> 	
+                <div class="sec-center" style="align-items:right;"> 	
                     <input class="dropdown"  type="checkbox"  id="dropdown" name="dropdown"/>
                     <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
                     <div class="section-dropdown"> 
-                        <a class="a" href="#">Sync inbox <i class="uil uil-arrow-right"></i></a>
-                        <a class="a" href="#">Sync outbox <i class="uil uil-arrow-right"></i></a>
-                        <a class="a" href="#">New message <i class="uil uil-arrow-right"></i></a>
+                        <div class="a" style="cursor: pointer;" wire:click="syncInbox">Sync inbox <i class="uil uil-arrow-right"></i></div>
+                        <div class="a" style="cursor: pointer;" wire:click="syncOutbox">Sync outbox<i class="uil uil-arrow-right"></i></div>
                         <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
-                        <label class="for-dropdown-sub" for="dropdown-sub">Device <i class="uil uil-plus"></i></label>
+                        {{-- <label class="for-dropdown-sub" for="dropdown-sub">Device <i class="uil uil-plus"></i></label>
                         <div class="section-dropdown-sub"> 
                             @foreach ($devices as $device)
                             <a class="a" href="#">{{ $device->device_name }}<i class="uil uil-arrow-right"></i></a>
                             @endforeach
-                        </div>
+                        </div> --}}
                     </div>
-                </div>
-                <div class="text-right" style="margin-right: 8px;">
-                    <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
-                    <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncOutbox">Sync outbox</button>
-                    <button  type="button" class="btn btn-sm btn-outline-primary hide-btn">New message</button>
-                </div>                
+
+                </div>               
+
             </div>
             <div class="messages">
                 @if($selectedKey)
                     @livewire('message-populate', ['key' => $selectedKey], key($selectedKey))
-                    <ul>
-                    <li class="replies">
-                        <img src="#" alt="" />
-                        <p>HI asdkj jkwq kjx as jksa</p>
-                    </li>
-                </ul>
                 @endif
             </div>
             <div class="message-input">
@@ -85,23 +94,33 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div> 
+    @endif
     </div>
     <script>
-        document.addEventListener('livewire:load', function () {
-            var screenWidth = window.innerWidth;
-            var screenHeight = window.innerHeight;
+    document.addEventListener("livewire:load", function () {
+    var screenWidth = window.innerWidth;
+    var isContentOpen = false;
 
-            console.log('Screen Width: ' + screenWidth + 'px');
-            console.log('Screen Height: ' + screenHeight + 'px');
-
-                $('#contacts').on('click', 'li.contact', function () {
-                    $('#frame .content').attr('id', 'content');
-                    $('#frame .sidepanel').attr('class','sidepanel');
-                });
-            
+    Livewire.on('toggleSidepanel', () => {
+        if (screenWidth <= 760 && !isContentOpen) {
+            $('#frame #sidepanel').css('width', '1px');
+            isContentOpen = true;
+            console.log('hey');
+        }
+        $('#frame .content').attr('id', 'content');
         });
-    </script>
+
+    Livewire.on('back', () => {
+        if (isContentOpen) {
+            $('#frame #sidepanel').css('width', '100%');
+            $('#frame .content').removeAttr('id');
+            isContentOpen = false;
+        }
+    });
+});
+</script>
+
     
 </div>
     

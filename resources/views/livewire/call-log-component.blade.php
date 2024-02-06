@@ -19,16 +19,11 @@
             </svg>   CALL LOGS</span>
         </nav>
         <nav class="navbar navbar-light bg-light">
-            {{-- <div class="btns" style="margin-right: 0;">
-              <button class="btn btn-outline-success btn-sm" type="button">All</button>
-              <button class="btn btn-outline-success btn-sm" type="button">Incoming</button>
-              <button class="btn btn-outline-success btn-sm" type="button">Outgoing</button>
-              <button class="btn btn-outline-success btn-sm" type="button">Missed</button>
-            </div> --}}
             <div class="text-right" style="margin-right: 3px;">
               <button class="btn btn-primary btn-sm" type="button"  wire:click="SyncCallLog">Sync call logs</button>
             </div>
         </nav>
+        <div class="scrollable-content_call_log">
         <div style="display: flex; margin-top: 20px; margin-left: 10px;">
             <table class="table table-striped">
                 <thead>
@@ -48,65 +43,19 @@
                     <td>{{$c['duration']}}</td>
                   </tr>
                   @endforeach
+                  @foreach($callList as $c)
+                  <tr>
+                    <th scope="row">{{$c['name']}}</th>
+                    <td>{{$c['number']}}</td>
+                    <td>{{$c['date']}}</td>
+                    <td>{{$c['duration']}}</td>
+                  </tr>
+                  @endforeach
                 </tbody>
               </table>
-            <!-- Add more images as needed -->
-            {{-- <div class="mt-4">
-              {{ $callList->links() }}
-          </div> --}}
-        </div>
+          </div>
+      </div>
     </div>
-
-    {{-- <div id="frame">     
-        <div class="content">
-            <div class="contact-profile">
-                <img src="#" alt="" />
-                <p>ABC</p>               
-                <div class="text-right" style="margin-right: 8px;">
-                    <div class="btn-group dropright" >
-                        <button type="button" class="btn btn-secondary dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Device
-                        </button>
-                        <div class="dropdown-menu">
-                        @foreach ($devices as $device)
-                            <a class="dropdown-item" href="#">{{ $device->device_name }}</a>
-                        @endforeach
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="messages">
-                <div class="card card-primary card-outline">
-                    <div class="card-body box-profile">
-                      <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle"
-                            src="{{url('assets/common/img/default_user.png')}}"
-                            alt="User profile picture">
-                      </div>
-      
-                      <h3 class="profile-username text-center">abc</h3>
-      
-      
-                      <p class="text-muted text-center"></p>
-                      <p class="text-muted text-center"></p>
-      
-                      <ul class="list-group list-group-unbordered mb-3">
-                          <li class="list-group-item">
-                              <b><i class="fa-solid fa-mobile-screen-button"></i></b><span class="text-md">Mobile number</span> <span class="float-right">7364836283</span>
-                          </li>
-                          <li class="list-group-item">
-                              <b><i class="fa-solid fa-envelope"></i></b><span class="text-md">Email</span> <span class="float-right">abc@abc.com</span>
-                          </li>
-                          <li class="list-group-item">
-                              <b><i class="fa-solid fa-receipt"></i></b><span class="text-md">Address</span> <span class="float-right">Address</span>
-                          </li>
-                      </ul>                
-                    </div>                    <!-- /.card-body -->
-                  </div>
-            </div>
-        </div>
-    </div> --}}
     </div>
 </div>
     

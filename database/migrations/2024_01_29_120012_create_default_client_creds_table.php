@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('default_client_creds', function (Blueprint $table) {
             $table->id();
-            $table->string('user_id');
             $table->string('password');
             $table->timestamps();
         });

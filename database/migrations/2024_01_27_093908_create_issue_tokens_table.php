@@ -21,8 +21,8 @@ return new class extends Migration
             $table->integer('client_id');
             $table->string('detail');
             $table->integer('status')->default(0); // 0: pending, 1:resolved
-            $table->date('start-date');
-            $table->date('end-date')->nullable();
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->string('mobile_number');
             $table->timestamps();
         });
