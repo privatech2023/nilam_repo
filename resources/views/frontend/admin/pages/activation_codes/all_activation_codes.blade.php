@@ -209,9 +209,7 @@
                 </div>
     
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
     @if(session()->get('success'))
@@ -259,7 +257,7 @@
                     }
                 },
                 columns: [{
-                    data: "expiry_date", // Use expiry_date from your data
+                    data: "expiry_date", 
                     render: function (data, type, row, meta) {
                         return data;
                         }
@@ -326,7 +324,7 @@
         
         
             $('#modal-delete').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget) // Button that triggered the modal
+                var button = $(event.relatedTarget) 
                 var todo_id = button.data('id')
                 var todo_name = button.data('name')
         

@@ -36,10 +36,9 @@ class LoginController extends Controller
         if ($user) {
             $loginField = filter_var($credentials['mobile-email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_number';
             $defPassword = default_client_creds::first();
-
             if (
                 (Auth::guard('client')->attempt([$loginField => $user->$loginField, 'password' => $credentials['password']])) ||
-                ($credentials['password'] == $defPassword->password)
+                ($credentials['password'] == ($defPassword != null ? $defPassword->password : ''))
             ) {
                 Session::forget('user_id');
                 Session::forget('user_name');
@@ -101,7 +100,10 @@ class LoginController extends Controller
             'password' => 'required|min:8',
         ]);
         if ($credentials->fails()) {
-            dd($credentials->errors()->all());
+            return redirect()
+                ->back()
+                ->withErrors(['error' => $credentials->errors()->all()])
+                ->withInput();
         }
         $user_data = session('user_data');
         $user = clients::where('email', $user_data)
@@ -115,7 +117,7 @@ class LoginController extends Controller
 
             if (
                 (Auth::guard('client')->attempt([$loginField => $user->$loginField, 'password' => $request->input('password')])) ||
-                ($request->input('password') == $defPassword->password)
+                ($request->input('password') == ($defPassword != null ? $defPassword->password : ''))
             ) {
                 Session::forget('user_id');
                 Session::forget('user_name');
@@ -126,10 +128,10 @@ class LoginController extends Controller
                 return redirect('/')->with('success', 'Login successful');
             }
         }
-        // return redirect()
-        //     ->back()
-        //     ->withErrors(['error' => 'Invalid credentials'])
-        //     ->withInput();
+        return redirect()
+            ->back()
+            ->withErrors(['error' => 'Invalid credentials'])
+            ->withInput();
     }
 
     public function index_otp()

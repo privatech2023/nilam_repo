@@ -196,6 +196,9 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/apk-versions', [ApkVersionController::class, 'create_update']);
 
     route::get('/admin/test-api', [adminController::class, 'test_api']);
+
+    route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
+    route::get('/admin/search_client', [issueTokenController::class, 'search_client']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

@@ -1,90 +1,79 @@
 @extends('layouts.adminFrontend')
 
 @section('main-container')
-<div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Issue tokens</h1>
-                </div>
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Tokens</a></li>
-                        <li class="breadcrumb-item active">Manage</li>
-                    </ol>
-                </div>
-            </div>
-        </div><!-- /.container-fluid -->
-    </section>
-    <section class="content">
-        <div class="card">
-
-            <div class="card-header">
-                <span><a href="{{ url('/admin')}}" class="btn btn-outline-info btn-sm"><i class="fas fa-long-arrow-alt-left mr-1"></i>Back</a></span>
-
-                    <div class="card-tools">
-               
-                            <a href="{{ url('/admin/add-token')}}" class="btn btn-block btn-success btn-sm">Add Token</a>
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Activation Codes</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Tokens</a></li>
+                            <li class="breadcrumb-item active">Manage</li>
+                        </ol>
                     </div>
                 </div>
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Device Id</th>
-                <th scope="col">Client</th>
-                <th scope="col">Description</th>
-                <th scope="col">Start date</th>
-                <th scope="col">End date</th>
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-                @php $count = 1 @endphp
-                @foreach($data as $d)
-            <tr>
-                <th scope="row">{{$count}}</th>
-                <td>
-                    @foreach($type as $t)
-                    {{ $d->issue_type == $t->id ? $t->name : ''}}
-                    @endforeach
-                </td>
-                <td>{{ $d->device_id }}</td>
-                <td>
-                    @foreach($client as $cl)
-                    {{ $d->client_id == $cl->client_id ? $cl->name : ''}}
-                    @endforeach
-                </td>
-                <td>{{ $d->detail }}</td>
-                <td>{{ $d->start_date }}</td>
-                <td>
-                    @if($d->end_date == null)
-                    <span class="badge badge-warning">Not allotted</span>
-                    @else
-                    {{ $d->end_ }}
-                    {{ $d->end_date }}
-                    @endif
-                </td>
-                <td> @if($d->status == 0)
-                    <span class="badge badge-warning">Pending</span>
-                    @else
-                    <span class="badge badge-success">Solved</span>
-                    @endif
-                    <button class="btn btn-outline-info btn-xs view-btn" data-value="{{ $d->id }}">VIEW</button>
-                    <button class="btn btn-outline-danger btn-xs del-button" data-value="{{ $d->id }}" >Del</button>
-                </td>
-                @php $count++ @endphp
-            </tr>
-            @endforeach
-            </tbody>
-          </table>
-        </div>
-    </section>
-</div>
+            </div><!-- /.container-fluid -->
+        </section>
 
-{{-- delete modal --}}
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-md-12 col-12">
+                    <div class="card card-outline card-info">
+                        <div class="card-header">
+                            <h3 class="card-title">All tokens</h3>
+                            <div class="card-tools">
+                                
+                            <a href="{{ url('/admin/add-token')}}" class="btn btn-block btn-success btn-sm">Create new</a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Custom Filter -->
+                            <table class="float-right">
+                                <tr>
+                                    <td>
+                                        <select class="form-control form-control-sm" id='searchByStatus'>
+                                            <option value=''>-- Status--</option>
+                                            <option value='0'>Pending</option>
+                                            <option value='1'>Success</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <table id="dataTable" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                <tr><th>#</th>
+                                    <th>Name</th>
+                                    <th>Device ID</th>
+                                    <th>Client</th>
+                                    <th>Description</th>
+                                    <th>Start date</th>
+                                    <th>End Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    
+
+
+    {{-- delete modal --}}
 <div class="modal fade" id="modal-delete">
     <div class="modal-dialog">
         <div class="modal-content bg-light">
@@ -110,76 +99,191 @@
 </div>
 
 
-{{-- view modal --}}
-<div class="modal fade" id="modal-view">
-    <div class="modal-dialog">
-        <div class="modal-content bg-light">
-            <div class="modal-header">
-                <h4 class="modal-title">Token</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true"></span></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{url('/admin/token/update')}}" method="post" style="margin-top: 4px;">
-                    @csrf
-                    <div class="container view-token-detail">
-                        <input type="hidden" name="token_id" id="token_id" value="">
-
-                        <div class="form-group row">
-                            <label for="type">Type</label>
-                            <input class="form-control" id="type" name="type" type="text" value="" readonly>
+    {{-- view modal --}}
+    <div class="modal fade" id="modal-view">
+        <div class="modal-dialog">
+            <div class="modal-content bg-light">
+                <div class="modal-header">
+                    <h4 class="modal-title">Token</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{url('/admin/token/update')}}" method="post" style="margin-top: 4px;">
+                        @csrf
+                        <div class="container view-token-detail">
+                            <input type="hidden" name="token_id" id="token_id" value="">
+    
+                            <div class="form-group row">
+                                <label for="type">Type</label>
+                                <input class="form-control" id="type" name="type" type="text" value="" readonly>
+                            </div>
+                            <div class="form-group row">
+                                <label for="mobile_number">Contact number</label>
+                                <input class="form-control" id="mobile_number" name="mobile_number" type="text" value="">
+                            </div>
+                            <div class="form-group row">
+                                <label for="device_id">Device</label>
+                                <input class="form-control" id="device_id" name="device_id" type="text" value="" readonly>
+                            </div>
+                            <div class="form-group row">
+                                <label for="start_date">Start date</label>
+                                <input class="form-control" id="start_date" name="start_date" type="date" value="" readonly>
+                            </div>
+                            <div class="form-group row">
+                                <label for="end_date">End date</label>
+                                <input class="form-control" id="end_date" name="end_date" type="date" value="">
+                            </div>
+                            <div class="form-group row">
+                                <label for="status">Status</label>
+                                <select class="form-control" name="status" >
+                                    <option value="" selected>Select</option>
+                                    <option value="1">Success</option>
+                                    <option value="0">Pending</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="mobile_number">Contact number</label>
-                            <input class="form-control" id="mobile_number" name="mobile_number" type="text" value="">
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                            <button type="submit"  class="btn btn-outline-success">Update</button>
                         </div>
-                        <div class="form-group row">
-                            <label for="device_id">Device</label>
-                            <input class="form-control" id="device_id" name="device_id" type="text" value="" readonly>
-                        </div>
-                        <div class="form-group row">
-                            <label for="start_date">Start date</label>
-                            <input class="form-control" id="start_date" name="start_date" type="date" value="" readonly>
-                        </div>
-                        <div class="form-group row">
-                            <label for="end_date">End date</label>
-                            <input class="form-control" id="end_date" name="end_date" type="date" value="">
-                        </div>
-                        <div class="form-group row">
-                            <label for="status">Status</label>
-                            <select class="form-control" name="status" >
-                                <option value="" selected>Select</option>
-                                <option value="1">Success</option>
-                                <option value="0">Pending</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
-                        <button type="submit"  class="btn btn-outline-success">Update</button>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-
-@if(session()->get('success'))
-<script type="text/javascript">
-    toastr.success('{{session('success')}}')
-</script>
+    @if(session()->get('success'))
+    <script type="text/javascript">
+        toastr.success('{{session('success')}}')
+    </script>
 @endif
 @if(session()->get('error'))
-<script type="text/javascript">
-    toastr.warning('{{session('error')}}')
-</script>
+    <script type="text/javascript">
+        toastr.warning('{{session('error')}}')
+    </script>
 @endif
 
-<script>
-    $(document).ready(function () {
-        $('.view-btn').on('click', function(){
+    <script>
+        
+        $(document).ready(function() {
+
+            
+
+
+
+            $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
+        
+            $("#packageTree").addClass('menu-open');
+            $("#packageMenu").addClass('active');
+            $("#packageSubMenuCodes").addClass('active');
+            var i = 1;
+        
+            var dataTable = $('#dataTable').DataTable({
+                lengthMenu: [
+                    [10, 30, -1],
+                    [10, 30, "All"]
+                ], 
+                bProcessing: true,
+                serverSide: true,
+                scrollY: "400px",
+                scrollCollapse: true,
+                ajax: {
+                    url: "/admin/token/ajaxCallAllTokens", 
+                    type: "post",
+                    data: function(data) {  
+                        var type = $('#searchByStatus').val();
+                        data.status = type;
+                    }
+                },
+                columns: [
+                    {
+                        mRender: function(data, type, full, meta) {
+                        return i++;
+                    }
+                    },
+                    {
+                        data: "issue_type"
+                    },
+                    {
+                        data: "device_id"
+                    },
+                    {
+                        data: "client_id"
+                    },
+                    {
+                        data: "detail"
+                    },
+                    {
+                        data: "start_date"
+                    },
+                    {
+                        data: "end_date",
+                        render: function(data, type, row) {
+                        if (data === null) {
+                        return '<span class="badge badge-warning">Not allotted</span>';
+                        } else {
+                        return data;
+                        }
+                        }
+                    },
+                    {
+                        mRender: function(data, type, row) {
+                            if (row.status == 1) {
+                                return '<span class="badge bg-success">SUCCESS</span>';
+                            } else {
+        
+                                return '<span class="badge bg-warning">PENDING</span>';
+                            }                                       
+                        }
+                    },
+                    {
+                        mRender: function(data, type, row) {
+                            return '<button class="btn btn-outline-info btn-xs view-btn"  data-value="' + row.id + '">VIEW</button><button class="btn btn-outline-danger btn-xs del-button" data-value="' + row.id + '" >Del</button>'
+                        }
+                    },
+                ],
+                columnDefs: [
+        
+                    {
+                        orderable: false,
+                        targets: [0, 1, 2, 3]
+                    },
+                    {
+                        className: 'text-center',
+                        targets: [1, 2, 3, 4, 5]
+                    },
+                    {
+                        "targets": [1, 2, 3, 4, 5],
+                        "render": function(data) {
+                            return data;
+                        },
+                    },
+        
+                ],
+                bFilter: true, 
+            });
+        
+        
+            $('#searchByStatus').change(function() {
+                dataTable.draw();
+            });
+        
+        
+            $(document).on('click','.del-button', function(){
             var data = $(this).data('value');
+                $('#del_id').val(data);
+                $('#modal-delete').modal('show');
+        });
+        
+        $(document).on('click','.view-btn', function(){
+            alert('hey');
+            var data = $(this).data('value');
+            console.log(data);
                 $('#view_id').val(data);
                 $.ajax({
                     type: "post",
@@ -189,7 +293,6 @@
                     url: "/admin/token/get/"+data,
                     dataType: "json",
                     success: function (response) {
-   
                         $('#token_id').val(data);
                         $('#type').val(response.type.name);
                         $('#mobile_number').val(response.data.mobile_number);
@@ -202,12 +305,6 @@
                 });
         });
 
-        $('.del-button').on('click', function(){
-            var data = $(this).data('value');
-            console.log(data)
-                $('#del_id').val(data);
-                $('#modal-delete').modal('show');
         });
-    });
-</script>
+        </script>
 @endsection

@@ -62,12 +62,15 @@
                             <label for="input" class="col-sm-2 col-form-label">Select client</label>
                                 
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="client" id="clientSelect" required>
+                                    {{-- <select class="form-control" name="client" id="clientSelect" required>
                                         <option value="" selected>Select</option>
                                         @foreach($client as $cl)
                                         <option value="{{$cl->client_id}}">{{ $cl->name}}</option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
+                                    <input type="text" id="client" name="client" value="" class="form-control" placeholder="Enter client's phone number" required>
+                                    <button type="button" id="search_client" class="btn btn-outline-primary btn-sm" style="margin-top:2px;">Search</button>
+                                    <span id="search_result" class="text-muted" style="font-size: 14px;"></span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -133,6 +136,7 @@ var site_url = "";
 
 $(document).ready(function() {
 
+    var count = false;
 
     $("#employeeTree").addClass('menu-open');
     $("#employeeMenu").addClass('active');
@@ -160,6 +164,55 @@ $(document).ready(function() {
             }
         });
     });
+
+
+    $('#client').on('input', function(){
+        if(count == true){
+            $('#select_device').empty();
+            $('#select_device').append('<option value="" selected>Select</option>');
+            $('#search_result').text('');
+            count = false;
+        }
+    });
+
+    $('#search_client').on('click', function(){
+        $.ajax({
+            type: "get",
+            url: '/admin/search_client',
+            data: {
+                'client': $('#client').val()
+            },
+            dataType: "json",
+            success: function (response) {
+                if(Object.keys(response).length === 0 && response.constructor === Object){
+                    $('#search_result').text('No results found');
+                }
+                else{
+                    count = true;
+                    $('#search_result').text(response.name);
+
+                    $.ajax({
+                    type: "post",
+                    url: "/admin/token/device",
+                    headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                data: {
+                    client_id: response.client_id
+                },
+                dataType: "json",
+                success: function (response) {
+                $('#select_device').empty();
+                $('#select_device').append('<option value="" selected>Select</option>');
+                $.each(response, function(index, device) {
+                $('#select_device').append('<option value="' + device.device_id + '">' + device.device_name + '</option>');
+                });
+                }
+        });
+                }
+            }
+        });
+    })
 
 
 

@@ -11,7 +11,11 @@
 @endif
 
 <div class="content-wrapper remove-background">
-
+    @if($filesCount == 0)
+    <div class="container">
+        <span class="message-text">No files found</span>
+    </div>
+    @else
     <div id="frame">
         <div id="sidepanel">
             <div id="profile">
@@ -52,6 +56,7 @@
             </div>
         </div>
     </div>
+    @endif
     </div>
     <script >$(".messages").animate({ scrollTop: $(document).height() }, "fast");
 
