@@ -1,6 +1,6 @@
 <div>
     @foreach($contactsL as $key => $value)
-    <div class="card card-primary card-outline">
+    <div class="card card-primary card-outline" style="width: 100%; height: 90%;">
         <div class="card-body box-profile">
           <div class="text-center">
             <img class="profile-user-img img-fluid img-circle"

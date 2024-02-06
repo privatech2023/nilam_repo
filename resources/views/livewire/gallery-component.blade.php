@@ -12,7 +12,11 @@
 @endif
 
 <div class="content-wrapper remove-background">
-
+    @if($galleryCount == 0)
+    <div class="container">
+        <span class="message-text">No gallery items found</span>
+    </div>
+    @else
     <div id="frame">
         <div id="sidepanel">
             <div id="profile">
@@ -83,6 +87,7 @@
             </div>
         </div>
     </div>
+    @endif
     </div>
     
 </div>

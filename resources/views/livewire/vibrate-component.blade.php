@@ -20,9 +20,6 @@
                 <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
               </svg>  VIBRATE</span>
         </nav>
-        {{-- <nav class="navbar navbar-light bg-light">
-              <button class="btn btn-outline-success" type="button">Record Audio</button>
-        </nav> --}}
         <div style=" margin-top: 20px; margin-left: 20px;" >
             <div class="row">
                 <div class="">

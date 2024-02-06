@@ -14,25 +14,16 @@ class ContactsComponent extends Component
     public $userId;
     public $contactsList = [];
     public $selectedKey;
+    public $contactsCount = 0;
+    public $selectedName;
 
     public function mount($userId)
     {
         $this->userId = $userId;
         $device = clients::where('client_id', $this->userId)->first();
-        $contacts = contacts::where('device_id', $device->device_id)->get();
-        foreach ($contacts as $ct) {
-            if (isset($this->messageList[$ct->number])) {
-                $this->contactsList[$ct->number][] = [
-                    'name' => $ct->name,
-                ];
-            } else {
-                $this->contactsList[$ct->number] = [
-                    [
-                        'name' => $ct->name,
-                    ]
-                ];
-            }
-        }
+        $this->contactsList = contacts::where('device_id', $device->device_id)->orderBy('name')->where('number', '!=', null)
+            ->get();
+        $this->contactsCount = count($this->contactsList);
     }
     public function sendNotification($action_to)
     {
@@ -80,6 +71,12 @@ class ContactsComponent extends Component
 
     public function populateContacts($key)
     {
+        $this->emit('toggleSidepanel');
         $this->selectedKey = $key;
+    }
+
+    public function backButton()
+    {
+        $this->emit('back');
     }
 }

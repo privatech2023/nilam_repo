@@ -18,6 +18,8 @@ class MessageComponent extends Component
     public $messageId;
     public $messageList = [];
     public $selectedKey;
+    public $msgCount = 0;
+
 
     public function mount($userId)
     {
@@ -26,7 +28,9 @@ class MessageComponent extends Component
         }
         $this->userId = $userId;
         $device = clients::where('client_id', $this->userId)->first();
-        $message = messages::where('device_id', $device->device_id)->get();
+        $message = messages::where('device_id', $device->device_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
         foreach ($message as $msg) {
             if (isset($this->messageList[$msg->number])) {
                 $this->messageList[$msg->number][] = [
@@ -46,6 +50,7 @@ class MessageComponent extends Component
                 ];
             }
         }
+        $this->msgCount = count($this->messageList);
     }
 
     public function render()
@@ -99,5 +104,11 @@ class MessageComponent extends Component
     public function populateMessage($key)
     {
         $this->selectedKey = $key;
+        $this->emit('toggleSidepanel');
+    }
+
+    public function backButton()
+    {
+        $this->emit('back');
     }
 }

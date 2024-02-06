@@ -28,7 +28,7 @@
             <div>
                 <div class="border-2 p-1 rounded-md">
                     
-                    <div class="flex justify-end">
+                    {{-- <div class="flex justify-end">
                     </div>
                     <audio controls="" class="w-full">
                         <source src="https://rts-storage.s3.ap-south-1.amazonaws.com/recordings/uid-65771-909754e2-69ce-49bb-bed7-92d74f349e13.aac?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIA2O722WGNNE6YMVNK%2F20240124%2Fap-south-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20240124T061328Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=300&amp;X-Amz-Signature=f33296197a237e829fce766e6227ae2f289002f2c632ca8ee92cdad6e01792e9" class="bg-blue-500" type="audio/mpeg">
@@ -36,20 +36,7 @@
                     </audio>
                     <p class="text-center text-sm pt-2">
                         Jan 24, 2024 11:35 AM
-                    </p>
-                </div>
-
-                <div class="border-2 p-1 rounded-md">
-                    
-                    <div class="flex justify-end">
-                    </div>
-                    <audio controls="" class="w-full">
-                        <source src="https://rts-storage.s3.ap-south-1.amazonaws.com/recordings/uid-65771-909754e2-69ce-49bb-bed7-92d74f349e13.aac?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIA2O722WGNNE6YMVNK%2F20240124%2Fap-south-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20240124T061328Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=300&amp;X-Amz-Signature=f33296197a237e829fce766e6227ae2f289002f2c632ca8ee92cdad6e01792e9" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <p class="text-center text-sm pt-2">
-                        Jan 24, 2024 11:35 AM
-                    </p>
+                    </p> --}}
                 </div>
             </div>
         </div>

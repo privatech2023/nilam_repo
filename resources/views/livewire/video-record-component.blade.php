@@ -28,27 +28,13 @@
                 <div class="border-2 p-1 rounded-md">
                     
                     
-                    <video controls="" class="w-full">
+                    {{-- <video controls="" class="w-full">
                         <source src="https://rts-storage.s3.ap-south-1.amazonaws.com/screen-recordings/uid-65771-53a025df-d475-4831-ac63-c4a1156ca0cf.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIA2O722WGNNE6YMVNK%2F20240124%2Fap-south-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20240124T070735Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=300&amp;X-Amz-Signature=3cb5a7a84a111c906cfb9f7f5e71e397de77f6538627ea62d9c6af7c7bb5cfd0" type="video/mp4">
                         Your browser does not support the video element.
                     </video>
                     <p class="text-center text-sm pt-2">
                         Jan 24, 2024 12:37 PM
-                    </p>
-                </div>
-            </div>
-
-            <div>
-                <div class="border-2 p-1 rounded-md">
-                    
-                    
-                    <video controls="" class="w-full">
-                        <source src="https://rts-storage.s3.ap-south-1.amazonaws.com/screen-recordings/uid-65771-53a025df-d475-4831-ac63-c4a1156ca0cf.mp4?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=AKIA2O722WGNNE6YMVNK%2F20240124%2Fap-south-1%2Fs3%2Faws4_request&amp;X-Amz-Date=20240124T070735Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=300&amp;X-Amz-Signature=3cb5a7a84a111c906cfb9f7f5e71e397de77f6538627ea62d9c6af7c7bb5cfd0" type="video/mp4">
-                        Your browser does not support the video element.
-                    </video>
-                    <p class="text-center text-sm pt-2">
-                        Jan 24, 2024 12:37 PM
-                    </p>
+                    </p> --}}
                 </div>
             </div>
         </div>
