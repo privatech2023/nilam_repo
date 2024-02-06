@@ -77,7 +77,9 @@
                             @endforeach
                         </div> --}}
                     </div>
+
                 </div>               
+
             </div>
             <div class="messages">
                 @if($selectedKey)
