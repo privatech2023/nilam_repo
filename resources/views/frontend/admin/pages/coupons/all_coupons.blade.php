@@ -19,17 +19,6 @@
             </div><!-- /.container-fluid -->
         </section>
 
-        @php
-            $session = session();
-        @endphp
-
-        <script>
-            @if($session->get('success'))
-                toastr.success('{{ $session->get('success') }}')
-            @elseif($session->get('error'))
-                toastr.warning('{!! implode("<br>", $session->get('error')) !!}');
-            @endif
-        </script>
 
         <!-- Main content -->
         <section class="content">

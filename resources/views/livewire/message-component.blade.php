@@ -79,7 +79,9 @@
                         <div class="a" style="cursor: pointer;" wire:click="syncOutbox">Sync outbox<i class="uil uil-arrow-right"></i></div>
                         <div class="a" style="cursor: pointer;" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</div>
                     </div>
+
                 </div>               
+
             </div>
             <div class="messages">
                 @if($selectedKey)
