@@ -6,8 +6,10 @@ use App\Models\clients;
 use App\Models\device;
 use App\Models\issue_token;
 use App\Models\issue_type;
+use App\Models\tech_tokens;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,10 +45,8 @@ class issueTokenController extends Controller
 
     public function admin_index()
     {
-        // $type = issue_type::all();
-        // $data = issue_token::all();
-        // $client = clients::all();
-        return view('frontend.admin.pages.tokens.index');
+        $tech = tech_tokens::all();
+        return view('frontend.admin.pages.tokens.index')->with(['tech' => $tech]);
     }
 
     public function add_index()
@@ -62,6 +62,22 @@ class issueTokenController extends Controller
         $data = issue_type::all();
         return view('frontend.admin.pages.tokens.type.index')->with(['data' => $data]);
     }
+
+    public function assign_technical(Request $request)
+    {
+        $data = issue_token::where('id', $request->input('token2_id'))->first();
+        if ($data == null) {
+            Session::flash('error', 'No token fond');
+            return redirect()->back();
+        } else {
+            tech_tokens::create([
+                'token_id' => $data->id
+            ]);
+            Session::flash('success', 'Token assigned to technical team successfully');
+            return redirect()->back();
+        }
+    }
+
 
     public function type_create(Request $request)
     {
@@ -177,19 +193,19 @@ class issueTokenController extends Controller
         $search_value = $request->input('search.value');
 
         if (!empty($search_value)) {
-            $query = DB::table('clients')
+            $data1 = DB::table('clients')
                 ->select('*')
                 ->where('name', 'like', '%' . $search_value . '%')
                 ->get();
-
-            $total_count = count($query);
-
-            $data = DB::table('clients')
-                ->select('*')
-                ->where('name', 'like', '%' . $search_value . '%')
+            $data =  DB::table('issue_tokens')
+                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                ->whereIn('issue_tokens.client_id', $data1->pluck('client_id'))
                 ->skip($start)
                 ->take($length)
                 ->get();
+            $total_count = count($data);
         } elseif (!empty($valueStatus)) {
             $query = DB::table('issue_tokens')
                 ->select('*')
@@ -199,15 +215,19 @@ class issueTokenController extends Controller
             $total_count = count($query);
 
             $data = DB::table('issue_tokens')
-                ->select('*')
-                ->where('status', $valueStatus)
+                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                ->where('issue_tokens.status', $valueStatus)
                 ->skip($start)
                 ->take($length)
                 ->get();
         } else {
             $total_count = count(DB::table('issue_tokens')->get());
             $data = DB::table('issue_tokens')
-                ->select('*')
+                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -221,7 +241,7 @@ class issueTokenController extends Controller
             "recordsFiltered" => $total_count,
             "data" => $data,
             'type' => $type,
-            'client' => $client,
+            'clients' => $client,
         ];
         return response()->json($json_data);
     }

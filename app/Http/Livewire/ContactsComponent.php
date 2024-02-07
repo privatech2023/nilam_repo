@@ -25,6 +25,12 @@ class ContactsComponent extends Component
             ->get();
         $this->contactsCount = count($this->contactsList);
     }
+
+    public function contRefreshComponentSpecific()
+    {
+        $this->contactsCount = count($this->contactsList);
+        $this->emit('refreshComponent');
+    }
     public function sendNotification($action_to)
     {
         $device = clients::where('client_id', $this->userId)->first();

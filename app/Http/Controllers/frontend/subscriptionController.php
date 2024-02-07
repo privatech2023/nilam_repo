@@ -4,6 +4,7 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\activation_codes;
+use App\Models\clients;
 use App\Models\coupons;
 use App\Models\packages;
 use App\Models\subscriptions;
@@ -13,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Razorpay\Api\Api as ApiApi;
-use Spatie\FlareClient\Api;
+use Illuminate\Support\Str;
 
 class subscriptionController extends Controller
 {
@@ -23,6 +24,10 @@ class subscriptionController extends Controller
         $data = array(
             'subs_status' => $this->getSubStatus($logged_user),
         );
+        $client = clients::where('client_id', $logged_user)->first();
+        Session::put('name', $client->user);
+        Session::put('email', $client->email);
+        Session::put('contact', $client->mobile_number);
         return view('frontend.pages.subscription.index', $data);
     }
 
@@ -35,6 +40,14 @@ class subscriptionController extends Controller
             'packages' => $packages,
         ];
         return view('frontend.pages.subscription.packages', $data);
+    }
+
+    public function createApi()
+    {
+        $id = config('services.razorpay.key');
+        $secret = config('services.razorpay.secret');
+
+        return new ApiApi($id, $secret);
     }
 
     public function purchasePackage($id)
@@ -185,6 +198,11 @@ class subscriptionController extends Controller
 
     public function checkout(Request $request)
     {
+        $client = clients::where('client_id', session('user_id'))->first();
+        $receipt = (string) str::uuid();
+
+        $package = packages::where('id', $request->input('package_id'))->first();
+
         if ($request->input('coupon_name') != null) {
             $coupon = coupons::whereRaw('BINARY coupon = ?', [$request->input('coupon_name')])->first();
             if ($coupon === null || $coupon->is_active == 0) {
@@ -195,33 +213,124 @@ class subscriptionController extends Controller
             } else {
                 $newAmount = (int)($request->input('pay-amount')) - (($coupon->discount_percentage / 100) * $request->input('pay-amount'));
                 $amountInPaise = (int)($newAmount * 100);
-                $api = new ApiApi(getenv('RAZORPAY_KEY_ID'), getenv('RAZORPAY_KEY_SECRET'));
+                $api = new ApiApi(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
                 $razorCreate = $api->order->create(array(
-                    'receipt' => '123',
+                    'receipt' => $receipt,
                     'amount' => $amountInPaise,
                     'currency' => 'INR',
-                    'notes' => array('key1' => 'value3', 'key2' => 'value2')
+                    'notes' => array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3')
                 ));
+
+
+                $transaction = new transactions();
+                $transaction->txn_id = $receipt;
+                $transaction->client_id = $request->input('user_id');
+                $transaction->txn_type = 'Online payment';
+                $transaction->txn_mode = 'Razorpay';
+                $transaction->net_amount = $package->net_amount;
+                $transaction->tax_amt = $package->tax;
+                $transaction->paid_amt =  $request->input('pay-amount');
+                $transaction->plan_validity_days = $package->duration_in_days;
+                $transaction->package_name = $package->name;
+                $transaction->activation_code = null;
+                $transaction->status = 1;
+                $transaction->price = $package->price;
+                $transaction->created_by = session()->get('user_id');
+                $transaction->razorpay_order_id = $razorCreate->id;
+                $transaction_id = $transaction->txn_id;
+                $transaction->save();
+
+                $daysToAdd = $package->duration_in_days;
+
+                $lastSubscription = Subscriptions::where('client_id', $request->input('user_id'))
+                    ->whereNull('validity_days')
+                    ->latest()
+                    ->first();
+                if ($lastSubscription) {
+                    $lastSubscription->txn_id = $transaction_id;
+                    $lastSubscription->started_at = now();
+                    $lastSubscription->ends_on = now()->addDays($daysToAdd);
+                    $lastSubscription->status = 0;
+                    $lastSubscription->validity_days = $package->duration_in_days;
+                    $lastSubscription->save();
+                } else {
+                    $update_date = Subscriptions::where('client_id', $request->input('user_id'))
+                        ->select('ends_on')
+                        ->orderByDesc('ends_on')
+                        ->first();
+
+
+                    $subscription = new subscriptions();
+                    $subscription->client_id = $request->input('user_id');
+                    $subscription->txn_id = $transaction_id;
+                    $subscription->started_at = date('Y-m-d', strtotime($update_date->ends_on));
+                    $subscription->status = 0;
+                    $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
+                    $subscription->validity_days = $package->duration_in_days;
+                    $subscription->save();
+                }
 
                 $data['razorPay'] = $razorCreate;
                 return view('Frontend/razorpay/checkout', $data);
-
-                // $id = $request->input('package_id');
-                // $amount = $request->input('pay-amount');
-                // Session::flash('success', 'Coupon code valid');
-                // return view('frontend.pages.subscription.online_payment')->with(['payableAmount' => $amount, 'packageId' => $id]);
             }
         }
-        //add transaction mode to online.
+
         $amountInPaise = (int)($request->input('pay-amount') * 100);
-        $api = new ApiApi(getenv('RAZORPAY_KEY_ID'), getenv('RAZORPAY_KEY_SECRET'));
+        $api = new ApiApi(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
         $razorCreate = $api->order->create(array(
-            'receipt' => '123',
+            'receipt' => $receipt,
             'amount' => $amountInPaise,
             'currency' => 'INR',
-            'notes' => array('key1' => 'value3', 'key2' => 'value2')
+            'notes' => array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3')
         ));
 
+        $transaction = new transactions();
+        $transaction->txn_id = $receipt;
+        $transaction->client_id = $request->input('user_id');
+        $transaction->txn_type = 'Online payment';
+        $transaction->txn_mode = 'Razorpay';
+        $transaction->net_amount = $package->net_amount;
+        $transaction->tax_amt = $package->tax;
+        $transaction->paid_amt =  $request->input('pay-amount');
+        $transaction->plan_validity_days = $package->duration_in_days;
+        $transaction->package_name = $package->name;
+        $transaction->activation_code = null;
+        $transaction->status = 1;
+        $transaction->price = $package->price;
+        $transaction->created_by = session()->get('user_id');
+        $transaction->razorpay_order_id = $razorCreate->id;
+        $transaction_id = $transaction->txn_id;
+        $transaction->save();
+
+        $daysToAdd = $package->duration_in_days;
+
+        $lastSubscription = Subscriptions::where('client_id', $request->input('user_id'))
+            ->whereNull('validity_days')
+            ->latest()
+            ->first();
+        if ($lastSubscription) {
+            $lastSubscription->txn_id = $transaction_id;
+            $lastSubscription->started_at = now();
+            $lastSubscription->ends_on = now()->addDays($daysToAdd);
+            $lastSubscription->status = 0;
+            $lastSubscription->validity_days = $package->duration_in_days;
+            $lastSubscription->save();
+        } else {
+            $update_date = Subscriptions::where('client_id', $request->input('user_id'))
+                ->select('ends_on')
+                ->orderByDesc('ends_on')
+                ->first();
+
+
+            $subscription = new subscriptions();
+            $subscription->client_id = $request->input('user_id');
+            $subscription->txn_id = $transaction_id;
+            $subscription->started_at = date('Y-m-d', strtotime($update_date->ends_on));
+            $subscription->status = 0;
+            $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
+            $subscription->validity_days = $package->duration_in_days;
+            $subscription->save();
+        }
         $data['razorPay'] = $razorCreate;
         return view('Frontend/razorpay/checkout', $data);
     }

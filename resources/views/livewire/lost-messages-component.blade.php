@@ -8,109 +8,34 @@
             @livewire('dropdown')
         </div>
     </div>
+    
     @endif
     
     <div class="content-wrapper remove-background">
-        @if($lostMessagesCount == 0)
-            <div class="container">
-                <span class="message-text">No lost messages found</span>
-            </div>
-        @else
-        <div id="frame">        
-            <div id="sidepanel">
-                <div id="profile">
-                    <div class="wrap">
-                        <p class="lead text-md">LOST MESSAGES </p>
-                    </div>
-                </div>
-                <div id="contacts">
-                    <ul>
-                        {{-- @foreach($messageList as $key => $value)
-                            <li class="contact" wire:click="populateMessage('{{ $key }}')" >
-                            <div class="wrap">
-                            <div class="meta">
-                            <p class="name">{{ $key }}</p>
-                            <p class="preview">{{ $messageList[$key][0]['body'] }}</p>
-                            </div>
-                            </div>
-                            </li>
-                            <hr>
-                        @endforeach                     --}}
-                    </ul>
-                </div>
-            </div>
-            <div class="content">
-                <div class="contact-profile">
-                    <div class="bttns">
-                        <button id="backButton" type="button" class="btn btn-outline-secondary" wire:click="backButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-circle" viewBox="0 0 16 16">
-                                <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-                            </svg>
-                        </button>
-                        <div class="to text-sm">
-                        <p class="text-secondary" style="margin-left: 5px;">To:</p> 
-                        <p style="margin-left: 5px;"></p>
-                        </div>
-                        {{-- <div class="text-right" >
-                            <div class="butts">
-                            <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
-                            <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncOutbox">Sync outbox</button>
-                            </div>
-                        </div>  --}}
-                    </div> 
-                    <div class="sec-center" style="align-items:right;"> 	
-                        <input class="dropdown"  type="checkbox"  id="dropdown" name="dropdown"/>
-                        <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
-                        <div class="section-dropdown"> 
-                            {{-- <div class="a" style="cursor: pointer;" wire:click="syncInbox">Sync inbox <i class="uil uil-arrow-right"></i></div>
-                            <div class="a" style="cursor: pointer;" wire:click="syncOutbox">Sync outbox<i class="uil uil-arrow-right"></i></div>
-                            <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/> --}}
-
-                        </div>
-                    </div>               
-                </div>
-                <div class="messages">
-                    {{-- @if($selectedKey)
-                        @livewire('message-populate', ['key' => $selectedKey], key($selectedKey))
-                    @endif --}}
-                </div>
-                <div class="message-input">
-                    <div class="wrap">
-                    <input type="text" placeholder="Write your message..." />
-                    <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
-                    <button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+        <div id="frame">
+            <nav class="navbar navbar-light bg-light">
+                
+                <span class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                    <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                    <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                  </svg>  LOST MESSAGE</span>
+            </nav>
+            <div style=" margin-top: 20px; margin-left: 20px;" >
+                <div class="row">
+                    <div class="">
+                        <button class="button-29" role="button" wire:click="lostMessage"><svg style="margin-right:6px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                            <path d="M8.997 1.665a1.13 1.13 0 0 0-1.994 0l-6.26 11.186a1.13 1.13 0 0 0 .997 1.664h12.52a1.13 1.13 0 0 0 .997-1.664L8.997 1.665zM8.28 12.856a1.1 1.1 0 0 0 1.438-.002l5.45-9.75a1.1 1.1 0 0 0-.718-1.844H3.55a1.1 1.1 0 0 0-.718 1.844l5.448 9.75zM8.997 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                        </svg>Lost message</button>
                     </div>
                 </div>
             </div>
         </div>
-        @endif    
+    
         </div>
-        <script>
-        document.addEventListener("livewire:load", function () {
-        var screenWidth = window.innerWidth;
-        var isContentOpen = false;
-    
-        Livewire.on('toggleSidepanel', () => {
-            if (screenWidth <= 760 && !isContentOpen) {
-                $('#frame #sidepanel').css('width', '1px');
-                isContentOpen = true;
-                console.log('hey');
-            }
-            $('#frame .content').attr('id', 'content');
-            });
-    
-        Livewire.on('back', () => {
-            if (isContentOpen) {
-                $('#frame #sidepanel').css('width', '100%');
-                $('#frame .content').removeAttr('id');
-                isContentOpen = false;
-            }
-        });
-    });
-    </script>
-    
         
-    </div>
+    </div> 
         
-        
+    
+    
+    
     

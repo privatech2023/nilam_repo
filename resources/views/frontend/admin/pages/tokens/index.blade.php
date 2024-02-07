@@ -7,7 +7,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Activation Codes</h1>
+                        <h1>ISSUE TOKENS</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -98,6 +98,31 @@
     </div><!-- /.modal-dialog -->
 </div>
 
+{{-- tech modal --}}
+<div class="modal fade" id="modal-technical">
+    <div class="modal-dialog">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Role</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"></span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to assign this token to technical team</strong>
+                    ?</p>
+                <form action="{{url('/admin/assign/technical')}}" method="post" style="margin-top: 4px;">
+                    @csrf
+                    <input type="hidden" class="form-control" name="token2_id" id="token2_id" value="">
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                        <button type="submit"  class="btn btn-outline-success">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
 
     {{-- view modal --}}
     <div class="modal fade" id="modal-view">
@@ -112,7 +137,7 @@
                     <form action="{{url('/admin/token/update')}}" method="post" style="margin-top: 4px;">
                         @csrf
                         <div class="container view-token-detail">
-                            <input type="hidden" name="token_id" id="token_id" value="">
+                            <input class="form-control" type="hidden" name="token_id" id="token_id" value="">
     
                             <div class="form-group row">
                                 <label for="type">Type</label>
@@ -169,7 +194,7 @@
         $(document).ready(function() {
 
             
-
+            var techTokens = {!! json_encode($tech->pluck('token_id')) !!};
 
 
             $.ajaxSetup({
@@ -182,7 +207,7 @@
             $("#packageMenu").addClass('active');
             $("#packageSubMenuCodes").addClass('active');
             var i = 1;
-        
+            
             var dataTable = $('#dataTable').DataTable({
                 lengthMenu: [
                     [10, 30, -1],
@@ -200,6 +225,7 @@
                         data.status = type;
                     }
                 },
+                
                 columns: [
                     {
                         mRender: function(data, type, full, meta) {
@@ -207,13 +233,13 @@
                     }
                     },
                     {
-                        data: "issue_type"
+                        data: "issue_type_name"
                     },
                     {
-                        data: "device_id"
+                        data: "device_id",
                     },
                     {
-                        data: "client_id"
+                        data: "client_name",
                     },
                     {
                         data: "detail"
@@ -224,12 +250,12 @@
                     {
                         data: "end_date",
                         render: function(data, type, row) {
-                        if (data === null) {
+                        if (data === null || data === "") {
                         return '<span class="badge badge-warning">Not allotted</span>';
                         } else {
                         return data;
                         }
-                        }
+                    }
                     },
                     {
                         mRender: function(data, type, row) {
@@ -243,8 +269,11 @@
                     },
                     {
                         mRender: function(data, type, row) {
-                            return '<button class="btn btn-outline-info btn-xs view-btn"  data-value="' + row.id + '">VIEW</button><button class="btn btn-outline-danger btn-xs del-button" data-value="' + row.id + '" >Del</button>'
-                        }
+        var disabled = techTokens.includes(row.id) ? 'disabled' : '';
+        return '<button class="btn btn-outline-info btn-xs view-btn" data-value="' + row.id + '">VIEW</button>' +
+            '<button class="btn btn-outline-danger btn-xs del-button" data-value="' + row.id + '">Del</button>' +
+            '<button style="margin-left:2px; color: grey;" class="btn btn-outline-warning btn-xs technical-button" data-value="' + row.id + '" ' + disabled + '>TECHNICAL</button>';
+    }
                     },
                 ],
                 columnDefs: [
@@ -281,9 +310,9 @@
         });
         
         $(document).on('click','.view-btn', function(){
-            alert('hey');
             var data = $(this).data('value');
-            console.log(data);
+            
+
                 $('#view_id').val(data);
                 $.ajax({
                     type: "post",
@@ -293,7 +322,8 @@
                     url: "/admin/token/get/"+data,
                     dataType: "json",
                     success: function (response) {
-                        $('#token_id').val(data);
+                        
+                        $('#token_id').val(response.data.id);
                         $('#type').val(response.type.name);
                         $('#mobile_number').val(response.data.mobile_number);
                         $('#device_id').val(response.device_name.device_name);
@@ -303,6 +333,12 @@
                         $('#modal-view').modal('show');
                     }
                 });
+        });
+
+        $(document).on('click','.technical-button',function(){
+            $('#modal-technical').modal('show');
+            var data = $(this).data('value');
+            $('#token2_id').val(data);
         });
 
         });

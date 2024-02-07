@@ -25,5 +25,9 @@ class transactions extends Model
         'coupon_code',
         'status',
         'created_by',
+        'razorpay_order_id',
+        'redirected',
+        'razorpay_payment_id',
+        'razorpay_signature',
     ];
 }

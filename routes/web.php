@@ -12,6 +12,7 @@ use App\Http\Controllers\frontend\subscriptionController as FrontendSubscription
 use App\Http\Controllers\issueTokenController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\rolesController;
 use App\Http\Controllers\SendFcmNotification;
@@ -73,6 +74,9 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
     route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 
+    Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
+    Route::get('/razorpay/pay', [RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
+    Route::post('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
 
     route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
     route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
@@ -199,6 +203,8 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
     route::get('/admin/search_client', [issueTokenController::class, 'search_client']);
+
+    route::post('/admin/assign/technical', [issueTokenController::class, 'assign_technical']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

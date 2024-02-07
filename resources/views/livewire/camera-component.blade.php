@@ -17,8 +17,12 @@
               <button class="btn btn-outline-success" type="button" wire:click="takePicture">Take picture</button>
         </nav>
         <div class="image-container">
-            {{-- <img src="https://picsum.photos/100/100" alt="Placeholder Image 1" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;"> --}}
-            
+            @foreach($images as $image)
+            <a href="{{ $image->s3Url() }}" data-lightbox="photo"
+                data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
+            <img src="{{ $image->s3Url() }}" alt="tools" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;">
+            </a>
+            @endforeach
         </div>
     </div>
 </div>

@@ -40,11 +40,11 @@
                                 "description": "Test Transaction",
                                 "image": "{{ asset('assets/frontend/images/web-logo.png') }}",
                                 "order_id": "{{ $razorPay['id'] }}",
-                                "callback_url": "{{ url('subscription/paymentStatus') }}",
+                                "callback_url": "{{ url('/razorpay/success') }}",
                                 "prefill": {
-                                    "name": "Amlan Bhuyan",
-                                    "email": "amlan17bhuyan@gmail.com",
-                                    "contact": "9127022438"
+                                    "name": "{{ session('name') }}",
+                                    "email": "{{ session('email') }}",
+                                    "contact": "{{ session('contact') }}"
                                 },
                                 "notes": {
                                     "address": "Privatech Garden LLP"
