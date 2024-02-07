@@ -76,7 +76,7 @@ class MessageComponent extends Component
         }
 
         $data = [
-            'device_token' => 'dzWryxeLSdqLHQ4a-WrpI5:APA91bGZI1G6Nf8jjzfu2kgBaJ7O4XCL2yMj1wJmcdLA3z7VqYN_z3elBzwp2MSxaNP1OCKVQm_BCX2tycLRx7Ahv5kiOU9wdk5wxBKi4ReCCww7ykfHoRgazx5udppcWler6jQNAPyq',
+            'device_token' => $client->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
@@ -84,7 +84,6 @@ class MessageComponent extends Component
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],

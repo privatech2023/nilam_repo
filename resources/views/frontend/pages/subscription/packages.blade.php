@@ -133,6 +133,7 @@
     </script>
 @endif
 
+
 <script>
     $(document).ready(function () {
         $(document).on('click','#activation_btn', function () {
@@ -141,3 +142,4 @@
     });
 </script>
 @endsection
+
