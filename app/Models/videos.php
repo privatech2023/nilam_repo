@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class videos extends Model
 {
@@ -13,4 +14,14 @@ class videos extends Model
         'device_id',
         'filename'
     ];
+
+    public function s3Url()
+    {
+        $mins = 5;
+        $url = Storage::disk('s3')->temporaryUrl(
+            'videos/' . $this->filename,
+            now()->addMinutes($mins)
+        );
+        return $url;
+    }
 }

@@ -4,16 +4,23 @@
     <div class="col-9 ">
         <h2 class="welcome-text">Welcome, {{session('user_name')}}</h2>
     </div>
+    
     <div>
         @livewire('dropdown')
     </div>
 </div>
+
 @endif
 
 <div class="content-wrapper remove-background">
+    
     @if($msgCount == 0)
     <div class="container">
-        <span class="message-text">No messages found</span>
+        <span class="message-text">No messages found<br><br>
+        <button type="button" class="btn btn-sm btn-primary " wire:click="syncInbox">Sync inbox</button>
+        <button type="button" class="btn btn-sm btn-primary" wire:click="syncOutbox">Sync outbox</button>
+        <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
+    </span>
     </div>
     @else
     <div id="frame">        
@@ -59,6 +66,7 @@
                         <div class="butts">
                         <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncInbox">Sync inbox</button>
                         <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="syncOutbox">Sync outbox</button>
+                        <button class="btn btn-outline-success btn-sm hide-btn" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
                         </div>
                         
                     </div> 
@@ -69,13 +77,7 @@
                     <div class="section-dropdown"> 
                         <div class="a" style="cursor: pointer;" wire:click="syncInbox">Sync inbox <i class="uil uil-arrow-right"></i></div>
                         <div class="a" style="cursor: pointer;" wire:click="syncOutbox">Sync outbox<i class="uil uil-arrow-right"></i></div>
-                        <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
-                        {{-- <label class="for-dropdown-sub" for="dropdown-sub">Device <i class="uil uil-plus"></i></label>
-                        <div class="section-dropdown-sub"> 
-                            @foreach ($devices as $device)
-                            <a class="a" href="#">{{ $device->device_name }}<i class="uil uil-arrow-right"></i></a>
-                            @endforeach
-                        </div> --}}
+                        <div class="a" style="cursor: pointer;" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</div>
                     </div>
 
                 </div>               
@@ -119,8 +121,14 @@
         }
     });
 });
-</script>
 
+
+document.addEventListener('livewire:load', function () {
+        Livewire.on('refreshComponent', function () {
+            Livewire.emit('refresh'); // Reload the Livewire component
+        });
+    });
+</script>
     
 </div>
     

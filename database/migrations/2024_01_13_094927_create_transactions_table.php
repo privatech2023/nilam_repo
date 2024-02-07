@@ -28,6 +28,9 @@ return new class extends Migration
             $table->string('package_name', 256)->nullable();
             $table->string('activation_code', 256)->nullable();
             $table->string('coupon_code', 256)->nullable();
+            $table->string('razorpay_order_id')->nullable();
+            $table->string('redirected')->default(false);
+            $table->string('razorpay_payment_id')->nullable();
             $table->unsignedBigInteger('status')->default(1);
             $table->unsignedBigInteger('created_by');
             $table->timestamps();

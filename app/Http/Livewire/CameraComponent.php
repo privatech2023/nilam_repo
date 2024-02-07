@@ -26,8 +26,14 @@ class CameraComponent extends Component
     public function loadImages()
     {
         $device = clients::where('client_id', $this->userId)->first();
-        $this->images = images::where('user_id', $this->userId)->where('device_id', $device->device_id)->latest()
-            ->first();
+        if ($device) {
+            $this->images = images::where('user_id', $this->userId)
+                ->where('device_id', $device->device_id)
+                ->latest()
+                ->get();
+        } else {
+            $this->images = [];
+        }
     }
 
     public function sendNotification($action_to)
