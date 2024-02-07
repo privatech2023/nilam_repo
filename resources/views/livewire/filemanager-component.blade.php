@@ -13,7 +13,7 @@
 <div class="content-wrapper remove-background">
     @if($filesCount == 0)
     <div class="container">
-        <span class="message-text">No files found</span>
+        <span class="message-text">Upcoming...</span>
     </div>
     @else
     <div id="frame">

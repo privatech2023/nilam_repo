@@ -72,11 +72,11 @@
                             </div>
 
                         </div>
-                        <div class="card-body" >
-                            <div class="row" >
-                                <div  class="table-responsive">
-                                        <table class="table table-striped table-light" style="font-size: 16px; ">
-                                            <thead>
+                        <div class="card-body" style="font-size: 16px; max-height: 400px; overflow-y: auto;">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-light">
+                                        <thead>
                                             <tr>
                                                 <th scope="col">Type</th>
                                                 <th scope="col">Contact number</th>
@@ -85,9 +85,9 @@
                                                 <th scope="col">Start date</th>
                                                 <th scope="col">End date</th>
                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($data as $issue)
+                                        </thead>
+                                        <tbody>
+                                            @foreach($data as $issue)
                                             <tr>
                                                 <th scope="row">
                                                     @foreach($type as $t)
@@ -111,15 +111,14 @@
                                                     <span class="badge badge-success">{{$issue->end_date}}</span>
                                                     @endif
                                                 </td>
-                                              </tr>
-                                              @endforeach
-                                            </tbody>
-                                          </table>
-
-                                    
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
 

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id('subs_id');
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('txn_id')->nullable();
+            $table->integer('client_id');
+            $table->string('txn_id')->nullable();
             $table->date('started_at')->nullable();
             $table->date('ends_on')->nullable();
             $table->string('validity_days', 256)->nullable();

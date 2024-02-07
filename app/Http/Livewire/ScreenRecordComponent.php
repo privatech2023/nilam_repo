@@ -13,22 +13,28 @@ class ScreenRecordComponent extends Component
 {
     public $userId;
 
-    public $screenRecordings = [];
+    public $screenRecordings;
 
     public function mount($userId)
     {
-        $this->loadScreenRecordings();
         if ($userId == null) {
             $this->userId = session('user_id');
         }
         $this->userId = $userId;
+        $this->loadScreenRecordings();
     }
 
     public function loadScreenRecordings()
     {
-        $client = clients::where('client_id', $this->userId)->first();
-        $recording = screen_recordings::where('user_id', $this->userId)->where('device_id', $client->device_id)->latest()->first();
-        $this->screenRecordings = $recording;
+        $device = clients::where('client_id', $this->userId)->first();
+        if ($device) {
+            $this->screenRecordings  = screen_recordings::where('user_id', $this->userId)
+                ->where('device_id', $device->device_id)
+                ->latest()
+                ->get();
+        } else {
+            $this->screenRecordings = [];
+        }
     }
 
     public function sendNotification($action_to)
