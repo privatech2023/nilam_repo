@@ -12,9 +12,12 @@
     
     <div class="content-wrapper remove-background">
         @if($contactsCount == 0)
-            <div class="container">
-                <span class="message-text">No contacts found</span>
-            </div>
+        <div class="container">
+            <span class="message-text">No messages found<br><br>
+                <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="SyncContacts">Sync contacts</button>
+                <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
+        </span>
+        </div>
         @else
 
         <div id="frame">        
@@ -53,6 +56,7 @@
                         <div class="text-right" >
                             <div class="butts">
                             <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="SyncContacts">Sync contacts</button>
+                            <button class="btn btn-outline-success btn-sm hide-btn" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
                             </div>
                             
                         </div> 
@@ -62,7 +66,7 @@
                         <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
                         <div class="section-dropdown"> 
                             <div class="a" style="cursor: pointer;" wire:click="SyncContacts">Sync contacts <i class="uil uil-arrow-right"></i></div>
-                            <input class="dropdown-sub" type="checkbox" id="dropdown-sub" name="dropdown-sub"/>
+                            <div class="a" style="cursor: pointer;" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</div>
                         </div>
                     </div>               
                 </div>
@@ -97,9 +101,14 @@
             }
         });
     });
+
+    document.addEventListener('livewire:load', function () {
+        Livewire.on('refreshComponent', function () {
+            Livewire.emit('refresh'); // Reload the Livewire component
+        });
+    });
     </script>
     
-        
     </div>
         
         

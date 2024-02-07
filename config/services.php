@@ -48,6 +48,13 @@ return [
         ],
         'json' => true,
         'add_code' => false,
-    ]
+    ],
+
+    'razorpay' => [
+        'key' => env('RAZORPAY_KEY'),
+        'secret' => env('RAZORPAY_SECRET'),
+        'webhook_secret' => env('RAZORPAY_WEBHOOK_SECRET'),
+        'hosted_url' => env('RAZORPAY_HOSTED_URL'),
+    ],
 
 ];
