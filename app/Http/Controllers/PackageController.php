@@ -30,6 +30,7 @@ class PackageController extends Controller
                 'tax' => 'required|numeric|min:0',
                 'price' => 'required|numeric|min:0',
                 'status' => 'required|in:0,1',
+                'storage' => 'required'
             ]);
             if ($validatedData->fails()) {
                 Session::flash('success', $validatedData->errors());
@@ -43,6 +44,7 @@ class PackageController extends Controller
                 'price' => $request->input('price'),
                 'is_active' => $request->input('status'),
                 'created_by' => session()->get('admin_id'),
+                'storage' => $request->input('storage'),
             ]);
             Session::flash('success', 'Package Created');
             return redirect()->route('/admin/managePackages');
@@ -94,6 +96,7 @@ class PackageController extends Controller
         $package->tax = $request->input('tax');
         $package->price = $request->input('price');
         $package->is_active = $request->input('status');
+        $package->storage = $request->input('storage');
         $package->save();
 
         Session::flash('success', 'Package Updated');

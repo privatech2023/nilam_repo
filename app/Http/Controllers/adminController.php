@@ -89,7 +89,6 @@ class adminController extends Controller
             if ($user && password_verify($credentials['password'], $user->password)) {
                 $request->session()->put('admin_id', $user->id);
                 $request->session()->put('admin_name', $user->name);
-
                 $group = user_groups::where('u_id', $user->id)->first();
                 $permissions = groups::where('id', $group->g_id)->first();
                 $unserializedPermissions = unserialize($permissions->permissions);

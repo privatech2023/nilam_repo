@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('price', 256)->nullable();
             $table->integer('is_active')->default(1);
             $table->integer('created_by');
+            $table->integer('storage')->default(1);
             $table->timestamps();
         });
     }
