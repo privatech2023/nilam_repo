@@ -162,7 +162,6 @@
                 </ul>
               </li>
               
-              @if(session('admin_name') === 'admin')
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-users"></i>
@@ -172,21 +171,24 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
+                  @if(in_array('viewUser', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
                     <a href="{{ url('/admin/users')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage employees</p>
                     </a>
                   </li>
+                  @endif
+                  @if(in_array('viewRole', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
                     <a href="{{ url('/admin/roles')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>User roles</p>
                     </a>
                   </li>
+                  @endif
                 </ul>
               </li>
-              @endif
 
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -228,7 +230,7 @@
                   <p>Transactions</p>
                 </a>
               </li>
-
+              @if(in_array('viewSetting', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/settings')}}" class="nav-link">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
@@ -237,6 +239,7 @@
                   </p>
                 </a>
               </li>
+              @endif
 
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/test-api')}}" class="nav-link">
