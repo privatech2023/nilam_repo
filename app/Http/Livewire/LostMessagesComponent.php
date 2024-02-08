@@ -5,18 +5,20 @@ namespace App\Http\Livewire;
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
 use App\Models\device;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class LostMessagesComponent extends Component
 {
     public $userId;
     public $lostMessagesCount = 0;
+    protected $listeners = ['lostMessage'];
 
     public function mount($userId)
     {
         $this->userId = $userId;
     }
-    public function sendNotification($action_to)
+    public function sendNotification($action_to, $message)
     {
         $device = clients::where('client_id', $this->userId)->first();
 
@@ -27,25 +29,29 @@ class LostMessagesComponent extends Component
             ]);
             return;
         }
-
+        if ($message == '') {
+            $message = 'This device belongs to ' . $device->name . 'Return it by calling at ' . $device->mobile_number;
+        }
         $data = [
             'device_token' => $device->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
             'language' => 'English',
-            'message' => 'This device belongs to ' . $device->name . 'Return it by calling at ' . $device->mobile_number
+            'message' => $message
         ];
 
         // Send notification to device
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body'], $data['language'], $data['message']);
+            Log::error('sent ' . $res['message']);
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
             ]);
         } catch (\Throwable $th) {
+            Log::error('failed' . $th->getMessage());
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
@@ -53,9 +59,9 @@ class LostMessagesComponent extends Component
         }
     }
 
-    public function lostMessage()
+    public function lostMessage($message)
     {
-        $this->sendNotification('lost_message');
+        $this->sendNotification('lost_message', $message);
     }
 
     public function render()

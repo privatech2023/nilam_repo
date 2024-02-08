@@ -1,15 +1,24 @@
 <div>
-    @if(session('user_name'))
-    <div class="row mt-3 welcome">
-        <div class="col-9 ">
-            <h2 class="welcome-text">Welcome, {{session('user_name')}}</h2>
+    <div class="bread" style="display:flex;">
+        <div >
+            <a href="{{url('/')}}" style="text-decoration: none;">
+                <button type="button" class="btn btn-md" style="margin-top: 7px; background-color: #60377b; border-radius: 30px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-short" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"/>
+                    </svg>
+                </button>
+            </a>
         </div>
-        <div>
+        
             @livewire('dropdown')
-        </div>
+        
     </div>
-    @endif
-    
+    {{-- <hr style="width: 100%; border-top: 1px solid #311c39;">
+    <div class="row" style="display:inline-block; text-align: center; margin-top: 1rem; width:100%;">
+    <button  type="button" class="btn btn-sm " style=" background-color: #60377b; border-radius: 10px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" wire:click="SyncContacts">Sync contacts</button>
+    <button class="btn btn-sm " style=" background-color: #60377b; border-radius: 10px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
+    </div>
+    <hr style="width: 100%; border-top: 1px solid #311c39;"> --}}
     <div class="content-wrapper remove-background">
         @if($contactsCount == 0)
         <div class="container">
@@ -19,12 +28,13 @@
         </span>
         </div>
         @else
-
         <div id="frame">        
             <div id="sidepanel">
                 <div id="profile">
-                    <div class="wrap">
-                        <p class="lead text-md">CONTACTS ({{$contactsCount}})</p>
+                    <div class="wrap" style="margin-left: 0px;">
+                        <p class="lead text-md" style="margin-left: 0px;">CONTACTS({{$contactsCount}})</p>
+                        <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width:6rem; margin-left: 2px; font-size: 0.7em;" wire:click="SyncContacts">Sync contacts</button>
+                        <button class="btn btn-sm btn-outline btn-primary" style="width:3.8rem; font-size: 0.7em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
                     </div>
                 </div>
                 <div id="contacts">
@@ -53,26 +63,28 @@
                         <div class="to text-sm">
                         <p style="margin-left: 5px;">{{ $selectedKey}}</p>
                         </div>
-                        <div class="text-right" >
+                        {{-- <div class="text-right" >
                             <div class="butts">
                             <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="SyncContacts">Sync contacts</button>
                             <button class="btn btn-outline-success btn-sm hide-btn" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
                             </div>
                             
-                        </div> 
+                        </div>  --}}
                     </div> 
-                    <div class="sec-center" style="align-items:right;"> 	
+                    {{-- <div class="sec-center" style="align-items:right;"> 	
                         <input class="dropdown"  type="checkbox"  id="dropdown" name="dropdown"/>
                         <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
                         <div class="section-dropdown"> 
                             <div class="a" style="cursor: pointer;" wire:click="SyncContacts">Sync contacts <i class="uil uil-arrow-right"></i></div>
                             <div class="a" style="cursor: pointer;" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</div>
                         </div>
-                    </div>               
+                    </div>                --}}
                 </div>
                 <div class="messages">
                     @if($selectedKey)
                     @livewire('contacts-populate', ['key' => $selectedKey], key($selectedKey))
+                    @else
+                    <span class="text-sm" style="margin-left:5px;"></span>
                     @endif
                 </div>
             </div>
@@ -104,7 +116,8 @@
 
     document.addEventListener('livewire:load', function () {
         Livewire.on('refreshComponent', function () {
-            Livewire.emit('refresh'); // Reload the Livewire component
+            Livewire.emit('refresh');
+            location.reload();
         });
     });
     </script>
