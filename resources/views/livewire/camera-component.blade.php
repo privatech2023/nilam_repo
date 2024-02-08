@@ -1,5 +1,5 @@
 <div>
-    <div class="bread" >
+    <div class="bread" style="display:flex;">
         <div >
             <a href="{{url('/')}}" style="text-decoration: none;">
                 <button type="button" class="btn btn-md" style="margin-top: 7px; background-color: #60377b; border-radius: 30px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
@@ -11,6 +11,7 @@
         </div>
         
             @livewire('dropdown')
+        
     </div>
 
 <div class="content-wrapper remove-background">
@@ -22,7 +23,7 @@
             @foreach($images as $image)
             <a href="{{ $image->s3Url() }}" data-lightbox="photo"
                 data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
-            <img src="{{ route('image.show', ['id' => $image->id]) }}" alt="tools" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;">
+            <img src="{{ $image->s3Url() }}" alt="tools" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;">
             </a>
             @endforeach
         </div>

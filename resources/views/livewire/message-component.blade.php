@@ -13,21 +13,19 @@
         
             @livewire('dropdown')
     </div>
-    {{-- <hr style="width: 100%; border-top: 1px solid #311c39;"> --}}
-    {{-- <div class="row" style="display:inline-block; text-align: center; margin-top: 1rem; width:100%;">
-    <button  type="button" class="btn btn-sm " style=" background-color: #60377b; border-radius: 10px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" wire:click="syncInbox">Sync inbox</button>
-    <button  type="button" class="btn btn-sm  " style="margin-left:2rem; margin-right:2rem;  background-color: #60377b; border-radius: 10px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" wire:click="syncOutbox">Sync outbox</button>
-    <button class="btn btn-sm " style=" background-color: #60377b; border-radius: 10px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
-    </div> --}}
-    {{-- <hr style="width: 100%; border-top: 1px solid #311c39;"> --}}
 <div class="content-wrapper remove-background">
     
+
+    <div class="loader_bg" style="display:none;">
+        <div id="loader"></div>
+    </div>
+
     @if($msgCount == 0)
     
     <div class="container">
         <span class="message-text">No messages found<br><br>
-        <button type="button" class="btn btn-sm btn-primary " wire:click="syncInbox">Sync inbox</button>
-        <button type="button" class="btn btn-sm btn-primary" wire:click="syncOutbox">Sync outbox</button>
+        <button type="button" class="btn btn-sm btn-primary " wire:click="syncInbox" onclick="load()">Sync inbox</button>
+        <button type="button" class="btn btn-sm btn-primary" wire:click="syncOutbox" onclick="load()">Sync outbox</button>
         <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
     </span>
     </div>
@@ -36,17 +34,17 @@
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap">
-                    <p class="lead text-sm">MESSAGES ({{$msgCount}})</p>
-                    <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width:5rem; margin-left: 6px; font-size: 0.8em;"  wire:click="syncInbox">Sync inbox</button>
-    <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width: 5rem; font-size: 0.75em;" wire:click="syncOutbox">Sync outbox</button>
-    <button class="btn btn-sm btn-outline btn-primary" style="width:4rem; font-size: 0.8em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
+                    <p class="lead text-sm" style="margin-left: 2px;">MESSAGES ({{$msgCount}})</p>
+                    <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width:4.5rem; margin-left: 8px; font-size: 0.7em;"  wire:click="syncInbox" onclick="load()">Sync inbox</button>
+                    <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width: 5rem; font-size: 0.75em;" wire:click="syncOutbox" onclick="load()">Sync outbox</button>
+                    <button class="btn btn-sm btn-outline btn-primary" style="width:4rem; font-size: 0.7em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
                 </div>
                 
             </div>
             <div id="contacts">
                 <ul>
                     @foreach($messageList as $key => $value)
-                        <li class="contact" wire:click="populateMessage('{{ $key }}')" onclick="handleClick(this)">
+                        <li class="contact" wire:click="populateMessage('{{ $key }}')" >
                         <div class="wrap">
                         <div class="meta">
                         <p class="name">{{ $key }}</p>
@@ -101,32 +99,34 @@
     @endif
     </div>
     <script>
+        function load() {
+            $('.loader_bg').show();
+        }
+    </script>
+    <script>
         let isLivewireEventInProgress = false;
 
-        function handleClick(element) {
-    // Disable further clicks for 2 seconds
-    element.disabled = true;
-    setTimeout(function () {
-        element.disabled = false;
-    }, 3000);
-}
     document.addEventListener("livewire:load", function () {
+
     var screenWidth = window.innerWidth;
     var isContentOpen = false;
     var isProcessing = false;
+    $('.loader_bg').hide();
     
     Livewire.on('toggleSidepanel', function () {
+        $('.loader_bg').show();
         if (!isProcessing) {
             isProcessing = true;
-
+            
             if (screenWidth <= 760 && !isContentOpen) {
             $('#frame #sidepanel').css('width', '0px');
             isContentOpen = true;
-            console.log('hey');
+            console.log(screenWidth);
+            $('.loader_bg').hide();
         }
         $('#frame .content').attr('id', 'content');
-
             isProcessing = false;
+            $('.loader_bg').hide();
         }
     });
 
@@ -143,6 +143,7 @@
 document.addEventListener('livewire:load', function () {
         Livewire.on('refreshComponent', function () {
             Livewire.emit('refresh'); 
+            $('.loader_bg').show();
             location.reload();
         });
     });
