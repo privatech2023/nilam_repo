@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\Api\V1\ApiAuthController;
+
 use App\Http\Controllers\Api\V1\CalllLogSyncController;
-use App\Http\Controllers\Api\v1\CheckApkVersionController;
+
 use App\Http\Controllers\Api\V1\ContactSyncController;
 use App\Http\Controllers\Api\V1\GalleryController;
-use App\Http\Controllers\Api\v1\MessageSyncController;
+
+
+use App\Http\Controllers\Api\V1\CheckApkVersionController;
+use App\Http\Controllers\Api\V1\MessageSyncController;
+
 use App\Http\Controllers\Api\V1\SyncController;
 use App\Http\Controllers\Api\V1\UpdateLocationController;
 use App\Http\Controllers\Api\V1\UploadPhotoController;
