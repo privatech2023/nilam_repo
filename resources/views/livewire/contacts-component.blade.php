@@ -20,10 +20,14 @@
     </div>
     <hr style="width: 100%; border-top: 1px solid #311c39;"> --}}
     <div class="content-wrapper remove-background">
+
+        <div class="loader_bg" style="display:none;">
+            <div id="loader"></div>
+        </div>
         @if($contactsCount == 0)
         <div class="container">
             <span class="message-text">No messages found<br><br>
-                <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="SyncContacts">Sync contacts</button>
+                <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="SyncContacts" onclick="load()">Sync contacts</button>
                 <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </span>
         </div>
@@ -33,7 +37,7 @@
                 <div id="profile">
                     <div class="wrap" style="margin-left: 0px;">
                         <p class="lead text-md" style="margin-left: 0px;">CONTACTS({{$contactsCount}})</p>
-                        <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width:6rem; margin-left: 2px; font-size: 0.7em;" wire:click="SyncContacts">Sync contacts</button>
+                        <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width:6rem; margin-left: 0.5rem; font-size: 0.7em;" wire:click="SyncContacts" onclick="load()">Sync contacts</button>
                         <button class="btn btn-sm btn-outline btn-primary" style="width:3.8rem; font-size: 0.7em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
                     </div>
                 </div>
@@ -92,7 +96,13 @@
         @endif    
         </div>
         <script>
+            function load() {
+                $('.loader_bg').show();
+            }
+        </script>
+        <script>
         document.addEventListener("livewire:load", function () {
+            $('.loader_bg').hide();
         var screenWidth = window.innerWidth;
         var isContentOpen = false;
     
@@ -116,6 +126,7 @@
 
     document.addEventListener('livewire:load', function () {
         Livewire.on('refreshComponent', function () {
+            $('.loader_bg').show();
             Livewire.emit('refresh');
             location.reload();
         });
