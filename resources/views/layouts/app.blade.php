@@ -85,6 +85,7 @@
 }
   @media screen and (max-width: 735px) {
     #frame #sidepanel {
+      max-width:100%;
       width: 100%;
       /* min-width: 70px; */
     }
@@ -565,7 +566,7 @@
   }
   @media screen and (min-width: 900px) {
     #frame .content {
-      width: calc(100% - 340px);
+      width: calc(100% - 362px);
     }
   }
   #frame .content .contact-profile {
@@ -1224,6 +1225,9 @@ audio::-webkit-media-controls-play-button:hover {
 
 @media screen and (max-width: 760px) and (min-width: 320px){
 
+  #sidepanel{
+    width: 100%;
+  }
   .bread{
     display: flex
   }
@@ -1272,6 +1276,7 @@ audio::-webkit-media-controls-play-button:hover {
     height: 80vh;
     font-size: 16px;
     border-radius: 2px;
+    overflow: hidden;
   }
   .content{
     display:none;
@@ -1304,7 +1309,7 @@ audio::-webkit-media-controls-play-button:hover {
 
 @media screen and (max-width: 1080px) and (min-width: 768px){
   #frame .content {
-    width: calc(100% - 295px);
+    width: calc(100% - 358px);
 }
   .bttns{
     width: 100%;
