@@ -3,9 +3,10 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>TITLE</title>
+    <title>PTG</title>
      <link rel="icon" type="image/x-icon" href="{{url('assets/frontend/images/favicon-32x32.png')}}"> 
     <link rel="apple-touch-icon" sizes="180x180"
         href="{{url('assets/frontend/images/favicon/apple-touch-icon.png')}}">
@@ -88,6 +89,7 @@
     text-align: left;
     background-color: #fff;
 } */
+    
     /* Center the loader */
     .loader_bg {
         position: fixed;

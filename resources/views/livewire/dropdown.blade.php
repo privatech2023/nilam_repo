@@ -8,8 +8,8 @@
   </div>
     @else
     
-    <div class="btn-group dropdown">
-      <button type="button" style="color:white; margin-left: 100%;" class="btn btn-sm btn-outline dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="btn-group dropdown" id="bt">
+      <button type="button" style="color:white; " class="btn btn-sm btn-outline dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           @foreach ($devices as $device)
               {{ $device->device_id == $defaultDevice->device_id ? $device->device_name : ''}}
           @endforeach
