@@ -84,7 +84,11 @@
                 </td>
                 <td>
                     <a href="{{ url('/admin/user/update/'.$user->id)}}" class="btn btn-outline-info btn-xs" >VIEW</a>
+                    @if(in_array('deleteUser', session('user_permissions')) || session('admin_name') == 'admin')
                     <button class="btn btn-outline-danger btn-xs del-button" data-value="{{ $user->id }}" >Del</button>
+                    @else
+                    <button class="btn btn-outline-danger btn-xs del-button" data-value="{{ $user->id }}" disabled>Del</button>
+                    @endif
                 </td>
             </tr>
         @endforeach

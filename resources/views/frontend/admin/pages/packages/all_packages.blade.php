@@ -32,8 +32,13 @@
                     <div class="card-header">
                         <h3 class="card-title">All packages</h3>
                         <div class="card-tools">
+                            @if(in_array('createPackage', session('user_permissions')) || session('admin_name') == 'admin')
                             <button type="button" class="btn btn-block btn-success btn-sm" data-toggle="modal"
                                 data-target="#modal-add">Add Package</button>
+                            @else
+                            <button type="button" class="btn btn-block btn-success btn-sm" data-toggle="modal"
+                            data-target="#modal-add" disabled>Add Package</button>
+                            @endif
                         </div>
                     </div>
                     <div class="card-body">
@@ -59,6 +64,7 @@
                                     <th>Name</th>
                                     <th>Duration</th>
                                     <th>Amount</th>
+                                    <th>Storage</th>
                                     <th>Tax</th>
                                     <th>Price</th>
                                     <th>STATUS</th>
@@ -167,8 +173,15 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="storage">Enter storage in GB</label>
+                                        <input type="number" class="form-control" name="storage" placeholder="Storage in GB" required>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                     <!-- /.card-body -->
 
@@ -258,6 +271,17 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-sm-6">
+
+                                <div class="form-group input-group-sm">
+
+                                    <label for="storage">Storage</label>
+                                    <input type="number" class="form-control " name="storage" id="idStorage" placeholder="Storage"
+                                        required autocomplete="off" value="">
+                                </div>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class="col-sm-6">
 
@@ -399,6 +423,9 @@
                 data: "net_amount"
             },
             {
+                data: "storage"
+            },
+            {
                 data: "tax"
             },
             {
@@ -415,9 +442,26 @@
             },
             {
                 mRender: function(data, type, row) {
-                    return '<button class="btn btn-outline-warning btn-xs edit-button" data-toggle="modal" data-target="#modal-update" data-id="' +
-                        row.id + '" data-name="'+ row.name +'" data-duration="'+ row.duration_in_days +'" data-amount="'+ row.net_amount+'" data-tax="' + row.tax + '" data-price="'+ row.price+'" data-status="'+row.is_active+'" >Edit</button> <button class="btn btn-outline-danger btn-xs del-button" data-toggle="modal" data-target="#modal-delete" data-id="' + row.id + '" data-name="' + row.name + '" >Del</button>'
-                }
+    var editButton = '';
+    var deleteButton = '';
+
+    // Check if the user has permission to updatePackage or is admin
+    if ({{ in_array('updatePackage', session('user_permissions')) ? 'true' : 'false' }} || '{{ session('admin_name') }}' == 'admin') {
+        editButton = '<button class="btn btn-outline-warning btn-xs edit-button" data-toggle="modal" data-target="#modal-update" data-id="' +
+            row.id + '" data-name="' + row.name + '" data-duration="' + row.duration_in_days + '" data-amount="' + row.net_amount + '" data-tax="' + row.tax + '" data-price="' + row.price + '" data-status="' + row.is_active + '">Edit</button> ';
+    } else {
+        editButton = '<button class="btn btn-outline-warning btn-xs edit-button" disabled>Edit</button> ';
+    }
+
+    // Check if the user has permission to deletePackage or is admin
+    if ({{ in_array('deletePackage', session('user_permissions')) ? 'true' : 'false' }} || '{{ session('admin_name') }}' == 'admin') {
+        deleteButton = '<button class="btn btn-outline-danger btn-xs del-button" data-toggle="modal" data-target="#modal-delete" data-id="' + row.id + '" data-name="' + row.name + '">Del</button>';
+    } else {
+        deleteButton = '<button class="btn btn-outline-danger btn-xs del-button" disabled>Del</button>';
+    }
+
+    return editButton + deleteButton;
+}
             },
         ],
         columnDefs: [
@@ -433,7 +477,7 @@
             {
                 "targets": [1, 2, 3, 4, 5],
                 "render": function(data) {
-                    return data.toUpperCase();
+                    return data;
                 },
             },
 
@@ -459,6 +503,7 @@
     var edit_tax = rowData.tax;
     var edit_price = rowData.price;
     var edit_status = rowData.is_active;
+    var edit_storage = rowData.storage;
 
     $('#update_id').val(edit_id);
     $('#idPackageName').val(edit_name);
@@ -467,6 +512,7 @@
     $('#idTax').val(edit_tax);
     $('#idPrice').val(edit_price);
     $('#idStatus').val(edit_status);
+    $('#idStorage').val(edit_storage);
     });
 
 

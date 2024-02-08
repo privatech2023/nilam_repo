@@ -30,7 +30,11 @@
                             </span>
 
                             <div class="card-tools">
+                                @if(in_array('createRole', session('user_permissions')) || session('admin_name') == 'admin')
                                 <a href="{{ url('/admin/create-roles')}}" class="btn btn-block btn-success btn-sm">Create Roles</a>
+                                @else
+                                <a href="{{ url('/admin/create-roles')}}" class="btn btn-block btn-success btn-sm disabled" >Create Roles</a>
+                                @endif
                             </div>
                         </div>
                         <div class="card-body">
@@ -87,12 +91,25 @@
                                                 <td class="text-center sorting_1">{{ $loop->iteration }}</td>
                                                 <td class="text-center">{{ $role->group_name }}</td>
                                                 <td style="text-align:center;">
+                                                    @if(in_array('editRole', session('user_permissions'))  || session('admin_name') == 'admin')
                                                 <a href="{{ url('/admin/roles/update/' . $role->id) }}" class="btn btn-warning btn-sm">
                                                 <i class="fa fa-edit"></i>
                                                 </a>
+                                                @else
+                                                <a href="{{ url('/admin/roles/update/' . $role->id) }}" class="btn btn-warning btn-sm disabled">
+                                                    <i class="fa fa-edit"></i>
+                                                    </a>
+                                                @endif
+
+                                                @if(in_array('deleteRole', session('user_permissions')) || session('admin_name') == 'admin')
                                                 <button type="button" data-value="{{ $role->id }}" class="btn btn-danger btn-sm delete-btn" >
                                                 <i class="fa fa-trash"></i>
                                                 </button>
+                                                @else
+                                                <button type="button" data-value="{{ $role->id }}" class="btn btn-danger btn-sm delete-btn" disabled>
+                                                    <i class="fa fa-trash"></i>
+                                                    </button>
+                                                @endif
                                                 </td>
                                                 </tr>
                                                 @endif

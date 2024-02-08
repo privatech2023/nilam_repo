@@ -40,7 +40,7 @@
                                     <strong>{{ $package['name'] }}</strong>
                                 </p>
                                 <div class="row m-auto">
-                                    <div class="col-sm-6 col-6">
+                                    <div class="col-sm-4 col-3">
                                         <div class="description-block border-right">
                                             <span class="description-percentage text-success">
                                                 <h5 class="description-header">{{ $package['price'] }}</h5>
@@ -50,7 +50,7 @@
                                         <!-- /.description-block -->
                                     </div>
                                     <!-- /.col -->
-                                    <div class="col-sm-6 col-6">
+                                    <div class="col-sm-4 col-3">
                                         <div class="description-block border-right">
                                             <span class="description-percentage text-warning">
                                                 <h5 class="description-header">{{ $package['duration_in_days'] . ' days' }}</h5>
@@ -60,6 +60,16 @@
                                         <!-- /.description-block -->
                                     </div>
                                     <!-- /.col -->
+
+                                    <div class="col-sm-4 col-3">
+                                        <div class="description-block border-right">
+                                            <span class="description-percentage text-warning">
+                                                <h5 class="description-header">{{ $package['storage'] . ' GB' }}</h5>
+                                                <span class="description-text">Storage</span>
+                                            </span>
+                                        </div>
+                                        <!-- /.description-block -->
+                                    </div>
                                 </div>
                                 <!-- /.row -->
                             </div>

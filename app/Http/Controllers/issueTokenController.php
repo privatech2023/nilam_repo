@@ -171,6 +171,7 @@ class issueTokenController extends Controller
             'end_date' => $request->input('end_date'),
             'status' => $request->input('status'),
             'mobile_number' => $request->input('mobile_number'),
+            'end_date' => $request->input('status') == 1 ? date('Y-m-d') : null,
         ]);
         session()->flash('success', 'Issue token updated successfully');
         return redirect()->route('/admin/tokens');

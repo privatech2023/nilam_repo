@@ -28,10 +28,10 @@
                     <div class="card-header">
                         <span><a href="{{ url('/') }}" class="btn btn-outline-info btn-sm"><i class="fas fa-long-arrow-alt-left mr-1"></i>Back</a></span>
                         <div class="card-tools">
-                            @if(in_array('addClient', session('user_permissions')))
-                            <a href="{{ url('admin/clients/add') }}" class="btn btn-block btn-success btn-sm">Add Client</a>
+                            @if(in_array('addClient', session('user_permissions')) || session('admin_name') == 'admin')
+                            <a href="{{ url('/admin/clients/add/') }}" class="btn btn-block btn-success btn-sm">Add Client</a>
                             @else
-                            <a href="{{ url('admin/clients/add') }}" class="btn btn-block btn-success btn-sm disabled" >Add Client</a>
+                            <a href="{{ url('/admin/clients/add') }}" class="btn btn-block btn-success btn-sm disabled" >Add Client</a>
                             @endif
                         </div>
                     </div>
