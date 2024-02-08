@@ -149,6 +149,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
     route::post('/admin/client/update', [clientController::class, 'update_client']);
     route::post('/admin/clients/updatePassword', [clientController::class, 'update_client_password']);
+    // route::get('/admin/clients/add', [clientController::class, 'view_client']);
 
     route::get('/admin/managePackages', [PackageController::class, 'index'])->name('/admin/managePackages');
     route::post('/admin/createPackages', [PackageController::class, 'create']);

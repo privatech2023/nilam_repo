@@ -45,7 +45,11 @@
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
+                                @if(in_array('updateSetting', session('user_permissions')) || session('admin_name') == 'admin')
                                 <button type="submit" class="btn btn-default float-right">Save</button>
+                                @else
+                                <button type="submit" class="btn btn-default float-right" disabled>Save</button>
+                                @endif
                             </div>
                             <!-- /.card-footer -->
                         </form>
