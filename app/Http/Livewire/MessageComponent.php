@@ -19,6 +19,7 @@ class MessageComponent extends Component
     public $messageList = [];
     public $selectedKey;
     public $msgCount = 0;
+    protected $flag = false;
 
 
     public function mount($userId)
@@ -109,8 +110,15 @@ class MessageComponent extends Component
 
     public function populateMessage($key)
     {
-        $this->selectedKey = $key;
-        $this->emit('toggleSidepanel');
+        if ($this->flag == false) {
+            $this->selectedKey = $key;
+            $this->emit('toggleSidepanel');
+            $this->flag = true;
+        } else {
+            $this->selectedKey = $key;
+            $this->emit('toggleSidepanel');
+            $this->flag = false;
+        }
     }
 
     public function backButton()

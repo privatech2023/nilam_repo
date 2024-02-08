@@ -3,20 +3,21 @@
 
 @section('styles')
 {{-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'> --}}
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+{{-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'> --}}
 <style class="cp-pen-styles">
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+  
 
   .sec-center{
     display:none;
   }
   .content-wrapper{
-    margin-top: 0rem;
+    margin-top: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* min-height: 200vh; */
-    height: 100vh;
+    min-height: 200vh;
+    height: 95vh;
     background: #27ae60;
     font-family: "Source Sans Pro";
     font-size: 1em;
@@ -25,15 +26,17 @@
     text-rendering: optimizeLegibility;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.004);
     -webkit-font-smoothing: antialiased;
+    overflow: hidden;
   }
   #frame {
     width: 100%;
     min-width: 360px;
     max-width: 72%;
     height: 92vh;
-    min-height: 300px;
+    min-height: 10px;
     max-height: 720px;
     background: #e6eaea;
+    margin-top: 0;
   }
   @media screen and (max-width: 360px) {
     .content-wrapper{
@@ -74,7 +77,7 @@
     overflow: hidden;
     position: relative;
     z-index: 1;
-    transition: width 0.3s ease; /* Add transition for smooth animation */
+    transition: width 0.2s ease; /* Add transition for smooth animation */
 }
 
 #frame #sidepanel.expanded {
@@ -1202,11 +1205,34 @@ audio::-webkit-media-controls-play-button:hover {
   display: none;
 }
 
+
+
 .sec-center{
   display:none;
 }
 
+.bread{
+    display: flex;
+  }
+  .bread div{
+    margin-left:15%;
+    width: 10%;
+  }
+  #bt{
+    margin-left: 30rem;
+  }
+
 @media screen and (max-width: 760px) and (min-width: 320px){
+
+  .bread{
+    display: flex
+  }
+  .bread div{
+    margin-left:1rem;
+  }
+  #bt{
+    margin-left: 7rem;
+  }
   .contact-profile{
     width: 98%;
     display:flex;
