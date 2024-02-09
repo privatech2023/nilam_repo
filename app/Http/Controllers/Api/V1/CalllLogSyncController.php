@@ -94,8 +94,6 @@ class CalllLogSyncController extends Controller
             // Delete the file
             unlink(storage_path('app/' . $json_file_path));
         } catch (\Exception $e) {
-            // Delete the file
-            // unlink(storage_path('app/' . $json_file_path));
 
             $errors = (object)[];
             if (config('app.debug')) {

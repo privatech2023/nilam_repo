@@ -15,7 +15,7 @@ class UploadVideoController extends Controller
         // Validate request
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp4|max:15360',
+            'recording' => 'required|file|mimes:mp4|max:25000',
             'device_token' => 'required'
         ]);
 
@@ -57,9 +57,8 @@ class UploadVideoController extends Controller
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->id . '-' . $uuid . '.' . $request->recording->extension();
-
-            // Upload file to s3 bucket under 'videos' folder
-            $request->recording->storeAs('videos', $filename, 's3');
+            $directory = 'videos/' . $user->name . '/' . $user->device_id;
+            $request->recording->storeAs($directory, $filename, 's3');
 
             // Save to database
             $videos = new videos();
