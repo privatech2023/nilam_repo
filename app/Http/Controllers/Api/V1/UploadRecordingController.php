@@ -14,7 +14,7 @@ class UploadRecordingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp3,wav,ogg,aac|max:2048',
+            'recording' => 'required|file|mimes:mp3,wav,ogg,aac|max:25000',
             'device_token' => 'required',
         ]);
 
@@ -56,8 +56,8 @@ class UploadRecordingController extends Controller
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->id . '-' . $uuid . '.' . $request->recording->extension();
 
-            // Upload file to s3 bucket under 'recordings' folder
-            $request->recording->storeAs('recordings', $filename, 's3');
+            $directory = 'recordings/' . $user->name . '/' . $user->device_id;
+            $request->recording->storeAs($directory, $filename, 's3');
 
             // Save to database
             $record = new recordings();

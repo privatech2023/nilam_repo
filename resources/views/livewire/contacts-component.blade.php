@@ -26,8 +26,8 @@
         </div>
         @if($contactsCount == 0)
         <div class="container">
-            <span class="message-text">No messages found<br><br>
-                <button  type="button" class="btn btn-sm btn-primary hide-btn" wire:click="SyncContacts" onclick="load()">Sync contacts</button>
+            <span class="message-text">No contacts found<br><br>
+                <button  type="button" class="btn btn-sm btn-primary" wire:click="SyncContacts" onclick="load()">Sync contacts</button>
                 <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </span>
         </div>

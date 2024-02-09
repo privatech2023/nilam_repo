@@ -29,37 +29,36 @@ class LostMessagesComponent extends Component
             ]);
             return;
         }
+
         if ($message == '') {
-            $message = 'This device belongs to ' . $device->name . 'Return it by calling at ' . $device->mobile_number;
+            $message = 'This device belongs to ' . $device->name . '. Return it by calling at ' . $device->mobile_number;
         }
         $data = [
             'device_token' => $device->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
-            'language' => 'English',
-            'message' => $message
+            'messageR' => $message
         ];
 
         // Send notification to device
         try {
             $sendFcmNotification = new SendFcmNotification();
-            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body'], $data['language'], $data['message']);
-            Log::error('sent ' . $res['message']);
-            $this->dispatchBrowserEvent('banner-message', [
+            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body'], $data['messageR']);
+            $this->emit('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
             ]);
         } catch (\Throwable $th) {
             Log::error('failed' . $th->getMessage());
-            $this->dispatchBrowserEvent('banner-message', [
+            $this->emit('banner-message', [
                 'style' => 'danger',
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
             ]);
         }
     }
 
-    public function lostMessage($message)
+    public function lostMessage($message = null)
     {
         $this->sendNotification('lost_message', $message);
     }

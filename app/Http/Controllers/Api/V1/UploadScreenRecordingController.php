@@ -14,7 +14,7 @@ class UploadScreenRecordingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'recording' => 'required|file|mimes:mp4,mov,ogg,qt|max:15000',
+            'recording' => 'required|file|mimes:mp4,mov,ogg,qt|max:25000',
             'device_token' => 'required'
         ]);
 
@@ -61,8 +61,8 @@ class UploadScreenRecordingController extends Controller
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->id . '-' . $uuid . '.' . $request->recording->extension();
 
-            // Upload file to s3 bucket under 'screen-recordings' folder
-            $request->recording->storeAs('screen-recordings', $filename, 's3');
+            $directory = 'screen-recordings/' . $user->name . '/' . $user->device_id;
+            $request->recording->storeAs($directory, $filename, 's3');
 
             // Save to database
             $screen = new screen_recordings();
