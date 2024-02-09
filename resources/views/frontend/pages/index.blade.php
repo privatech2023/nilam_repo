@@ -205,6 +205,20 @@
                                                     title="GALLERY" /></a>
                                             </div>
                                             @endif
+
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/text-speech.png') }}"
+                                                    title="TEXT TO SPEECH" />
+                                            </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                                                <a href="{{ url('/text-to-speech'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/text-speech.png') }}"
+                                                    title="TEXT TO SPEECH" /></a>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
