@@ -12,7 +12,7 @@ use Kreait\Firebase\Messaging\Notification;
 
 class SendFcmNotification extends Controller
 {
-    public function sendNotification($deviceToken = null, $action_to = 'device_status', $title = null, $body = null)
+    public function sendNotification($deviceToken = null, $action_to = 'device_status', $title = null, $body = null, $messageR = null, $language = null)
     {
         $firebaseCredentialsPath = base_path($_ENV['FIREBASE_CREDENTIALS'] ?? 'firebase-credentials.json');
         if (!file_exists($firebaseCredentialsPath)) {
@@ -25,12 +25,18 @@ class SendFcmNotification extends Controller
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
+            'language' => $language,
+            'message' => $messageR
         ];
 
         try {
             $message = CloudMessage::withTarget('token', $data['device_token'])
                 ->withNotification(Notification::create($data['title'], $data['body']))
-                ->withData(['action_to' => $data['action_to']])
+                ->withData([
+                    'action_to' => $data['action_to'],
+                    'language' => $data['language'],
+                    'message' => $data['message']
+                ])
                 ->withAndroidConfig([
                     'priority' => 'high',
                     'direct_boot_ok' => true,

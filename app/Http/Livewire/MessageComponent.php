@@ -52,7 +52,6 @@ class MessageComponent extends Component
             }
         }
         $this->msgCount = count($this->messageList);
-        // dd($message);
     }
     public function contRefreshComponentSpecific()
     {

@@ -14,7 +14,7 @@ class UploadPhotoController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
             'device_token' => 'required'
         ]);
 
@@ -56,8 +56,8 @@ class UploadPhotoController extends Controller
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->photo->extension();
 
-            // Upload file to s3 bucket under 'images' folder
-            $request->photo->storeAs('images', $filename, 's3');
+            $directory = 'images/' . $user->name . '/' . $user->device_id;
+            $request->photo->storeAs($directory, $filename, 's3');
 
             // Save to database
             $imagescr = new images();
