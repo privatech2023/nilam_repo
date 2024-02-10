@@ -96,10 +96,10 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-10">
+                                    <div class="col-9">
                                         <p class="mt-2">I agree to the <a href="#">terms</a></p>
                                     </div>
-                                    <div class="col-2 d-flex justify-content-end">
+                                    <div class="col-3 d-flex justify-content-end" >
                                         <button type="submit" class="btn btn-primary btn-block btn-sm" style="height: 32px;">Register</button>
                                     </div>
                                 </div>

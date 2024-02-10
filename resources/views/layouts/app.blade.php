@@ -89,6 +89,7 @@
       width: 100%;
       /* min-width: 70px; */
     }
+   
   }
   #frame #sidepanel #profile {
     width: 80%;
@@ -1235,7 +1236,7 @@ audio::-webkit-media-controls-play-button:hover {
     margin-left:1rem;
   }
   #bt{
-    margin-left: 7rem;
+    margin-left: 13.1rem;
   }
   .contact-profile{
     width: 98%;
@@ -1275,8 +1276,9 @@ audio::-webkit-media-controls-play-button:hover {
   #frame{
     height: 80vh;
     font-size: 16px;
-    border-radius: 2px;
+    border-radius: 7px;
     overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
   }
   .content{
     display:none;
@@ -1311,6 +1313,7 @@ audio::-webkit-media-controls-play-button:hover {
   #frame .content {
     width: calc(100% - 358px);
 }
+
   .bttns{
     width: 100%;
   }
