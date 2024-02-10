@@ -37,6 +37,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 route::post('/v1/mobile-otp', [ApiAuthController::class, 'mobileOtp']);
 route::post('/v1/email-login', [ApiAuthController::class, 'emailLogin']);
+route::post('/v1/sign-up', [ApiAuthController::class, 'sign_up']);
 route::post('/v1/logout', [ApiAuthController::class, 'logout']);
 
 route::post('/v1/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify']);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class gallery_items extends Model
 {
@@ -16,4 +17,17 @@ class gallery_items extends Model
         'media_type',
         'media_url'
     ];
+
+    public function s3Url()
+    {
+        $mins = 120;
+        $user = clients::where('client_id', session('user_id'))->first();
+        // $directory = 'gallery/images/' . $user->name . '/' . $user->device_id;
+        // $type = $this->media_type == 'image' ? 'images/' : 'videos/';
+        $url = Storage::disk('s3')->temporaryUrl(
+            'gallery/images/' . $user->name . '/' . $user->device_id . $this->media_url,
+            now()->addMinutes($mins)
+        );
+        return $url;
+    }
 }

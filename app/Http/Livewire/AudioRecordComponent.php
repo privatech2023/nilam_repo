@@ -26,8 +26,12 @@ class AudioRecordComponent extends Component
     public function loadRecordings()
     {
         $client = clients::where('client_id', $this->userId)->first();
-        $recording = recordings::where('user_id', $this->userId)->where('device_id', $client->device_id)->latest()->first();
-        $this->recordings = $recording;
+        $recording = recordings::where('user_id', $this->userId)->where('device_id', $client->device_id)->get();
+        if ($recording) {
+            $this->recordings = $recording;
+        } else {
+            $this->recordings = [];
+        }
     }
 
     public function sendNotification($action_to)
