@@ -16,6 +16,7 @@ class ApiAuthController extends Controller
     public function emailLogin(Request $request)
     {
         // Validate the request...
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:clients,email',
             'password' => 'required|string',
@@ -71,7 +72,7 @@ class ApiAuthController extends Controller
                         'subscribed_upto' => $activeSubscriptionEndDate,
                         'token' => $token,
                     ],
-                ]);
+                ], 200);
             }
         } catch (\Exception $e) {
             $errors = (object)[];
@@ -88,6 +89,60 @@ class ApiAuthController extends Controller
                 'data' => (object)[],
             ], 500);
         }
+    }
+
+
+    public function sign_up(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', 'unique:clients,email', 'regex:/^.+@.+\..+$/i'],
+            'password' => 'required|min:8',
+            'confirm_password' => 'required|same:password',
+            'mobile_number' => 'required|string|max:20|unique:clients,mobile_number',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Registration Failed',
+                'errors' => (object)$validator->errors()->toArray(),
+                'data' => (object)[],
+            ], 401);
+        }
+
+        $newClient = clients::create([
+            'name' => $request->input('name'),
+            'mobile_number' => $request->input('mobile_number'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password'))
+        ]);
+
+        $client_id = $newClient->client_id;
+        $subsmodel = new subscriptions();
+        $subsData = [
+            'client_id' => $client_id,
+            'txn_id' => null,
+            'started_at' => null,
+            'ends_on' => null,
+            'validity_days' => null,
+            'status' => 2, //1 Active | 2 Pending                       
+        ];
+        $subsmodel->create($subsData);
+        return response()->json([
+            'status' => true,
+            'message' => 'Registration successful',
+            'errors' => (object) [],
+            'data' => [
+                'name' => $newClient->name,
+                'email' => $newClient->email,
+                'email_verified' => null,
+                'mobile_number' => $newClient->mobile_number,
+                'mobile_number_verified' => null,
+                'has_active_subscription' =>  false,
+                'subscribed_upto' => null,
+            ],
+        ], 200);
     }
 
     public function mobileOtp(Request $request)

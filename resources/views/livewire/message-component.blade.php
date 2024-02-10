@@ -9,8 +9,7 @@
                     </svg>
                 </button>
             </a>
-        </div>
-        
+        </div>      
             @livewire('dropdown')
     </div>
 <div class="content-wrapper remove-background">
@@ -129,8 +128,6 @@
             $('.loader_bg').hide();
         }
     });
-
-
     Livewire.on('back', () => {
         if (isContentOpen) {
             $('#frame #sidepanel').css('width', '100%');

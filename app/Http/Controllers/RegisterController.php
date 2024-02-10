@@ -6,6 +6,7 @@ use App\Models\clients;
 use App\Models\subscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -17,6 +18,7 @@ class RegisterController extends Controller
 
     public function create_user(Request $request)
     {
+
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
@@ -25,6 +27,10 @@ class RegisterController extends Controller
                 'password' => 'required|min:8',
                 'confirm_password' => 'required|min:8|same:password'
             ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
             $user = clients::where('email', $request->input('email'))
                 ->orWhere('mobile_number', $request->input('mobile_number'))
@@ -52,8 +58,15 @@ class RegisterController extends Controller
                 'status' => 2, //1 Active | 2 Pending                       
             ];
             $subsmodel->create($subsData);
+
+            Session::forget('user_id');
+            Session::forget('user_name');
+            Session::forget('user_data');
+
+            $request->session()->put('user_id', $newClient->client_id);
+            $request->session()->put('user_name', $newClient->name);
             session()->flash('success', 'Registered succesfully');
-            return redirect()->route('login')->with(['success' => 'Registered successfully']);
+            return redirect()->route('home')->with(['success' => 'Registered successfully']);
         } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());
 
