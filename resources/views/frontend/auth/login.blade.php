@@ -52,7 +52,7 @@
                                 <span id="user_error" class="text-danger"></span>
         
                                 <div class="row justify-content-center">
-                                    <div class="col-2">
+                                    <div class="col-3">
                                         <button type="submit"
                                             class="btn btn-success btn-block btn-sm">Log In</button>
                                     </div>
