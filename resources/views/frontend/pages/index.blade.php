@@ -12,7 +12,10 @@
 </div>
 @endif
     <div class="content-wrapper remove-background">
-
+        @php
+    $validity = session('validity');
+    $currentDate = date('Y-m-d');
+    @endphp
         <!-- Main content -->
         <div class="content">
             <div class="container ">
@@ -32,26 +35,39 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
                                                     title="SMS" />
                                             </div>
-                                            @else                                            
+                                            @elseif($validity != null && $currentDate < $validity)                                            
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                                                 <a href="{{ url('/message'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
                                                     title="SMS" /></a>
-                                            </div>                                            
+                                            </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs"  >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
+                                                    title="SMS" />
+                                            </div>                                        
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-contact.svg') }}"
                                                     title="CONTACTS" />
-                                            </div>       
-                                            @else
+                                            </div> 
+                                            @elseif($validity != null && $currentDate < $validity)   
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                                                 <a href="{{ url('/contacts'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-contact.svg') }}"
                                                     title="CONTACTS" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalSubs">
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-contact.svg') }}"
+                                                    title="CONTACTS" />
+                                            </div> 
                                             @endif
 
                                             @if(!session('user_name'))
@@ -60,13 +76,20 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-camera.svg') }}"
                                                     title="CAMERA" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity) 
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                                                 <a href="{{ url('/camera'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-camera.svg')  }}"
                                                     title="CAMERA" /></a>
+                                            </div>  
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalSubs">
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-camera.svg') }}"
+                                                    title="CAMERA" />
                                             </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt">
@@ -74,13 +97,20 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-location.svg') }}"
                                                     title="LOCATION" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
                                                 <a href="{{ url('/locate-phone'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-location.svg') }}"
                                                     title="LOCATION" /></a>
+                                            </div> 
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs">
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-location.svg') }}"
+                                                    title="LOCATION" />
                                             </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt" >
@@ -88,13 +118,20 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-call-logs.svg') }}"
                                                     title="CALL LOG" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
                                                 <a href="{{ url('/call-log'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-call-logs.svg') }}"
                                                     title="CALL LOG" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-call-logs.svg') }}"
+                                                    title="CALL LOG" />
+                                            </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
@@ -102,13 +139,20 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
                                                     title="FILE MANAGER" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
                                                 <a href="{{ url('/filemanager'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
                                                     title="FILE MANAGER" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
+                                                    title="FILE MANAGER" />
+                                            </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt">
@@ -116,26 +160,41 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}"
                                                     title="VIBRATE" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
                                                 <a href="{{ url('/vibrate-device'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}"
                                                     title="VIBRATE" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs">
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}"
+                                                    title="VIBRATE" />
+                                            </div>
                                             @endif
+
+
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}"
                                                     title="LOST MESSAGE" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
                                                 <a href="{{ url('/lost-messages'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}"
                                                     title="LOST MESSAGE" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}"
+                                                    title="LOST MESSAGE" />
+                                            </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt">
@@ -143,13 +202,20 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-audio-record.svg') }}"
                                                     title="AUDIO RECORD" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
                                                 <a href="{{ url('/audio-record'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-audio-record.svg') }}"
                                                     title="AUDIO RECORD" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs">
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-audio-record.svg') }}"
+                                                    title="AUDIO RECORD" />
+                                            </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
@@ -157,13 +223,20 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-alert.svg') }}"
                                                     title="ALERT" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
                                                 <a href="{{ url('/alert-device'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-alert.svg') }}"
                                                     title="ALERT" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-alert.svg') }}"
+                                                    title="ALERT" />
+                                            </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt" >
@@ -171,13 +244,20 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-screen-record.svg') }}"
                                                     title="SCREEN RECORD" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" >
                                                 <a href="{{ url('/screen-record'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-screen-record.svg') }}"
                                                     title="SCREEN RECORD" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-screen-record.svg') }}"
+                                                    title="SCREEN RECORD" />
+                                            </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"data-toggle="modal" data-target="#modalLoginPrompt" >
@@ -185,26 +265,41 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-video-record.svg') }}"
                                                     title="VIDEO RECORD" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"data-toggle="modal" >
                                                 <a href="{{ url('/video-record'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-video-record.svg') }}"
                                                     title="VIDEO RECORD" /></a>
-                                            </div> 
+                                            </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-video-record.svg') }}"
+                                                    title="VIDEO RECORD" />
+                                            </div>
                                             @endif
+
+
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-gallery.svg') }}"
                                                     title="GALLERY" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                                                 <a href="{{ url('/gallery'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-gallery.svg') }}"
                                                     title="GALLERY" /></a>
                                             </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/android-gallery.svg') }}"
+                                                    title="GALLERY" />
+                                            </div>
                                             @endif
+
 
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
@@ -212,11 +307,17 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/text-speech.png') }}"
                                                     title="TEXT TO SPEECH" />
                                             </div>
-                                            @else
+                                            @elseif($validity != null && $currentDate < $validity)
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                                                 <a href="{{ url('/text-to-speech'.'/'.session('user_id'))}}"><x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/text-speech.png') }}"
                                                     title="TEXT TO SPEECH" /></a>
+                                            </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/text-speech.png') }}"
+                                                    title="TEXT TO SPEECH" />
                                             </div>
                                             @endif
                                         </div>
@@ -284,6 +385,50 @@
                                 <!-- /.col -->
                             </div>
                         </form>
+                    </div><!-- User Form End -->
+
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+    {{-- modal subs --}}
+    <div class="modal fade" role="dialog" id="modalSubs">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-gray-light">
+
+                <div class="modal-header">
+                    <h4 class="modal-title text-center">Purchase a subscription</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="loader_bg" style="display:none;">
+                        <div id="loader"></div>
+                    </div>
+
+                    <!-- Check User Form -->
+                    <div id="step-user">
+
+
+                            <span id="user_error" class="text-danger"></span>
+
+                            <div class="row">
+                                <div class="col-8"></div>
+                                <!-- /.col -->
+                                <div class="col-4">
+                                   <a href="{{url('/subscription')}}"><button type="button" 
+                                        class="btn btn-success btn-block btn-sm">Buy subscription</button></a> 
+                                </div>
+                                <!-- /.col -->
+                            </div>
                     </div><!-- User Form End -->
 
                 </div>

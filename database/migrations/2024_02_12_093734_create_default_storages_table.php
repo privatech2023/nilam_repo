@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('default_storages', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('device_id');
-            $table->string('filename');
-            $table->string('size');
+            $table->integer('storage')->default(100);
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('default_storages');
     }
 };

@@ -17,7 +17,8 @@ class PackageController extends Controller
         $data['gst_rate'] = $frontend->getSettings('gst_rate');
 
         $packages = packages::all();
-        return view('frontend.admin.pages.packages.all_packages', $data)->with(['packages' => $packages]);
+        $devices = config('devices.max_devices');
+        return view('frontend.admin.pages.packages.all_packages', $data)->with(['packages' => $packages, 'device_count' => $devices]);
     }
 
     public function create(Request $request)
@@ -30,7 +31,7 @@ class PackageController extends Controller
                 'tax' => 'required|numeric|min:0',
                 'price' => 'required|numeric|min:0',
                 'status' => 'required|in:0,1',
-                'storage' => 'required'
+                'devices' => 'required'
             ]);
             if ($validatedData->fails()) {
                 Session::flash('success', $validatedData->errors());
@@ -44,7 +45,7 @@ class PackageController extends Controller
                 'price' => $request->input('price'),
                 'is_active' => $request->input('status'),
                 'created_by' => session()->get('admin_id'),
-                'storage' => $request->input('storage'),
+                'devices' => $request->input('devices'),
             ]);
             Session::flash('success', 'Package Created');
             return redirect()->route('/admin/managePackages');
@@ -87,8 +88,6 @@ class PackageController extends Controller
     public function updatePackage(Request $request)
     {
         $id = $request->input('row_id');
-
-        // Validation passed, update the record
         $package = packages::find($id);
         $package->name = strtoupper($request->input('package_name'));
         $package->duration_in_days = $request->input('duration');
@@ -96,9 +95,8 @@ class PackageController extends Controller
         $package->tax = $request->input('tax');
         $package->price = $request->input('price');
         $package->is_active = $request->input('status');
-        $package->storage = $request->input('storage');
+        $package->devices = $request->input('devices');
         $package->save();
-
         Session::flash('success', 'Package Updated');
         return redirect()->route('/admin/managePackages');
     }
@@ -109,6 +107,7 @@ class PackageController extends Controller
             $id = $request->input('row_id');
             $package = packages::find($id);
             if ($package) {
+                $package->delete();
                 Session::flash('success', 'Package Deleted');
                 return redirect()->route('/admin/managePackages');
             } else {

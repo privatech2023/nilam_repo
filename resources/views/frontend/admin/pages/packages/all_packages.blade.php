@@ -64,7 +64,7 @@
                                     <th>Name</th>
                                     <th>Duration</th>
                                     <th>Amount</th>
-                                    <th>Storage</th>
+                                    <th>Devices</th>
                                     <th>Tax</th>
                                     <th>Price</th>
                                     <th>STATUS</th>
@@ -174,12 +174,17 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group input-group-sm">
-                                        <label for="storage">Enter storage in GB</label>
-                                        <input type="number" class="form-control" name="storage" placeholder="Storage in GB" required>
+                                <div class="col-6">
+                                    <div class="form-group input-group">
+                                        <label for="devices">Number of devices</label>
+                                        <select class="form-control" name="devices" required>
+                                            @for ($i = 1; $i <= config('devices.max_devices'); $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
@@ -275,10 +280,12 @@
                             <div class="col-sm-6">
 
                                 <div class="form-group input-group-sm">
-
-                                    <label for="storage">Storage</label>
-                                    <input type="number" class="form-control " name="storage" id="idStorage" placeholder="Storage"
-                                        required autocomplete="off" value="">
+                                    <label for="devices">Number of devices</label>
+                                    <select class="form-control" id="idDevices" name="devices" required>
+                                            @for ($i = 1; $i <= config('devices.max_devices'); $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                    </select>
                                 </div>
                             </div>
                         </div>
@@ -380,8 +387,6 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-
-
         $("#packageTree").addClass('menu-open');
     $("#packageMenu").addClass('active');
     $("#packageSubMenuManage").addClass('active');
@@ -400,11 +405,8 @@
         ajax: {
             url: "/admin/packages/ajaxCallAllPackages", 
             type: "post",
-  
             data: function(data) {
-                // key1: value1 - in case if we want send data with request      
                 var type = $('#searchByStatus').val();
-                // Append to data
                 data.status = type;
             }
         },
@@ -423,7 +425,7 @@
                 data: "net_amount"
             },
             {
-                data: "storage"
+                data: "devices"
             },
             {
                 data: "tax"
@@ -503,7 +505,7 @@
     var edit_tax = rowData.tax;
     var edit_price = rowData.price;
     var edit_status = rowData.is_active;
-    var edit_storage = rowData.storage;
+    var edit_devices = rowData.devices;
 
     $('#update_id').val(edit_id);
     $('#idPackageName').val(edit_name);
@@ -512,13 +514,16 @@
     $('#idTax').val(edit_tax);
     $('#idPrice').val(edit_price);
     $('#idStatus').val(edit_status);
-    $('#idStorage').val(edit_storage);
+    $('#idDevices').val(edit_devices);
+
+    $('#idDevices').find('option').removeAttr('selected');
+    $('#idDevices option[value="' + edit_devices + '"]').attr('selected', 'selected');
     });
 
 
 
     $('#modal-delete').on('show.bs.modal', function(event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
+        var button = $(event.relatedTarget) 
         var todo_id = button.data('id')
         var todo_name = button.data('name')
 

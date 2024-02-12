@@ -19,5 +19,6 @@ class activation_codes extends Model
         'used_by',
         'created_by',
         'expiry_date',
+        'devices'
     ];
 }

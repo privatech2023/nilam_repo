@@ -17,6 +17,6 @@ class packages extends Model
         'price',
         'is_active',
         'created_by',
-        'storage'
+        'devices'
     ];
 }
