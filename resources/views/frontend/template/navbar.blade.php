@@ -41,6 +41,10 @@
                                 <i class="fas fa-inr mr-2" aria-hidden="true"></i> Subscription
                             </a>
                             <div class="dropdown-divider"></div>
+                            <a href="{{url('/storage')}}" class="dropdown-item">
+                                <i class="fas fa-inr mr-2" aria-hidden="true"></i> Storage
+                            </a>
+                            <div class="dropdown-divider"></div>
 
                             <a href="#" class="dropdown-item">
                                 <i class="fas fa-cloud-download mr-2" aria-hidden="true"></i> Download APK

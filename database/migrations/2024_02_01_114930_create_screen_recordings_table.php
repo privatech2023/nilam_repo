@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('device_id');
             $table->string('filename');
+            $table->string('size');
             $table->timestamps();
         });
     }

@@ -213,6 +213,12 @@
                   </li>
                 </ul>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/transactions')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Transactions</p>
+                </a>
+              </li>
 
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/apk-versions')}}" class="nav-link">
@@ -223,13 +229,16 @@
                 </a>
               </li>
 
-              
-              <li class="nav-item">
-                <a href="{{ url('/admin/transactions')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Transactions</p>
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/admin/manageStorage')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Storage
+                  </p>
                 </a>
               </li>
+
+              
               @if(in_array('viewSetting', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/settings')}}" class="nav-link">

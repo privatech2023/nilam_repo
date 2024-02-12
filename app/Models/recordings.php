@@ -14,6 +14,7 @@ class recordings extends Model
         'user_id',
         'device_id',
         'filename',
+        'size'
     ];
 
     public function s3Url()

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('user_id');
             $table->string('media_type')->nullable();
             $table->string('media_url')->nullable();
+            $table->string('size');
             $table->timestamps();
         });
     }

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('ends_on')->nullable();
             $table->string('validity_days', 256)->nullable();
             $table->unsignedBigInteger('status')->default(2);
+            $table->integer('devices')->default(1);
             $table->timestamps();
 
             $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
