@@ -13,7 +13,8 @@ class images extends Model
     public $fillable = [
         'user_id',
         'device_id',
-        'filename'
+        'filename',
+        'size'
     ];
 
     public function s3Url()

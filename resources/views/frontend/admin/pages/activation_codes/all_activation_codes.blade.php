@@ -54,6 +54,7 @@
                                     <th>Amount</th>
                                     <th>Tax</th>
                                     <th>Price</th>
+                                    <th>Devices</th>
                                     <th>STATUS</th>
                                     <th>ACTION</th>
                                 </tr>
@@ -165,6 +166,18 @@
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                <div class="form-group input-group-sm">
+                                    <label for="devices">Number of devices</label>
+                                    <select class="form-control" name="devices" required>
+                                        @for ($i = 1; $i <= config('devices.max_devices'); $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
                             </div>
     
                         </div>
@@ -278,6 +291,9 @@
                         data: "price"
                     },
                     {
+                        data: "devices"
+                    },
+                    {
                         mRender: function(data, type, row) {
                             if (row.is_active == 1) {
                                 return '<span class="badge bg-success">ACTIVE</span>';
@@ -335,10 +351,8 @@
             });
         
         
-            $(document).on('change', '.net-amt', function(){
-        
+            $(document).on('change', '.net-amt', function(){        
                 updatePrice();
-         
             }); 
         });
         

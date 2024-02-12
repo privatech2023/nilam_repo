@@ -81,8 +81,8 @@ class activationCodeController extends Controller
                 'expiry_date' => 'required',
                 'price' => 'required|numeric',
                 'status' => 'required|numeric',
+                'devices' => 'required'
             ];
-
             $messages = [
                 'code_name.required' => 'Code is required',
                 'code_name.alpha_dash' => 'Code should only contain letters, numbers, dashes, and underscores.',
@@ -97,6 +97,7 @@ class activationCodeController extends Controller
                 'price' => $request->input('price'),
                 'expiry_date' => $request->input('expiry_date'),
                 'is_active' => $request->input('status'),
+                'devices' => $request->input('devices'),
                 'created_by' => session()->get('admin_id'),
             ];
             activation_codes::create($data);

