@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\clients;
+use App\Models\defaultStorage;
 use App\Models\images;
+use App\Models\storage_txn;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
 class UploadPhotoController extends Controller
@@ -41,6 +44,7 @@ class UploadPhotoController extends Controller
             ]);
         }
         $user = clients::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])->first();
+
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -49,6 +53,67 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ], 406);
         }
+
+        $photo = $request->file('photo');
+        $sizeInBytes = $photo->getSize() / 1024;
+
+        $gall = images::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
+        $storage_size = 0;
+
+        if ($gall->isNotEmpty()) {
+            foreach ($gall as $g) {
+                $storage_size += $g->size;
+            }
+
+            $storage_pack = storage_txn::where('client_id', $user->client_id)
+                ->latest('created_at')
+                ->first();
+            $storage_all = storage_txn::where('client_id', $user->client_id)
+                ->latest('created_at')
+                ->get();
+            if ($storage_pack == null) {
+                $data = defaultStorage::first();
+                if ($storage_size >= ($data->storage * 1024)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Storage limit exceeded',
+                        'errors' => (object)[],
+                        'data' => (object)[],
+                    ], 406);
+                }
+            } else {
+                foreach ($storage_all as $st) {
+                    if ($st->status != 0) {
+                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
+                        $createdAt = Carbon::parse($st->created_at);
+                        $expirationDate = $createdAt->addDays($validity);
+
+                        if ($expirationDate->isPast()) {
+                            return response()->json([
+                                'status' => false,
+                                'message' => 'Plan expired',
+                                'errors' => (object)[],
+                                'data' => (object)[],
+                            ], 406);
+                        } else {
+                            if ($st->storage <= ($storage_size * 1024 * 1024)) {
+                                return response()->json([
+                                    'status' => false,
+                                    'message' => 'Storage limit exceeded',
+                                    'errors' => (object)[],
+                                    'data' => (object)[],
+                                ], 406);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
         $device_id = $data['device_id'] ?? $user->device_id;
 
         try {
@@ -64,7 +129,8 @@ class UploadPhotoController extends Controller
             $imagescr->create([
                 'filename' => $filename,
                 'device_id' => $device_id,
-                'user_id' => $user->client_id
+                'user_id' => $user->client_id,
+                'size' => $sizeInBytes,
             ]);
         } catch (\Throwable $th) {
             $errors = (object)[];

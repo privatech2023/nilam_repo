@@ -5,18 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class subscriptions extends Model
+class storage_txn extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'subs_id';
-    protected $fillable = [
+    public $fillable = [
         'client_id',
         'txn_id',
-        'started_at',
-        'ends_on',
-        'validity_days',
+        'storage',
+        'plan_type',
         'status',
-        'devices'
+        'plan_id'
     ];
 }

@@ -15,7 +15,8 @@ class gallery_items extends Model
         'device_id',
         'user_id',
         'media_type',
-        'media_url'
+        'media_url',
+        'size'
     ];
 
     public function s3Url()

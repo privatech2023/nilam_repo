@@ -24,6 +24,7 @@ return new class extends Migration
             $table->unsignedBigInteger('used_by')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->date('expiry_date');
+            $table->integer('devices')->default(1);
             $table->timestamps();
 
 

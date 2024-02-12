@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckValidityDate;
 use App\Http\Middleware\ClientAuthMiddleware;
 use App\Http\Middleware\rolesPermission;
 use App\Http\Middleware\UserAuthMiddleware;
@@ -69,5 +70,6 @@ class Kernel extends HttpKernel
         'client.auth' => ClientAuthMiddleware::class,
         'user.auth' => UserAuthMiddleware::class,
         'roles.permission' => rolesPermission::class,
+        'client.validity' => CheckValidityDate::class,
     ];
 }

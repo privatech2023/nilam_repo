@@ -112,14 +112,13 @@ class subscriptionController extends Controller
                         $lastSubscription->ends_on = now()->addDays($daysToAdd);
                         $lastSubscription->status = 1;
                         $lastSubscription->validity_days = $code->duration_in_days;
+                        $lastSubscription->devices = $code->devices;
                         $lastSubscription->save();
                     } else {
                         $update_date = Subscriptions::where('client_id', $request->input('user_id'))
                             ->select('ends_on')
                             ->orderByDesc('ends_on')
                             ->first();
-
-
                         $subscription = new subscriptions();
                         $subscription->client_id = $request->input('user_id');
                         $subscription->txn_id = $transaction_id;
@@ -127,6 +126,7 @@ class subscriptionController extends Controller
                         $subscription->status = 1;
                         $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
                         $subscription->validity_days = $code->duration_in_days;
+                        $subscription->devices = $code->devices;
                         $subscription->save();
                     }
 
@@ -220,8 +220,6 @@ class subscriptionController extends Controller
                     'currency' => 'INR',
                     'notes' => array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3')
                 ));
-
-
                 $transaction = new transactions();
                 $transaction->txn_id = $receipt;
                 $transaction->client_id = $request->input('user_id');
@@ -252,6 +250,7 @@ class subscriptionController extends Controller
                     $lastSubscription->ends_on = now()->addDays($daysToAdd);
                     $lastSubscription->status = 0;
                     $lastSubscription->validity_days = $package->duration_in_days;
+                    $lastSubscription->devices = $package->devices;
                     $lastSubscription->save();
                 } else {
                     $update_date = Subscriptions::where('client_id', $request->input('user_id'))
@@ -267,6 +266,7 @@ class subscriptionController extends Controller
                     $subscription->status = 0;
                     $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
                     $subscription->validity_days = $package->duration_in_days;
+                    $subscription->devices = $package->devices;
                     $subscription->save();
                 }
 
@@ -314,6 +314,7 @@ class subscriptionController extends Controller
             $lastSubscription->ends_on = now()->addDays($daysToAdd);
             $lastSubscription->status = 0;
             $lastSubscription->validity_days = $package->duration_in_days;
+            $lastSubscription->devices = $package->devices;
             $lastSubscription->save();
         } else {
             $update_date = Subscriptions::where('client_id', $request->input('user_id'))
@@ -329,12 +330,12 @@ class subscriptionController extends Controller
             $subscription->status = 0;
             $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
             $subscription->validity_days = $package->duration_in_days;
+            $subscription->devices = $package->devices;
             $subscription->save();
         }
         $data['razorPay'] = $razorCreate;
         return view('Frontend/razorpay/checkout', $data);
     }
-
     public function onlinePayment(Request $request)
     {
         $id = $request->input('package-id');

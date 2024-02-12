@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\payments;
+use App\Models\storage_txn;
 use App\Models\subscriptions;
 use App\Models\transactions;
 use Illuminate\Http\Request;
@@ -58,6 +59,12 @@ class RazorpayController extends Controller
                 ]);
 
                 $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
+                if ($subscription == null) {
+                    $storage = storage_txn::where('txn_id', $transaction->txn_id)->first();
+                    $storage->update([
+                        'status' => 1
+                    ]);
+                }
 
                 $subscription->update([
                     'status' => 1
@@ -77,7 +84,6 @@ class RazorpayController extends Controller
     {
         $data = $request->all();
         $webhookSignature = $request->header('X-Razorpay-Signature');
-
         $api = $this->createApi();
         $webhook_secret = config('services.razorpay.webhook_secret');
 
