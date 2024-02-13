@@ -122,14 +122,11 @@
                 isContentOpen = false;
             }
         });
-    });
-
-    document.addEventListener('livewire:load', function () {
-        Livewire.on('refreshComponent', function () {
-            $('.loader_bg').show();
-            Livewire.emit('refresh');
-            location.reload();
-        });
+        if(isContentOpen == false){
+    setInterval(function() {
+            document.getElementById('cont-refresh-component-specific').click();
+        }, 3000);
+}
     });
     </script>
     

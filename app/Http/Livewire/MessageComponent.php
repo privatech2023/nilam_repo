@@ -55,6 +55,29 @@ class MessageComponent extends Component
     }
     public function contRefreshComponentSpecific()
     {
+        $device = clients::where('client_id', $this->userId)->first();
+        $message = messages::where('device_id', $device->device_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        foreach ($message as $msg) {
+            if (isset($this->messageList[$msg->number])) {
+                $this->messageList[$msg->number][] = [
+                    'message_id' => $msg->message_id,
+                    'date' => $msg->date,
+                    'body' => $msg->body,
+                    'is_inbox' => $msg->is_inbox,
+                ];
+            } else {
+                $this->messageList[$msg->number] = [
+                    [
+                        'message_id' => $msg->message_id,
+                        'date' => $msg->date,
+                        'body' => $msg->body,
+                        'is_inbox' => $msg->is_inbox,
+                    ]
+                ];
+            }
+        }
         $this->msgCount = count($this->messageList);
         $this->emit('refreshComponent');
     }
