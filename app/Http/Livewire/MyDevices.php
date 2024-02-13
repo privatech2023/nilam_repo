@@ -11,12 +11,13 @@ use Livewire\Component;
 class MyDevices extends Component
 {
     public $userId;
-    public $brand;
-    public $model;
-    public $android_version;
-    public $host_id;
-    public $battery_status;
-    public $updated_at;
+    // public $brand;
+    // public $model;
+    // public $android_version;
+    // public $host_id;
+    // public $battery_status;
+    // public $updated_at;
+    public $deviceList = [];
 
     public function mount($userId)
     {
@@ -27,16 +28,21 @@ class MyDevices extends Component
 
         $device = clients::where('client_id', $this->userId)->first();
         if ($device != null) {
-            $dev = my_devices::where('user_id', $this->userId)->where('device_id', $device->device_id)->first();
-            if ($dev != null) {
-                $this->brand = $dev->manufacturer;
-                $this->model = $dev->model;
-                $this->android_version = $dev->android_version;
-                $this->host_id = $dev->host;
-                $this->battery_status = $dev->battery;
-                $this->updated_at = $dev->updated_at;
+            $dev = my_devices::where('user_id', $this->userId)->get();
+            if ($dev->isNotEmpty()) {
+                foreach ($dev as $d) {
+                    $this->deviceList[] = [
+                        'manufacturer' => $d->manufacturer,
+                        'model' => $d->model,
+                        'version' => $d->android_version,
+                        'host' => $d->host,
+                        'battery' => $d->battery,
+                        'updated_at' => $d->updated_at,
+                    ];
+                }
             }
         }
+        // dd($this->deviceList);
     }
     public function sendNotification($action_to)
     {
