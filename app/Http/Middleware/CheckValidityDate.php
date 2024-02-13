@@ -10,7 +10,7 @@ class CheckValidityDate
     {
         $currentDate = date('Y-m-d');
         $validity = $request->session()->get('validity');
-        if ($validity == null || $currentDate < $validity) {
+        if ($validity == null || $currentDate > $validity) {
             return redirect()->route('home');
         }
 

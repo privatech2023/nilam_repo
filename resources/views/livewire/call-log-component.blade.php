@@ -24,7 +24,7 @@
             </svg>   CALL LOGS</span>
 
             <div class="text-right" style="margin-right: 3px;">
-              <button class="btn btn-outline-success btn-sm" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
+              <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
               <button class="btn btn-primary btn-sm" type="button"  wire:click="SyncCallLog">Sync call logs</button>
             </div>
         </nav>
@@ -66,12 +66,9 @@
     </div>
     </div>
     <script>
-      document.addEventListener('livewire:load', function () {
-         $(document).on('click','#cont-refresh-component-specific', function () { 
-              $('.loader_bg').show();
-              location.reload();
-          });
-      });
+setInterval(function() {
+            document.getElementById('cont-refresh-component-specific').click();
+        }, 3000);
   </script>
 </div>
     
