@@ -32,6 +32,7 @@ use App\Http\Livewire\LocatePhone;
 use App\Http\Livewire\LostMessagesComponent;
 use App\Http\Livewire\MessageComponent;
 use App\Http\Livewire\MessagePopulate;
+use App\Http\Livewire\MyDevices;
 use App\Http\Livewire\ScreenRecordComponent;
 use App\Http\Livewire\TextToSpeech;
 use App\Http\Livewire\VibrateComponent;
@@ -112,6 +113,7 @@ Route::group(['middleware' => 'client.auth'], function () {
         route::get('/lost-messages/{userId}', LostMessagesComponent::class);
         route::get('/locate-phone/{userId}', LocatePhone::class);
         route::get('/text-to-speech/{userId}', TextToSpeech::class);
+        route::get('/my-devices/{userId}', MyDevices::class);
 
         Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
 
