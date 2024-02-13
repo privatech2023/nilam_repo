@@ -23,37 +23,38 @@
                   </svg> MY DEVICES</span>
                   <button class="btn btn-outline-success btn-sm" wire:click="sendRefresh" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
             </nav>
-            <div style=" margin-top: 20px; margin-left: 20px;" >
-                <div class="row">
-                    <div style="width:100%;">
+            <div style="margin-top: 20px; margin-left: 20px; height: 90%; overflow-x: auto;" id="cont" >
+                @foreach($deviceList as $dev)
+                <div class="row" >
+                    <div style="width:80%;">
                         <table class="table">
                             <tbody>
                               <tr>
                                 <th scope="row">BRAND :</th>
-                                <td>{{ $brand }}</td>
+                                <td>{{ $dev['manufacturer']}}</td>
                               </tr>
                               <tr>
                                 <th scope="row">MODEL :</th>
-                                <td>{{ $model }}</td>
+                                <td>{{  $dev['model'] }}</td>
                               </tr>
                               <tr>
                                 <th scope="row">ANDROID VERSION :</th>
-                                <td>{{ $android_version }}</td>
+                                <td>{{  $dev['version'] }}</td>
                               </tr>
                               <tr>
                                 <th scope="row">HOST ID :</th>
-                                <td>{{ $host_id }}</td>
+                                <td>{{ $dev['host'] }}</td>
                               </tr>
                               <tr>
                                 <th scope="row">BATTERY STATUS :</th>
-                                <td>{{ $battery_status }}
+                                <td>{{ $dev['battery'] }}
                                     </td>
                               </tr>
                             </tbody>
                           </table>
-    @if($updated_at)
+    @if( $dev['updated_at'] )
     @php
-        $updatedTime = \Carbon\Carbon::parse($updated_at);
+        $updatedTime = \Carbon\Carbon::parse($dev['updated_at']);
         $currentTime = \Carbon\Carbon::now();
         $timeDifference = $updatedTime->diff($currentTime);
 
@@ -71,16 +72,16 @@
         } else {
             $formattedTime = 'just now';
         }
-    @endphp
+        @endphp
 
-    <div class="alert alert-success" style="width: 60%;">
+        <div class="alert alert-success" style="width: 60%;">
         Last updated: {{ $formattedTime }}
-    </div>
-@endif
-
-                        
+        </div>
+        <br>
+        @endif                      
                     </div>
                 </div>
+                @endforeach
             </div>
         </div>
     
