@@ -4,51 +4,52 @@ namespace App\Http\Livewire;
 
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
-use App\Models\device;
-use App\Models\images;
+use App\Models\my_devices;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
-class CameraComponent extends Component
+class MyDevices extends Component
 {
     public $userId;
-    public $images;
+    public $brand;
+    public $model;
+    public $android_version;
+    public $host_id;
+    public $battery_status;
+    public $updated_at;
 
     public function mount($userId)
     {
-        $this->loadImages();
         if ($userId == null) {
-            $userId = session('user_id');
+            $this->userId = session('user_id');
         }
         $this->userId = $userId;
-    }
 
-    public function loadImages()
-    {
         $device = clients::where('client_id', $this->userId)->first();
-        if ($device) {
-            $this->images = images::where('user_id', $this->userId)
-                ->where('device_id', $device->device_id)
-                ->latest()
-                ->get();
-        } else {
-            $this->images = [];
+        if ($device != null) {
+            $dev = my_devices::where('user_id', $this->userId)->where('device_id', $device->device_id)->first();
+            if ($dev != null) {
+                $this->brand = $dev->manufacturer;
+                $this->model = $dev->model;
+                $this->android_version = $dev->android_version;
+                $this->host_id = $dev->host;
+                $this->battery_status = $dev->battery;
+                $this->updated_at = $dev->updated_at;
+            }
         }
     }
-
     public function sendNotification($action_to)
     {
-        $device = clients::where('client_id', $this->userId)->first();
-        if (empty($device->device_token)) {
+        $client = clients::where('client_id', $this->userId)->first();
+        if ($client->device_token == null) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'No Device token! Please register your device first',
             ]);
-            return;
         }
 
         $data = [
-            'device_token' =>  $device->device_token,
+            'device_token' => $client->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
@@ -58,7 +59,7 @@ class CameraComponent extends Component
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-            Log::error('done ' . $res['message'] . ' notification! - ');
+            Log::error('done ' . $res['message']);
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
@@ -71,14 +72,14 @@ class CameraComponent extends Component
         }
     }
 
+
     public function render()
     {
-        $devices = device::where('client_id', $this->userId)->select('device_id', 'device_name')->get();
-        return view('livewire.camera-component', ['devices' => $devices]);
+        return view('livewire.my-devices');
     }
 
-    public function takePicture()
+    public function sendRefresh()
     {
-        $this->sendNotification('take_picture');
+        $this->sendNotification('device_status');
     }
 }

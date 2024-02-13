@@ -19,13 +19,12 @@
         <div id="loader"></div>
     </div>
 
-    @if($msgCount == 0)
-    
+    @if($msgCount == 0)    
     <div class="container">
         <span class="message-text">No messages found<br><br>
         <button type="button" class="btn btn-sm btn-primary " wire:click="syncInbox" onclick="load()">Sync inbox</button>
         <button type="button" class="btn btn-sm btn-primary" wire:click="syncOutbox" onclick="load()">Sync outbox</button>
-        <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
+        <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
     </span>
     </div>
     @else
@@ -33,10 +32,10 @@
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap">
-                    <p class="lead text-sm" style="margin-left: 2px;">MESSAGES ({{$msgCount}})</p>
+                    <p class="lead text-sm" style="margin-left: 2px;">MESSAGES({{$msgCount}})</p>
                     <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width:4.5rem; margin-left: 8px; font-size: 0.7em;"  wire:click="syncInbox" onclick="load()">Sync inbox</button>
                     <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width: 5rem; font-size: 0.75em;" wire:click="syncOutbox" onclick="load()">Sync outbox</button>
-                    <button class="btn btn-sm btn-outline btn-primary" style="width:4rem; font-size: 0.7em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
+                    <button class="btn btn-sm btn-outline btn-primary" style="width:4rem; font-size: 0.7em; padding:0;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
                 </div>
                 
             </div>
@@ -69,15 +68,6 @@
                     <p style="margin-left: 5px;">{{ $selectedKey}}</p>
                     </div>
                 </div> 
-                {{-- <div class="sec-center" style="align-items:right;"> 	
-                    <input class="dropdown"  type="checkbox"  id="dropdown" name="dropdown"/>
-                    <label class="for-dropdown" for="dropdown">Menu <i class="uil uil-arrow-down"></i></label>
-                    <div class="section-dropdown"> 
-                        <div class="a" style="cursor: pointer;" wire:click="syncInbox">Sync inbox <i class="uil uil-arrow-right"></i></div>
-                        <div class="a" style="cursor: pointer;" wire:click="syncOutbox">Sync outbox<i class="uil uil-arrow-right"></i></div>
-                        <div class="a" style="cursor: pointer;" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</div>
-                    </div>
-                </div>                --}}
             </div>
             <div class="messages">
                 @if($selectedKey)
@@ -135,15 +125,13 @@
             isContentOpen = false;
         }
     });
-});
 
-document.addEventListener('livewire:load', function () {
-        Livewire.on('refreshComponent', function () {
-            Livewire.emit('refresh'); 
-            $('.loader_bg').show();
-            location.reload();
-        });
-    });
+    if(isContentOpen = false){
+    setInterval(function() {
+            document.getElementById('cont-refresh-component-specific').click();
+        }, 3000);
+}
+});
 </script>
     
 </div>

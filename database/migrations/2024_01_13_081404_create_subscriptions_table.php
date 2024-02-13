@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id('subs_id');
-            $table->integer('client_id');
+            $table->unsignedBigInteger('client_id');
             $table->string('txn_id')->nullable();
             $table->date('started_at')->nullable();
             $table->date('ends_on')->nullable();
@@ -23,7 +23,6 @@ return new class extends Migration
             $table->unsignedBigInteger('status')->default(2);
             $table->integer('devices')->default(1);
             $table->timestamps();
-
             $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
         });
     }

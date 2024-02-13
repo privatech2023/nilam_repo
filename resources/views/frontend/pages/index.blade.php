@@ -320,6 +320,27 @@
                                                     title="TEXT TO SPEECH" />
                                             </div>
                                             @endif
+
+
+                                            @if(!session('user_name'))
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/devices.png') }}"
+                                                    title="MY DEVICES" />
+                                            </div>
+                                            @elseif($validity != null && $currentDate < $validity)
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2">
+                                                <a href="{{ url('/my-devices'.'/'.session('user_id'))}}"><x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/devices.png') }}"
+                                                    title="MY DEVICES" /></a>
+                                            </div>
+                                            @else
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs" >
+                                                <x-frontend.icons
+                                                    imageIcon="{{ asset('assets/frontend/images/icons/devices.png') }}"
+                                                    title="MY DEVICES" />
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
