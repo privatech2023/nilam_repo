@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Validator;
 
 class issueTokenController extends Controller
 {
+    public function tech_index()
+    {
+        return view('frontend.admin.pages.tech.index');
+    }
+
+
     public function index()
     {
         $issue_type = [];
@@ -251,5 +257,73 @@ class issueTokenController extends Controller
     {
         $data = clients::where('mobile_number', $request->input('client'))->first();
         return response()->json($data);
+    }
+
+
+    public function ajaxCallAllTokensTechnical(Request $request)
+    {
+        $params['draw'] = $request->input('draw');
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $valueStatus = $request->input('status');
+        $search_value = $request->input('search.value');
+
+        if (!empty($search_value)) {
+            $data1 = DB::table('clients')
+                ->select('*')
+                ->where('name', 'like', '%' . $search_value . '%')
+                ->get();
+            $data =  DB::table('issue_tokens')
+                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                ->whereIn('issue_tokens.client_id', $data1->pluck('client_id'))
+                ->skip($start)
+                ->take($length)
+                ->get();
+            $total_count = count($data);
+        } elseif (!empty($valueStatus)) {
+            $query = DB::table('issue_tokens')
+                ->select('*')
+                ->where('status', $valueStatus)
+                ->get();
+
+            $total_count = count($query);
+
+            $data = DB::table('issue_tokens')
+                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                ->where('issue_tokens.status', $valueStatus)
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } else {
+            $total_count = count(DB::table('issue_tokens')->get());
+            $tech_tokens = tech_tokens::all();
+            $data = [];
+            foreach ($tech_tokens as $tt) {
+                $result = DB::table('issue_tokens')
+                    ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                    ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                    ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                    ->where('issue_tokens.id', $tt->token_id)
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+                $data = array_merge($data, $result->toArray());
+            }
+        }
+        $type = issue_type::all();
+        $client = clients::all();
+        $json_data = [
+            "draw" => intval($params['draw']),
+            "recordsTotal" => $total_count,
+            "recordsFiltered" => $total_count,
+            "data" => $data,
+            'type' => $type,
+            'clients' => $client,
+        ];
+        return response()->json($json_data);
     }
 }

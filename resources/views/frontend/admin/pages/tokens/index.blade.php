@@ -47,7 +47,7 @@
 
                             <table id="dataTable" class="table table-bordered table-striped table-hover">
                                 <thead>
-                                <tr><th>#</th>
+                                <tr><th>ID</th>
                                     <th>Name</th>
                                     <th>Device ID</th>
                                     <th>Client</th>
@@ -228,9 +228,7 @@
                 
                 columns: [
                     {
-                        mRender: function(data, type, full, meta) {
-                        return i++;
-                    }
+                        data: "id"
                     },
                     {
                         data: "issue_type_name"

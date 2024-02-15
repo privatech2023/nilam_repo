@@ -3,14 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\settings;
+use App\Models\subscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class frontendController extends Controller
 {
 
+    public function home()
+    {
+        if (session('user_id') != null) {
+            $subs = subscriptions::where('client_id', session('user_id'))
+                ->orderBy('created_at', 'desc')
+                ->first();
+            session()->put('validity', $subs->ends_on);
+        }
+        Session::forget('user_data');
+        return view('frontend/pages/index');
+    }
 
     public function sendOTP($number, $message)
     {
