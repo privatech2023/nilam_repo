@@ -33,7 +33,7 @@
           <!-- Messages Dropdown Menu -->
           <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
-              ADMIN 
+              {{ strtoupper(session('admin_name')) }}
               <i class="far fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -161,7 +161,7 @@
                   </li>
                 </ul>
               </li>
-              
+              @if(in_array('viewUser', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-users"></i>
@@ -171,14 +171,14 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview">
-                  @if(in_array('viewUser', session('user_permissions')) || session('admin_name') == 'admin')
+                
                   <li class="nav-item">
                     <a href="{{ url('/admin/users')}}" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage employees</p>
                     </a>
                   </li>
-                  @endif
+                  
                   @if(in_array('viewRole', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
                     <a href="{{ url('/admin/roles')}}" class="nav-link">
@@ -189,6 +189,7 @@
                   @endif
                 </ul>
               </li>
+              @endif
 
               <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -245,6 +246,17 @@
                   <i class="nav-icon fas fa-solid fa-gear"></i>
                   <p>
                     Settings
+                  </p>
+                </a>
+              </li>
+              @endif
+
+              @if(session('admin_name') == 'admin' || in_array('itAll', session('user_permissions')) )
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/admin/technical/token')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Technical issue tokens
                   </p>
                 </a>
               </li>

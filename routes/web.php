@@ -9,6 +9,7 @@ use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\frontend\messageController;
 use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
+use App\Http\Controllers\frontendController;
 use App\Http\Controllers\issueTokenController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PackageController;
@@ -41,10 +42,12 @@ use App\Models\settings;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-Route::get('/', function () {
-    Session::forget('user_data');
-    return view('frontend/pages/index');
-})->name('home');
+// Route::get('/', function () {
+//     Session::forget('user_data');
+//     return view('frontend/pages/index');
+// })->name('home');
+
+route::get('/', [frontendController::class, 'home'])->name('home');
 
 route::get('login/client', [LoginController::class, 'index'])->name('login');
 
@@ -219,9 +222,11 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin/test-api', [adminController::class, 'test_api']);
 
     route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
+    route::post('/admin/token/ajaxCallAllTech', [issueTokenController::class, 'ajaxCallAllTokensTechnical']);
     route::get('/admin/search_client', [issueTokenController::class, 'search_client']);
 
     route::post('/admin/assign/technical', [issueTokenController::class, 'assign_technical']);
+    route::get('/admin/technical/token', [issueTokenController::class, 'tech_index']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

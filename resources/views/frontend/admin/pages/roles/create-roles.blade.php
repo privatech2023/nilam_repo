@@ -128,10 +128,10 @@
                           
                       <tr>
                         <td>Token to IT department</td>
-                        <td><input type="checkbox" name="permission[]" id="permission" value="createITToken"></td>
-                        <td><input type="checkbox" name="permission[]" id="permission" value="updateITToken"></td>
-                        <td><input type="checkbox" name="permission[]" id="permission" value="viewITToken"></td>
-                        <td><input type="checkbox" name="permission[]" id="permission" value="deleteITToken"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
+                        <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
                       </tr>                              
                       </tbody>
                     </table>

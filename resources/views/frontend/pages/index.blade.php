@@ -35,7 +35,7 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
                                                     title="SMS" />
                                             </div>
-                                            @elseif($validity != null && $currentDate < $validity)                                            
+                                            @elseif($validity != null && $currentDate < $validity)                                           
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                                                 <a href="{{ url('/message'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
