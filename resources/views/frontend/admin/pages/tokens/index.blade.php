@@ -240,6 +240,9 @@
                     },
                     {
                         data: "client_name",
+                        render: function (data, type, row) {
+                        return data ? data : "No client";
+                        }
                     },
                     {
                         data: "detail"
@@ -327,7 +330,7 @@
                         $('#token_id').val(response.data.id);
                         $('#type').val(response.type.name);
                         $('#mobile_number').val(response.data.mobile_number);
-                        $('#device_id').val(response.device_name.device_name);
+                        $('#device_id').val(response.device_name == null ? 'No device' : response.device_name.device_name);
                         $('#start_date').val(response.data.start_date);
                         $('#end_date').val(response.data.end_date);
                         $('select[name="status"]').val(response.data.status);

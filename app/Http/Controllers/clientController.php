@@ -26,19 +26,16 @@ class clientController extends Controller
             ->where('status', '=', 1)
             ->first();
         $txn_data = transactions::where('txn_id', $subsModel->txn_id)->first();
-        if($txn_data != null){
-            if($txn_data->txn_mode == 'Activation_code'){
+        if ($txn_data != null) {
+            if ($txn_data->txn_mode == 'Activation_code') {
                 $plan = 'Free plan';
-            }
-            else{
+            } else {
                 $plan = $txn_data->package_name;
             }
-        }
-        else{
+        } else {
             $plan = 'No plans';
         }
-        
-        
+
         $txnModel = new transactions();
         $subs = new subscriptionController;
         $data = array(

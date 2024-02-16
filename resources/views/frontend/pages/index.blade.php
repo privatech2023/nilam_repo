@@ -19,6 +19,26 @@
         <!-- Main content -->
         <div class="content">
             <div class="container ">
+
+                <div id="myModalconf" class="modal fade">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">			
+                                <h4 class="modal-title">Failed to connect</h4>	
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <p>Please sync device from app to register your device</p>
+                                <img src="{{ asset('assets/frontend/images/app1.jpeg') }}" alt="Mobile Screenshot" class="img-fluid smaller-image">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <button class="btn btn-primary btn-load" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -456,25 +476,8 @@
     </div>
    
     <!-- Modal HTML -->
-<div id="myModalconf" class="modal fade">
-	<div class="modal-dialog modal-confirm">
-		<div class="modal-content">
-			<div class="modal-header">
-				<div class="icon-box">
-					<i class="material-icons">&#xE5CD;</i>
-				</div>				
-				<h4 class="modal-title">Failed to connect</h4>	
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-			</div>
-			<div class="modal-body">
-				<p>Please sync device from app to register your device</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-			</div>
-		</div>
-	</div>
-</div>
+
+
     <script>
         var errors = @json($errors->all());
     </script>
@@ -512,11 +515,12 @@
     data: "data",
     dataType: "json",
     success: function (response) {
-        if(response == 0){
+        if(response == 1){
             $('#myModalconf').modal('show');
         }else {
-        $(".btn-load").html("Connected");
-        setTimeout(function () {
+        $(".btn-load").html("Connected");       
+    }
+    setTimeout(function () {
             var button = document.querySelector('.btn-load');
         button.disabled = false;
         var spinner = button.querySelector('.spinner-border');
@@ -530,7 +534,6 @@
         button.style.display = 'none';
             button.disabled = true;
         }, 5000);
-    }
         }
     });
         }
