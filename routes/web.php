@@ -100,6 +100,8 @@ Route::group(['middleware' => 'client.auth'], function () {
     route::get('/issue-token', [issueTokenController::class, 'index'])->name('issue_token');
     route::post('/raise-issue', [issueTokenController::class, 'create']);
 
+    route::get('/get/device/{id}', [frontendController::class, 'get_devices']);
+
     // features
     route::group(['middleware' => 'client.validity'], function () {
         route::get('/message/{userId}', MessageComponent::class)->name('messages');
@@ -149,6 +151,8 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin/subscription/pending', [subscriptionController::class, 'pending']);
     route::get('/admin/subscription/expired', [subscriptionController::class, 'expired']);
 
+    route::post('/admin/subscription/update', [clientController::class, 'update_subscription']);
+
 
 
     route::get('/admin/users', [usersController::class, 'index'])->name('admin_users');
@@ -162,7 +166,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
     route::post('/admin/client/update', [clientController::class, 'update_client']);
     route::post('/admin/clients/updatePassword', [clientController::class, 'update_client_password']);
-    // route::get('/admin/clients/add', [clientController::class, 'view_client']);
+    route::post('/admin/clientsDelete', [clientController::class, 'delete_client']);
 
     route::get('/admin/managePackages', [PackageController::class, 'index'])->name('/admin/managePackages');
     route::post('/admin/createPackages', [PackageController::class, 'create']);
@@ -174,6 +178,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/activationCodes/ajaxCallAllCodes', [activationCodeController::class, 'ajaxCallAllCodes']);
     route::post('/admin/createActivationCode', [activationCodeController::class, 'createCode']);
     route::post('/admin/deleteActivationCode', [activationCodeController::class, 'deleteCode']);
+    route::post('/admin/updateActivationCode', [activationCodeController::class, 'updateCode']);
 
     route::get('/admin/manageCoupons', [couponsController::class, 'index'])->name('/admin/manageCoupons');
     route::post('/admin/coupons/ajaxCallAllCoupons', [couponsController::class, 'ajaxCallAllCoupons']);
@@ -198,6 +203,13 @@ Route::group(['middleware' => 'user.auth'], function () {
     route::post('/admin/token/update', [issueTokenController::class, 'token_update']);
     route::post('/admin/delete/token', [issueTokenController::class, 'token_delete']);
 
+    route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
+    route::post('/admin/token/ajaxCallAllTech', [issueTokenController::class, 'ajaxCallAllTokensTechnical']);
+    route::get('/admin/search_client', [issueTokenController::class, 'search_client']);
+    route::post('/admin/token/update/technical', [issueTokenController::class, 'token_update_technical']);
+    route::post('/admin/assign/technical', [issueTokenController::class, 'assign_technical']);
+    route::get('/admin/technical/token', [issueTokenController::class, 'tech_index'])->name('/admin/technical/token');
+
     route::post('/admin/user-creds/update', [settingsController::class, 'user_creds_update']);
 
 
@@ -211,6 +223,7 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     route::post('/admin/clients/ajaxCallAllClientsActive', [subscriptionController::class, 'ajaxCallAllClientsActive']);
     route::post('/admin/clients/ajaxCallAllClientsPending', [subscriptionController::class, 'ajaxCallAllClientsPending']);
+    route::post('/admin/clients/ajaxCallAllClientsExpired', [subscriptionController::class, 'ajaxCallAllClientsExpired']);
     route::post('/admin/clients/ajaxCallAllClients', [subscriptionController::class, 'ajaxCallAllClients']);
 
     route::get('/admin/profile/{id}', [adminController::class, 'profile']);
@@ -220,13 +233,6 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/apk-versions', [ApkVersionController::class, 'create_update']);
 
     route::get('/admin/test-api', [adminController::class, 'test_api']);
-
-    route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
-    route::post('/admin/token/ajaxCallAllTech', [issueTokenController::class, 'ajaxCallAllTokensTechnical']);
-    route::get('/admin/search_client', [issueTokenController::class, 'search_client']);
-
-    route::post('/admin/assign/technical', [issueTokenController::class, 'assign_technical']);
-    route::get('/admin/technical/token', [issueTokenController::class, 'tech_index']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

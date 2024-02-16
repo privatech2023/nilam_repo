@@ -108,6 +108,10 @@ class issueTokenController extends Controller
         $token = issue_token::where('issue_type', $request->input('row_id'))->first();
         if ($token != null) {
             $token->delete();
+            $tech = tech_tokens::where('token_id', $token->id)->first();
+            if ($tech != null) {
+                $tech->delete;
+            }
         }
         Session::flash('success', 'Token type deleted successfully');
         return redirect()->route('token-type');
@@ -177,15 +181,38 @@ class issueTokenController extends Controller
             'end_date' => $request->input('end_date'),
             'status' => $request->input('status'),
             'mobile_number' => $request->input('mobile_number'),
-            'end_date' => $request->input('status') == 1 ? date('Y-m-d') : null,
+            'end_date' => $request->input('status') == 1 ? date('Y-m-d') : $request->input('end_date'),
         ]);
         session()->flash('success', 'Issue token updated successfully');
         return redirect()->route('/admin/tokens');
     }
 
+    // technical
+    public function token_update_technical(Request $request)
+    {
+        $tech = tech_tokens::where('token_id', $request->input('token_id'))->first();
+        $tech->update([
+            'status' => $request->input('status')
+        ]);
+        $token = issue_token::where('id', $request->input('token_id'))->first();
+        $token->update([
+            'end_date' => $request->input('end_date'),
+            'status' => $request->input('status'),
+            'mobile_number' => $request->input('mobile_number'),
+            'end_date' => $request->input('status') == 1 ? date('Y-m-d') : $request->input('end_date'),
+        ]);
+        session()->flash('success', 'Issue token updated successfully');
+        return redirect()->route('/admin/technical/token');
+    }
+
+
     public function token_delete(Request $request)
     {
         $token = issue_token::where('id', $request->input('row_id'))->first();
+        $tech = tech_tokens::where('token_id', $token->id)->first();
+        if ($tech != null) {
+            $tech->delete;
+        }
         $token->delete();
         session()->flash('success', 'Issue token deleted successfully');
         return redirect()->route('/admin/tokens');

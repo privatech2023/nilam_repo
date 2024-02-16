@@ -203,6 +203,10 @@
 
     <script>
         $(document).ready(function () {
+            $("#employeeTree").addClass('menu-open');
+            $("#employeeMenu").addClass('active');
+            $("#employeeSubMenuRoles").addClass('active');
+
             $('#del_id').val('');
             $('.delete-btn').on('click',function(){
                 $data = $(this).data('value');

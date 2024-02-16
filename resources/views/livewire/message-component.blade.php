@@ -19,8 +19,32 @@
         <div id="loader"></div>
     </div>
 
+    {{-- mod --}}
+    <div id="myModalconf" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">			
+                    <h4 class="modal-title">Failed to fetch messages</h4>	
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Please allow device permissions to access messages</p>
+                    <img src="{{ asset('assets/frontend/images/app1.jpeg') }}" alt="Mobile Screenshot" class="img-fluid smaller-image">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+
     @if($msgCount == 0)    
     <div class="container">
+
+
         <span class="message-text">No messages found<br><br>
         <button type="button" class="btn btn-sm btn-primary " wire:click="syncInbox" onclick="load()">Sync inbox</button>
         <button type="button" class="btn btn-sm btn-primary" wire:click="syncOutbox" onclick="load()">Sync outbox</button>
@@ -100,8 +124,12 @@
     var screenWidth = window.innerWidth;
     var isContentOpen = false;
     var isProcessing = false;
-    $('.loader_bg').hide();
     
+    $('.loader_bg').hide();
+    var msgcount = '{{ $msgCount}}'
+    if(msgcount == 0){
+        $('#myModalconf').modal('show');
+    }
     Livewire.on('toggleSidepanel', function () {
         $('.loader_bg').show();
         if (!isProcessing) {
@@ -125,12 +153,12 @@
             isContentOpen = false;
         }
     });
-
-    if(isContentOpen = false){
+    if(isContentOpen == false){
     setInterval(function() {
+        $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 3000);
-}
+        }, 6000);
+    }
 });
 </script>
     

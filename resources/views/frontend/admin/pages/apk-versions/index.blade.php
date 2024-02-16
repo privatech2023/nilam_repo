@@ -70,5 +70,9 @@
         toastr.warning('{{session('error')}}')
     </script>
 @endif
-
+<script>
+    $(document).ready(function () {
+        $("#apkMenu").addClass('active');
+    });
+</script>
 @endsection

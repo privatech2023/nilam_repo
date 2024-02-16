@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\device;
 use App\Models\settings;
 use App\Models\subscriptions;
 use Illuminate\Http\Request;
@@ -58,17 +59,11 @@ class frontendController extends Controller
     public function sendEmailOtp($address, $totp)
     {
 
-        // $email->setSubject("Login OTP - Privatech");
-
-        // Using a custom template
         $data =  array("otp" => $totp);
 
         try {
             Mail::to($address)
                 ->send(new \App\Mail\OtpMail($data));
-
-            // Email sent successfully
-            // You can add your success response or any other logic here
         } catch (\Exception $e) {
 
             dd($e);
@@ -82,5 +77,16 @@ class frontendController extends Controller
         $setting = $settingsModel->where('key', $key)->first();
 
         return $setting ? $setting->value : null;
+    }
+
+    public function get_devices($id)
+    {
+        $data = device::where('client_id', $id)->first();
+        if ($data == null) {
+            $data = 0;
+        } else {
+            $data = 1;
+        }
+        return response()->json($data);
     }
 }

@@ -157,9 +157,7 @@
 $(document).ready(function() {
 
 
-    $("#employeeTree").addClass('menu-open');
-    $("#employeeMenu").addClass('active');
-    $("#employeeSubMenuManage").addClass('active');
+   
 
     var dataTable = $('#dataTable').DataTable({
      
@@ -270,6 +268,12 @@ $(document).ready(function() {
 </script> --}}
 <script>
     $(document).ready(function () {
+
+        $("#employeeTree").addClass('menu-open');
+    $("#employeeMenu").addClass('active');
+    $("#employeeSubMenuManage").addClass('active');
+
+    
         $('#del_id').val('');
             $('.del-button').on('click',function(){
                 $data = $(this).data('value');

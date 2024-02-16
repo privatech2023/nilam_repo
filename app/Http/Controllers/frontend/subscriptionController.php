@@ -118,19 +118,20 @@ class subscriptionController extends Controller
                         $update_date = Subscriptions::where('client_id', $request->input('user_id'))
                             ->select('ends_on')
                             ->orderByDesc('ends_on')
+                            ->where('status', '=', 1)
                             ->first();
                         $subscription = new subscriptions();
                         $subscription->client_id = $request->input('user_id');
                         $subscription->txn_id = $transaction_id;
-                        $subscription->started_at = date('Y-m-d', strtotime($update_date->ends_on));
+                        $subscription->started_at = strtotime($update_date->ends_on) < strtotime(date('Y-m-d')) ? date('Y-m-d') : date('Y-m-d', strtotime($update_date->ends_on));
                         $subscription->status = 1;
                         $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
                         $subscription->validity_days = $code->duration_in_days;
                         $subscription->devices = $code->devices;
                         $subscription->save();
                     }
-
                     $code->is_active = 0;
+                    $code->used_by = $request->input('user_id');
                     $code->save();
                     Session::flash('success', 'Payment Success');
                     return redirect()->route('home');
@@ -176,7 +177,7 @@ class subscriptionController extends Controller
         $expiredSubscriptions = subscriptions::where('client_id', $id)
             ->where('status', 1)
             ->where('ends_on', '<', $today)
-            ->orderByDesc('started_at')
+            ->orderByDesc('updated_at')
             ->first();
 
         if (!is_null($expiredSubscriptions)) {
@@ -186,7 +187,7 @@ class subscriptionController extends Controller
         $activeSubscriptionEndDate = subscriptions::where('client_id', $id)
             ->where('status', 1)
             ->where('ends_on', '>=', $today)
-            ->orderByDesc('ends_on')
+            ->orderByDesc('updated_at')
             ->value('ends_on');
 
         if ($activeSubscriptionEndDate) {
@@ -246,7 +247,7 @@ class subscriptionController extends Controller
                     ->first();
                 if ($lastSubscription) {
                     $lastSubscription->txn_id = $transaction_id;
-                    $lastSubscription->started_at = now();
+                    $lastSubscription->started_at = date('Y-m-d');
                     $lastSubscription->ends_on = now()->addDays($daysToAdd);
                     $lastSubscription->status = 0;
                     $lastSubscription->validity_days = $package->duration_in_days;
@@ -255,14 +256,13 @@ class subscriptionController extends Controller
                 } else {
                     $update_date = Subscriptions::where('client_id', $request->input('user_id'))
                         ->select('ends_on')
-                        ->orderByDesc('ends_on')
+                        ->orderByDesc('updated_at')
+                        ->where('status', '=', 1)
                         ->first();
-
-
                     $subscription = new subscriptions();
                     $subscription->client_id = $request->input('user_id');
                     $subscription->txn_id = $transaction_id;
-                    $subscription->started_at = date('Y-m-d', strtotime($update_date->ends_on));
+                    $subscription->started_at = strtotime($update_date->ends_on) < strtotime(date('Y-m-d')) ? date('Y-m-d') : date('Y-m-d', strtotime($update_date->ends_on));
                     $subscription->status = 0;
                     $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
                     $subscription->validity_days = $package->duration_in_days;
@@ -319,14 +319,15 @@ class subscriptionController extends Controller
         } else {
             $update_date = Subscriptions::where('client_id', $request->input('user_id'))
                 ->select('ends_on')
-                ->orderByDesc('ends_on')
+                ->orderByDesc('updated_at')
+                ->where('status', '=', 1)
                 ->first();
 
 
             $subscription = new subscriptions();
             $subscription->client_id = $request->input('user_id');
             $subscription->txn_id = $transaction_id;
-            $subscription->started_at = date('Y-m-d', strtotime($update_date->ends_on));
+            $subscription->started_at = strtotime($update_date->ends_on) < strtotime(date('Y-m-d')) ? date('Y-m-d') : date('Y-m-d', strtotime($update_date->ends_on));
             $subscription->status = 0;
             $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
             $subscription->validity_days = $package->duration_in_days;

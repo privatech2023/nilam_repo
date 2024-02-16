@@ -54,6 +54,7 @@
                                     <th>Description</th>
                                     <th>Start date</th>
                                     <th>End Date</th>
+                                    <th>Contact</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -195,6 +196,7 @@
 
             
             var techTokens = {!! json_encode($tech->pluck('token_id')) !!};
+            var techTokensStatus = {!! json_encode($tech->pluck('status')) !!};
 
 
             $.ajaxSetup({
@@ -203,9 +205,9 @@
             }
             });
         
-            $("#packageTree").addClass('menu-open');
-            $("#packageMenu").addClass('active');
-            $("#packageSubMenuCodes").addClass('active');
+            $("#tokenTree").addClass('menu-open');
+            $("#tokenMenu").addClass('active');
+            $("#SubMenuToken").addClass('active');
             var i = 1;
             
             var dataTable = $('#dataTable').DataTable({
@@ -256,6 +258,9 @@
                     }
                     },
                     {
+                        data: "mobile_number"
+                    },
+                    {
                         mRender: function(data, type, row) {
                             if (row.status == 1) {
                                 return '<span class="badge bg-success">SUCCESS</span>';
@@ -267,11 +272,11 @@
                     },
                     {
                         mRender: function(data, type, row) {
-        var disabled = techTokens.includes(row.id) ? 'disabled' : '';
-        return '<button class="btn btn-outline-info btn-xs view-btn" data-value="' + row.id + '">VIEW</button>' +
-            '<button class="btn btn-outline-danger btn-xs del-button" data-value="' + row.id + '">Del</button>' +
-            '<button style="margin-left:2px; color: grey;" class="btn btn-outline-warning btn-xs technical-button" data-value="' + row.id + '" ' + disabled + '>TECHNICAL</button>';
-    }
+        var disabled = techTokens.includes(row.id) && techTokens.length != 0 ? 'disabled' : '';
+        return '<button class="btn btn-outline-info btn-xs view-btn" data-value="' + row.id + '" >VIEW</button>' +
+            '<button class="btn btn-outline-danger btn-xs del-button" data-value="' + row.id + '" >Del</button>' +
+            '<button style="margin-left:2px; color: grey;" class="btn btn-outline-warning btn-xs technical-button" data-value="' + row.id + '" data-status="' + row.status + '" ' + disabled + '>TECHNICAL</button>';
+        }
                     },
                 ],
                 columnDefs: [
@@ -309,8 +314,6 @@
         
         $(document).on('click','.view-btn', function(){
             var data = $(this).data('value');
-            
-
                 $('#view_id').val(data);
                 $.ajax({
                     type: "post",
@@ -334,9 +337,15 @@
         });
 
         $(document).on('click','.technical-button',function(){
-            $('#modal-technical').modal('show');
+            var status = $(this).data('status');
             var data = $(this).data('value');
+            if(status == 1){
+                alert('Please mark the status as pending before assigning it to technical team.')
+            }
+            else{
+                $('#modal-technical').modal('show');
             $('#token2_id').val(data);
+            }
         });
 
         });

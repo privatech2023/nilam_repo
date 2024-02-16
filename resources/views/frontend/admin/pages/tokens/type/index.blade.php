@@ -144,9 +144,9 @@
 $(document).ready(function() {
 
 
-    $("#employeeTree").addClass('menu-open');
-    $("#employeeMenu").addClass('active');
-    $("#employeeSubMenuManage").addClass('active');
+    $("#tokenTree").addClass('menu-open');
+    $("#tokenMenu").addClass('active');
+    $("#SubMenuTokenType").addClass('active');
 
 
     $('#del_id').val('');

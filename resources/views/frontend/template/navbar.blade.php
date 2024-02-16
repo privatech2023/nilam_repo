@@ -76,13 +76,13 @@
 
                             <div class="dropdown-divider"></div>
 
-                            <a href="<?= url('privacy-policy') ?>" class="dropdown-item">
+                            <a href="https://privatechgarden.online/privacy-policy" class="dropdown-item">
                                 <i class="fa-regular fa-file mr-2" aria-hidden="true"></i> Privacy Policy
                             </a>
 
                             <div class="dropdown-divider"></div>
 
-                            <a href="#" class="dropdown-item">
+                            <a href="https://privatechgarden.online/refund-policy" class="dropdown-item">
                                 <i class="fa-regular fa-file mr-2" aria-hidden="true"></i>Return &amp; Refund
                             </a>
                             @if(!session('user_name'))
