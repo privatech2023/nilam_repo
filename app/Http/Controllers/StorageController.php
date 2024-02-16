@@ -31,7 +31,7 @@ class StorageController extends Controller
 
     public function frontend_index()
     {
-        $storages = storage::all();
+        $storages = storage::where('status', 1)->get();
         return view('frontend.pages.storage.index')->with(['storages' => $storages]);
     }
 

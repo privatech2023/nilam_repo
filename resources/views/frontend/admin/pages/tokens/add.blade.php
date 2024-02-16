@@ -26,7 +26,7 @@
             <div class="col-md-12 col-12">
                 <div class="card card-outline card-info">
                     <div class="card-header">
-                        <span><a href="" class="btn btn-outline-info btn-sm"><i
+                        <span><a href="{{ url('/admin/tokens')}}" class="btn btn-outline-info btn-sm"><i
                                     class="fas fa-long-arrow-alt-left mr-1"></i>Back</a></span>
 
                         <div class="card-tools"></div>
@@ -62,13 +62,7 @@
                             <label for="input" class="col-sm-2 col-form-label">Select client</label>
                                 
                                 <div class="col-sm-10">
-                                    {{-- <select class="form-control" name="client" id="clientSelect" required>
-                                        <option value="" selected>Select</option>
-                                        @foreach($client as $cl)
-                                        <option value="{{$cl->client_id}}">{{ $cl->name}}</option>
-                                        @endforeach
-                                    </select> --}}
-                                    <input type="text" id="client" name="client" value="" class="form-control" placeholder="Enter client's phone number" required>
+                                    <input type="text" id="client" name="client" value="" class="form-control" placeholder="Enter client's phone number">
                                     <button type="button" id="search_client" class="btn btn-outline-primary btn-sm" style="margin-top:2px;">Search</button>
                                     <span id="search_result" class="text-muted" style="font-size: 14px;"></span>
                                 </div>
@@ -78,7 +72,7 @@
                                 <label for="inputName2" class="col-sm-2 col-form-label">Device</label>
                                 
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="device" id="select_device" required>
+                                    <select class="form-control" name="device" id="select_device" >
                                         <option value="" selected>Select</option>
                                     </select>
                                 </div>
