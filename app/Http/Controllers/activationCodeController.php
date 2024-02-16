@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class activationCodeController extends Controller
 {
@@ -55,7 +56,8 @@ class activationCodeController extends Controller
         } else {
             $total_count = count(DB::table('activation_codes')->get());
             $data = DB::table('activation_codes')
-                ->select('*')
+                ->select('activation_codes.*', 'clients.name as client_name')
+                ->leftJoin('clients', 'activation_codes.used_by', '=', 'clients.client_id')
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -105,9 +107,41 @@ class activationCodeController extends Controller
             return redirect()->route('/admin/activationCodes');
         } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());
-
             return redirect()->back()->withErrors(['error' => 'An error occurred. Please try again.'])->withInput();
         }
+    }
+
+
+    public function updateCode(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code_name' => 'required',
+            'duration' => 'required|numeric',
+            'amount' => 'required|numeric',
+            'tax' => 'required|numeric',
+            'expiry_date' => 'required',
+            'price' => 'required|numeric',
+            'status' => 'required|numeric',
+            'devices' => 'required'
+        ]);
+        if ($validator->fails()) {
+            Session::flash('error', $validator->errors());
+            return redirect()->route('/admin/activationCodes');
+        }
+        $data = activation_codes::where('c_id', $request->input('c_id'))->first();
+        $data->update([
+            'code' => $request->input('code_name'),
+            'duration_in_' => $request->input('duration'),
+            'duration_in_days' => $request->input('duration'),
+            'net_amount' => $request->input('amount'),
+            'tax' => $request->input('tax'),
+            'expiry_date' => $request->input('expiry_date'),
+            'price' => $request->input('price'),
+            'is_active' => $request->input('status'),
+            'devices' => $request->input('devices')
+        ]);
+        Session::flash('success', 'Activation code updated successfully');
+        return redirect()->route('/admin/activationCodes');
     }
 
     public function deleteCode(Request $request)

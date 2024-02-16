@@ -9,6 +9,7 @@ class tech_tokens extends Model
 {
     use HasFactory;
     public $fillable = [
-        'token_id'
+        'token_id',
+        'status'
     ];
 }

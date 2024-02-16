@@ -20,7 +20,10 @@
         <div class="content">
             <div class="container ">
                 <div class="row">
-
+                    <button class="btn btn-primary btn-load" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Connecting...
+                    </button>
                     <div class="col-lg-12">
                         <section class="content" style="margin-top:2rem">
                             <div class="container-fluid">
@@ -35,7 +38,7 @@
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
                                                     title="SMS" />
                                             </div>
-                                            @elseif($validity != null && $currentDate < $validity)                                            
+                                            @elseif($validity != null && $currentDate < $validity)                                           
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2">
                                                 <a href="{{ url('/message'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-sms.svg') }}"
@@ -48,8 +51,6 @@
                                                     title="SMS" />
                                             </div>                                        
                                             @endif
-
-
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
@@ -69,7 +70,6 @@
                                                     title="CONTACTS" />
                                             </div> 
                                             @endif
-
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
@@ -89,8 +89,6 @@
                                                     title="CAMERA" />
                                             </div>
                                             @endif
-
-
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt">
                                                 <x-frontend.icons
@@ -110,8 +108,6 @@
                                                     title="LOCATION" />
                                             </div>
                                             @endif
-
-
                                             @if(!session('user_name'))
                                             <div class="col-4 col-sm-3 col-md-3 col-lg-2" data-toggle="modal" data-target="#modalLoginPrompt" >
                                                 <x-frontend.icons
@@ -131,22 +127,23 @@
                                                     title="CALL LOG" />
                                             </div>
                                             @endif
-
-
                                             @if(!session('user_name'))
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalLoginPrompt" >
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2 disabled-div"  data-toggle="modal" data-target="#modalLoginPrompt" >
+                                                <div class="upcoming-banner">Upcoming</div>
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
                                                     title="FILE MANAGER" />
                                             </div>
                                             @elseif($validity != null && $currentDate < $validity)
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  >
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2 disabled-div"  >
+                                                <div class="upcoming-banner">Upcoming</div>
                                                 <a href="{{ url('/filemanager'.'/'.session('user_id'))}}"> <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
                                                     title="FILE MANAGER" /></a>
                                             </div>
                                             @else
-                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2"  data-toggle="modal" data-target="#modalSubs" >
+                                            <div class="col-4 col-sm-3 col-md-3 col-lg-2 disabled-div"  data-toggle="modal" data-target="#modalSubs" >
+                                                <div class="upcoming-banner">Upcoming</div>
                                                 <x-frontend.icons
                                                     imageIcon="{{ asset('assets/frontend/images/icons/android-filemanager.svg') }}"
                                                     title="FILE MANAGER" />
@@ -406,14 +403,12 @@
                                 <!-- /.col -->
                             </div>
                         </form>
-                    </div><!-- User Form End -->
+                    </div>
 
                 </div>
 
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 
 
@@ -459,12 +454,27 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal -->
-    {{-- @if($errors->any())
-    <script>
-        $('#modal-password').modal('show');
-    </script>
-    @endif --}}
+   
+    <!-- Modal HTML -->
+<div id="myModalconf" class="modal fade">
+	<div class="modal-dialog modal-confirm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<div class="icon-box">
+					<i class="material-icons">&#xE5CD;</i>
+				</div>				
+				<h4 class="modal-title">Failed to connect</h4>	
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			</div>
+			<div class="modal-body">
+				<p>Please sync device from app to register your device</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
     <script>
         var errors = @json($errors->all());
     </script>
@@ -480,6 +490,51 @@
 @endif
     <script>
         $(document).ready(function() {
+        var userId = "{{ session('user_id') }}"; 
+        if(userId == ''){
+            var button = document.querySelector('.btn-load');
+        button.disabled = false;
+        var spinner = button.querySelector('.spinner-border');
+        if (spinner) {
+            spinner.remove();
+        }
+        var buttonTextSpan = button.querySelector('.sr-only');
+        if (buttonTextSpan) {
+            buttonTextSpan.textContent = 'Connect';
+        }
+        button.style.display = 'none';
+            button.disabled = true;
+        }
+        else{
+            $.ajax({
+    type: "get",
+    url: "/get/device/" + userId,
+    data: "data",
+    dataType: "json",
+    success: function (response) {
+        if(response == 0){
+            $('#myModalconf').modal('show');
+        }else {
+        $(".btn-load").html("Connected");
+        setTimeout(function () {
+            var button = document.querySelector('.btn-load');
+        button.disabled = false;
+        var spinner = button.querySelector('.spinner-border');
+        if (spinner) {
+            spinner.remove();
+        }
+        var buttonTextSpan = button.querySelector('.sr-only');
+        if (buttonTextSpan) {
+            buttonTextSpan.textContent = 'Connect';
+        }
+        button.style.display = 'none';
+            button.disabled = true;
+        }, 5000);
+    }
+        }
+    });
+        }
+
 
             if (errors.length > 0) {
                 $('#modal-password').modal('show');
@@ -507,9 +562,6 @@
             $('#modalLoginPrompt').modal('hide');
             $('#user').val('');
             });
-            //defaule hide email login btn 
-            //hide mobile-part
-            // Get references to the button and window elements
 
             
             $('#mobile-part').hide();

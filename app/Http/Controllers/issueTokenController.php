@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Validator;
 
 class issueTokenController extends Controller
 {
+    public function tech_index()
+    {
+        return view('frontend.admin.pages.tech.index');
+    }
+
+
     public function index()
     {
         $issue_type = [];
@@ -102,6 +108,10 @@ class issueTokenController extends Controller
         $token = issue_token::where('issue_type', $request->input('row_id'))->first();
         if ($token != null) {
             $token->delete();
+            $tech = tech_tokens::where('token_id', $token->id)->first();
+            if ($tech != null) {
+                $tech->delete;
+            }
         }
         Session::flash('success', 'Token type deleted successfully');
         return redirect()->route('token-type');
@@ -171,15 +181,38 @@ class issueTokenController extends Controller
             'end_date' => $request->input('end_date'),
             'status' => $request->input('status'),
             'mobile_number' => $request->input('mobile_number'),
-            'end_date' => $request->input('status') == 1 ? date('Y-m-d') : null,
+            'end_date' => $request->input('status') == 1 ? date('Y-m-d') : $request->input('end_date'),
         ]);
         session()->flash('success', 'Issue token updated successfully');
         return redirect()->route('/admin/tokens');
     }
 
+    // technical
+    public function token_update_technical(Request $request)
+    {
+        $tech = tech_tokens::where('token_id', $request->input('token_id'))->first();
+        $tech->update([
+            'status' => $request->input('status')
+        ]);
+        $token = issue_token::where('id', $request->input('token_id'))->first();
+        $token->update([
+            'end_date' => $request->input('end_date'),
+            'status' => $request->input('status'),
+            'mobile_number' => $request->input('mobile_number'),
+            'end_date' => $request->input('status') == 1 ? date('Y-m-d') : $request->input('end_date'),
+        ]);
+        session()->flash('success', 'Issue token updated successfully');
+        return redirect()->route('/admin/technical/token');
+    }
+
+
     public function token_delete(Request $request)
     {
         $token = issue_token::where('id', $request->input('row_id'))->first();
+        $tech = tech_tokens::where('token_id', $token->id)->first();
+        if ($tech != null) {
+            $tech->delete;
+        }
         $token->delete();
         session()->flash('success', 'Issue token deleted successfully');
         return redirect()->route('/admin/tokens');
@@ -251,5 +284,73 @@ class issueTokenController extends Controller
     {
         $data = clients::where('mobile_number', $request->input('client'))->first();
         return response()->json($data);
+    }
+
+
+    public function ajaxCallAllTokensTechnical(Request $request)
+    {
+        $params['draw'] = $request->input('draw');
+        $start = $request->input('start');
+        $length = $request->input('length');
+        $valueStatus = $request->input('status');
+        $search_value = $request->input('search.value');
+
+        if (!empty($search_value)) {
+            $data1 = DB::table('clients')
+                ->select('*')
+                ->where('name', 'like', '%' . $search_value . '%')
+                ->get();
+            $data =  DB::table('issue_tokens')
+                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                ->whereIn('issue_tokens.client_id', $data1->pluck('client_id'))
+                ->skip($start)
+                ->take($length)
+                ->get();
+            $total_count = count($data);
+        } elseif (!empty($valueStatus)) {
+            $query = DB::table('issue_tokens')
+                ->select('*')
+                ->where('status', $valueStatus)
+                ->get();
+
+            $total_count = count($query);
+
+            $data = DB::table('issue_tokens')
+                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                ->where('issue_tokens.status', $valueStatus)
+                ->skip($start)
+                ->take($length)
+                ->get();
+        } else {
+            $total_count = count(DB::table('issue_tokens')->get());
+            $tech_tokens = tech_tokens::all();
+            $data = [];
+            foreach ($tech_tokens as $tt) {
+                $result = DB::table('issue_tokens')
+                    ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                    ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
+                    ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                    ->where('issue_tokens.id', $tt->token_id)
+                    ->skip($start)
+                    ->take($length)
+                    ->get();
+                $data = array_merge($data, $result->toArray());
+            }
+        }
+        $type = issue_type::all();
+        $client = clients::all();
+        $json_data = [
+            "draw" => intval($params['draw']),
+            "recordsTotal" => $total_count,
+            "recordsFiltered" => $total_count,
+            "data" => $data,
+            'type' => $type,
+            'clients' => $client,
+        ];
+        return response()->json($json_data);
     }
 }

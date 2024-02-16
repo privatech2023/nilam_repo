@@ -44,10 +44,6 @@ class LoginController extends Controller
                 Session::forget('user_id');
                 Session::forget('user_name');
                 Session::forget('user_data');
-                $subs = subscriptions::where('client_id', $user->client_id)
-                    ->orderBy('created_at', 'desc')
-                    ->first();
-                $request->session()->put('validity', $subs->ends_on);
                 $request->session()->put('user_id', $user->client_id);
                 $request->session()->put('user_name', $user->name);
                 return redirect('/')->with('success', 'Login successful');
