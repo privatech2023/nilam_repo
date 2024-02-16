@@ -64,7 +64,7 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="text-center">
-                                                        <a href="{{ url('storage/purchase/'.$list['id']) }}"
+                                                        <a href="{{ url('storage-plan/purchase/'.$list['id']) }}"
                                                             class="btn btn-sm btn-primary">
                                                             <i class="fa-solid fa-cart-shopping"></i> Buy
                                                         </a>

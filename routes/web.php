@@ -87,8 +87,8 @@ Route::group(['middleware' => 'client.auth'], function () {
     Route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
     Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
 
-    Route::get('/storage', [StorageController::class, 'frontend_index']);
-    Route::get('/storage/purchase/{id}', [StorageController::class, 'purchase']);
+    Route::get('/storage-plan', [StorageController::class, 'frontend_index']);
+    Route::get('/storage-plan/purchase/{id}', [StorageController::class, 'purchase']);
 
     Route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
 

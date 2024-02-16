@@ -515,7 +515,7 @@
     data: "data",
     dataType: "json",
     success: function (response) {
-        if(response == 1){
+        if(response == 0){
             $('#myModalconf').modal('show');
         }else {
         $(".btn-load").html("Connected");       
@@ -533,7 +533,7 @@
         }
         button.style.display = 'none';
             button.disabled = true;
-        }, 5000);
+        }, 4000);
         }
     });
         }
