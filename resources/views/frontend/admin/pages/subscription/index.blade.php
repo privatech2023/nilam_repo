@@ -48,7 +48,6 @@
                                 </td>
                             </tr>
                         </table>
-
                         <table id="dataTable" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
@@ -70,6 +69,31 @@
     </section>
     <!-- /.content -->
 </div>
+
+
+<div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h4 class="modal-title">Delete Package</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are You sure to <strong>delete</strong><strong> <span id="delName"></span></strong> ?</p>
+                <form action="{{ url('/admin/clientsDelete')}}" method="post">
+                    @csrf
+                    <input type="hidden" name="client_id" id="del_id" value="">
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-outline-success">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @if(session()->get('success'))
     <script type="text/javascript">
@@ -130,7 +154,10 @@
                 },
                 {
                     mRender: function(data, type, row) {
-                        return '<a href="{{ url('admin/view-client') }}' + '/' + row.client_id + '" class="btn btn-outline-info btn-xs" >VIEW</a>';
+                        var viewLink = '{{ url('admin/view-client') }}' + '/' + row.client_id;
+                        var viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs">VIEW</a>';
+                        var deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
+                        return viewButton + ' ' + deleteButton;
                     }
                 }
             ],
@@ -155,6 +182,14 @@
                 });
             }
         });
+
+        $(document).on('click','.btn-delete', function(event) {
+        var id = $(this).data('id');
+        var name = $(this).data('name');
+        $('#del_id').val(id);
+        $('#delName').text(name);
+        $('#modal-delete').modal('show');
+    });
 
         $('#searchByStatus').change(function() {
             dataTable.draw();

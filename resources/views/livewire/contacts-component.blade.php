@@ -13,13 +13,26 @@
             @livewire('dropdown')
         
     </div>
-    {{-- <hr style="width: 100%; border-top: 1px solid #311c39;">
-    <div class="row" style="display:inline-block; text-align: center; margin-top: 1rem; width:100%;">
-    <button  type="button" class="btn btn-sm " style=" background-color: #60377b; border-radius: 10px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" wire:click="SyncContacts">Sync contacts</button>
-    <button class="btn btn-sm " style=" background-color: #60377b; border-radius: 10px; color: white; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
-    </div>
-    <hr style="width: 100%; border-top: 1px solid #311c39;"> --}}
     <div class="content-wrapper remove-background">
+
+        {{-- mod --}}
+    <div id="myModalconf" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">			
+                    <h4 class="modal-title">Failed to fetch contacts</h4>	
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Please allow device permissions to access messages</p>
+                    <img src="{{ asset('assets/frontend/images/app1.jpeg') }}" alt="Mobile Screenshot" class="img-fluid smaller-image">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
         <div class="loader_bg" style="display:none;">
             <div id="loader"></div>
@@ -103,6 +116,11 @@
         <script>
         document.addEventListener("livewire:load", function () {
             $('.loader_bg').hide();
+
+            var contactsCount = '{{ $contactsCount}}'
+    if(contactsCount == 0){
+        $('#myModalconf').modal('show');
+    }
         var screenWidth = window.innerWidth;
         var isContentOpen = false;
     
@@ -124,8 +142,9 @@
         });
         if(isContentOpen == false){
     setInterval(function() {
+        $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 3000);
+        }, 4000);
 }
     });
     </script>

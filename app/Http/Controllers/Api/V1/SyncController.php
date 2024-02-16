@@ -24,8 +24,6 @@ class SyncController extends Controller
             'device_id' => 'nullable|string|required_if:force_sync,true',
             'device_token' => 'nullable|string|required_if:force_sync,true',
         ]);
-
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,

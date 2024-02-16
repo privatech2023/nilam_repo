@@ -79,17 +79,24 @@
 {{-- <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'><link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'> --}}
 
     <style>
-        /* body {
-    margin: 0;
-    font-family: "Source Sans Pro",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #212529;
-    text-align: left;
-    background-color: #fff;
-} */
-    
+        .disabled-div{
+            opacity: 0.5;
+    pointer-events: none;
+    position: relative;
+        }
+        .upcoming-banner {
+            background-color: #ccc; /* Gray background color */
+    color: #fff; /* Text color */
+    padding: 5px; /* Add padding for spacing */
+    text-align: center; /* Center align text */
+    position: absolute; /* Position absolutely */
+    top: 50%; /* Position at 50% from the top */
+    left: 50%; /* Position at 50% from the left */
+    transform: translate(-50%, -50%); /* Center horizontally and vertically */
+    z-index: 1; /* Ensure the banner is above the icon */
+    width: 60%; 
+    border-radius: 3px;
+}
     /* Center the loader */
     .loader_bg {
         position: fixed;

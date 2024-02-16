@@ -56,6 +56,7 @@
                                     <th>Price</th>
                                     <th>Devices</th>
                                     <th>STATUS</th>
+                                    <th>Used by</th>
                                     <th>ACTION</th>
                                 </tr>
                                 </thead>
@@ -126,7 +127,7 @@
     
                                     <div class="form-group input-group-sm">
                                         <label for="amount">Expiry date</label>
-                                        <input type="date" class="form-control net-amt" name="expiry_date" placeholder="Expiry date"
+                                        <input type="date" class="form-control" name="expiry_date" placeholder="Expiry date"
                                             required autocomplete="off">
                                     </div>
                                 </div>
@@ -161,7 +162,7 @@
                                         <label>Status</label>
                                         <select class="form-control" name="status">
                                             <option value="1" selected>Active</option>
-                                            <option value="0">Disabled </option>
+                                            <option value="0">Used</option>
     
                                         </select>
                                     </div>
@@ -187,13 +188,10 @@
                             <button type="submit" class="btn btn-primary btn-sm swalDefaultSuccess">CREATE</button>
                         </div>
                     </form>
-    
                 </div>
-    
             </div>
             <!-- /.modal-content -->
-        </div>
-    
+        </div>    
     </div>
 
 
@@ -222,6 +220,107 @@
                 </div>
     
             </div>
+        </div>
+    </div>
+
+
+
+    {{-- Update Modal --}}
+    <div class="modal fade" id="modal-update">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create New</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- form start -->
+                    <form role="form" action="{{ url('/admin/updateActivationCode')}}" method="post">
+                        @csrf
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <input type="hidden" id="c_id" name="c_id" value="" />
+                                        <label for="name">Code Name *</label>
+                                        <input type="text" class="form-control" name="code_name"
+                                            placeholder="Activation Code" autocomplete="off" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="exampleInputPassword1">Duration in days</label>
+                                        <input type="number" class="form-control" name="duration"
+                                            placeholder="Duration in days" min="0" required autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="amount">Amount</label>
+                                        <input type="number" class="form-control net-amt2" name="amount" value="" placeholder="Amount"
+                                            required >
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="amount">Expiry date</label>
+                                        <input type="date" class="form-control" name="expiry_date" placeholder="Expiry date"
+                                            required >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="amount">Tax ( {{$gst_rate}}%)</label>
+                                        <input type="number" class="form-control tax-amt2" name="tax" placeholder="Tax amount" 
+                                            required readonly>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group input-group-sm">
+                                        <label for="amount">Price</label>
+                                        <input type="number" class="form-control price-amt2" name="price" placeholder="Price" required
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group input-group-sm">
+                                        <label>Status</label>
+                                        <select class="form-control" name="status">
+                                            <option value="1" selected>Active</option>
+                                            <option value="0">Used</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                <div class="form-group input-group-sm">
+                                    <label for="devices">Number of devices</label>
+                                    <select class="form-control" name="devices" required>
+                                        @for ($i = 1; $i <= config('devices.max_devices'); $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-primary btn-sm swalDefaultSuccess">UPDATE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <!-- /.modal-content -->
         </div>
     </div>
 
@@ -298,7 +397,6 @@
                             if (row.is_active == 1) {
                                 return '<span class="badge bg-success">ACTIVE</span>';
                             } else if(row.is_active == 2){
-        
                                 return '<span class="badge bg-warning">DISABLED</span>';
                             }                                       
                             else  {
@@ -307,8 +405,22 @@
                         }
                     },
                     {
+                        data: "client_name"
+                    },
+                    {
                         mRender: function(data, type, row) {
-                            return '<button class="btn btn-outline-danger btn-xs del-button" data-toggle="modal" data-target="#modal-delete" data-id="' + row.c_id + '" data-name="' + row.code + '" >Del</button>'
+                            var viewButton = '';
+    if (row.used_by !== null) {
+        var viewLink = '{{ url('admin/view-client') }}' + '/' + row.used_by;
+        viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs">VIEW USER</a>';
+    }
+
+    var editButton = '<button class="btn btn-outline-warning btn-xs edit-button" data-toggle="modal" data-target="#modal-update" data-id="' +
+        row.c_id + '" data-name="' + row.code + '" data-expiry="'+row.expiry_date+'" data-validity="' + row.duration_in_days + '" data-status="' + row.is_active +'" data-netAmount="' + row.net_amount +'" data-tax="' + row.tax +'" data-price="' + row.price +'" data-devices="' + row.devices +'" >Edit</button>';
+    var deleteButton = '<button class="btn btn-outline-danger btn-xs del-button" data-toggle="modal" data-target="#modal-delete" data-id="' + row.c_id + '" data-name="' + row.code + '" >Del</button>';
+
+    var buttons = editButton + ' ' + deleteButton + ' ' + viewButton;
+    return buttons;
                         }
                     },
                 ],
@@ -343,30 +455,82 @@
                 var button = $(event.relatedTarget) 
                 var todo_id = button.data('id')
                 var todo_name = button.data('name')
-        
                 var modal = $(this)
                 modal.find('.modal-body #del_id').val(todo_id)
                 modal.find('.modal-body #delName').text(todo_name)
-        
             });
-        
-        
-            $(document).on('change', '.net-amt', function(){        
+
+            $('#dataTable tbody').on('click', '.edit-button', function() {
+
+                $('#modal-update').find('input[name="code_name"]').prop('disabled', false);
+            $('#modal-update').find('input[name="duration"]').prop('disabled', false);
+            $('#modal-update').find('input[name="amount"]').prop('disabled', false);
+        $('#modal-update').find('input[name="expiry_date"]').prop('disabled', false);
+        $('#modal-update').find('input[name="tax"]').prop('disabled', false);
+        $('#modal-update').find('input[name="price"]').prop('disabled', false);
+        $('#modal-update').find('select[name="status"]').prop('disabled', false);
+        $('#modal-update').find('select[name="devices"]').prop('disabled', false);
+                var button = $(this);
+                var id = button.data('id');
+    var name = button.data('name');
+    var validity = button.data('validity');
+    var status = button.data('status');
+    var netAmount = button.data('netamount');
+    var tax = button.data('tax');
+    var price = button.data('price');
+    var expiry = button.data('expiry');
+    var devices = button.data('devices');
+
+    // Set modal fields with data
+    $('#c_id').val(id);
+    $('#modal-update').find('input[name="code_name"]').val(name);
+    $('#modal-update').find('input[name="duration"]').val(validity);
+    $('#modal-update').find('input[name="amount"]').val(netAmount);
+    $('#modal-update').find('input[name="expiry_date"]').val(expiry); 
+    $('#modal-update').find('input[name="tax"]').val(tax);
+    $('#modal-update').find('input[name="price"]').val(price);
+    $('#modal-update').find('select[name="status"]').val(status);
+    $('#modal-update').find('select[name="devices"]').val(devices);
+    if (status == '0') {
+        $('#modal-update').find('input[name="code_name"]').prop('disabled', true);
+        $('#modal-update').find('input[name="duration"]').prop('disabled', true);
+        $('#modal-update').find('input[name="amount"]').prop('disabled', true);
+        $('#modal-update').find('input[name="expiry_date"]').prop('disabled', true);
+        $('#modal-update').find('input[name="tax"]').prop('disabled', true);
+        $('#modal-update').find('input[name="price"]').prop('disabled', true);
+        $('#modal-update').find('select[name="status"]').prop('disabled', true);
+        $('#modal-update').find('select[name="devices"]').prop('disabled', true);
+    }
+});
+            $(document).on('keyup', '.net-amt', function(){        
                 updatePrice();
             }); 
-        });
-        
+
+            $(document).on('keyup', '.net-amt2', function(){  
+                var gst = "<?php echo $gst_rate; ?>";
+                var amount = $(this).val();
+                updatePrice2(gst, amount);
+            }); 
+        });        
             //Update Tax Rate
             function updatePrice(){
-        
-                var tmp_amt =  $('.net-amt').val();
-                var gst = "<?php echo $gst_rate; ?>";
+                var tmp_amt =  $('.net-amt2').val();
                 var tax_amt = parseFloat(tmp_amt*gst)/100;
                 var new_price = parseFloat(tmp_amt)+parseFloat(tax_amt);
                 new_price = new_price.toFixed(2);
                 $('.tax-amt').val(tax_amt);
                 $('.price-amt').val(new_price);
-        
+                }
+
+
+                function updatePrice2(gst, amount ){
+                var tmp_amt = amount;
+                var gst = gst;
+                var tax_amt = parseFloat(tmp_amt*gst)/100;
+                var new_price = parseFloat(tmp_amt)+parseFloat(tax_amt);
+                new_price = new_price.toFixed(2);
+                $('.tax-amt2').val(tax_amt);
+                $('.price-amt2').val(new_price);
                 }
         </script>
 @endsection

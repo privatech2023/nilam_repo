@@ -20,9 +20,6 @@
         </div>
     </div>
     <!-- /.content-header -->
-
-
-
     <!-- Main content -->
     <div class="content">
         <div class="container">
@@ -70,14 +67,13 @@
                                                         Plan</span>
                                                     <span class="info-box-number text-center text-muted mb-0">FREE</span>
                                                     <div class="text-center">
-                                                        <a href="#" class="btn btn-xs btn-primary disabled">
+                                                        <a href="{{ url('/storage')}}" class="btn btn-xs btn-primary ">
                                                             <i class="fa-solid fa-cart-shopping"></i> Purchase
                                                         </a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div> <!-- Row -->

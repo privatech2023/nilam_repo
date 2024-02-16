@@ -2,15 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\device;
 use App\Models\settings;
+use App\Models\subscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class frontendController extends Controller
 {
 
+    public function home()
+    {
+        if (session('user_id') != null) {
+            $subs = subscriptions::where('client_id', session('user_id'))
+                ->orderBy('created_at', 'desc')
+                ->first();
+            session()->put('validity', $subs->ends_on);
+        }
+        Session::forget('user_data');
+        return view('frontend/pages/index');
+    }
 
     public function sendOTP($number, $message)
     {
@@ -45,17 +59,11 @@ class frontendController extends Controller
     public function sendEmailOtp($address, $totp)
     {
 
-        // $email->setSubject("Login OTP - Privatech");
-
-        // Using a custom template
         $data =  array("otp" => $totp);
 
         try {
             Mail::to($address)
                 ->send(new \App\Mail\OtpMail($data));
-
-            // Email sent successfully
-            // You can add your success response or any other logic here
         } catch (\Exception $e) {
 
             dd($e);
@@ -69,5 +77,16 @@ class frontendController extends Controller
         $setting = $settingsModel->where('key', $key)->first();
 
         return $setting ? $setting->value : null;
+    }
+
+    public function get_devices($id)
+    {
+        $data = device::where('client_id', $id)->first();
+        if ($data == null) {
+            $data = 0;
+        } else {
+            $data = 1;
+        }
+        return response()->json($data);
     }
 }

@@ -90,7 +90,7 @@
 @endif
 <script>
     $(document).ready(function() {
-        $("#transactionMenu").addClass('active');
+        $("#transactionsMenu").addClass('active');
 
         $.ajaxSetup({
             headers: {
