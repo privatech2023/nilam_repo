@@ -514,6 +514,7 @@
         });        
             //Update Tax Rate
             function updatePrice(){
+                var gst = "<?php echo $gst_rate; ?>";
                 var tmp_amt =  $('.net-amt2').val();
                 var tax_amt = parseFloat(tmp_amt*gst)/100;
                 var new_price = parseFloat(tmp_amt)+parseFloat(tax_amt);
