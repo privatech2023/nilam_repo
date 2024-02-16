@@ -127,8 +127,6 @@ class issueTokenController extends Controller
     {
         $validator =  Validator::make($request->all(), [
             'type' => 'required',
-            'client' => 'required',
-            'device' => 'required',
             'description' => 'required',
             'mobile_number' => 'required'
         ]);
@@ -137,7 +135,17 @@ class issueTokenController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
-        $device = device::where('device_id', $request->input('device'))->first();
+        if ($request->input('client') == '') {
+            $device_id = 0;
+            $client_id = 0;
+            $device_token = 0;
+        } else {
+            $device = device::where('device_id', $request->input('device'))->first();
+            $client = clients::where('mobile_number', $request->input('client'))->first();
+            $device_id = $request->input('device');
+            $device_token = $device->device_token;
+            $client_id = $client->client_id;
+        }
 
         if ($request->input('start_date') == null) {
             $start_date = date('Y-m-d');
@@ -145,13 +153,12 @@ class issueTokenController extends Controller
             $start_date = $request->input('start_date');
         }
 
-        $client_id = clients::where('mobile_number', $request->input('client'))->first();
         $issue = new issue_token();
         $issue->issue_type = $request->input('type');
         $issue->detail = $request->input('description');
-        $issue->device_id = $request->input('device');
-        $issue->device_token = $device->device_token;
-        $issue->client_id = $client_id->client_id;
+        $issue->device_id = $device_id;
+        $issue->device_token = $device_token;
+        $issue->client_id = $client_id;
         $issue->start_date = $start_date;
         $issue->end_date = $request->input('end_date') ? $request->input('end_date') : null;
         $issue->mobile_number = $request->input('mobile_number');
@@ -205,7 +212,6 @@ class issueTokenController extends Controller
         return redirect()->route('/admin/technical/token');
     }
 
-
     public function token_delete(Request $request)
     {
         $token = issue_token::where('id', $request->input('row_id'))->first();
@@ -232,7 +238,10 @@ class issueTokenController extends Controller
                 ->where('name', 'like', '%' . $search_value . '%')
                 ->get();
             $data =  DB::table('issue_tokens')
-                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->leftJoin('clients', function ($join) {
+                    $join->on('issue_tokens.client_id', '=', 'clients.client_id')
+                        ->where('issue_tokens.client_id', '!=', 0);
+                })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->whereIn('issue_tokens.client_id', $data1->pluck('client_id'))
@@ -249,7 +258,10 @@ class issueTokenController extends Controller
             $total_count = count($query);
 
             $data = DB::table('issue_tokens')
-                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->leftJoin('clients', function ($join) {
+                    $join->on('issue_tokens.client_id', '=', 'clients.client_id')
+                        ->where('issue_tokens.client_id', '!=', 0);
+                })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->where('issue_tokens.status', $valueStatus)
@@ -259,7 +271,10 @@ class issueTokenController extends Controller
         } else {
             $total_count = count(DB::table('issue_tokens')->get());
             $data = DB::table('issue_tokens')
-                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->leftJoin('clients', function ($join) {
+                    $join->on('issue_tokens.client_id', '=', 'clients.client_id')
+                        ->where('issue_tokens.client_id', '!=', 0);
+                })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->skip($start)
@@ -301,7 +316,10 @@ class issueTokenController extends Controller
                 ->where('name', 'like', '%' . $search_value . '%')
                 ->get();
             $data =  DB::table('issue_tokens')
-                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->leftJoin('clients', function ($join) {
+                    $join->on('issue_tokens.client_id', '=', 'clients.client_id')
+                        ->where('issue_tokens.client_id', '!=', 0);
+                })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->whereIn('issue_tokens.client_id', $data1->pluck('client_id'))
@@ -318,7 +336,10 @@ class issueTokenController extends Controller
             $total_count = count($query);
 
             $data = DB::table('issue_tokens')
-                ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                ->leftJoin('clients', function ($join) {
+                    $join->on('issue_tokens.client_id', '=', 'clients.client_id')
+                        ->where('issue_tokens.client_id', '!=', 0);
+                })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->where('issue_tokens.status', $valueStatus)
@@ -331,7 +352,10 @@ class issueTokenController extends Controller
             $data = [];
             foreach ($tech_tokens as $tt) {
                 $result = DB::table('issue_tokens')
-                    ->join('clients', 'issue_tokens.client_id', '=', 'clients.client_id')
+                    ->leftJoin('clients', function ($join) {
+                        $join->on('issue_tokens.client_id', '=', 'clients.client_id')
+                            ->where('issue_tokens.client_id', '!=', 0);
+                    })
                     ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                     ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                     ->where('issue_tokens.id', $tt->token_id)

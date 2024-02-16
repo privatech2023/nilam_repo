@@ -84,6 +84,12 @@
     pointer-events: none;
     position: relative;
         }
+
+        .smaller-image {
+    max-width: 300px; /* You can adjust the value as needed */
+    max-height: 300px; /* You can adjust the value as needed */
+}
+
         .upcoming-banner {
             background-color: #ccc; /* Gray background color */
     color: #fff; /* Text color */

@@ -34,7 +34,7 @@ class subscriptionController extends Controller
 
     public function packages()
     {
-        $packages = packages::all();
+        $packages = packages::where('is_active', 1)->get();
         $data = [
             'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
             'packages' => $packages,
