@@ -86,10 +86,9 @@
                 <span aria-hidden="true"></span></button>
             </div>
             <div class="modal-body">
-                <p>Are You sure to <strong>Delete</strong> the type <strong><span id="delName"></span></strong>
+                <p>Are You sure to <strong>Delete</strong> the token<strong><span id="delName"></span></strong>
                     ?</p>
-                    <span class="text-sm text-danger">All related tokens of this type will be deleted</span>
-                <form action="{{url('/admin/delete/token-type')}}" method="post" style="margin-top: 4px;">
+                <form action="{{url('/admin/delete/token')}}" method="post" style="margin-top: 4px;">
                     @csrf
                     <input type="hidden" name="row_id" id="del_id" value="">
                     <div class="modal-footer justify-content-between">
@@ -112,7 +111,7 @@
                 <span aria-hidden="true"></span></button>
             </div>
             <div class="modal-body">
-                <form action="{{url('/admin/token/update')}}" method="post" style="margin-top: 4px;">
+                <form action="{{url('/admin/token/update/technical')}}" method="post" style="margin-top: 4px;">
                     @csrf
                     <div class="container view-token-detail">
                         <input class="form-control" type="hidden" name="token_id" id="token_id" value="">
@@ -173,17 +172,13 @@
     $(document).ready(function() {
 
     
-
+        $("#techTokensMenu").addClass('active');
 
         $.ajaxSetup({
         headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
         });
-    
-        $("#packageTree").addClass('menu-open');
-        $("#packageMenu").addClass('active');
-        $("#packageSubMenuCodes").addClass('active');
         var i = 1;
         
         var dataTable = $('#dataTable').DataTable({

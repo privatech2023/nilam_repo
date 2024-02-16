@@ -202,17 +202,13 @@
         
         $(document).ready(function() {
 
-
+            $("#storageMenu").addClass('active');
 
             $.ajaxSetup({
             headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
             });
-        
-            $("#packageTree").addClass('menu-open');
-            $("#packageMenu").addClass('active');
-            $("#packageSubMenuCodes").addClass('active');
             var i = 1;
             
             var dataTable = $('#dataTable').DataTable({

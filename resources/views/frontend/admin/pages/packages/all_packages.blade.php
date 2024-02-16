@@ -387,7 +387,7 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
 });
-        $("#packageTree").addClass('menu-open');
+    $("#packageTree").addClass('menu-open');
     $("#packageMenu").addClass('active');
     $("#packageSubMenuManage").addClass('active');
 

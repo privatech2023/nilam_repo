@@ -59,7 +59,7 @@
                         <b><i class="fa-solid fa-receipt"></i></b> <span class="float-right">{!! $subs_status !!}</span>
                     </li>
                     <li class="list-group-item">
-                        <b><i class="fa-regular fa-hard-drive"></i></b> <span class="float-right">Free Plan</span>
+                        <b><i class="fa-regular fa-hard-drive"></i></b> <span class="float-right">{{ $plan }}</span>
                     </li>
                 </ul>                
 
@@ -169,7 +169,7 @@
 
                      <div class="form-group row">
                         <div class="offset-sm-2 col-sm-10">
-                          @if(in_array('updateClient', session('user_permissions')))
+                          @if(in_array('updateClient', session('user_permissions')) || session('admin_name') == 'admin')
                       <button type="submit" class="btn btn-danger">Update</button>
                           @else
                       <button type="button" class="btn btn-danger" disabled>Update</button>
@@ -182,43 +182,32 @@
                   </div>
 
                   <div class="tab-pane" id="subscription">
-
-
-                    <form action="#" method="post" class="form-horizontal">
+                    <form action="{{ url('/admin/subscription/update')}}" method="post" class="form-horizontal">
                         @csrf
-                        <input type="hidden" name="row_id" value="{{ $client_id }}">
+                        <input type="hidden" name="client_id" value="{{ $client_id }}">
+                        <input type="hidden" name="subs_id" value="{{ $subscription_data == null ? "" : $subscription_data['subs_id']}}">
                         <div class="form-group row">
-                            <label for="inputName" class="col-sm-2 col-form-label">Started At</label>
+                            <label for="inputName" class="col-sm-2 col-form-label">Start date</label>
                             <div class="col-sm-10">
-                                <input type="date" class="form-control" name="started_at" value="#" />
+                                <input type="date" class="form-control" name="started_at" value="{{ $subscription_data == null ? "" : $subscription_data['started_at']}}" readonly/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label for="inputEmail" class="col-sm-2 col-form-label">Ends On</label>
+                            <label for="inputEmail" class="col-sm-2 col-form-label">End date</label>
                             <div class="col-sm-10">
-                                <input type="date" class="form-control" name="ends_on" value="#" />
+                                <input type="date" class="form-control" name="ends_on" value="{{ $subscription_data == null ? "" : $subscription_data['ends_on']}}" readonly/>
                             </div>
-                        </div>
-                    
+                        </div>                 
                         <div class="form-group row">
                             <label for="inputName2" class="col-sm-2 col-form-label">Validity (in days)</label>
                             <div class="col-sm-10">
-                                <input type="number" class="form-control" name="validity_days" value="#" />
+                                <input type="number" class="form-control" name="validity_days"  />
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label for="inputName2" class="col-sm-2 col-form-label">Status</label>
-                            <div class="col-sm-10">
-                                <select class="form-control" name="status">
-                                    <option value="" selected>Select</option>
-                                    <option value="1" >Active</option>
-                                    <option value="2" >Disabled</option>
-                                </select>
-                            </div>
-                        </div>
+            
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
-                              @if(in_array('updateClient', session('user_permissions')))
+                              @if(in_array('updateClient', session('user_permissions')) || session('admin_name') == 'admin')
                                 <button type="submit" class="btn btn-danger">Update</button>
                               @else
                               <button type="submit" class="btn btn-danger" disabled>Update</button>
@@ -247,7 +236,7 @@
                         </div>
                         <div class="form-group row">
                             <div class="offset-sm-2 col-sm-10">
-                              @if(in_array('updateClient', session('user_permissions')))
+                              @if(in_array('updateClient', session('user_permissions')) || session('admin_name') == 'admin')
                               <button type="submit" class="btn btn-danger">Update</button>
                             @else
                             <button type="submit" class="btn btn-danger" disabled>Update</button>

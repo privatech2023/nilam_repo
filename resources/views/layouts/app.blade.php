@@ -7,7 +7,12 @@
 <style class="cp-pen-styles">
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
   
+  .smaller-image {
+    max-width: 300px; /* You can adjust the value as needed */
+    max-height: 300px; /* You can adjust the value as needed */
+}
 
+  
   .sec-center{
     display:none;
   }
