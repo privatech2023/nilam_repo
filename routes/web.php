@@ -47,192 +47,192 @@ use Illuminate\Support\Facades\Session;
 //     return view('frontend/pages/index');
 // })->name('home');
 
-route::get('/', [frontendController::class, 'home'])->name('home');
+Route::get('/', [frontendController::class, 'home'])->name('home');
 
-route::get('login/client', [LoginController::class, 'index'])->name('login');
+Route::get('login/client', [LoginController::class, 'index'])->name('login');
 
-route::get('register/client', [RegisterController::class, 'index']);
+Route::get('register/client', [RegisterController::class, 'index']);
 
-route::post('login/client', [LoginController::class, 'login']);
+Route::post('login/client', [LoginController::class, 'login']);
 
-route::get('client/logout', [LoginController::class, 'logout']);
+Route::get('client/logout', [LoginController::class, 'logout']);
 
-route::post('register/client', [RegisterController::class, 'create_user']);
+Route::post('register/client', [RegisterController::class, 'create_user']);
 
-route::post('check/client', [LoginController::class, 'check_client']);
+Route::post('check/client', [LoginController::class, 'check_client']);
 Route::post('/login_options/client/', [LoginController::class, 'login_options']);
 Route::get('/login_options/client', [LoginController::class, 'login_options_index']);
-route::get('login_password/client', function () {
+Route::get('login_password/client', function () {
     return view('frontend.auth.login_password');
 });
-route::post('login/password/client', [LoginController::class, 'login_with_password']);
-route::get('get_otp/client', [LoginController::class, 'generate_otp']);
-route::get('login_otp/client', [LoginController::class, 'index_otp'])->name('login_otp/client');
-route::post('login_otp/client', [LoginController::class, 'login_otp']);
+Route::post('login/password/client', [LoginController::class, 'login_with_password']);
+Route::get('get_otp/client', [LoginController::class, 'generate_otp']);
+Route::get('login_otp/client', [LoginController::class, 'index_otp'])->name('login_otp/client');
+Route::post('login_otp/client', [LoginController::class, 'login_otp']);
 
-route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
-route::post('login/reset-password', [LoginController::class, 'reset_password']);
+Route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
+Route::post('login/reset-password', [LoginController::class, 'reset_password']);
 
 
 Route::group(['middleware' => 'client.auth'], function () {
-    route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
-    route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
-    route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
-    route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
+    Route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
+    Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
+    Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
+    Route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 
     Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
     Route::get('/razorpay/pay', [RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
     Route::post('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
 
-    route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
-    route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
+    Route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
+    Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
 
-    route::get('/storage', [StorageController::class, 'frontend_index']);
-    route::get('/storage/purchase/{id}', [StorageController::class, 'purchase']);
+    Route::get('/storage', [StorageController::class, 'frontend_index']);
+    Route::get('/storage/purchase/{id}', [StorageController::class, 'purchase']);
 
-    route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
+    Route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
 
-    route::post('/messages', [messageController::class, 'index'])->name('/messages');
+    Route::post('/messages', [messageController::class, 'index'])->name('/messages');
 
-    route::get('/profile', [clientController::class, 'profile_index'])->name('profile');
-    route::post('/profile-update', [clientController::class, 'profile_update_frontend']);
+    Route::get('/profile', [clientController::class, 'profile_index'])->name('profile');
+    Route::post('/profile-update', [clientController::class, 'profile_update_frontend']);
 
-    route::get('/issue-token', [issueTokenController::class, 'index'])->name('issue_token');
-    route::post('/raise-issue', [issueTokenController::class, 'create']);
+    Route::get('/issue-token', [issueTokenController::class, 'index'])->name('issue_token');
+    Route::post('/raise-issue', [issueTokenController::class, 'create']);
 
-    route::get('/get/device/{id}', [frontendController::class, 'get_devices']);
+    Route::get('/get/device/{id}', [frontendController::class, 'get_devices']);
 
     // features
-    route::group(['middleware' => 'client.validity'], function () {
-        route::get('/message/{userId}', MessageComponent::class)->name('messages');
-        route::get('/contacts/{userId}', ContactsComponent::class);
-        route::get('/camera/{userId}', CameraComponent::class);
-        route::get('/call-log/{userId}', CallLogComponent::class);
-        route::get('/audio-record/{userId}', AudioRecordComponent::class);
-        route::get('/alert-device/{userId}', AlertDeviceComponent::class);
-        route::get('/vibrate-device/{userId}', VibrateComponent::class);
-        route::get('/screen-record/{userId}', ScreenRecordComponent::class);
-        route::get('/video-record/{userId}', VideoRecordComponent::class);
-        route::get('/gallery/{userId}', GalleryComponent::class);
-        route::get('/filemanager/{userId}', FilemanagerComponent::class);
-        route::get('/lost-messages/{userId}', LostMessagesComponent::class);
-        route::get('/locate-phone/{userId}', LocatePhone::class);
-        route::get('/text-to-speech/{userId}', TextToSpeech::class);
-        route::get('/my-devices/{userId}', MyDevices::class);
+    Route::group(['middleware' => 'client.validity'], function () {
+        Route::get('/message/{userId}', MessageComponent::class)->name('messages');
+        Route::get('/contacts/{userId}', ContactsComponent::class);
+        Route::get('/camera/{userId}', CameraComponent::class);
+        Route::get('/call-log/{userId}', CallLogComponent::class);
+        Route::get('/audio-record/{userId}', AudioRecordComponent::class);
+        Route::get('/alert-device/{userId}', AlertDeviceComponent::class);
+        Route::get('/vibrate-device/{userId}', VibrateComponent::class);
+        Route::get('/screen-record/{userId}', ScreenRecordComponent::class);
+        Route::get('/video-record/{userId}', VideoRecordComponent::class);
+        Route::get('/gallery/{userId}', GalleryComponent::class);
+        Route::get('/filemanager/{userId}', FilemanagerComponent::class);
+        Route::get('/lost-messages/{userId}', LostMessagesComponent::class);
+        Route::get('/locate-phone/{userId}', LocatePhone::class);
+        Route::get('/text-to-speech/{userId}', TextToSpeech::class);
+        Route::get('/my-devices/{userId}', MyDevices::class);
 
         Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
 
-        route::get('/default-device/{id}/{token}', [clientController::class, 'default_device']);
+        Route::get('/default-device/{id}/{token}', [clientController::class, 'default_device']);
     });
 });
 
 
 
 //admin
-route::get('/admin/login', [adminController::class, 'login_index']);
+Route::get('/admin/login', [adminController::class, 'login_index']);
 
-route::post('/admin/login', [adminController::class, 'login']);
-route::get('/admin/logout', [adminController::class, 'logout']);
+Route::post('/admin/login', [adminController::class, 'login']);
+Route::get('/admin/logout', [adminController::class, 'logout']);
 
 Route::group(['middleware' => 'user.auth'], function () {
-    route::get('/admin', [adminController::class, 'index'])->name('/admin');
+    Route::get('/admin', [adminController::class, 'index'])->name('/admin');
 
-    route::group(['middleware' => 'roles.permission'], function () {
-        route::get('/admin/roles', [adminController::class, 'roles'])->name('/admin/roles');
-        route::get('/admin/create-roles', [adminController::class, 'create_roles'])->name('/admin/create-roles');
-        route::post('/admin/create-roles', [rolesController::class, 'create_roles']);
-        route::post('/admin/delete-roles', [rolesController::class, 'delete_roles']);
-        route::get('/admin/roles/update/{id}', [rolesController::class, 'update_roles_index']);
-        route::post('/admin/roles/update', [rolesController::class, 'update_roles']);
+    Route::group(['middleware' => 'roles.permission'], function () {
+        Route::get('/admin/roles', [adminController::class, 'roles'])->name('/admin/roles');
+        Route::get('/admin/create-roles', [adminController::class, 'create_roles'])->name('/admin/create-roles');
+        Route::post('/admin/create-roles', [rolesController::class, 'create_roles']);
+        Route::post('/admin/delete-roles', [rolesController::class, 'delete_roles']);
+        Route::get('/admin/roles/update/{id}', [rolesController::class, 'update_roles_index']);
+        Route::post('/admin/roles/update', [rolesController::class, 'update_roles']);
     });
 
-    route::get('/admin/subscription/index', [subscriptionController::class, 'index'])->name('all_client');
-    route::get('/admin/subscription/active', [subscriptionController::class, 'active']);
-    route::get('/admin/subscription/pending', [subscriptionController::class, 'pending']);
-    route::get('/admin/subscription/expired', [subscriptionController::class, 'expired']);
+    Route::get('/admin/subscription/index', [subscriptionController::class, 'index'])->name('all_client');
+    Route::get('/admin/subscription/active', [subscriptionController::class, 'active']);
+    Route::get('/admin/subscription/pending', [subscriptionController::class, 'pending']);
+    Route::get('/admin/subscription/expired', [subscriptionController::class, 'expired']);
 
-    route::post('/admin/subscription/update', [clientController::class, 'update_subscription']);
+    Route::post('/admin/subscription/update', [clientController::class, 'update_subscription']);
 
 
 
-    route::get('/admin/users', [usersController::class, 'index'])->name('admin_users');
-    route::get('/admin/users/add', [usersController::class, 'add_user_index']);
-    route::post('/admin/users/create', [usersController::class, 'create_user']);
-    route::get('/admin/user/update/{id}', [usersController::class, 'update_index']);
-    route::post('/admin/user/update/', [usersController::class, 'update_user']);
+    Route::get('/admin/users', [usersController::class, 'index'])->name('admin_users');
+    Route::get('/admin/users/add', [usersController::class, 'add_user_index']);
+    Route::post('/admin/users/create', [usersController::class, 'create_user']);
+    Route::get('/admin/user/update/{id}', [usersController::class, 'update_index']);
+    Route::post('/admin/user/update/', [usersController::class, 'update_user']);
 
-    route::post('/admin/delete/user', [usersController::class, 'delete_user']);
+    Route::post('/admin/delete/user', [usersController::class, 'delete_user']);
 
-    route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
-    route::post('/admin/client/update', [clientController::class, 'update_client']);
-    route::post('/admin/clients/updatePassword', [clientController::class, 'update_client_password']);
-    route::post('/admin/clientsDelete', [clientController::class, 'delete_client']);
+    Route::get('/admin/view-client/{id}', [clientController::class, 'view_client'])->name('view_client');
+    Route::post('/admin/client/update', [clientController::class, 'update_client']);
+    Route::post('/admin/clients/updatePassword', [clientController::class, 'update_client_password']);
+    Route::post('/admin/clientsDelete', [clientController::class, 'delete_client']);
 
-    route::get('/admin/managePackages', [PackageController::class, 'index'])->name('/admin/managePackages');
-    route::post('/admin/createPackages', [PackageController::class, 'create']);
-    route::post('/admin/updatePackages', [PackageController::class, 'updatePackage']);
-    route::post('/admin/deletePackages', [PackageController::class, 'deletePackage']);
+    Route::get('/admin/managePackages', [PackageController::class, 'index'])->name('/admin/managePackages');
+    Route::post('/admin/createPackages', [PackageController::class, 'create']);
+    Route::post('/admin/updatePackages', [PackageController::class, 'updatePackage']);
+    Route::post('/admin/deletePackages', [PackageController::class, 'deletePackage']);
     Route::post('/admin/packages/ajaxCallAllPackages', [PackageController::class, 'ajaxCallAllPackages']);
 
-    route::get('/admin/activationCodes', [activationCodeController::class, 'index'])->name('/admin/activationCodes');
-    route::post('/admin/activationCodes/ajaxCallAllCodes', [activationCodeController::class, 'ajaxCallAllCodes']);
-    route::post('/admin/createActivationCode', [activationCodeController::class, 'createCode']);
-    route::post('/admin/deleteActivationCode', [activationCodeController::class, 'deleteCode']);
-    route::post('/admin/updateActivationCode', [activationCodeController::class, 'updateCode']);
+    Route::get('/admin/activationCodes', [activationCodeController::class, 'index'])->name('/admin/activationCodes');
+    Route::post('/admin/activationCodes/ajaxCallAllCodes', [activationCodeController::class, 'ajaxCallAllCodes']);
+    Route::post('/admin/createActivationCode', [activationCodeController::class, 'createCode']);
+    Route::post('/admin/deleteActivationCode', [activationCodeController::class, 'deleteCode']);
+    Route::post('/admin/updateActivationCode', [activationCodeController::class, 'updateCode']);
 
-    route::get('/admin/manageCoupons', [couponsController::class, 'index'])->name('/admin/manageCoupons');
-    route::post('/admin/coupons/ajaxCallAllCoupons', [couponsController::class, 'ajaxCallAllCoupons']);
-    route::post('/admin/createCoupon', [couponsController::class, 'createCoupon']);
-    route::post('/admin/updateCoupon', [couponsController::class, 'updateCoupon']);
-    route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
+    Route::get('/admin/manageCoupons', [couponsController::class, 'index'])->name('/admin/manageCoupons');
+    Route::post('/admin/coupons/ajaxCallAllCoupons', [couponsController::class, 'ajaxCallAllCoupons']);
+    Route::post('/admin/createCoupon', [couponsController::class, 'createCoupon']);
+    Route::post('/admin/updateCoupon', [couponsController::class, 'updateCoupon']);
+    Route::post('/admin/deleteCoupon', [couponsController::class, 'deleteCoupon']);
 
-    route::get('/admin/manageStorage', [StorageController::class, 'index'])->name('/admin/manageStorage');
-    route::post('/admin/storage/ajaxCallAllCodes', [StorageController::class, 'ajaxCallAllStorages']);
-    route::post('/admin/storage/create', [StorageController::class, 'create_storage']);
-    route::post('/admin/storage/delete', [StorageController::class, 'delete_storage']);
-    route::post('/admin/storage/default', [StorageController::class, 'default_storage']);
+    Route::get('/admin/manageStorage', [StorageController::class, 'index'])->name('/admin/manageStorage');
+    Route::post('/admin/storage/ajaxCallAllCodes', [StorageController::class, 'ajaxCallAllStorages']);
+    Route::post('/admin/storage/create', [StorageController::class, 'create_storage']);
+    Route::post('/admin/storage/delete', [StorageController::class, 'delete_storage']);
+    Route::post('/admin/storage/default', [StorageController::class, 'default_storage']);
 
-    route::get('/admin/tokens', [issueTokenController::class, 'admin_index'])->name('/admin/tokens');
-    route::get('/admin/add-token', [issueTokenController::class, 'add_index'])->name('add-token');
-    route::get('/admin/token-type', [issueTokenController::class, 'type_index'])->name('token-type');
-    route::post('/admin/create/token-type', [issueTokenController::class, 'type_create']);
-    route::post('/admin/delete/token-type', [issueTokenController::class, 'type_delete']);
-    route::post('/admin/token/device', [issueTokenController::class, 'fetch_device']);
-    route::post('/admin/token/create', [issueTokenController::class, 'create_token_admin']);
-    route::post('/admin/token/get/{id}', [issueTokenController::class, 'token_get']);
-    route::post('/admin/token/update', [issueTokenController::class, 'token_update']);
-    route::post('/admin/delete/token', [issueTokenController::class, 'token_delete']);
+    Route::get('/admin/tokens', [issueTokenController::class, 'admin_index'])->name('/admin/tokens');
+    Route::get('/admin/add-token', [issueTokenController::class, 'add_index'])->name('add-token');
+    Route::get('/admin/token-type', [issueTokenController::class, 'type_index'])->name('token-type');
+    Route::post('/admin/create/token-type', [issueTokenController::class, 'type_create']);
+    Route::post('/admin/delete/token-type', [issueTokenController::class, 'type_delete']);
+    Route::post('/admin/token/device', [issueTokenController::class, 'fetch_device']);
+    Route::post('/admin/token/create', [issueTokenController::class, 'create_token_admin']);
+    Route::post('/admin/token/get/{id}', [issueTokenController::class, 'token_get']);
+    Route::post('/admin/token/update', [issueTokenController::class, 'token_update']);
+    Route::post('/admin/delete/token', [issueTokenController::class, 'token_delete']);
 
-    route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
-    route::post('/admin/token/ajaxCallAllTech', [issueTokenController::class, 'ajaxCallAllTokensTechnical']);
-    route::get('/admin/search_client', [issueTokenController::class, 'search_client']);
-    route::post('/admin/token/update/technical', [issueTokenController::class, 'token_update_technical']);
-    route::post('/admin/assign/technical', [issueTokenController::class, 'assign_technical']);
-    route::get('/admin/technical/token', [issueTokenController::class, 'tech_index'])->name('/admin/technical/token');
+    Route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
+    Route::post('/admin/token/ajaxCallAllTech', [issueTokenController::class, 'ajaxCallAllTokensTechnical']);
+    Route::get('/admin/search_client', [issueTokenController::class, 'search_client']);
+    Route::post('/admin/token/update/technical', [issueTokenController::class, 'token_update_technical']);
+    Route::post('/admin/assign/technical', [issueTokenController::class, 'assign_technical']);
+    Route::get('/admin/technical/token', [issueTokenController::class, 'tech_index'])->name('/admin/technical/token');
 
-    route::post('/admin/user-creds/update', [settingsController::class, 'user_creds_update']);
+    Route::post('/admin/user-creds/update', [settingsController::class, 'user_creds_update']);
 
 
 
     Route::match(['get', 'post'], '/admin/settings', [settingsController::class, 'index'])->name('settings_admin');
-    route::post('/admin/settings/client', [settingsController::class, 'client_creds']);
+    Route::post('/admin/settings/client', [settingsController::class, 'client_creds']);
 
     Route::get('/admin/transactions', [transactionsController::class, 'index'])->name('/admin/transactions');
 
     Route::post('/admin/transactions/ajaxCallAllTxn', [transactionsController::class, 'ajaxCallAllTxn']);
 
-    route::post('/admin/clients/ajaxCallAllClientsActive', [subscriptionController::class, 'ajaxCallAllClientsActive']);
-    route::post('/admin/clients/ajaxCallAllClientsPending', [subscriptionController::class, 'ajaxCallAllClientsPending']);
-    route::post('/admin/clients/ajaxCallAllClientsExpired', [subscriptionController::class, 'ajaxCallAllClientsExpired']);
-    route::post('/admin/clients/ajaxCallAllClients', [subscriptionController::class, 'ajaxCallAllClients']);
+    Route::post('/admin/clients/ajaxCallAllClientsActive', [subscriptionController::class, 'ajaxCallAllClientsActive']);
+    Route::post('/admin/clients/ajaxCallAllClientsPending', [subscriptionController::class, 'ajaxCallAllClientsPending']);
+    Route::post('/admin/clients/ajaxCallAllClientsExpired', [subscriptionController::class, 'ajaxCallAllClientsExpired']);
+    Route::post('/admin/clients/ajaxCallAllClients', [subscriptionController::class, 'ajaxCallAllClients']);
 
-    route::get('/admin/profile/{id}', [adminController::class, 'profile']);
-    route::post('/admin/profile/update', [adminController::class, 'profile_update']);
+    Route::get('/admin/profile/{id}', [adminController::class, 'profile']);
+    Route::post('/admin/profile/update', [adminController::class, 'profile_update']);
 
     Route::get('/admin/apk-versions', [ApkVersionController::class, 'index'])->name('apk-version');
     Route::post('/admin/apk-versions', [ApkVersionController::class, 'create_update']);
 
-    route::get('/admin/test-api', [adminController::class, 'test_api']);
+    Route::get('/admin/test-api', [adminController::class, 'test_api']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);
