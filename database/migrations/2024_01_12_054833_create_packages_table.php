@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('tax', 256)->default(0);
             $table->string('price', 256)->nullable();
             $table->integer('is_active')->default(1);
-            $table->integer('created_by');
             $table->integer('devices')->default(1);
             $table->timestamps();
         });

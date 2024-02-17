@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('call_logs', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->foreignId('user_id')->references('client_id')->on('clients')->onDelete('cascade');
             $table->string('device_id');
             $table->string('name')->nullable();
             $table->string('number')->nullable();

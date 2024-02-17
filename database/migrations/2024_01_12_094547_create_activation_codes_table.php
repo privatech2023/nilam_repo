@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('price', 256);
             $table->integer('is_active')->default(1);
             $table->unsignedBigInteger('used_by')->nullable();
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->date('expiry_date');
             $table->integer('devices')->default(1);
             $table->timestamps();
@@ -30,7 +30,7 @@ return new class extends Migration
 
             $table->index(['code', 'is_active']);
 
-            $table->foreign('used_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('used_by')->references('client_id')->on('clients')->onDelete('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
         });
     }

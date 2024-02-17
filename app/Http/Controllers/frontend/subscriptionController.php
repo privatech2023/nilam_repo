@@ -95,6 +95,7 @@ class subscriptionController extends Controller
                     $transaction->paid_amt =  $code->price;
                     $transaction->plan_validity_days = $code->duration_in_days;
                     $transaction->package_name = null;
+                    $transaction->activation_id = $code->c_id;
                     $transaction->activation_code = $request->input('code_name');
                     $transaction->status = 2;
                     $transaction->price = $code->price;
@@ -231,8 +232,11 @@ class subscriptionController extends Controller
                 $transaction->tax_amt = $package->tax;
                 $transaction->paid_amt =  $request->input('pay-amount');
                 $transaction->plan_validity_days = $package->duration_in_days;
+                $transaction->package_id = $package->id;
                 $transaction->package_name = $package->name;
                 $transaction->activation_code = null;
+                $transaction->coupon_id = $coupon->id;
+                $transaction->coupon_code = $coupon->coupon;
                 $transaction->status = 1;
                 $transaction->price = $package->price;
                 $transaction->created_by = session()->get('user_id');
@@ -338,6 +342,9 @@ class subscriptionController extends Controller
         $data['razorPay'] = $razorCreate;
         return view('Frontend/razorpay/checkout', $data);
     }
+
+
+
     public function onlinePayment(Request $request)
     {
         $id = $request->input('package-id');

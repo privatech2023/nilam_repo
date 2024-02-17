@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tech_tokens', function (Blueprint $table) {
             $table->id();
-            $table->integer('token_id');
+            $table->foreignId('token_id')->references('id')->on('issue_tokens')->onDelete('cascade');
             $table->integer('status')->default(0);
             $table->timestamps();
         });

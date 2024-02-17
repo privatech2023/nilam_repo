@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('device_gallery_id')->unsigned();
             $table->string('device_id')->nullable();
-            $table->integer('user_id');
+            $table->foreignId('user_id')->references('client_id')->on('clients')->onDelete('cascade');
             $table->string('media_type')->nullable();
             $table->string('media_url')->nullable();
             $table->string('size');

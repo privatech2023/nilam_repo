@@ -83,7 +83,7 @@ class couponsController extends Controller
         try {
             $id = $request->input('row_id');
             $validatedData =  Validator::make($request->all(), [
-                'coupon_name' => 'required|string|unique:coupons,coupon',
+                'coupon_name' => 'required|string',
                 'promoter' => 'nullable|string',
                 'discount_pcn' => 'required|numeric',
                 'status' => 'required|numeric',
@@ -97,7 +97,7 @@ class couponsController extends Controller
             $coupon->promoter_name = $request->input('promoter');
             $coupon->discount_percentage = $request->input('discount_pcn');
             $coupon->is_active = $request->input('status');
-            $coupon->save();
+            $coupon->update();
 
 
             return redirect()->route('/admin/manageCoupons')->with('success', 'Coupon Updated');
