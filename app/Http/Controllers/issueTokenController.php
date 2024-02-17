@@ -136,9 +136,9 @@ class issueTokenController extends Controller
                 ->withInput();
         }
         if ($request->input('client') == '') {
-            $device_id = 0;
-            $client_id = 0;
-            $device_token = 0;
+            $device_id = null;
+            $client_id = null;
+            $device_token = null;
         } else {
             $device = device::where('device_id', $request->input('device'))->first();
             $client = clients::where('mobile_number', $request->input('client'))->first();
@@ -240,7 +240,7 @@ class issueTokenController extends Controller
             $data =  DB::table('issue_tokens')
                 ->leftJoin('clients', function ($join) {
                     $join->on('issue_tokens.client_id', '=', 'clients.client_id')
-                        ->where('issue_tokens.client_id', '!=', 0);
+                        ->where('issue_tokens.client_id', '!=', null);
                 })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
@@ -260,7 +260,7 @@ class issueTokenController extends Controller
             $data = DB::table('issue_tokens')
                 ->leftJoin('clients', function ($join) {
                     $join->on('issue_tokens.client_id', '=', 'clients.client_id')
-                        ->where('issue_tokens.client_id', '!=', 0);
+                        ->where('issue_tokens.client_id', '!=', null);
                 })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
@@ -273,7 +273,7 @@ class issueTokenController extends Controller
             $data = DB::table('issue_tokens')
                 ->leftJoin('clients', function ($join) {
                     $join->on('issue_tokens.client_id', '=', 'clients.client_id')
-                        ->where('issue_tokens.client_id', '!=', 0);
+                        ->where('issue_tokens.client_id', '!=', null);
                 })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
@@ -318,7 +318,7 @@ class issueTokenController extends Controller
             $data =  DB::table('issue_tokens')
                 ->leftJoin('clients', function ($join) {
                     $join->on('issue_tokens.client_id', '=', 'clients.client_id')
-                        ->where('issue_tokens.client_id', '!=', 0);
+                        ->where('issue_tokens.client_id', '!=', null);
                 })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
@@ -338,7 +338,7 @@ class issueTokenController extends Controller
             $data = DB::table('issue_tokens')
                 ->leftJoin('clients', function ($join) {
                     $join->on('issue_tokens.client_id', '=', 'clients.client_id')
-                        ->where('issue_tokens.client_id', '!=', 0);
+                        ->where('issue_tokens.client_id', '!=', null);
                 })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
@@ -354,7 +354,7 @@ class issueTokenController extends Controller
                 $result = DB::table('issue_tokens')
                     ->leftJoin('clients', function ($join) {
                         $join->on('issue_tokens.client_id', '=', 'clients.client_id')
-                            ->where('issue_tokens.client_id', '!=', 0);
+                            ->where('issue_tokens.client_id', '!=', null);
                     })
                     ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                     ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')

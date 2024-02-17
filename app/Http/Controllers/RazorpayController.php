@@ -45,8 +45,6 @@ class RazorpayController extends Controller
 
             $order = $api->order->fetch($request->razorpay_order_id);
 
-
-
             // If order status is paid
             if ($order->status == 'paid') {
                 $transaction = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();

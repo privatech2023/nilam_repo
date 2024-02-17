@@ -16,7 +16,6 @@ class packages extends Model
         'tax',
         'price',
         'is_active',
-        'created_by',
         'devices'
     ];
 }

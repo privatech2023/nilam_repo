@@ -16,15 +16,17 @@ return new class extends Migration
         Schema::create('issue_tokens', function (Blueprint $table) {
             $table->id();
             $table->integer('issue_type');
-            $table->string('device_id');
-            $table->string('device_token');
-            $table->integer('client_id');
+            $table->string('device_id')->nullable();
+            $table->string('device_token')->nullable();
+            $table->unsignedBigInteger('client_id')->nullable();
             $table->string('detail');
             $table->integer('status')->default(0); // 0: pending, 1:resolved
             $table->date('start_date');
             $table->date('end_date')->nullable();
             $table->string('mobile_number');
             $table->timestamps();
+
+            $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
         });
     }
 
