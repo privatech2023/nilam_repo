@@ -12,7 +12,8 @@
     max-height: 300px; /* You can adjust the value as needed */
 }
 
-  
+
+
   .sec-center{
     display:none;
   }
