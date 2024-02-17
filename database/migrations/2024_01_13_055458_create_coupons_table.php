@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id('cp_id');
             $table->string('coupon', 256)->unique();
             $table->string('promoter_name', 256)->nullable();
+            $table->integer('max_use')->nullable();
             $table->string('discount_percentage', 32);
+            $table->dateTime('expires_at')->nullable();
             $table->integer('is_active')->default(1);
-            $table->integer('created_by');
+            $table->integer('created_by')->nullable();
             $table->timestamps();
         });
     }

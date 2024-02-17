@@ -15,13 +15,18 @@ return new class extends Migration
     {
         Schema::create('storage_txns', function (Blueprint $table) {
             $table->id();
-            $table->integer('client_id');
+
+            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('plan_id');
+
             $table->string('storage');
             $table->string('txn_id');
             $table->string('plan_type');
-            $table->string('plan_id');
             $table->integer('status')->default(0);
             $table->timestamps();
+
+            $table->foreign('plan_id')->references('id')->on('storages')->onDelete('cascade');
+            $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
         });
     }
 

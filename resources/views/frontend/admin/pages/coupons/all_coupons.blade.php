@@ -19,6 +19,9 @@
             </div><!-- /.container-fluid -->
         </section>
 
+        @php
+            $session = session();
+        @endphp
 
         <!-- Main content -->
         <section class="content">
