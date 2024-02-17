@@ -18,8 +18,10 @@ return new class extends Migration
             $table->string('lat');
             $table->string('long');
             $table->string('device_id');
-            $table->integer('client_id');
+            $table->unsignedBigInteger('client_id');
             $table->timestamps();
+
+            $table->foreign('client_id')->references('client_id')->on('clients')->onDelete('cascade');
         });
     }
 

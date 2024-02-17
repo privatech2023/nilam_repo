@@ -25,15 +25,19 @@ class clientController extends Controller
             ->orderByDesc('updated_at')
             ->where('status', '=', 1)
             ->first();
-        $txn_data = transactions::where('txn_id', $subsModel->txn_id)->first();
-        if ($txn_data != null) {
-            if ($txn_data->txn_mode == 'Activation_code') {
-                $plan = 'Free plan';
-            } else {
-                $plan = $txn_data->package_name;
-            }
+        if ($subsModel == null) {
+            $plan = 'No plan';
         } else {
-            $plan = 'No plans';
+            $txn_data = transactions::where('txn_id', $subsModel->txn_id)->first();
+            if ($txn_data != null) {
+                if ($txn_data->txn_mode == 'Activation_code') {
+                    $plan = 'Free plan';
+                } else {
+                    $plan = $txn_data->package_name;
+                }
+            } else {
+                $plan = 'No plans';
+            }
         }
 
         $txnModel = new transactions();
