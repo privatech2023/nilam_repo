@@ -50,11 +50,13 @@ class AlertDeviceComponent extends Component
     public function alertDeviceStart()
     {
         $this->sendNotification('alert_device_start');
+        $this->emit('start');
     }
 
     public function alertDeviceStop()
     {
         $this->sendNotification('alert_device_stop');
+        $this->emit('stop');
     }
 
     public function mount($userId)
