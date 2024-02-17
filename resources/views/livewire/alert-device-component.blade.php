@@ -16,6 +16,36 @@
 
 <div class="content-wrapper remove-background">
     <div id="frame">
+        <div id="myModalconf" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">			
+                        <h4 class="modal-title text-center" >ALERT SENT</h4>	
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <div class="spinner-grow text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                          <div class="spinner-grow text-secondary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                          <div class="spinner-grow text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                          <div class="spinner-grow text-danger" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        <p>Press stop to stop alert</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-info" data-dismiss="modal">stop</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <nav class="navbar navbar-light bg-light">
             
             <span class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
@@ -44,7 +74,17 @@
     </div>
 
     </div>
-    
+    <script>
+        document.addEventListener("livewire:load", function () {
+            Livewire.on('start', function () {
+                $('#myModalconf').modal('show');
+            });
+
+            Livewire.on('stop', function () {
+                $('#myModalconf').modal('hide');
+            });
+        });
+    </script>
 </div>
     
 

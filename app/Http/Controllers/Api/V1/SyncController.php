@@ -23,8 +23,15 @@ class SyncController extends Controller
             'force_sync' => 'required|boolean',
             'device_id' => 'nullable|string|required_if:force_sync,true',
             'device_token' => 'nullable|string|required_if:force_sync,true',
-            'device_name' => 'required'
         ]);
+
+        if ($request->has('device_name')) {
+            $device_name = $request->has('device_name');
+        } else {
+            $device_name = '';
+        }
+
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -34,7 +41,7 @@ class SyncController extends Controller
             ], 401);
         }
 
-        $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync', 'device_name']);
+        $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync']);
         $client = clients::where('email', $data['email'])->where('mobile_number', $data['mobile_number'])->first();
         if ($client == null) {
             return response()->json([
@@ -142,7 +149,7 @@ class SyncController extends Controller
                     $device = new device();
                     $device->device_id = $data['device_id'];
                     $device->device_token = $data['device_token'];
-                    $device->device_name = $data['device_name'];
+                    $device->device_name = $device_name;
                     $device->client_id = $client_id;
 
                     $count = $user_count + 1;
@@ -178,7 +185,7 @@ class SyncController extends Controller
                 $device = new device();
                 $device->device_id = $data['device_id'];
                 $device->device_token = $data['device_token'];
-                $device->device_name = $data['device_name'];
+                $device->device_name = $device_name;
                 $device->client_id = $client_id;
                 $device->save();
                 $count = $user_count + 1;
