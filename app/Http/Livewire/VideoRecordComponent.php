@@ -69,6 +69,7 @@ class VideoRecordComponent extends Component
     {
 
         $this->sendNotification('record_video');
+        $this->emit('record');
     }
     public function render()
     {

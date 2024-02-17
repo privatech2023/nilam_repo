@@ -26,14 +26,14 @@
               <button class="btn btn-outline-success hidden" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
         <div style=" margin-top: 20px; margin-left: 20px;" >
-            <div class="row">
+            <div class="row" width="100%">
                 
                 <div class="mt-3">
                     @php
                         $api_key = config('services.google_maps.key');
                     @endphp
                     <iframe 
-                        width="1065px" class="iframe" height="430px" frameborder="0" style="border:0"
+                        width="100%" class="iframe" height="430px" frameborder="0" style="border:0"
                         src="https://www.google.com/maps/embed/v1/place?key={{ $api_key }}&q={{ $lat }},+{{ $lng }}"
                         allowfullscreen
                         loading="lazy"

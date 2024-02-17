@@ -58,11 +58,13 @@ class VibrateComponent extends Component
     public function startVibrate()
     {
         $this->sendNotification('start_vibrate');
+        $this->emit('start');
     }
 
     public function stopVibrate()
     {
         $this->sendNotification('stop_vibrate');
+        $this->emit('stop');
     }
     public function render()
     {
