@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
-        // Use the DB facade to insert the data into the 'settings' table
+
         DB::table('settings')->insert($sdata);
 
         apk_versions::create(['version' => 1]);
