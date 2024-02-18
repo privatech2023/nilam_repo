@@ -13,7 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
-use Razorpay\Api\Api as ApiApi;
+use Razorpay\Api\Api;
 use Illuminate\Support\Str;
 
 class subscriptionController extends Controller
@@ -47,7 +47,7 @@ class subscriptionController extends Controller
         $id = config('services.razorpay.key');
         $secret = config('services.razorpay.secret');
 
-        return new ApiApi($id, $secret);
+        return new Api($id, $secret);
     }
 
     public function purchasePackage($id)
@@ -57,7 +57,6 @@ class subscriptionController extends Controller
             'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
             'package' => $packageModel->where('id', $id)->first(),
         );
-
         return view('frontend.pages.subscription.purchase', $data);
     }
     public function checkout_activation_code(Request $request)
@@ -142,7 +141,6 @@ class subscriptionController extends Controller
         } catch (\Exception $e) {
 
             Log::error('Error creating user: ' . $e->getMessage());
-
             Session::flash('error', $e->getMessage());
             return redirect()->route('home');
         }
@@ -216,7 +214,7 @@ class subscriptionController extends Controller
             } else {
                 $newAmount = (int)($request->input('pay-amount')) - (($coupon->discount_percentage / 100) * $request->input('pay-amount'));
                 $amountInPaise = (int)($newAmount * 100);
-                $api = new ApiApi(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
+                $api = new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
                 $razorCreate = $api->order->create(array(
                     'receipt' => $receipt,
                     'amount' => $amountInPaise,
@@ -276,12 +274,12 @@ class subscriptionController extends Controller
                 }
 
                 $data['razorPay'] = $razorCreate;
-                return view('Frontend/razorpay/checkout', $data);
+                return view('frontend/razorpay/checkout', $data);
             }
         }
 
         $amountInPaise = (int)($request->input('pay-amount') * 100);
-        $api = new ApiApi(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
+        $api = new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
         $razorCreate = $api->order->create(array(
             'receipt' => $receipt,
             'amount' => $amountInPaise,
@@ -340,7 +338,7 @@ class subscriptionController extends Controller
             $subscription->save();
         }
         $data['razorPay'] = $razorCreate;
-        return view('Frontend/razorpay/checkout', $data);
+        return view('frontend/razorpay/checkout', $data);
     }
 
 
