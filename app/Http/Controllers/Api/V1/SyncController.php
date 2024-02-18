@@ -56,7 +56,9 @@ class SyncController extends Controller
         }
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
 
+
         if (!in_array($token, explode(',', $client->auth_token))) {
+
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid token header',
