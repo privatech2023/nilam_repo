@@ -16,6 +16,7 @@ class ContactsComponent extends Component
     public $selectedKey;
     public $contactsCount = 0;
     public $selectedName;
+    public $flagCount = 0;
 
     public function mount($userId)
     {
@@ -80,12 +81,14 @@ class ContactsComponent extends Component
 
     public function populateContacts($key)
     {
-        $this->emit('toggleSidepanel');
+        $this->flagCount = 1;
+        $this->emit('toggleSidepanel', $this->flagCount);
         $this->selectedKey = $key;
     }
 
     public function backButton()
     {
-        $this->emit('back');
+        $this->flagCount = 0;
+        $this->emit('back', $this->flagCount);
     }
 }

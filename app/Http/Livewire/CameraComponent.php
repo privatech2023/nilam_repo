@@ -71,6 +71,21 @@ class CameraComponent extends Component
         }
     }
 
+
+    public function contRefreshComponentSpecific()
+    {
+        $device = clients::where('client_id', $this->userId)->first();
+        if ($device) {
+            $this->images = images::where('user_id', $this->userId)
+                ->where('device_id', $device->device_id)
+                ->latest()
+                ->get();
+        } else {
+            $this->images = [];
+        }
+        $this->emit('refreshComponent');
+    }
+
     public function render()
     {
         $devices = device::where('client_id', $this->userId)->select('device_id', 'device_name')->get();
