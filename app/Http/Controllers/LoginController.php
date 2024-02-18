@@ -198,7 +198,7 @@ class LoginController extends Controller
 
                 $message = $tempOTP . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
                 //Send OTP
-                $frontendcontroller = new FrontendController;
+                $frontendcontroller = new frontendController;
                 $frontendcontroller->sendOTP($userInput, $message);
             } else {
 
@@ -209,7 +209,7 @@ class LoginController extends Controller
                 ];
                 $model->create($data);
 
-                $frontendcontroller = new FrontendController;
+                $frontendcontroller = new frontendController;
                 $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
             }
 
@@ -255,7 +255,7 @@ class LoginController extends Controller
                 ];
                 $model->create($data);
 
-                $frontendcontroller = new FrontendController;
+                $frontendcontroller = new frontendController;
                 $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
             }
 
