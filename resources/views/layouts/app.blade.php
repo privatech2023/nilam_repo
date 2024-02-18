@@ -37,7 +37,7 @@
   #frame {
     width: 100%;
     min-width: 360px;
-    max-width: 72%;
+    max-width: 73%;
     height: 92vh;
     min-height: 10px;
     max-height: 720px;
@@ -1280,6 +1280,7 @@ audio::-webkit-media-controls-play-button:hover {
     fill: currentColor; 
 }
   #frame{
+    max-width: 99%;
     height: 80vh;
     font-size: 16px;
     border-radius: 7px;
