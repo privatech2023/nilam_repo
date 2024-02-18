@@ -24,8 +24,8 @@
                 <path d="M3.5 6.5A.5.5 0 0 1 4 7v1a4 4 0 0 0 8 0V7a.5.5 0 0 1 1 0v1a5 5 0 0 1-4.5 4.975V15h3a.5.5 0 0 1 0 1h-7a.5.5 0 0 1 0-1h3v-2.025A5 5 0 0 1 3 8V7a.5.5 0 0 1 .5-.5"/>
                 <path d="M10 8a2 2 0 1 1-4 0V3a2 2 0 1 1 4 0zM8 0a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V3a3 3 0 0 0-3-3"/>
               </svg>  AUDIO RECORD</span>
-              <button class="btn btn-outline-success" type="button" wire:click="recordVoice">Record Audio</button>
-              <button class="btn btn-outline-success btn-sm" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
+              <button class="btn btn-outline-success" type="button" wire:click="recordVoice" onclick="load()">Record Audio</button>
+              <button class="btn btn-outline-success btn-sm"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
         {{-- <nav class="navbar navbar-light bg-light">
               
@@ -53,11 +53,17 @@
 
     </div>
     <script>
+        function load() {
+            $('.loader_bg').show();
+        }
+    </script>
+    <script>
         document.addEventListener('livewire:load', function () {
-           $(document).on('click','#cont-refresh-component-specific', function () { 
-                $('.loader_bg').show();
-                location.reload();
-            });
+            $('.loader_bg').hide();
+            setInterval(function() {
+                console.log('hey')
+            document.getElementById('cont-refresh-component-specific').click();
+        }, 3000);
         });
     </script>
 </div>

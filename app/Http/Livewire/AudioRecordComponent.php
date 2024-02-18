@@ -34,6 +34,18 @@ class AudioRecordComponent extends Component
         }
     }
 
+    public function contRefreshComponentSpecific()
+    {
+        $client = clients::where('client_id', $this->userId)->first();
+        $recording = recordings::where('user_id', $this->userId)->where('device_id', $client->device_id)->get();
+        if ($recording) {
+            $this->recordings = $recording;
+        } else {
+            $this->recordings = [];
+        }
+        $this->emit('refreshComponent');
+    }
+
     public function sendNotification($action_to)
     {
         $client = clients::where('client_id', $this->userId)->first();

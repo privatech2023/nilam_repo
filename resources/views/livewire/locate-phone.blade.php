@@ -21,8 +21,11 @@
                 <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
               </svg>LOCATE PHONE</span>
         </nav>
+        <div class="loader_bg" style="display:none;">
+            <div id="loader"></div>
+        </div>
         <nav class="navbar navbar-light bg-light">
-              <button class="btn btn-outline-primary" wire:click="locatePhone" type="button">Locate phone</button>
+              <button class="btn btn-outline-primary" wire:click="locatePhone" type="button" onclick="load()">Locate phone</button>
               <button class="btn btn-outline-success hidden" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
         <div style=" margin-top: 20px; margin-left: 20px;" >
@@ -44,10 +47,19 @@
 
     </div>
     <script>
-        // Refresh device status every 3 seconds
+        function load() {
+            $('.loader_bg').show();
+        }
+    </script>
+    <script>
+
+document.addEventListener("livewire:load", function () {
+        $('.loader_bg').hide();
         setInterval(function() {
             document.getElementById('cont-refresh-component-specific').click();
         }, 3000);
+
+    });
     </script>
 </div>
     

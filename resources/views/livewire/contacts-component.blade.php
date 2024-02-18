@@ -37,6 +37,8 @@
         <div class="loader_bg" style="display:none;">
             <div id="loader"></div>
         </div>
+
+        <input type="hidden" id="flag" value="{{ $flagCount}}">
         @if($contactsCount == 0)
         <div class="container">
             <span class="message-text">No contacts found<br><br>
@@ -123,8 +125,12 @@
     }
         var screenWidth = window.innerWidth;
         var isContentOpen = false;
+        var fl = $('#flag').val();
+    var openContent = fl;
     
-        Livewire.on('toggleSidepanel', () => {
+        Livewire.on('toggleSidepanel',function (value) {
+            openContent = value;
+            clearInterval(intervalId);
             if (screenWidth <= 760 && !isContentOpen) {
                 $('#frame #sidepanel').css('width', '1px');
                 isContentOpen = true;
@@ -133,19 +139,24 @@
             $('#frame .content').attr('id', 'content');
             });
     
-        Livewire.on('back', () => {
+        Livewire.on('back', function (value) {
             if (isContentOpen) {
+                openContent = value;
                 $('#frame #sidepanel').css('width', '100%');
                 $('#frame .content').removeAttr('id');
                 isContentOpen = false;
+                startInterval();
             }
         });
-        if(isContentOpen == false){
-    setInterval(function() {
-        $('#myModalconf').modal('hide');
+        function startInterval() {
+        intervalId = setInterval(function() {
+            console.log('hey')
+            $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
         }, 4000);
-}
+    }
+
+    startInterval();
     });
     </script>
     
