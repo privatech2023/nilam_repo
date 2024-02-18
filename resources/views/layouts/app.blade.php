@@ -1242,7 +1242,7 @@ audio::-webkit-media-controls-play-button:hover {
     margin-left:1rem;
   }
   #bt{
-    margin-left: 13.1rem;
+    margin-left: 14.1rem;
   }
   .contact-profile{
     width: 98%;

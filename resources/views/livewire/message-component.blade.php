@@ -40,7 +40,7 @@
     
 
 
-
+    <input type="hidden" id="flag" value="{{ $flagCount}}">
     @if($msgCount == 0)    
     <div class="container">
 
@@ -120,17 +120,24 @@
         let isLivewireEventInProgress = false;
 
     document.addEventListener("livewire:load", function () {
-
+        
     var screenWidth = window.innerWidth;
     var isContentOpen = false;
     var isProcessing = false;
+    let intervalId;
+    var fl = $('#flag').val();
+    var openContent = fl;
+
     
     $('.loader_bg').hide();
     var msgcount = '{{ $msgCount}}'
     if(msgcount == 0){
         $('#myModalconf').modal('show');
     }
-    Livewire.on('toggleSidepanel', function () {
+    Livewire.on('toggleSidepanel', function (value) {
+        console.log(value)
+        openContent = value;
+        clearInterval(intervalId);
         $('.loader_bg').show();
         if (!isProcessing) {
             isProcessing = true;
@@ -138,7 +145,6 @@
             if (screenWidth <= 760 && !isContentOpen) {
             $('#frame #sidepanel').css('width', '0px');
             isContentOpen = true;
-            console.log(screenWidth);
             $('.loader_bg').hide();
         }
         $('#frame .content').attr('id', 'content');
@@ -146,19 +152,26 @@
             $('.loader_bg').hide();
         }
     });
-    Livewire.on('back', () => {
+    Livewire.on('back',function (value) {
         if (isContentOpen) {
+            openContent = value;
+            console.log(value)
             $('#frame #sidepanel').css('width', '100%');
             $('#frame .content').removeAttr('id');
             isContentOpen = false;
+            startInterval();
         }
     });
-    if(isContentOpen == false){
-    setInterval(function() {
-        $('#myModalconf').modal('hide');
+        function startInterval() {
+        intervalId = setInterval(function() {
+            console.log('hey')
+            $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 6000);
+        }, 5000);
     }
+
+    startInterval();
+
 });
 </script>
     
