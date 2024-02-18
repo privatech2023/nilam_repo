@@ -20,7 +20,7 @@
             <div id="loader"></div>
         </div>
         <nav class="navbar navbar-light bg-light">
-              <button class="btn btn-outline-success" type="button" wire:click="takePicture">Sync Gallery</button>
+              <button class="btn btn-outline-success" type="button" wire:click="syncGallery" onclick="load()">Sync Gallery</button>
               <button class="btn btn-outline-success btn-sm" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
         <div class="image-container">
@@ -34,11 +34,17 @@
     </div>
 </div>
 <script>
+    function load() {
+        $('.loader_bg').show();
+    }
+</script>
+<script>
     document.addEventListener('livewire:load', function () {
-       $(document).on('click','#cont-refresh-component-specific', function () { 
-            $('.loader_bg').show();
-            location.reload();
-        });
+        $('.loader_bg').hide();
+        setInterval(function() {
+        $('#myModalconf').modal('hide');
+            document.getElementById('cont-refresh-component-specific').click();
+        }, 4000);
     });
 </script>
 </div>

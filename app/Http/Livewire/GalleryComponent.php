@@ -29,7 +29,15 @@ class GalleryComponent extends Component
     {
         $clients = clients::where('client_id', $this->userId)->first();
         $this->gallery_items = gallery_items::where('user_id', $clients->client_id)->where('device_id', $clients->device_id)->orderBy('created_at', 'desc')->get();
-        // $this->galleryCount = count($this->gallery_items);
+        $this->galleryCount = count($this->gallery_items);
+    }
+
+    public function contRefreshComponentSpecific()
+    {
+        $clients = clients::where('client_id', $this->userId)->first();
+        $this->gallery_items = gallery_items::where('user_id', $clients->client_id)->where('device_id', $clients->device_id)->orderBy('created_at', 'desc')->get();
+        $this->galleryCount = count($this->gallery_items);
+        $this->emit('refreshComponent');
     }
 
     public function sendNotification($action_to)
