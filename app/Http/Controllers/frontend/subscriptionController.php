@@ -201,7 +201,6 @@ class subscriptionController extends Controller
     {
         $client = clients::where('client_id', session('user_id'))->first();
         $receipt = (string) str::uuid();
-
         $package = packages::where('id', $request->input('package_id'))->first();
 
         if ($request->input('coupon_name') != null) {

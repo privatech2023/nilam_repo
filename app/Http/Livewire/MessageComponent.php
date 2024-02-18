@@ -80,6 +80,7 @@ class MessageComponent extends Component
             }
         }
         $this->msgCount = count($this->messageList);
+        $this->flagCount = 0;
         $this->emit('refreshComponent');
     }
 
