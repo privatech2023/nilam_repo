@@ -23,7 +23,8 @@
             <span class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-record" viewBox="0 0 16 16">
                 <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10"/>
             </svg>VIDEO RECORD</span>
-            <button class="btn btn-outline-success" type="button" wire:click="recordVideo">Record Video</button>
+            <button class="btn btn-outline-success" type="button" wire:click="recordVideo" onclick="load()">Record Video</button>
+            <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
         <div style=" margin-top: 20px; margin-left: 20px;" id="screen">
             <div>
@@ -41,15 +42,18 @@
 
     </div>
     <script>
+        function load() {
+            $('.loader_bg').show();
+        }
+    </script>
+    <script>
         document.addEventListener("livewire:load", function () {
-            $('.loader-bg').show();
-            Livewire.on('record', function () {
-                setInterval(function() {
-        $('.loader-bg').show();
+            $('.loader-bg').hide();
+            setInterval(function() {
+        $('#myModalconf').modal('hide');
+        console.log('hey')
             document.getElementById('cont-refresh-component-specific').click();
         }, 4000);
-        $('.loader-bg').hide();
-            });
         });
     </script>
 </div>

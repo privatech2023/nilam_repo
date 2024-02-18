@@ -17,8 +17,12 @@
 <div class="content-wrapper remove-background">
     <div id="frame">
         <nav class="navbar navbar-light bg-light">
-              <button class="btn btn-outline-success" type="button" wire:click="takePicture">Take picture</button>
+            <button class="btn btn-outline-success" type="button" wire:click="takePicture" onclick="load()">Take picture</button>
+            <button class="btn btn-sm btn-outline btn-primary" style="width:3.8rem; font-size: 0.8em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
         </nav>
+        <div class="loader_bg" style="display:none;">
+            <div id="loader"></div>
+        </div>
         <div class="image-container">
             @foreach($images as $image)
             <a href="{{ $image->s3Url() }}" data-lightbox="photo"
@@ -29,6 +33,20 @@
         </div>
     </div>
 </div>
+<script>
+    function load() {
+        $('.loader_bg').show();
+    }
+</script>
+<script>
+    document.addEventListener("livewire:load", function () {
+            $('.loader_bg').hide();
+            setInterval(function() {
+        $('#myModalconf').modal('hide');
+            document.getElementById('cont-refresh-component-specific').click();
+        }, 4000);
+    });
+</script>
 </div>
     
     
