@@ -11,12 +11,6 @@ use Livewire\Component;
 class MyDevices extends Component
 {
     public $userId;
-    // public $brand;
-    // public $model;
-    // public $android_version;
-    // public $host_id;
-    // public $battery_status;
-    // public $updated_at;
     public $deviceList = [];
 
     public function mount($userId)
