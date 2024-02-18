@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\apk_versions;
 use App\Models\groups;
 use App\Models\User;
 use App\Models\user_groups;
@@ -69,5 +70,7 @@ class DatabaseSeeder extends Seeder
 
         // Use the DB facade to insert the data into the 'settings' table
         DB::table('settings')->insert($sdata);
+
+        apk_versions::create(['version' => 1]);
     }
 }
