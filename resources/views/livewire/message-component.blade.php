@@ -59,7 +59,7 @@
                     <p class="lead text-sm" style="margin-left: 2px;">MESSAGES({{$msgCount}})</p>
                     <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width:4.5rem; margin-left: 8px; font-size: 0.7em;"  wire:click="syncInbox" onclick="load()">Sync inbox</button>
                     <button  type="button" class="btn btn-sm btn-outline btn-primary" style="width: 5rem; font-size: 0.75em;" wire:click="syncOutbox" onclick="load()">Sync outbox</button>
-                    <button class="btn btn-sm btn-outline btn-primary" style="width:4rem; font-size: 0.7em; padding:0;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
+                    <button class="btn btn-sm btn-outline btn-primary" style="width:4rem; font-size: 0.7em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
                 </div>
                 
             </div>
