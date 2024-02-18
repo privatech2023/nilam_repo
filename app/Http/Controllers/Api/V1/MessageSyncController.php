@@ -87,7 +87,7 @@ class MessageSyncController extends Controller
             'device_id' => 'nullable|string',
             'device_token' => 'required',
             'inbox' => 'required|boolean',
-            'json_file' => 'required|file|mimes:json,txt|max:50000',
+            'json_file' => 'required|file|mimes:json,txt',
         ]);
 
         if ($validator->fails()) {

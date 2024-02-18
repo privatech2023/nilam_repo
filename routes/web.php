@@ -42,16 +42,19 @@ use App\Models\settings;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
-// Route::get('/', function () {
-//     Session::forget('user_data');
-//     return view('frontend/pages/index');
-// })->name('home');
+Route::get('/login', function () {
+    return redirect()->route('login');
+});
+
+Route::get('/register', function () {
+    return redirect()->route('register/client');
+});
 
 Route::get('/', [frontendController::class, 'home'])->name('home');
 
 Route::get('login/client', [LoginController::class, 'index'])->name('login');
 
-Route::get('register/client', [RegisterController::class, 'index']);
+Route::get('register/client', [RegisterController::class, 'index'])->name('register/client');
 
 Route::post('login/client', [LoginController::class, 'login']);
 
@@ -73,10 +76,14 @@ Route::post('login_otp/client', [LoginController::class, 'login_otp']);
 Route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
 Route::post('login/reset-password', [LoginController::class, 'reset_password']);
 
+Route::get('/public/packages', function () {
+    return redirect()->route('/subscription/packages');
+});
 
+Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
 Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
-    Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
+    // Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
     Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
     Route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 
@@ -121,7 +128,6 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/my-devices/{userId}', MyDevices::class);
 
         Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
-
         Route::get('/default-device/{id}/{token}', [clientController::class, 'default_device']);
     });
 });
