@@ -50,7 +50,7 @@ class CheckApkVersionController extends Controller
                 'message' => 'Out of bounds',
                 'errors' => (object)[],
                 'data' => (object)[],
-            ], 200);
+            ], 422);
         }
 
         return response()->json([

@@ -20,6 +20,7 @@ class MessageComponent extends Component
     public $selectedKey;
     public $msgCount = 0;
     protected $flag = false;
+    public $flagCount = 0;
 
 
     public function mount($userId)
@@ -132,19 +133,21 @@ class MessageComponent extends Component
 
     public function populateMessage($key)
     {
+        $this->flagCount = 1;
         if ($this->flag == false) {
             $this->selectedKey = $key;
-            $this->emit('toggleSidepanel');
+            $this->emit('toggleSidepanel', $this->flagCount);
             $this->flag = true;
         } else {
             $this->selectedKey = $key;
-            $this->emit('toggleSidepanel');
+            $this->emit('toggleSidepanel', $this->flagCount);
             $this->flag = false;
         }
     }
 
     public function backButton()
     {
-        $this->emit('back');
+        $this->flagCount = 0;
+        $this->emit('back', $this->flagCount);
     }
 }
