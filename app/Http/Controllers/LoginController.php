@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
-use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\frontendController;
 use App\Models\default_client_creds;
 use App\Models\subscriptions;
 use Illuminate\Support\Facades\DB;
@@ -198,7 +198,7 @@ class LoginController extends Controller
 
                 $message = $tempOTP . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
                 //Send OTP
-                $frontendcontroller = new FrontendController;
+                $frontendcontroller = new frontendController;
                 $frontendcontroller->sendOTP($userInput, $message);
             } else {
 
@@ -209,7 +209,7 @@ class LoginController extends Controller
                 ];
                 $model->create($data);
 
-                $frontendcontroller = new FrontendController;
+                $frontendcontroller = new frontendController;
                 $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
             }
 
@@ -244,7 +244,7 @@ class LoginController extends Controller
 
                 $message = $tempOTP . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
                 //Send OTP
-                $frontendcontroller = new FrontendController;
+                $frontendcontroller = new frontendController;
                 $frontendcontroller->sendOTP($userInput, $message);
             } else {
 
@@ -255,7 +255,7 @@ class LoginController extends Controller
                 ];
                 $model->create($data);
 
-                $frontendcontroller = new FrontendController;
+                $frontendcontroller = new frontendController;
                 $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
             }
 

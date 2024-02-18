@@ -82,6 +82,12 @@
 
                             <div class="dropdown-divider"></div>
 
+                            <a href="https://privatechgarden.online/terms-of-service" class="dropdown-item">
+                                <i class="fa-regular fa-file mr-2" aria-hidden="true"></i> Terms of service
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
                             <a href="https://privatechgarden.online/refund-policy" class="dropdown-item">
                                 <i class="fa-regular fa-file mr-2" aria-hidden="true"></i>Return &amp; Refund
                             </a>
