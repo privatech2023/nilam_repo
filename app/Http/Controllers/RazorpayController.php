@@ -30,7 +30,7 @@ class RazorpayController extends Controller
             }
 
             // Check if order exists in database
-            $order = payments::where('razorpay_order_id', $request->razorpay_order_id)->first();
+            $order = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
 
             if (!$order) {
                 Session::flash('error', 'Order ID not found');

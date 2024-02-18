@@ -39,7 +39,7 @@
                         <p>Press stop to stop alert</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-info" data-dismiss="modal">stop</button>
+                        <button type="button" wire:click="alertDeviceStop" class="btn btn-info" data-dismiss="modal">stop</button>
                     </div>
                 </div>
             </div>
