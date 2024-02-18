@@ -57,7 +57,7 @@ document.addEventListener("livewire:load", function () {
         $('.loader_bg').hide();
         setInterval(function() {
             document.getElementById('cont-refresh-component-specific').click();
-        }, 3000);
+        }, 6000);
 
     });
     </script>
