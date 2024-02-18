@@ -26,12 +26,10 @@ class SyncController extends Controller
         ]);
 
         if ($request->has('device_name')) {
-            $device_name = $request->has('device_name');
+            $device_name = $request->input('device_name');
         } else {
             $device_name = '';
         }
-
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,

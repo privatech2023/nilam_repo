@@ -83,12 +83,11 @@ class MessageSyncController extends Controller
 
     public function uploadMessages(Request $request)
     {
-        // return response()->json([$request->header('Authorization')]);
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'device_token' => 'required',
             'inbox' => 'required|boolean',
-            'json_file' => 'required|file|mimes:json,txt|max:10000',
+            'json_file' => 'required|file|mimes:json,txt|max:50000',
         ]);
 
         if ($validator->fails()) {

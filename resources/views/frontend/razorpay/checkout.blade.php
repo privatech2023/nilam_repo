@@ -27,13 +27,14 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        {{ $razorPay['id'] }}
 
-                        <button id="rzp-button1" class="btn btn-secondary">Pay Now</button>
+                        <div class="text-center">
+                            <button id="rzp-button1" class="btn btn-secondary" style="margin-top: 3rem;">PAY NOW</button>
+                        </div>
                         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                         <script>
                             var options = {
-                                "key": "{{ getenv('RAZORPAY_KEY_ID')}}",
+                                "key": "{{ getenv('RAZORPAY_ID')}}",
                                 "amount": "{{ $razorPay['amount'] }}",
                                 "currency": "INR",
                                 "name": "PRIVATECH",
