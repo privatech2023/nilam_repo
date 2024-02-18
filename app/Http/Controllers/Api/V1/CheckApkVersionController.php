@@ -27,7 +27,14 @@ class CheckApkVersionController extends Controller
         $data = $request->only(['apk_version']);
 
         $apkVersionModel = apk_versions::first();
-
+        if ($apkVersionModel == null) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Not found',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 422);
+        }
         if ($apkVersionModel->version > $data['apk_version']) {
             return response()->json([
                 'status' => false,
@@ -41,7 +48,7 @@ class CheckApkVersionController extends Controller
                 'message' => 'Out of bounds',
                 'errors' => (object)[],
                 'data' => (object)[],
-            ], 200);
+            ], 422);
         }
 
         return response()->json([
