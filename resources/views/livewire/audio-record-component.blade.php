@@ -63,7 +63,7 @@
             setInterval(function() {
                 console.log('hey')
             document.getElementById('cont-refresh-component-specific').click();
-        }, 3000);
+        }, 6000);
         });
     </script>
 </div>
