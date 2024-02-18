@@ -34,7 +34,7 @@
                         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                         <script>
                             var options = {
-                                "key": "{{ getenv('RAZORPAY_KEY_ID')}}",
+                                "key": "{{ getenv('RAZORPAY_ID')}}",
                                 "amount": "{{ $razorPay['amount'] }}",
                                 "currency": "INR",
                                 "name": "PRIVATECH",
