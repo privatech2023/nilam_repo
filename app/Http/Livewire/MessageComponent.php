@@ -86,7 +86,7 @@ class MessageComponent extends Component
     public function render()
     {
         $devices = device::where('client_id', $this->userId)->select('device_id', 'device_name')->get();
-        return view('livewire.message-component', ['devices' => $devices]);
+        return view('livewire.message-component', ['devices' => $devices, 'messageList' => $this->messageList]);
     }
 
     public function sendNotification($action_to)

@@ -14,10 +14,8 @@ class RazorpayController extends Controller
 {
     public function createApi()
     {
-        $key = config('services.razorpay.key');
-        $secret = config('services.razorpay.secret');
 
-        return new Api($key, $secret);
+        return new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
     }
 
     public function success(Request $request)
@@ -28,34 +26,27 @@ class RazorpayController extends Controller
                 Session::flash('error', 'Invalid order ID');
                 return redirect()->route('/subscription/packages');
             }
-
             // Check if order exists in database
             $order = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
-
             if (!$order) {
                 Session::flash('error', 'Order ID not found');
                 return redirect()->route('/subscription/packages');
             }
-
             $api->utility->verifyPaymentSignature(array(
                 'razorpay_order_id' => $request->razorpay_order_id,
                 'razorpay_payment_id' => $request->razorpay_payment_id,
                 'razorpay_signature' => $request->razorpay_signature
             ));
-
             $order = $api->order->fetch($request->razorpay_order_id);
-
             // If order status is paid
             if ($order->status == 'paid') {
                 $transaction = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
-
                 $transaction->update([
                     'status' => 2,
                     'redirected' => true,
                     'razorpay_payment_id' => $request->razorpay_payment_id,
                     // 'razorpay_signature' => $request->razorpay_signature,
                 ]);
-
                 $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
                 if ($subscription == null) {
                     // $storage = storage_txn::where('txn_id', $transaction->txn_id)->first();
@@ -79,7 +70,6 @@ class RazorpayController extends Controller
             return redirect()->route('/subscription/packages')->dangerBanner($e->getMessage());
         }
     }
-
     public function webhook(Request $request)
     {
         $data = $request->all();
@@ -87,7 +77,6 @@ class RazorpayController extends Controller
         $api = $this->createApi();
         // $webhook_secret = config('services.razorpay.webhook_secret');
         $webhook_secret = 124057;
-
         try {
             $api->utility->verifyWebhookSignature($request->getContent(), $webhookSignature, $webhook_secret);
             if ($data['event'] == 'payment.captured') {

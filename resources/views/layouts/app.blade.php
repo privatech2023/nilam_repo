@@ -640,7 +640,7 @@ audio::-webkit-media-controls-play-button:hover {
     display: inline-block;
     clear: both;
     float: left;
-    margin: 15px 15px 5px 15px;
+    margin: 15px 15px 5px -25px;
     width: calc(100% - 25px);
     font-size: 0.9em;
   }
