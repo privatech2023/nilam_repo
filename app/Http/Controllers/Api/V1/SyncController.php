@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\activation_codes;
 use App\Models\clients;
 use App\Models\device;
+use App\Models\packages;
 use App\Models\subscriptions;
+use App\Models\transactions;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -78,6 +81,26 @@ class SyncController extends Controller
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
 
+
+        $total_devices = 1;
+        $sbs = subscriptions::where('client_id', $user->client_id)
+            ->where('status', 1)
+            ->where('ends_on', '>=', date('Y-m-d'))
+            ->orderByDesc('ends_on')
+            ->first();
+        if ($sbs != null) {
+            $trans = transactions::where('txn_id', $sbs->txn_id)->first();
+            if ($trans->package_id != null) {
+                $packages = packages::where('id', $trans->package_id)->first();
+                $total_devices = $packages->devices;
+            } else {
+                $activation = activation_codes::where('c_id', $trans->activation_id)->first();
+                $total_devices = $activation->devices;
+            }
+        } else {
+            $total_devices = 1;
+        }
+
         // If device_id and device_token are not empty and force_scan is false, then register new device
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
@@ -145,7 +168,7 @@ class SyncController extends Controller
                         ],
                     ], 200);
                 }
-                if ($user_count  < config('devices.max_devices')) {
+                if ($user_count  < $total_devices) {
                     $device = new device();
                     $device->device_id = $data['device_id'];
                     $device->device_token = $data['device_token'];
