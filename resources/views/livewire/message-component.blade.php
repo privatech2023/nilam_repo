@@ -63,6 +63,9 @@
             </div>
             <div id="contacts">
                 <ul>
+                    {{-- @php
+                    dd($messageList)
+                    @endphp --}}
                     @foreach($messageList as $key => $value)
                         <li class="contact" wire:click="populateMessage('{{ $key }}')" >
                         <div class="wrap">

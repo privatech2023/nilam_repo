@@ -121,7 +121,6 @@ class MessageSyncController extends Controller
             ], 406);
         }
         $json_file = $data['json_file'];
-        // Store the file in storage/app/messages/inbox or storage/app/messages/outbox
         $json_file_path = 'messages/' . ($data['inbox'] ? 'inbox' : 'outbox') . '/' . $json_file->getClientOriginalName();
         $json_file->storeAs('messages/' . ($data['inbox'] ? 'inbox' : 'outbox'), $json_file->getClientOriginalName());
 
@@ -134,9 +133,8 @@ class MessageSyncController extends Controller
 
             $messagesToInsert = [];
             $now = now();
-
             foreach ($messages as $message) {
-                if ((messages::where('message_id', $message['message_id'])->first()) != null) {
+                if (((messages::where('message_id', $message['message_id'])->first()) != null) && ((messages::where('device_id', $user->device_id)->first()) != null)) {
                     continue;
                 }
                 $message['user_id'] = $user->client_id;
@@ -150,7 +148,6 @@ class MessageSyncController extends Controller
                 $message['updated_at'] = $now;
                 $messagesToInsert[] = $message;
             }
-
             foreach (array_chunk($messagesToInsert, 1000) as $chunk) {
                 DB::table('messages')->insert($chunk);
             }
