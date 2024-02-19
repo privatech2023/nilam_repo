@@ -56,28 +56,28 @@ class MessageComponent extends Component
 
     public function contRefreshComponentSpecific()
     {
-        $device = clients::where('client_id', $this->userId)->first();
-        $messages = messages::where('device_id', $device->device_id)
-            ->orderBy('message_id', 'desc')
-            ->get();
-        $messageList = [];
+        // $device = clients::where('client_id', $this->userId)->first();
+        // $messages = messages::where('device_id', $device->device_id)
+        //     ->orderBy('message_id', 'desc')
+        //     ->get();
+        // $messageList = [];
 
-        foreach ($messages as $msg) {
-            $phoneNumber = $msg->number;
-            $messageDetails = [
-                'message_id' => $msg->message_id,
-                'date' => $msg->date,
-                'body' => $msg->body,
-                'is_inbox' => $msg->is_inbox,
-            ];
+        // foreach ($messages as $msg) {
+        //     $phoneNumber = $msg->number;
+        //     $messageDetails = [
+        //         'message_id' => $msg->message_id,
+        //         'date' => $msg->date,
+        //         'body' => $msg->body,
+        //         'is_inbox' => $msg->is_inbox,
+        //     ];
 
-            if (isset($messageList[$phoneNumber])) {
-                $messageList[$phoneNumber][] = $messageDetails;
-            } else {
-                $messageList[$phoneNumber] = [$messageDetails];
-            }
-        }
-        $this->messageList = $messageList;
+        //     if (isset($messageList[$phoneNumber])) {
+        //         $messageList[$phoneNumber][] = $messageDetails;
+        //     } else {
+        //         $messageList[$phoneNumber] = [$messageDetails];
+        //     }
+        // }
+        // $this->messageList = $messageList;
         $this->msgCount = count($this->messageList);
         $this->flagCount = 0;
         $this->emit('refreshComponent');
