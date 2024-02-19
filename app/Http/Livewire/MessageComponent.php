@@ -33,6 +33,8 @@ class MessageComponent extends Component
         $message = messages::where('device_id', $device->device_id)
             ->orderBy('message_id', 'desc')
             ->get();
+
+
         foreach ($message as $msg) {
             if (isset($this->messageList[$msg->number])) {
                 $this->messageList[$msg->number][] = [

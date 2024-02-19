@@ -121,7 +121,7 @@ class UploadPhotoController extends Controller
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->photo->extension();
 
-            $directory = 'images/' . $user->name . '/' . $user->device_id;
+            $directory = 'images/' . $user->client_id . '/' . $user->device_id;
             $request->photo->storeAs($directory, $filename, 's3');
 
             // Save to database
