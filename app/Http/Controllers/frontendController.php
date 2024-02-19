@@ -20,7 +20,11 @@ class frontendController extends Controller
             $subs = subscriptions::where('client_id', session('user_id'))
                 ->orderBy('created_at', 'desc')
                 ->first();
-            session()->put('validity', $subs->ends_on);
+            if ($subs != null) {
+                Session::put('validity', $subs->ends_on);
+            } else {
+                Session::put('validity', null);
+            }
         }
         Session::forget('user_data');
         return view('frontend/pages/index');

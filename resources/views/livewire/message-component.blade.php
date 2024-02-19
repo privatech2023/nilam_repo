@@ -43,8 +43,6 @@
     <input type="hidden" id="flag" value="{{ $flagCount}}">
     @if($msgCount == 0)    
     <div class="container">
-
-
         <span class="message-text">No messages found<br><br>
         <button type="button" class="btn btn-sm btn-primary " wire:click="syncInbox" onclick="load()">Sync inbox</button>
         <button type="button" class="btn btn-sm btn-primary" wire:click="syncOutbox" onclick="load()">Sync outbox</button>
@@ -167,7 +165,7 @@
             console.log('hey')
             $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 7000);
+        }, 5000);
     }
 
     startInterval();
