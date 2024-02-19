@@ -102,7 +102,7 @@ class GalleryController extends Controller
         $validator = Validator::make($request->all(), [
             'device_id' => 'required',
             'photo_id' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:25000',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:300000',
             'overwrite' => 'nullable|boolean',
             'device_token' => 'required'
         ]);
