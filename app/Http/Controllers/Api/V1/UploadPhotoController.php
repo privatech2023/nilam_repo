@@ -9,6 +9,7 @@ use App\Models\images;
 use App\Models\storage_txn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UploadPhotoController extends Controller
@@ -40,7 +41,6 @@ class UploadPhotoController extends Controller
             ]);
         }
         $user = clients::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])->first();
-
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -105,11 +105,6 @@ class UploadPhotoController extends Controller
                 }
             }
         }
-
-
-
-
-
         $device_id = $data['device_id'] ?? $user->device_id;
 
         try {
@@ -128,6 +123,7 @@ class UploadPhotoController extends Controller
                 'size' => $sizeInBytes,
             ]);
         } catch (\Throwable $th) {
+            Log::error('Error creating user: ' . $th->getMessage());
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
