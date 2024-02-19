@@ -20,7 +20,6 @@ class UploadPhotoController extends Controller
             'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
             'device_token' => 'required'
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -29,10 +28,7 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ], 422);
         }
-
         $data = $request->only(['device_id', 'photo', 'device_token']);
-
-
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user1 = clients::where('auth_token', 'LIKE', "%$token%")->first();
         if ($user1 == null) {
@@ -120,7 +116,6 @@ class UploadPhotoController extends Controller
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->photo->extension();
-
             $directory = 'images/' . $user->client_id . '/' . $user->device_id;
             $request->photo->storeAs($directory, $filename, 's3');
 

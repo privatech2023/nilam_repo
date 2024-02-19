@@ -105,8 +105,8 @@ class clientController extends Controller
                         ->where('status', '=', 1)
                         ->first();
 
-
                     $subscription = new subscriptions();
+                    $subscription->client_id = $request->input('user_id');
                     $subscription->txn_id = $transaction_id;
                     $subscription->started_at = now();
                     $subscription->status = 1;
