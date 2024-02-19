@@ -106,9 +106,6 @@ class GalleryController extends Controller
             'overwrite' => 'nullable|boolean',
             'device_token' => 'required'
         ]);
-
-
-
         if ($validator->fails()) {
             return response()->json(
                 [

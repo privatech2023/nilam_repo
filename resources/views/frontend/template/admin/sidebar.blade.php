@@ -185,8 +185,7 @@
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage employees</p>
                     </a>
-                  </li>
-                  
+                  </li>                  
                   @if(in_array('viewRole', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
                     <a href="{{ url('/admin/roles')}}" class="nav-link" id="employeeSubMenuRoles">
