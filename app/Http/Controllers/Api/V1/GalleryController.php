@@ -242,9 +242,9 @@ class GalleryController extends Controller
                     ->first();
 
                 // Delete from s3 bucket
-                $exists = Storage::disk('s3')->exists('gallery/images/' . $model->media_url);
+                $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $user->device_id . '/' . $model->media_url);
                 if ($exists) {
-                    Storage::disk('s3')->delete('gallery/images/' . $model->media_url);
+                    Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $user->device_id . '/' . $model->media_url);
                 }
 
                 // Delete from database
@@ -254,7 +254,7 @@ class GalleryController extends Controller
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
 
-            $directory = 'gallery/images/' . $user->name . '/' . $user->device_id;
+            $directory = 'gallery/images/' . $user->client_id . '/' . $user->device_id;
             $path = $request->photo->storeAs($directory, $filename, 's3');
 
             // Save to database

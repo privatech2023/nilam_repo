@@ -9,6 +9,7 @@ use App\Models\screen_recordings;
 use App\Models\storage_txn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UploadScreenRecordingController extends Controller
@@ -132,6 +133,7 @@ class UploadScreenRecordingController extends Controller
                 'size' => $sizeInBytes
             ]);
         } catch (\Throwable $th) {
+            Log::error('Error creating user: ' . $th->getMessage());
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[

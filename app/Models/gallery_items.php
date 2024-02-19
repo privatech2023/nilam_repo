@@ -26,7 +26,7 @@ class gallery_items extends Model
         // $directory = 'gallery/images/' . $user->name . '/' . $user->device_id;
         // $type = $this->media_type == 'image' ? 'images/' : 'videos/';
         $url = Storage::disk('s3')->temporaryUrl(
-            'gallery/images/' . $user->client_id . '/' . $user->device_id . $this->media_url,
+            'gallery/images/' . $user->client_id . '/' . $user->device_id . '/' . $this->media_url,
             now()->addMinutes($mins)
         );
         return $url;
