@@ -17,7 +17,6 @@
         </div>
       </div><!-- /.container-fluid -->
     </section>
-
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -66,8 +65,14 @@
                           <td> <input type="checkbox" name="permission[]" id="permission" value="updateClient"> </td>  
                           <td> <input type="checkbox" name="permission[]" id="permission" value="viewClient"> </td>  
                           <td> <input type="checkbox" name="permission[]" id="permission" value="deleteClient"> </td>
-                        </tr>           
-                          
+                      </tr>  
+                      <tr>
+                        <td>activation codes</td>
+                        <td> <input type="checkbox" name="permission[]" id="permission" value="createCode"> </td>  
+                        <td> <input type="checkbox" name="permission[]" id="permission" value="updateCode"> </td>  
+                        <td> <input type="checkbox" name="permission[]" id="permission" value="viewCode"> </td>  
+                        <td> <input type="checkbox" name="permission[]" id="permission" value="deleteCode"> </td>
+                      </tr>           
                       <tr>
                           <td>Dealers</td>
                           <td><input type="checkbox" name="permission[]" id="permission" value="createDealer"></td>
