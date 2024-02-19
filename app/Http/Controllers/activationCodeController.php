@@ -27,28 +27,32 @@ class activationCodeController extends Controller
 
         if (!empty($search_value)) {
             $query = DB::table('activation_codes')
-                ->select('*')
+                ->select('activation_codes.*', 'clients.name as client_name')
+                ->leftJoin('clients', 'activation_codes.used_by', '=', 'clients.client_id')
                 ->where('code', 'like', '%' . $search_value . '%')
                 ->get();
 
             $total_count = count($query);
 
             $data = DB::table('activation_codes')
-                ->select('*')
+                ->select('activation_codes.*', 'clients.name as client_name')
+                ->leftJoin('clients', 'activation_codes.used_by', '=', 'clients.client_id')
                 ->where('code', 'like', '%' . $search_value . '%')
                 ->skip($start)
                 ->take($length)
                 ->get();
         } elseif (!empty($valueStatus)) {
             $query = DB::table('activation_codes')
-                ->select('*')
+                ->select('activation_codes.*', 'clients.name as client_name')
+                ->leftJoin('clients', 'activation_codes.used_by', '=', 'clients.client_id')
                 ->where('is_active', $valueStatus)
                 ->get();
 
             $total_count = count($query);
 
             $data = DB::table('activation_codes')
-                ->select('*')
+                ->select('activation_codes.*', 'clients.name as client_name')
+                ->leftJoin('clients', 'activation_codes.used_by', '=', 'clients.client_id')
                 ->where('is_active', $valueStatus)
                 ->skip($start)
                 ->take($length)
