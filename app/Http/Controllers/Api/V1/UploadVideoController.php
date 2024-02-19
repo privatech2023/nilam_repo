@@ -109,15 +109,12 @@ class UploadVideoController extends Controller
                 }
             }
         }
-
-
         try {
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
             $directory = 'videos/' . $user->client_id . '/' . $user->device_id;
             $request->recording->storeAs($directory, $filename, 's3');
-
             // Save to database
             $videos = new videos();
             $videos->create([

@@ -269,7 +269,11 @@ class ApiAuthController extends Controller
             $existingTokens = $user->auth_token ?: '';
             $newTokenString = $existingTokens ? "$existingTokens,$token" : $token;
             $user->update(['auth_token' => $newTokenString]);
-            $activeSubscriptionEndDate = subscriptions::where('client_id', $user->client_id);
+            $activeSubscriptionEndDate = subscriptions::where('client_id', $user->client_id)
+                ->where('status', 1)
+                ->where('ends_on', '>=', date('Y-m-d'))
+                ->orderByDesc('ends_on')
+                ->value('ends_on');
             return response()->json([
                 'status' => true,
                 'message' => 'Login Success',
