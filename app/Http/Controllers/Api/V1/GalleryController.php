@@ -176,7 +176,6 @@ class GalleryController extends Controller
                         $validity = $st->plan_type == 'monthly' ? 30 : 365;
                         $createdAt = Carbon::parse($st->created_at);
                         $expirationDate = $createdAt->addDays($validity);
-
                         if ($expirationDate->isPast()) {
                             return response()->json([
                                 'status' => false,
