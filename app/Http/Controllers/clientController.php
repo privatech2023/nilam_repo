@@ -99,14 +99,13 @@ class clientController extends Controller
                     $lastSubscription->validity_days = $request->input('validity_days');
                     $lastSubscription->save();
                 } else {
-                    $update_date = Subscriptions::where('client_id', $request->input('user_id'))
-                        ->select('ends_on')
-                        ->orderByDesc('updated_at')
-                        ->where('status', '=', 1)
-                        ->first();
-
+                    // $update_date = Subscriptions::where('client_id', $request->input('user_id'))
+                    //     ->select('ends_on')
+                    //     ->orderByDesc('updated_at')
+                    //     ->where('status', '=', 1)
+                    //     ->first();
                     $subscription = new subscriptions();
-                    $subscription->client_id = $request->input('user_id');
+                    $subscription->client_id = $request->input('client_id');
                     $subscription->txn_id = $transaction_id;
                     $subscription->started_at = now();
                     $subscription->status = 1;
