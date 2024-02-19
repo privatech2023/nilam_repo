@@ -50,22 +50,24 @@ class RazorpayController extends Controller
                 $transaction = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
 
                 $transaction->update([
-                    'payment_status' => 2,
+                    'status' => 2,
                     'redirected' => true,
                     'razorpay_payment_id' => $request->razorpay_payment_id,
-                    'razorpay_signature' => $request->razorpay_signature,
+                    // 'razorpay_signature' => $request->razorpay_signature,
                 ]);
 
                 $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
                 if ($subscription == null) {
-                    $storage = storage_txn::where('txn_id', $transaction->txn_id)->first();
-                    $storage->update([
-                        'status' => 1
+                    // $storage = storage_txn::where('txn_id', $transaction->txn_id)->first();
+                    // $storage->update([
+                    //     'status' => 1
+                    // ]);
+                    $subscription->update([
+                        'status' => 2
                     ]);
                 }
-
                 $subscription->update([
-                    'status' => 1
+                    'status' => 2
                 ]);
                 Session::flash('success', 'Payment successfull');
                 return redirect()->route('/subscription/packages');
@@ -83,7 +85,8 @@ class RazorpayController extends Controller
         $data = $request->all();
         $webhookSignature = $request->header('X-Razorpay-Signature');
         $api = $this->createApi();
-        $webhook_secret = config('services.razorpay.webhook_secret');
+        // $webhook_secret = config('services.razorpay.webhook_secret');
+        $webhook_secret = 124057;
 
         try {
             $api->utility->verifyWebhookSignature($request->getContent(), $webhookSignature, $webhook_secret);
@@ -96,16 +99,16 @@ class RazorpayController extends Controller
 
                 if ($order->status == 'paid') {
                     $payment->update([
-                        'payment_status' => 'success',
+                        'status' => 2,
 
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
-                        'razorpay_signature' => $webhookSignature,
+                        // 'razorpay_signature' => $webhookSignature,
                     ]);
 
-                    $subscription = $payment->subscription;
+                    $subscription = subscriptions::where('txn_id', $payment->txn_id)->first();
 
                     $subscription->update([
-                        'status' => 'paid'
+                        'status' => 2
                     ]);
 
                     return response()->json([
