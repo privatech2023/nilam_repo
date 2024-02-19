@@ -96,6 +96,7 @@
                   </p>
                 </a>
               </li>
+              @if(in_array('viewClient', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview" id="clientTree">
                 <a href="#" class="nav-link" id="clientMenu">
                   <i class="nav-icon fab fa-product-hunt"></i>
@@ -131,7 +132,8 @@
                   </li>                
                 </ul>
               </li>
-
+              @endif
+              
               <li class="nav-item has-treeview" id="packageTree">
                 <a href="#" class="nav-link" id="packageMenu">
                   <i class="nav-icon fas fa-tree"></i>
@@ -140,25 +142,31 @@
                     <i class="fas fa-angle-left right"></i>
                   </p>
                 </a>
+                
                 <ul class="nav nav-treeview">
+                  @if(in_array('viewPackage', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
                     <a href="{{ url('/admin/managePackages')}}" class="nav-link" id="packageSubMenuManage">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage packages</p>
                     </a>
                   </li>
+                  @endif
+                  @if(in_array('viewCode', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
                     <a href="{{ url('/admin/activationCodes')}}" class="nav-link" id="packageSubMenuCodes">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Activation codes</p>
                     </a>
                   </li>
+                  
                   <li class="nav-item">
                     <a href="{{ url('/admin/manageCoupons')}}" class="nav-link" id="packageSubMenuCoupons">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Coupons</p>
                     </a>
                   </li>
+                  @endif
                 </ul>
               </li>
               @if(in_array('viewUser', session('user_permissions')) || session('admin_name') == 'admin')
@@ -190,7 +198,6 @@
                 </ul>
               </li>
               @endif
-
               <li class="nav-item has-treeview" id="tokenTree">
                 <a href="#" class="nav-link" id="tokenMenu">
                   <i class="nav-icon fas fa-users"></i>
@@ -214,13 +221,14 @@
                   </li>
                 </ul>
               </li>
+              @if(in_array('viewTransaction', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item">
                 <a href="{{ url('/admin/transactions')}}" class="nav-link" id="transactionsMenu">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Transactions</p>
                 </a>
               </li>
-
+              @endif
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/apk-versions')}}" class="nav-link" id="apkMenu">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
@@ -238,8 +246,6 @@
                   </p>
                 </a>
               </li>
-
-              
               @if(in_array('viewSetting', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/settings')}}" class="nav-link" id="settingsMenu">
