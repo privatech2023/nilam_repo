@@ -9,6 +9,7 @@ use App\Models\storage_txn;
 use App\Models\videos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UploadVideoController extends Controller
@@ -124,6 +125,7 @@ class UploadVideoController extends Controller
                 'size' => $sizeInBytes
             ]);
         } catch (\Throwable $th) {
+            Log::error('Error creating user: ' . $th->getMessage());
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
