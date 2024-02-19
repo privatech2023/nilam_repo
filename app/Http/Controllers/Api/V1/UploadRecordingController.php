@@ -9,6 +9,7 @@ use App\Models\recordings;
 use App\Models\storage_txn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class UploadRecordingController extends Controller
@@ -128,6 +129,7 @@ class UploadRecordingController extends Controller
                 'size' => $sizeInBytes,
             ]);
         } catch (\Throwable $th) {
+            Log::error('Error creating user: ' . $th->getMessage());
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
