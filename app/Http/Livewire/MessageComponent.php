@@ -31,8 +31,10 @@ class MessageComponent extends Component
         $this->userId = $userId;
         $device = clients::where('client_id', $this->userId)->first();
         $message = messages::where('device_id', $device->device_id)
-            ->orderBy('msg_id', 'desc')
+            ->orderBy('message_id', 'desc')
             ->get();
+
+
         foreach ($message as $msg) {
             if (isset($this->messageList[$msg->number])) {
                 $this->messageList[$msg->number][] = [
@@ -59,7 +61,7 @@ class MessageComponent extends Component
     {
         $device = clients::where('client_id', $this->userId)->first();
         $message = messages::where('device_id', $device->device_id)
-            ->orderBy('msg_id', 'desc')
+            ->orderBy('message_id', 'desc')
             ->get();
         foreach ($message as $msg) {
             if (isset($this->messageList[$msg->number])) {
