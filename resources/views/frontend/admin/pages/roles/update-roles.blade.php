@@ -88,9 +88,27 @@
                                                 value="deleteClient"
                                                 {{ in_array('deleteClient', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Activation codes</td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="createCode"
+                                                {{ in_array('createCode', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="updateCode"
+                                                {{ in_array('updateCode', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="viewCode"
+                                                {{ in_array('viewCode', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteCode"
+                                                {{ in_array('deleteCode', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
 
                                     </tr>
-
 
                                     <tr>
                                         <td>Dealers</td>
@@ -103,7 +121,7 @@
                                                 {{ in_array('updateDealer', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
-                                                value="viewDealer"
+                                                value="viewD"
                                                 {{ in_array('viewDealer', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"

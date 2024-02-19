@@ -18,9 +18,10 @@ class videos extends Model
 
     public function s3Url()
     {
+        $user = clients::where('client_id', session('user_id'))->first();
         $mins = 5;
         $url = Storage::disk('s3')->temporaryUrl(
-            'videos/' . $this->filename,
+            'videos/' . $user->client_id . '/' . $user->device_id . $this->filename,
             now()->addMinutes($mins)
         );
         return $url;

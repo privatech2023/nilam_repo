@@ -118,9 +118,9 @@ class UploadScreenRecordingController extends Controller
         try {
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
-            $filename = 'uid-' . $user->id . '-' . $uuid . '.' . $request->recording->extension();
+            $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
 
-            $directory = 'screen-recordings/' . $user->name . '/' . $user->device_id;
+            $directory = 'screen-recordings/' . $user->client_id . '/' . $user->device_id;
             $request->recording->storeAs($directory, $filename, 's3');
 
             // Save to database
