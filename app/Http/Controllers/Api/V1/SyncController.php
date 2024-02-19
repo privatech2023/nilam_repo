@@ -57,9 +57,7 @@ class SyncController extends Controller
         }
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
 
-
         if (!in_array($token, explode(',', $client->auth_token))) {
-
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid token header',
@@ -93,7 +91,7 @@ class SyncController extends Controller
             if ($trans->package_id != null) {
                 $packages = packages::where('id', $trans->package_id)->first();
                 $total_devices = $packages->devices;
-            } else {
+            } elseif ($trans->activation_id != null) {
                 $activation = activation_codes::where('c_id', $trans->activation_id)->first();
                 $total_devices = $activation->devices;
             }
