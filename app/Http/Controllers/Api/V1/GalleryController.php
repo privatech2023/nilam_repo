@@ -102,13 +102,10 @@ class GalleryController extends Controller
         $validator = Validator::make($request->all(), [
             'device_id' => 'required',
             'photo_id' => 'required',
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:25000',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:300000',
             'overwrite' => 'nullable|boolean',
             'device_token' => 'required'
         ]);
-
-
-
         if ($validator->fails()) {
             return response()->json(
                 [
@@ -176,7 +173,6 @@ class GalleryController extends Controller
                         $validity = $st->plan_type == 'monthly' ? 30 : 365;
                         $createdAt = Carbon::parse($st->created_at);
                         $expirationDate = $createdAt->addDays($validity);
-
                         if ($expirationDate->isPast()) {
                             return response()->json([
                                 'status' => false,

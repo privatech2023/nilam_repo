@@ -91,7 +91,7 @@ class SyncController extends Controller
             if ($trans->package_id != null) {
                 $packages = packages::where('id', $trans->package_id)->first();
                 $total_devices = $packages->devices;
-            } else {
+            } elseif ($trans->activation_id != null) {
                 $activation = activation_codes::where('c_id', $trans->activation_id)->first();
                 $total_devices = $activation->devices;
             }
