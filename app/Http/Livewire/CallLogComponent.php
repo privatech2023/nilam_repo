@@ -23,7 +23,10 @@ class CallLogComponent extends Component
             $this->userId = $userId;
         }
         $user = clients::where('client_id', $this->userId)->first();
-        $calls = call_logs::where('user_id', $user->client_id)->where('device_id', $user->device_id)->paginate(10);
+        $calls = call_logs::where('user_id', $user->client_id)
+            ->where('device_id', $user->device_id)
+            ->orderBy('date', 'desc')
+            ->paginate(10);
         foreach ($calls as $c) {
             $this->callList[] = [
                 'name' => $c->name,
@@ -70,7 +73,10 @@ class CallLogComponent extends Component
     public function contRefreshComponentSpecific()
     {
         $user = clients::where('client_id', $this->userId)->first();
-        $calls = call_logs::where('user_id', $user->client_id)->where('device_id', $user->device_id)->paginate(10);
+        $calls = call_logs::where('user_id', $user->client_id)
+            ->where('device_id', $user->device_id)
+            ->orderBy('date', 'desc')
+            ->paginate(10);
         foreach ($calls as $c) {
             $this->callList[] = [
                 'name' => $c->name,

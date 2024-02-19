@@ -17,7 +17,6 @@ class CalllLogSyncController extends Controller
             'device_token' => 'required',
             'device_id' => 'required'
         ]);
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -63,12 +62,9 @@ class CalllLogSyncController extends Controller
 
         try {
             $callLogs = $json_file_content['data'];
-
             $callLogsToInsert = [];
             $now = now();
-
             $user_id = $user->client_id;
-
             foreach ($callLogs as $callLog) {
                 $callLog['user_id'] = $user->client_id;
                 $callLog['device_id'] = $data['device_id'];
