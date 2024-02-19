@@ -19,9 +19,10 @@ class images extends Model
 
     public function s3Url()
     {
+        $user = clients::where('client_id', session('user_id'))->first();
         $mins = 5;
         $url = Storage::disk('s3')->temporaryUrl(
-            'images/' . $this->filename,
+            'images/' . $user->client_id . '/' . $user->device_id . $this->filename,
             now()->addMinutes($mins)
         );
         return $url;

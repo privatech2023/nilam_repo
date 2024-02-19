@@ -56,9 +56,7 @@
                           <th>Delete</th>
                         </tr>
                       </thead>
-                      <tbody>
-                          
-                          
+                      <tbody>                          
                       <tr>
                           <td>Clients</td>
                           <td> <input type="checkbox" name="permission[]" id="permission" value="createClient"> </td>  

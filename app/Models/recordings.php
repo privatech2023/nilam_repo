@@ -22,7 +22,7 @@ class recordings extends Model
         $mins = 5;
         $user = clients::where('client_id', session('user_id'))->first();
         $url = Storage::disk('s3')->temporaryUrl(
-            'recordings/' . $user->name . '/' . $user->device_id . $this->filename,
+            'recordings/' . $user->client_id . '/' . $user->device_id . $this->filename,
             now()->addMinutes($mins)
         );
         return $url;
