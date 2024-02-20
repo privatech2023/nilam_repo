@@ -252,7 +252,6 @@ class GalleryController extends Controller
 
             $directory = 'gallery/images/' . $user->client_id . '/' . $user->device_id;
             $path = $request->photo->storeAs($directory, $filename, 's3');
-
             // Save to database
             $gallery_item = gallery_items::create([
                 'device_gallery_id' => $request->photo_id,
@@ -269,7 +268,6 @@ class GalleryController extends Controller
                     'message' => 'Photo uploaded successfully',
                     'errors' => (object) [],
                     'data' => $gallery_item,
-                    'path' => $path,
                 ],
                 200,
             );
