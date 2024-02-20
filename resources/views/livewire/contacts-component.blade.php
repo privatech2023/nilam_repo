@@ -153,7 +153,7 @@
             console.log('hey')
             $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 7000);
+        }, 10000);
     }
 
     startInterval();

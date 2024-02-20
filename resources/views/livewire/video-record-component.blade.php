@@ -23,18 +23,63 @@
             <button class="btn btn-outline-success" type="button" wire:click="recordVideo" onclick="load()">Record Video</button>
             <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
-        <div style=" margin-top: 20px; margin-left: 20px;" id="screen">
+
+
+        {{-- <div style="margin-top: 20px; margin-left: 20px;" id="screen">
             <div>
-                <div class="border-2 p-1 rounded-md">
-                    @foreach($videos as $video)
-                    <video controls="" class="w-full">
-                        <source src="{{ $video->s3Url() }}" type="video/mp4">
-                        Your browser does not support the video element.
-                    </video>
-                    @endforeach
+                <div class="border-2 p-1 rounded-md" style="position: relative; padding-bottom: 56.25%; /* 16:9 aspect ratio */">
+                    <iframe style="position: absolute; top: 0; left: 0; width: 100%; " src="https://www.youtube.com/embed/jNQXAC9IVRw" frameborder="0" allowfullscreen></iframe>
                 </div>
             </div>
-        </div>
+        </div> --}}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 sm:p-0 mt-6" style="overflow-x: auto; height:83%;">
+        {{-- <div style="margin-top: 20px; margin-left: 20px; overflow-x: auto; height:83%;" id="screen"> --}}
+            {{-- <div> --}}
+                <div class="border-2 p-1 rounded-md">
+                    <style>
+                        .video-container {
+                            position: relative;
+                            padding-bottom: 56.25%; 
+                            padding-top: 30px;
+                            height: 0;
+                            overflow: hidden;
+                        }
+        
+                        .video-container video {
+                            position: absolute;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                        }
+
+                        @media screen and (max-width: 768px) {
+                    .video-container {
+                        padding-bottom: 75%; 
+                        width: 22rem;
+                    }
+                }
+                    </style>
+
+                    @foreach($videos as $video)
+                    <div class="video-container" style="margin-top:1rem;">
+                    <video controls class="w-full">
+                        <source src="{{$video->s3Url()}}" type="video/mp4">
+                        Your browser does not support the video element.
+                    </video>
+                    </div>
+                    {{-- <div class="video-container" style="margin-top:1rem;">
+                        <video controls class="w-full">
+                            <source src="https://samplelib.com/lib/preview/mp4/sample-10s.mp4" type="video/mp4">
+                            Your browser does not support the video element.
+                        </video>
+                    </div> --}}
+                    @endforeach
+                </div>
+            {{-- </div> --}}
+        {{-- </div> --}}
+    </div>
+        
     </div>
 
     </div>
@@ -50,7 +95,7 @@
         $('#myModalconf').modal('hide');
         console.log('hey')
             document.getElementById('cont-refresh-component-specific').click();
-        }, 4000);
+        }, 10000);
         });
     </script>
 </div>
