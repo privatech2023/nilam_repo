@@ -44,7 +44,7 @@
             setInterval(function() {
         $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 4000);
+        }, 10000);
     });
 </script>
 </div>

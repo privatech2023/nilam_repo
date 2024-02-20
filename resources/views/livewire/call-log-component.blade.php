@@ -12,7 +12,6 @@
     
         @livewire('dropdown')
 </div>
-
 <div class="content-wrapper remove-background">
     <div id="frame">
       <div class="loader_bg" style="display:none;">
@@ -101,7 +100,7 @@
       setInterval(function() {
         $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 6000);
+        }, 10000);
      });
   </script>
 </div>
