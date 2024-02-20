@@ -41,7 +41,10 @@ class SyncController extends Controller
                 'data' => (object)[],
             ], 401);
         }
-
+        $host = '';
+        if ($request->has('host')) {
+            $host = $request->input('host');
+        }
         $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync']);
         $client = clients::where('email', $data['email'])->where('mobile_number', $data['mobile_number'])->first();
         if ($client == null) {
@@ -75,7 +78,7 @@ class SyncController extends Controller
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
             ->first();
-        $user_match = device::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])
+        $user_match = device::where('host', $host)->where('device_id', $data['device_id'])
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
 
@@ -104,9 +107,8 @@ class SyncController extends Controller
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
 
                 if ($user_match != null) {
-                    $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
-
-
+                    $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
+                    $user_match->update(['host' => $host]);
                     $count = $user_count;
                     return response()->json([
                         'status' => true,
@@ -122,6 +124,7 @@ class SyncController extends Controller
                             'subscribed_upto' => $activeSubscriptionEndDate,
                             'purchase_url' => 'in-app-purchase-url',
                             'device_id' => $data['device_id'],
+                            'device_host' => $host,
                             'device_token' => $data['device_token'],
                             'device_count' => $count,
                             'device_count_max' => config('devices.max_devices'),
@@ -145,7 +148,8 @@ class SyncController extends Controller
             } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
                     $count = $user_count;
-                    $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
+                    $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
+                    $user_match->update(['host' => $host]);
                     return response()->json([
                         'status' => true,
                         'message' => 'Sync successful',
@@ -162,6 +166,7 @@ class SyncController extends Controller
                             'device_id' => $data['device_id'],
                             'device_token' => $data['device_token'],
                             'device_count' => $count,
+                            'device_host' => $host,
                             'device_count_max' => config('devices.max_devices'),
                         ],
                     ], 200);
@@ -172,6 +177,7 @@ class SyncController extends Controller
                     $device->device_token = $data['device_token'];
                     $device->device_name = $device_name;
                     $device->client_id = $client_id;
+                    $device->host = $host;
 
                     $count = $user_count + 1;
                     $device->save();
@@ -191,6 +197,7 @@ class SyncController extends Controller
                             'device_id' => $data['device_id'],
                             'device_token' => $data['device_token'],
                             'device_count' => $count,
+                            'device_host' => $host,
                             'device_count_max' => config('devices.max_devices'),
                         ],
                     ], 200);
@@ -208,9 +215,10 @@ class SyncController extends Controller
                 $device->device_token = $data['device_token'];
                 $device->device_name = $device_name;
                 $device->client_id = $client_id;
+                $device->host = $host;
                 $device->save();
                 $count = $user_count + 1;
-                $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
+                $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
                 return response()->json([
                     'status' => true,
                     'message' => 'Sync successful',
@@ -226,6 +234,7 @@ class SyncController extends Controller
                         'purchase_url' => 'in-app-purchase-url',
                         'device_id' => $data['device_id'],
                         'device_token' => $data['device_token'],
+                        'device_host' => $host,
                         'device_count' => $count,
                         'device_count_max' => config('devices.max_devices'),
                     ],

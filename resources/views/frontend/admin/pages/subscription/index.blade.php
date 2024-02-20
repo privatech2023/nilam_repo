@@ -18,8 +18,6 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
-
     <!-- Main content -->
     <section class="content">
         <div class="row">
@@ -56,6 +54,8 @@
                                     <th>Mobile</th>
                                     <th>Email</th>
                                     <th>Subscription</th>
+                                    <th>Start date</th>
+                                    <th>End date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -144,9 +144,15 @@
                 { data: "email" },
                 {
                     mRender: function(data, type, row) {
-                        return row.subscription > 0 ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-warning">NO</span>';
+                        return row.subscriptions == 1 ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-warning">NO</span>';
                     }
                 },
+                {
+                data: "started_at"
+            },
+            {
+                data: "ends_on"
+            },
                 {
                     mRender: function(data, type, row) {
                         return row.status == 1 ? '<span class="badge bg-success">ACTIVE</span>' : '<span class="badge bg-warning">DISABLED</span>';
