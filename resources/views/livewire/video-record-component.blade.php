@@ -25,60 +25,50 @@
         </nav>
 
 
-        {{-- <div style="margin-top: 20px; margin-left: 20px;" id="screen">
-            <div>
-                <div class="border-2 p-1 rounded-md" style="position: relative; padding-bottom: 56.25%; /* 16:9 aspect ratio */">
-                    <iframe style="position: absolute; top: 0; left: 0; width: 100%; " src="https://www.youtube.com/embed/jNQXAC9IVRw" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div> --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 sm:p-0 mt-6" style="overflow-x: auto; height:83%;">
-        {{-- <div style="margin-top: 20px; margin-left: 20px; overflow-x: auto; height:83%;" id="screen"> --}}
-            {{-- <div> --}}
-                <div class="border-2 p-1 rounded-md">
-                    <style>
-                        .video-container {
-                            position: relative;
-                            padding-bottom: 56.25%; 
-                            padding-top: 30px;
-                            height: 0;
-                            overflow: hidden;
-                        }
         
-                        .video-container video {
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            width: 100%;
-                            height: 100%;
-                        }
+        <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-x: auto; height:83%;" >
+            @foreach($videos as $video)
+            <div class="video-container" style="flex: 1 0 100%;">
+                <video controls class="w-full h-full">
+                    <source src="{{$video->s3Url()}}" type="video/mp4">
+                    Your browser does not support the video element.
+                </video>
+            </div>
+            @endforeach
+            
+        </div>
+        
+        <style>
+            .video-container {
+                display: contents;
+                width: 50%; 
+                height: auto; 
+                overflow: hidden; 
+            }
+        
+            .video-container video {
+                width: 47%; 
+                height:auto;
+                border-radius: 5px;
+                box-shadow: 0 4px 6px rgba(61, 34, 79, 0.5);
+            }
 
-                        @media screen and (max-width: 768px) {
-                    .video-container {
-                        padding-bottom: 75%; 
-                        width: 22rem;
-                    }
-                }
-                    </style>
+            @media screen and (max-width: 768px) {
+        .video-container {
+            width: 100%; 
+        }
 
-                    @foreach($videos as $video)
-                    <div class="video-container" style="margin-top:1rem;">
-                    <video controls class="w-full">
-                        <source src="{{$video->s3Url()}}" type="video/mp4">
-                        Your browser does not support the video element.
-                    </video>
-                    </div>
-                    {{-- <div class="video-container" style="margin-top:1rem;">
-                        <video controls class="w-full">
-                            <source src="https://samplelib.com/lib/preview/mp4/sample-10s.mp4" type="video/mp4">
-                            Your browser does not support the video element.
-                        </video>
-                    </div> --}}
-                    @endforeach
-                </div>
-            {{-- </div> --}}
-        {{-- </div> --}}
-    </div>
+        .video-container video {
+            width: 100%; 
+        }
+    }
+        </style>
+        
+        
+        
+        
+        
+        
         
     </div>
 
