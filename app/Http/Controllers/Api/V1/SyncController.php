@@ -83,24 +83,24 @@ class SyncController extends Controller
         $user_count = device::where('client_id', $client_id)->count();
 
 
-        $total_devices = 1;
-        $sbs = subscriptions::where('client_id', $user->client_id)
-            ->where('status', 1)
-            ->where('ends_on', '>=', date('Y-m-d'))
-            ->orderByDesc('ends_on')
-            ->first();
-        if ($sbs != null) {
-            $trans = transactions::where('txn_id', $sbs->txn_id)->first();
-            if ($trans->package_id != null) {
-                $packages = packages::where('id', $trans->package_id)->first();
-                $total_devices = $packages->devices;
-            } elseif ($trans->activation_id != null) {
-                $activation = activation_codes::where('c_id', $trans->activation_id)->first();
-                $total_devices = $activation->devices;
-            }
-        } else {
-            $total_devices = 1;
-        }
+        $total_devices = 6;
+        // $sbs = subscriptions::where('client_id', $user->client_id)
+        //     ->where('status', 1)
+        //     ->where('ends_on', '>=', date('Y-m-d'))
+        //     ->orderByDesc('ends_on')
+        //     ->first();
+        // if ($sbs != null) {
+        //     $trans = transactions::where('txn_id', $sbs->txn_id)->first();
+        //     if ($trans->package_id != null) {
+        //         $packages = packages::where('id', $trans->package_id)->first();
+        //         $total_devices = $packages->devices;
+        //     } elseif ($trans->activation_id != null) {
+        //         $activation = activation_codes::where('c_id', $trans->activation_id)->first();
+        //         $total_devices = $activation->devices;
+        //     }
+        // } else {
+        //     $total_devices = 1;
+        // }
 
         // If device_id and device_token are not empty and force_scan is false, then register new device
         try {
