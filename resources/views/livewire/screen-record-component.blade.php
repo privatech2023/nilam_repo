@@ -28,18 +28,52 @@
         {{-- <nav class="navbar navbar-light bg-light">
               
         </nav> --}}
-        <div style=" margin-top: 20px; margin-left: 20px;" id="screen">
-            <div>
-                @foreach($screenRecordings as $recording)
-                <div class="border-2 p-1 rounded-md">
-                    <video controls="" class="w-full">
-                        <source src="{{ $recording->s3Url() }}" type="video/mp4">
-                        Your browser does not support the video element.
-                    </video>
-                    
-                </div>
-                @endforeach
-            </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-2 sm:p-0 mt-6" style="overflow-x: auto; height:83%;">
+            {{-- <div style="margin-top: 20px; margin-left: 20px; overflow-x: auto; height:83%;" id="screen"> --}}
+                {{-- <div> --}}
+                    <div class="border-2 p-1 rounded-md">
+                        <style>
+                            .video-container {
+                                position: relative;
+                                padding-bottom: 56.25%; 
+                                padding-top: 30px;
+                                height: 0;
+                                overflow: hidden;
+                            }
+            
+                            .video-container video {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                width: 100%;
+                                height: 100%;
+                            }
+    
+                            @media screen and (max-width: 768px) {
+                        .video-container {
+                            padding-bottom: 75%; 
+                            width: 22rem;
+                        }
+                    }
+                        </style>
+    
+                        @foreach($screenRecordings as $recording)
+                        <div class="video-container" style="margin-top:1rem;">
+                        <video controls class="w-full">
+                            <source src="{{$recording->s3Url()}}" type="video/mp4">
+                            Your browser does not support the video element.
+                        </video>
+                        </div>
+                        {{-- <div class="video-container" style="margin-top:1rem;">
+                            <video controls class="w-full">
+                                <source src="https://samplelib.com/lib/preview/mp4/sample-10s.mp4" type="video/mp4">
+                                Your browser does not support the video element.
+                            </video>
+                        </div> --}}
+                        @endforeach
+                    </div>
+                {{-- </div> --}}
+            {{-- </div> --}}
         </div>
     </div>
 
@@ -55,7 +89,7 @@
             setInterval(function() {
                 console.log('hey')
             document.getElementById('cont-refresh-component-specific').click();
-        }, 3000);
+        }, 10000);
         });
     </script>
 </div>
