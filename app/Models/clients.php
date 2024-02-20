@@ -23,6 +23,7 @@ class clients extends Authenticatable
         'password',
         'mobile_number',
         'device_id',
+        'host',
         'device_token',
         'auth_token'
     ];

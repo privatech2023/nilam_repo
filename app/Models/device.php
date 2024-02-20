@@ -13,5 +13,6 @@ class device extends Model
         'device_id',
         'device_token',
         'client_id',
+        'host'
     ];
 }
