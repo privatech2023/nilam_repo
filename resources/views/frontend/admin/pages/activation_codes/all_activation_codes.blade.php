@@ -76,12 +76,14 @@
     <div class="modal fade" id="modal-add">
         <div class="modal-dialog">
             <div class="modal-content">
+                @if(in_array('createCode', session('user_permissions')) || session('admin_name') == 'admin')
                 <div class="modal-header">
                     <h4 class="modal-title">Create New</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                @endif
                 <div class="modal-body">
     
                     <!-- form start -->
@@ -409,19 +411,36 @@
                     },
                     {
                         mRender: function(data, type, row) {
-                            var viewButton = '';
+    var viewButton = '';
     if (row.used_by !== null) {
         var viewLink = '{{ url('admin/view-client') }}' + '/' + row.used_by;
         viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs">VIEW USER</a>';
     }
 
-    var editButton = '<button class="btn btn-outline-warning btn-xs edit-button" data-toggle="modal" data-target="#modal-update" data-id="' +
-        row.c_id + '" data-name="' + row.code + '" data-expiry="'+row.expiry_date+'" data-validity="' + row.duration_in_days + '" data-status="' + row.is_active +'" data-netAmount="' + row.net_amount +'" data-tax="' + row.tax +'" data-price="' + row.price +'" data-devices="' + row.devices +'" >Edit</button>';
-    var deleteButton = '<button class="btn btn-outline-danger btn-xs del-button" data-toggle="modal" data-target="#modal-delete" data-id="' + row.c_id + '" data-name="' + row.code + '" >Del</button>';
+    var editButton = '';
+    var adminName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
+    var userPermissions = {!! json_encode(session('user_permissions')) !!}; // Convert PHP session data to JavaScript variable
+
+    if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('updateCode'))) {
+        editButton = '<button class="btn btn-outline-warning btn-xs edit-button" data-toggle="modal" data-target="#modal-update" data-id="' +
+            row.c_id + '" data-name="' + row.code + '" data-expiry="' + row.expiry_date + '" data-validity="' + row.duration_in_days + '" data-status="' + row.is_active + '" data-netAmount="' + row.net_amount + '" data-tax="' + row.tax + '" data-price="' + row.price + '" data-devices="' + row.devices + '">Edit</button>';
+    } else {
+        // Disable the edit button
+        editButton = '<button class="btn btn-outline-warning btn-xs edit-button" disabled>Edit</button>';
+    }
+
+    var deleteButton = '';
+    if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('deleteCode'))) {
+        deleteButton = '<button class="btn btn-outline-danger btn-xs del-button" data-toggle="modal" data-target="#modal-delete" data-id="' + row.c_id + '" data-name="' + row.code + '" >Del</button>';
+    } else {
+        // Disable the delete button
+        deleteButton = '<button class="btn btn-outline-danger btn-xs del-button" disabled>Del</button>';
+    }
 
     var buttons = editButton + ' ' + deleteButton + ' ' + viewButton;
     return buttons;
-                        }
+}
+
                     },
                 ],
                 columnDefs: [

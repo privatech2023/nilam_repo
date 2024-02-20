@@ -168,7 +168,7 @@
             console.log('hey')
             $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 5000);
+        }, 10000);
     }
 
     startInterval();

@@ -27,8 +27,9 @@
                         <div class="card-header">
                             <h3 class="card-title">All tokens</h3>
                             <div class="card-tools">
-                                
+                                @if(in_array('addToken', session('user_permissions')) || session('admin_name') == 'admin')
                             <a href="{{ url('/admin/add-token')}}" class="btn btn-block btn-success btn-sm">Create new</a>
+                            @endif
                             </div>
                         </div>
                         <div class="card-body">
@@ -274,12 +275,26 @@
                         }
                     },
                     {
-                        mRender: function(data, type, row) {
-        var disabled = techTokens.includes(row.id) && techTokens.length != 0 ? 'disabled' : '';
-        return '<button class="btn btn-outline-info btn-xs view-btn" data-value="' + row.id + '" >VIEW</button>' +
-            '<button class="btn btn-outline-danger btn-xs del-button" data-value="' + row.id + '" >Del</button>' +
-            '<button style="margin-left:2px; color: grey;" class="btn btn-outline-warning btn-xs technical-button" data-value="' + row.id + '" data-status="' + row.status + '" ' + disabled + '>TECHNICAL</button>';
-        }
+                       mRender: function(data, type, row) {
+    // Retrieve user name and permissions from session
+    var userName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
+    var userPermissions = {!! json_encode(session('permissions')) !!}; // Convert PHP session data to JavaScript variable
+
+    // Check if user is admin or has 'viewToken' permission
+    var viewDisabled = (userName == 'admin' || (userPermissions !== null && userPermissions.includes('viewToken'))) ? '' : 'disabled';
+    
+    // Check if user has 'deleteToken' permission
+    var deleteDisabled = (userName == 'admin' || (userPermissions !== null && userPermissions.includes('deleteToken'))) ? '' : 'disabled';
+
+    // Check if row ID is in techTokens array and if techTokens array is not empty
+    var disabled = (techTokens.includes(row.id) && techTokens.length != 0) ? 'disabled' : '';
+
+    // Construct the HTML for the buttons
+    return '<button class="btn btn-outline-info btn-xs view-btn" data-value="' + row.id + '" ' + viewDisabled +'>VIEW</button>' +
+        '<button class="btn btn-outline-danger btn-xs del-button" data-value="' + row.id + '" ' + deleteDisabled + '>Del</button>' +
+        '<button style="margin-left:2px; color: grey;" class="btn btn-outline-warning btn-xs technical-button" data-value="' + row.id + '" data-status="' + row.status + '" ' + disabled + '>TECHNICAL</button>';
+}
+
                     },
                 ],
                 columnDefs: [

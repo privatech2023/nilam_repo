@@ -145,13 +145,37 @@
                 data: "email"
             },
             {
+               
                 mRender: function(data, type, row) {
-                    if (row.subscription == 0) {
-                        return '<span class="badge bg-warning">Expired</span>';
-                    } else {
-                        return '<span class="badge bg-info">NA</span>';
-                    }
-                }
+    var viewLink = '{{ url('admin/view-client') }}' + '/' + row.client_id;
+    var viewButton = '';
+    var deleteButton = '';
+
+    // Checking adminName and user permissions
+    var adminName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
+    var userPermissions = {!! json_encode(session('user_permissions')) !!}; // Convert PHP session data to JavaScript variable
+
+    // Checking if the user is admin or has 'updateCode' permission
+    if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('viewClient'))) {
+        // If user is admin or has 'updateCode' permission, enable view button
+        viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs">VIEW</a>';
+    }
+    else{
+        viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs disabled">VIEW</a>';
+    }
+
+    // Checking if the user has 'deleteClient' permission
+    if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('deleteClient'))) {
+        deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
+    }
+    else{
+        deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete disabled" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
+    }
+
+    return viewButton + ' ' + deleteButton;
+}
+
+
             },
             {
                 data: "started_at"
