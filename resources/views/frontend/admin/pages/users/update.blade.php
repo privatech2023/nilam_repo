@@ -32,7 +32,6 @@
                     <div class="card-header">
                         <span><a href="" class="btn btn-outline-info btn-sm"><i
                                     class="fas fa-long-arrow-alt-left mr-1"></i>Back</a></span>
-
                         <div class="card-tools"></div>
                     </div>
                     <div class="card-body">

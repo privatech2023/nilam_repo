@@ -54,8 +54,7 @@
                                     <th>Mobile</th>
                                     <th>Email</th>
                                     <th>Subscription</th>
-                                    <th>Start date</th>
-                                    <th>End date</th>
+                                    <th>Registration date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -148,10 +147,7 @@
                     }
                 },
                 {
-                data: "started_at"
-            },
-            {
-                data: "ends_on"
+                data: "created_at"
             },
                 {
                     mRender: function(data, type, row) {
