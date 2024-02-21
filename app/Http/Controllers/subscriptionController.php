@@ -42,21 +42,23 @@ class subscriptionController extends Controller
 
         if (!empty($search_value)) {
             $query =  DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
+                ->select('clients.client_id', 'clients.name', 'clients.created_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
                 ->Join('subscriptions', function ($join) use ($today) {
                     $join->on('clients.client_id', '=', 'subscriptions.client_id');
                 })
                 ->where('name', 'like', '%' . $search_value . '%')
+                ->orderBy('clients.created_at', 'desc')
                 ->get();
 
             $total_count = $query->toArray();
 
             $data = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
+                ->select('clients.client_id', 'clients.name', 'clients.created_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
                 ->Join('subscriptions', function ($join) use ($today) {
                     $join->on('clients.client_id', '=', 'subscriptions.client_id');
                 })
                 ->where('name', 'like', '%' . $search_value . '%')
+                ->orderBy('clients.created_at', 'desc')
                 ->skip($start)
                 ->take($length)
                 ->get()
@@ -82,11 +84,12 @@ class subscriptionController extends Controller
             // $total_count = $query->toArray();
 
             $data = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
+                ->select('clients.client_id', 'clients.name', 'clients.created_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
                 ->Join('subscriptions', function ($join) use ($today) {
                     $join->on('clients.client_id', '=', 'subscriptions.client_id');
                 })
                 ->where('clients.status', $valueStatus)
+                ->orderBy('clients.created_at', 'desc')
                 ->get();
         } else {
             // $query = DB::table('clients')
@@ -100,10 +103,11 @@ class subscriptionController extends Controller
             // $total_count = $query->toArray();
 
             $data = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
+                ->select('clients.client_id', 'clients.name', 'clients.created_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
                 ->Join('subscriptions', function ($join) use ($today) {
                     $join->on('clients.client_id', '=', 'subscriptions.client_id');
                 })
+                ->orderBy('clients.created_at', 'desc')
                 // ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on')
                 ->get();
         }

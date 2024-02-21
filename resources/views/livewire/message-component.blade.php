@@ -38,7 +38,10 @@
         </div>
     </div>
     
-
+    {{-- <button class="btn btn-primary btn-load" type="button" disabled>
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        Connecting...
+    </button> --}}
 
     <input type="hidden" id="flag" value="{{ $flagCount}}">
     @if($msgCount == 0)    

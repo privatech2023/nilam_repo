@@ -41,25 +41,23 @@
                 <form method="post" action="{{ url('/admin/roles/update') }}">
                     @csrf
                     <input type="hidden" name="row_id" value="{{ $data['group_id'] }}">
-
                     <div class="card-body">
-
                         <span class="text-danger mb-1">{{ $errors->first('role_name') }}</span>
                         <div class="form-group">
-                            <label for="group_name">Role Name</label>
-                            <input type="text" class="form-control" id="role_name" name="role_name"
+                        <label for="group_name">Role Name</label>
+                        <input type="text" class="form-control" id="role_name" name="role_name"
                                 placeholder="Enter Role Name" value="{{ $data['group_data']['group_name'] }}"
                                 autocomplete="off">
                         </div>
                         <div class="form-group">
 
-                            <label for="permission">Permission</label>
+                        <label for="permission">Permission</label>
 
-                            <?php $serialize_permission = unserialize($data['group_data']['permissions']); ?>
+                        <?php $serialize_permission = unserialize($data['group_data']['permissions']); ?>
 
-                            <table class="table table-sm">
+                        <table class="table table-sm">
                                 <thead>
-                                    <tr>
+                                <tr>
                                         <th>#</th>
                                         <th>Create</th>
                                         <th>Update</th>
@@ -256,6 +254,45 @@
                                         </td>
 
                                     </tr>
+
+                                    <tr>
+                                        <td>Token</td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="createToken"
+                                                {{ in_array('createToken', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="updateToken"
+                                                {{ in_array('updateToken', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="viewToken"
+                                                {{ in_array('viewToken', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="deleteToken"
+                                                {{ in_array('deleteToken', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td>Token to IT</td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="itAll"
+                                                {{ in_array('itAll', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="itAll"
+                                                {{ in_array('itAll', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="itAll"
+                                                {{ in_array('itAll', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                        <td> <input type="checkbox" name="permission[]" id="permission"
+                                                value="itAll"
+                                                {{ in_array('itAll', $serialize_permission) ? 'checked' : '' }}>
+                                        </td>
+                                </tr>
 
                                 </tbody>
                             </table>
