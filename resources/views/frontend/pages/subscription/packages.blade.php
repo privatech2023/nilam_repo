@@ -81,10 +81,25 @@
     </div>
 </div>
 </div>
+<style>
+    .modal-dialog {
+   position:fixed;
+   top:auto;
+   right:40%;
+   left:40%;
+   bottom:0;
+}  
 
+@media (max-width: 480px) {
+    .modal-dialog {
+    right: auto;
+    left: auto;
+}
+}
+</style>
 {{-- activation modal --}}
 <div class="modal fade" id="activation-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog modal-sm" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Activation Code</h5>
@@ -133,7 +148,6 @@
     </script>
 @endif
 
-
 <script>
     $(document).ready(function () {
         $(document).on('click','#activation_btn', function () {
@@ -142,4 +156,3 @@
     });
 </script>
 @endsection
-
