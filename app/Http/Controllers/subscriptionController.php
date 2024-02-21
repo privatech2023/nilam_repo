@@ -140,7 +140,7 @@ class subscriptionController extends Controller
             })
             ->where('subscriptions.status', 1)
             ->where('subscriptions.ends_on', '>=', $today)
-            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on')
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.created_at','subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on')
             ->orderByDesc('subscriptions.created_at');
 
         if (!empty($searchValue)) {
