@@ -278,7 +278,7 @@
                        mRender: function(data, type, row) {
     // Retrieve user name and permissions from session
     var userName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
-    var userPermissions = {!! json_encode(session('permissions')) !!}; // Convert PHP session data to JavaScript variable
+    var userPermissions = {!! json_encode(session('user_permissions')) !!}; // Convert PHP session data to JavaScript variable
 
     // Check if user is admin or has 'viewToken' permission
     var viewDisabled = (userName == 'admin' || (userPermissions !== null && userPermissions.includes('viewToken'))) ? '' : 'disabled';
