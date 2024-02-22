@@ -140,7 +140,6 @@
                         @csrf
                         <div class="container view-token-detail">
                             <input class="form-control" type="hidden" name="token_id" id="token_id" value="">
-    
                             <div class="form-group row">
                                 <label for="type">Type</label>
                                 <input class="form-control" id="type" name="type" type="text" value="" readonly>

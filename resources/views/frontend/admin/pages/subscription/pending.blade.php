@@ -162,7 +162,7 @@
                 }
             },
             {
-                data: "created_at"
+                data: "updated_at"
             },
             {
                 mRender: function(data, type, row) {

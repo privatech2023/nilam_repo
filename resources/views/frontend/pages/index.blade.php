@@ -537,14 +537,12 @@
         }
     });
         }
-
-
             if (errors.length > 0) {
                 $('#modal-password').modal('show');
         }
             $('#resizeDiv')
-	        .draggable()
-	        .resizable();
+	    .draggable()
+	    .resizable();
             $('#resizeDiv')
 	.resizable({
 		start: function(e, ui) {
