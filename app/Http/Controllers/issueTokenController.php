@@ -51,7 +51,7 @@ class issueTokenController extends Controller
 
     public function admin_index()
     {
-        $tech = tech_tokens::all();
+        $tech = tech_tokens::orderBy('created_at', 'desc')->get();
         return view('frontend.admin.pages.tokens.index')->with(['tech' => $tech]);
     }
 

@@ -18,7 +18,6 @@ return new class extends Migration
 
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('plan_id');
-
             $table->string('storage');
             $table->string('txn_id');
             $table->string('plan_type');

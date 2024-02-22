@@ -7,7 +7,9 @@ use App\Models\clients;
 use App\Models\messages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class MessageSyncController extends Controller
@@ -163,7 +165,6 @@ class MessageSyncController extends Controller
                     'trace' => $e->getTrace(),
                 ];
             }
-
             return response()->json([
                 'status' => false,
                 'message' => 'Failed to upload messages',
@@ -171,7 +172,7 @@ class MessageSyncController extends Controller
                 'data' => (object)[],
             ], 500);
         }
-
+        Cache::put('messages_upload_complete', true);
         return response()->json([
             'status' => true,
             'message' => 'Messages uploaded',

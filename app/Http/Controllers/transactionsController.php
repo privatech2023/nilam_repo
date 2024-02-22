@@ -33,20 +33,20 @@ class transactionsController extends Controller
                 $query = transactions::select('transactions.*', 'clients.name', 'clients.mobile_number')
                     ->join('clients', 'transactions.client_id', '=', 'clients.client_id')
                     ->where('transactions.txn_id', 'like', '%' . $search_value . '%')
-                    ->orderBy('transactions.created_at', 'DESC');
+                    ->orderBy('transactions.updated_at', 'DESC');
                 $total_count = $query->get();
                 $data = $query->skip($start)->take($length)->get();
             } elseif (!empty($valueStatus)) {
                 $query = transactions::select('transactions.*', 'clients.name', 'clients.mobile_number')
                     ->join('clients', 'transactions.client_id', '=', 'clients.client_id')
                     ->where('transactions.status', $valueStatus)
-                    ->orderBy('transactions.created_at', 'DESC');
+                    ->orderBy('transactions.updated_at', 'DESC');
                 $total_count = $query->get();
                 $data = $query->skip($start)->take($length)->get();
             } else {
                 $query = transactions::select('transactions.*', 'clients.name', 'clients.mobile_number')
                     ->join('clients', 'transactions.client_id', '=', 'clients.client_id')
-                    ->orderBy('transactions.created_at', 'DESC');
+                    ->orderBy('transactions.updated_at', 'DESC');
                 $total_count = $query->get();
                 $data = $query->skip($start)->take($length)->get();
             }

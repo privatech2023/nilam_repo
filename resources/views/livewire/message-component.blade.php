@@ -171,8 +171,12 @@
             console.log('hey')
             $('#myModalconf').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 10000);
+        }, 11000);
     }
+
+    Livewire.on('failed',function (value) {
+        alert('sync failed');
+    });
 
     startInterval();
 

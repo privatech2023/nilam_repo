@@ -27,7 +27,7 @@
                         <div class="card-header">
                             <h3 class="card-title">All tokens</h3>
                             <div class="card-tools">
-                                @if(in_array('addToken', session('user_permissions')) || session('admin_name') == 'admin')
+                                @if(in_array('createToken', session('user_permissions')) || session('admin_name') == 'admin')
                             <a href="{{ url('/admin/add-token')}}" class="btn btn-block btn-success btn-sm">Create new</a>
                             @endif
                             </div>
@@ -140,7 +140,6 @@
                         @csrf
                         <div class="container view-token-detail">
                             <input class="form-control" type="hidden" name="token_id" id="token_id" value="">
-    
                             <div class="form-group row">
                                 <label for="type">Type</label>
                                 <input class="form-control" id="type" name="type" type="text" value="" readonly>
@@ -172,7 +171,12 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                            @if(in_array('updateToken', session('user_permissions')) || session('admin_name') == 'admin')
                             <button type="submit"  class="btn btn-outline-success">Update</button>
+                            @endif
+                            @if(in_array('updateToken', session('user_permissions')) || session('admin_name') == 'admin')
+                            <button type="submit"  class="btn btn-outline-success disabled" disabled>Update</button>
+                            @endif
                         </div>
                     </form>
                 </div>
@@ -278,7 +282,7 @@
                        mRender: function(data, type, row) {
     // Retrieve user name and permissions from session
     var userName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
-    var userPermissions = {!! json_encode(session('permissions')) !!}; // Convert PHP session data to JavaScript variable
+    var userPermissions = {!! json_encode(session('user_permissions')) !!}; // Convert PHP session data to JavaScript variable
 
     // Check if user is admin or has 'viewToken' permission
     var viewDisabled = (userName == 'admin' || (userPermissions !== null && userPermissions.includes('viewToken'))) ? '' : 'disabled';
