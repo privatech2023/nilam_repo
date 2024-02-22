@@ -50,6 +50,14 @@
                             </tr>
                         </table>
 
+                        <table class="float-right">
+                            <tr>
+                                <td>
+                                    <input id="registration_date"  type="date" />
+                                </td>
+                            </tr>
+                        </table>
+
                         <table id="dataTable" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
@@ -58,8 +66,7 @@
                                     <th>Mobile</th>
                                     <th>Email</th>
                                     <th>Subscription</th>
-                                    <th>Start date</th>
-                                    <th>End date</th>
+                                    <th>Registration date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -83,7 +90,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Delete Package</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
+                <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <p>Are You sure to <strong>delete</strong><strong> <span id="delName"></span></strong> ?</p>
@@ -130,6 +137,8 @@
             data: function(data) {
                 var type = $('#searchByStatus').val();
                 data.status = type;
+                var reg = $('#registration_date').val();
+                data.registration = reg;
             }
         },
         columns: [
@@ -143,10 +152,7 @@
                 }
             },
             {
-                data: "started_at"
-            },
-            {
-                data: "ends_on"
+                data: "updated_at"
             },
             {
                 mRender: function(data, type, row) {
@@ -214,9 +220,9 @@
         $('#modal-delete').modal('show');
     });
 
-    $('#searchByStatus').change(function() {
-        dataTable.draw();
-    });
+    $('#searchByStatus, #registration_date').change(function() {
+    dataTable.draw();
+});
 });
 </script>
 

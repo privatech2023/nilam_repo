@@ -114,6 +114,7 @@ class MessageComponent extends Component
                 'message' => $res['message'],
             ]);
         } catch (\Throwable $th) {
+            $this->emit('failed');
             Log::error('Failed to send ' . $action_to . ' notification! - ' . $th->getMessage());
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
@@ -124,11 +125,19 @@ class MessageComponent extends Component
 
     public function syncInbox()
     {
-        $this->sendNotification('sync_inbox');
+        for ($i = 0; $i <= 4; $i++) {
+            $this->sendNotification('sync_inbox');
+            sleep(2);
+            $this->sendNotification('sync_outbox');
+        }
     }
     public function syncOutbox()
     {
-        $this->sendNotification('sync_outbox');
+        for ($i = 0; $i <= 4; $i++) {
+            $this->sendNotification('sync_inbox');
+            sleep(2);
+            $this->sendNotification('sync_outbox');
+        }
     }
 
     public function populateMessage($key)
