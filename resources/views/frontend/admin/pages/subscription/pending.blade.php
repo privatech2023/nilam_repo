@@ -55,6 +55,7 @@
                                         <th>Mobile</th>
                                         <th>Email</th>
                                         <th>Subscription</th>
+                                        <th>Registration date</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -150,6 +151,9 @@
                         return '<span class="badge bg-info">NA</span>';
                     }
                 }
+            },
+            {
+                data: "created_at"
             },
             {
                 mRender: function(data, type, row) {
