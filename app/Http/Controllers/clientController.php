@@ -47,7 +47,7 @@ class clientController extends Controller
             'subs_status' => $subs->getSubStatus($id),
             'client_data' => $ClientModel->where('client_id', $id)->first(),
             'subscription_data' => $subsModel,
-            'txn_data' => $txnModel->where('client_id', $id)->get()->toArray(),
+            'txn_data' => $txnModel->where('client_id', $id)->orderBy('updated_at', 'DESC')->get()->toArray(),
             'plan' => $plan
         );
 
