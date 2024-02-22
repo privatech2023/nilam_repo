@@ -275,6 +275,15 @@
                   </p>
                 </a>
               </li>
+
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/log')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Logs
+                  </p>
+                </a>
+              </li>
               
             </ul>
           </nav>

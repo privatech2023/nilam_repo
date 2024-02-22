@@ -17,6 +17,7 @@ class RazorpayController extends Controller
     {
 
         return new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
+        // return new Api('rzp_test_NXVq5jIxTSjarF', 'GJZVIdVfDF874i7yMIHpLrU6');
     }
 
     public function success(Request $request)
@@ -27,7 +28,6 @@ class RazorpayController extends Controller
                 Session::flash('error', 'Invalid order ID');
                 return redirect()->route('/subscription/packages');
             }
-            // Check if order exists in database
             $order = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
             if (!$order) {
                 Session::flash('error', 'Order ID not found');
@@ -39,21 +39,15 @@ class RazorpayController extends Controller
                 'razorpay_signature' => $request->razorpay_signature
             ));
             $order = $api->order->fetch($request->razorpay_order_id);
-            // If order status is paid
             if ($order->status == 'paid') {
                 $transaction = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
                 $transaction->update([
                     'status' => 2,
                     'redirected' => true,
                     'razorpay_payment_id' => $request->razorpay_payment_id,
-                    // 'razorpay_signature' => $request->razorpay_signature,
                 ]);
                 $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
                 if ($subscription == null) {
-                    // $storage = storage_txn::where('txn_id', $transaction->txn_id)->first();
-                    // $storage->update([
-                    //     'status' => 1
-                    // ]);
                     $subscription->update([
                         'status' => 2
                     ]);
@@ -62,9 +56,9 @@ class RazorpayController extends Controller
                     'status' => 2
                 ]);
                 Session::flash('success', 'Payment successfull');
-                return redirect()->route('/subscription/packages');
+                return redirect()->route('home');
             } else {
-                Session::flash('error', 'Payment failed');
+                Session::flash('error', 'Payment failed. Please try again later');
                 return redirect()->route('/subscription/packages');
             }
         } catch (\Exception $e) {
@@ -93,7 +87,6 @@ class RazorpayController extends Controller
                         'status' => 2,
 
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
-                        // 'razorpay_signature' => $webhookSignature,
                     ]);
 
                     $subscription = subscriptions::where('txn_id', $payment->txn_id)->first();
@@ -111,11 +104,9 @@ class RazorpayController extends Controller
                     ], 400);
                 }
             }
-
             // If webhook is for payment failed
             if ($data['event'] == 'payment.failed') {
                 $order_id = $data['payload']['payment']['entity']['order_id'];
-
                 $payment = transactions::where('razorpay_order_id', $order_id)->first();
 
                 $payment->update([

@@ -22,7 +22,6 @@ class MessageComponent extends Component
     protected $flag = false;
     public $flagCount = 0;
 
-
     public function mount($userId)
     {
         if ($userId == null) {
@@ -34,7 +33,6 @@ class MessageComponent extends Component
             ->orderBy('message_id', 'desc')
             ->get();
         $messageList = [];
-
         foreach ($messages as $msg) {
             $phoneNumber = $msg->number;
             $messageDetails = [
@@ -43,7 +41,6 @@ class MessageComponent extends Component
                 'body' => $msg->body,
                 'is_inbox' => $msg->is_inbox,
             ];
-
             if (isset($messageList[$phoneNumber])) {
                 $messageList[$phoneNumber][] = $messageDetails;
             } else {
@@ -56,30 +53,7 @@ class MessageComponent extends Component
 
     public function contRefreshComponentSpecific()
     {
-        // $device = clients::where('client_id', $this->userId)->first();
-        // $messages = messages::where('device_id', $device->device_id)
-        //     ->orderBy('message_id', 'desc')
-        //     ->get();
-        // $messageList = [];
-
-        // foreach ($messages as $msg) {
-        //     $phoneNumber = $msg->number;
-        //     $messageDetails = [
-        //         'message_id' => $msg->message_id,
-        //         'date' => $msg->date,
-        //         'body' => $msg->body,
-        //         'is_inbox' => $msg->is_inbox,
-        //     ];
-
-        //     if (isset($messageList[$phoneNumber])) {
-        //         $messageList[$phoneNumber][] = $messageDetails;
-        //     } else {
-        //         $messageList[$phoneNumber] = [$messageDetails];
-        //     }
-        // }
-        // $this->messageList = $messageList;
-        $this->msgCount = count($this->messageList);
-        $this->flagCount = 0;
+        $this->mount($this->userId);
         $this->emit('refreshComponent');
     }
 
@@ -108,7 +82,6 @@ class MessageComponent extends Component
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],

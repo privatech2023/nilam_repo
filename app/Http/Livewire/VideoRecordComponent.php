@@ -32,9 +32,7 @@ class VideoRecordComponent extends Component
 
     public function contRefreshComponentSpecific()
     {
-        $client = clients::where('client_id', $this->userId)->first();
-        $recording = videos::where('user_id', $this->userId)->where('device_id', $client->device_id)->latest()->get();
-        $this->videos = $recording;
+        $this->mount($this->userId);
         $this->emit('refreshComponent');
     }
 

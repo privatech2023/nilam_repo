@@ -5,6 +5,7 @@ use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\ApkVersionController;
+use App\Http\Controllers\Client\DeleteController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\frontend\messageController;
@@ -39,6 +40,7 @@ use App\Http\Livewire\TextToSpeech;
 use App\Http\Livewire\VibrateComponent;
 use App\Http\Livewire\VideoRecordComponent;
 use App\Models\settings;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -80,17 +82,31 @@ Route::get('/public/packages', function () {
     return redirect()->route('/subscription/packages');
 });
 
-Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
+route::get('/log', function () {
+    $logFile = storage_path('logs/laravel.log');
+    if (File::exists($logFile)) {
+        try {
+            $logs = File::get($logFile);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+        $logs = explode("\n", $logs);
+    } else {
+        $logs = ['Log file not found.'];
+    }
+    return view('frontend.admin.pages.logs', ['logs' => $logs]);
+});
 
 Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
 Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
+    Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
     // Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
     Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
     Route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 
     Route::get('/razorpay/pay', [RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
-    Route::post('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
+    Route::get('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
 
     Route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
     Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
@@ -112,16 +128,20 @@ Route::group(['middleware' => 'client.auth'], function () {
 
     // features
     Route::group(['middleware' => 'client.validity'], function () {
+
+        Route::get('/delete/image', [DeleteController::class, 'destroy_camera']);
+
+
         Route::get('/message/{userId}', MessageComponent::class)->name('messages');
-        Route::get('/contacts/{userId}', ContactsComponent::class);
-        Route::get('/camera/{userId}', CameraComponent::class);
-        Route::get('/call-log/{userId}', CallLogComponent::class);
-        Route::get('/audio-record/{userId}', AudioRecordComponent::class);
+        Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
+        Route::get('/camera/{userId}', CameraComponent::class)->name('camera');
+        Route::get('/call-log/{userId}', CallLogComponent::class)->name('call-log');
+        Route::get('/audio-record/{userId}', AudioRecordComponent::class)->name('audio-record');
         Route::get('/alert-device/{userId}', AlertDeviceComponent::class);
         Route::get('/vibrate-device/{userId}', VibrateComponent::class);
-        Route::get('/screen-record/{userId}', ScreenRecordComponent::class);
-        Route::get('/video-record/{userId}', VideoRecordComponent::class);
-        Route::get('/gallery/{userId}', GalleryComponent::class);
+        Route::get('/screen-record/{userId}', ScreenRecordComponent::class)->name('screen-record');
+        Route::get('/video-record/{userId}', VideoRecordComponent::class)->name('video');
+        Route::get('/gallery/{userId}', GalleryComponent::class)->name('gallery');
         Route::get('/filemanager/{userId}', FilemanagerComponent::class);
         Route::get('/lost-messages/{userId}', LostMessagesComponent::class);
         Route::get('/locate-phone/{userId}', LocatePhone::class);
