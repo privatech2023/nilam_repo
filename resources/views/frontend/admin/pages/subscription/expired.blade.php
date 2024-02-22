@@ -38,11 +38,19 @@
                             <table class="float-right">
                                 <tr>
                                     <td>
-                                        <select class="form-control form-control-sm" id="searchByStatus">
-                                            <option value="">-- Status--</option>
-                                            <option value="1">Active</option>
-                                            <option value="2">Disabled</option>
+                                        <select class="form-control form-control-sm" id='searchByStatus'>
+                                            <option value=''>-- Status--</option>
+                                            <option value='1'>Active</option>
+                                            <option value='2'>Disabled</option>
                                         </select>
+                                    </td>
+                                </tr>
+                            </table>
+    
+                            <table class="float-right">
+                                <tr>
+                                    <td>
+                                        <input id="registration_date"  type="date" />
                                     </td>
                                 </tr>
                             </table>
@@ -128,6 +136,8 @@
                 var type = $('#searchByStatus').val();
                 // Append to data
                 data.status = type;
+                var reg = $('#registration_date').val();
+                data.registration = reg;
             }
         },
         columns: [{
@@ -234,10 +244,9 @@
         $('#modal-delete').modal('show');
     });
 
-    $('#searchByStatus').change(function() {
-
-        dataTable.draw();
-    });
+    $('#searchByStatus, #registration_date').change(function() {
+    dataTable.draw();
+});
         });
     </script>
 
