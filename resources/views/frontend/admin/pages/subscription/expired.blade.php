@@ -55,8 +55,7 @@
                                         <th>Mobile</th>
                                         <th>Email</th>
                                         <th>Subscription</th>
-                                        <th>Start date</th>
-                                        <th>End date</th>
+                                        <th>Registration date</th>
                                         <th>Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -125,8 +124,7 @@
         ajax: {
             url:"/admin/clients/ajaxCallAllClientsExpired",
             type: "post",
-            data: function(data) {
-                // key1: value1 - in case if we want send data with request      
+            data: function(data) {    
                 var type = $('#searchByStatus').val();
                 // Append to data
                 data.status = type;
@@ -145,43 +143,12 @@
                 data: "email"
             },
             {
-               
-                mRender: function(data, type, row) {
-    var viewLink = '{{ url('admin/view-client') }}' + '/' + row.client_id;
-    var viewButton = '';
-    var deleteButton = '';
-
-    // Checking adminName and user permissions
-    var adminName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
-    var userPermissions = {!! json_encode(session('user_permissions')) !!}; // Convert PHP session data to JavaScript variable
-
-    // Checking if the user is admin or has 'updateCode' permission
-    if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('viewClient'))) {
-        // If user is admin or has 'updateCode' permission, enable view button
-        viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs">VIEW</a>';
-    }
-    else{
-        viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs disabled">VIEW</a>';
-    }
-
-    // Checking if the user has 'deleteClient' permission
-    if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('deleteClient'))) {
-        deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
-    }
-    else{
-        deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete disabled" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
-    }
-
-    return viewButton + ' ' + deleteButton;
-}
-
-
+                    mRender: function(data, type, row) {
+                        return row.subscriptions == 1 ? '<span class="badge bg-success">YES</span>' : '<span class="badge bg-warning">NO</span>';
+                    }
             },
             {
-                data: "started_at"
-            },
-            {
-                data: "ends_on"
+                data: "created_at"
             },
             {
                 mRender: function(data, type, row) {
@@ -193,13 +160,38 @@
                 }
             },
             {
-                mRender: function(data, type, row) {
-                        var viewLink = '{{ url('admin/view-client') }}' + '/' + row.client_id;
-                        var viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs">VIEW</a>';
-                        var deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
-                        return viewButton + ' ' + deleteButton;
-                    }
-            }
+               
+               mRender: function(data, type, row) {
+   var viewLink = '{{ url('admin/view-client') }}' + '/' + row.client_id;
+   var viewButton = '';
+   var deleteButton = '';
+
+   // Checking adminName and user permissions
+   var adminName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
+   var userPermissions = {!! json_encode(session('user_permissions')) !!}; // Convert PHP session data to JavaScript variable
+
+   // Checking if the user is admin or has 'updateCode' permission
+   if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('viewClient'))) {
+       // If user is admin or has 'updateCode' permission, enable view button
+       viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs">VIEW</a>';
+   }
+   else{
+       viewButton = '<a href="' + viewLink + '" class="btn btn-outline-info btn-xs disabled">VIEW</a>';
+   }
+
+   // Checking if the user has 'deleteClient' permission
+   if (adminName === 'admin' || (userPermissions !== null && userPermissions.includes('deleteClient'))) {
+       deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
+   }
+   else{
+       deleteButton = '<button class="btn btn-outline-danger btn-xs btn-delete disabled" data-name="'+row.name+'" data-id="' + row.client_id + '">DEL</button>';
+   }
+
+   return viewButton + ' ' + deleteButton;
+}
+
+
+           }
 
         ],
         columnDefs: [     
