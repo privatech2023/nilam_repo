@@ -58,8 +58,7 @@
                                     <th>Mobile</th>
                                     <th>Email</th>
                                     <th>Subscription</th>
-                                    <th>Start date</th>
-                                    <th>End date</th>
+                                    <th>Registration date</th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -83,7 +82,7 @@
             <div class="modal-header">
                 <h4 class="modal-title">Delete Package</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span></button>
+                <span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <p>Are You sure to <strong>delete</strong><strong> <span id="delName"></span></strong> ?</p>
@@ -143,10 +142,7 @@
                 }
             },
             {
-                data: "started_at"
-            },
-            {
-                data: "ends_on"
+                data: "created_at"
             },
             {
                 mRender: function(data, type, row) {
