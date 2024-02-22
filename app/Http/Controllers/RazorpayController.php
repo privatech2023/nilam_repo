@@ -7,6 +7,7 @@ use App\Models\storage_txn;
 use App\Models\subscriptions;
 use App\Models\transactions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Razorpay\Api\Api;
 
@@ -67,6 +68,7 @@ class RazorpayController extends Controller
                 return redirect()->route('/subscription/packages');
             }
         } catch (\Exception $e) {
+            Log::error('error: ' . $e->getMessage());
             return redirect()->route('/subscription/packages')->dangerBanner($e->getMessage());
         }
     }
@@ -131,6 +133,7 @@ class RazorpayController extends Controller
                 ], 400);
             }
         } catch (\Exception $e) {
+            Log::error('error: ' . $e->getMessage());
             return response()->json([
                 'error' => $e->getMessage()
             ], 400);

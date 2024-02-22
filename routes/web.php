@@ -80,6 +80,8 @@ Route::get('/public/packages', function () {
     return redirect()->route('/subscription/packages');
 });
 
+Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
+
 Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
 Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
@@ -87,7 +89,6 @@ Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
     Route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 
-    Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
     Route::get('/razorpay/pay', [RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
     Route::post('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
 
@@ -217,8 +218,6 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/admin/technical/token', [issueTokenController::class, 'tech_index'])->name('/admin/technical/token');
 
     Route::post('/admin/user-creds/update', [settingsController::class, 'user_creds_update']);
-
-
 
     Route::match(['get', 'post'], '/admin/settings', [settingsController::class, 'index'])->name('settings_admin');
     Route::post('/admin/settings/client', [settingsController::class, 'client_creds']);
