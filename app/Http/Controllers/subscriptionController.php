@@ -125,7 +125,7 @@ class subscriptionController extends Controller
 
     public function ajaxCallAllClientsActive()
     {
-        $today = now('Asia/Kolkata');
+        $today = date('Y-m-d');
 
         $draw = request('draw');
         $start = request('start');
@@ -134,14 +134,14 @@ class subscriptionController extends Controller
         $valueStatus = request('status', '');
 
         $query = DB::table('clients')
-            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
+            ->select('clients.client_id', 'clients.created_at', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
             ->leftJoin('subscriptions', function ($join) use ($today) {
                 $join->on('clients.client_id', '=', 'subscriptions.client_id');
             })
             ->where('subscriptions.status', 1)
             ->where('subscriptions.ends_on', '>=', $today)
-            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.created_at','subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on')
-            ->orderByDesc('subscriptions.created_at');
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on', 'clients.created_at')
+            ->orderByDesc('clients.created_at');
 
         if (!empty($searchValue)) {
             $query->where('clients.name', 'like', '%' . $searchValue . '%');
@@ -169,7 +169,6 @@ class subscriptionController extends Controller
     public function ajaxCallAllClientsPending()
     {
         $today = now('Asia/Kolkata');
-
         $params['draw'] = request('draw');
         $start = request('start');
         $length = request('length');
@@ -177,18 +176,17 @@ class subscriptionController extends Controller
         $search_value = request('status', '');
 
         $query = DB::table('clients')
-            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'clients.created_at')
             ->leftJoin('subscriptions', function ($join) use ($today) {
                 $join->on('clients.client_id', '=', 'subscriptions.client_id')
                     ->where('subscriptions.validity_days', null);
             })
             ->havingRaw('COUNT(subscriptions.client_id) > 0')
-            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'clients.created_at')
+            ->orderByDesc('clients.created_at');
         if (!empty($search_value)) {
             $query->where('clients.name', 'like', '%' . $search_value . '%');
         }
-
         if (!empty($valueStatus)) {
             $query->where('clients.status', $valueStatus);
         }
@@ -217,10 +215,12 @@ class subscriptionController extends Controller
         $search_value = $request->input('search.value');
         $valueStatus = $request->input('status');
 
-        $query = clients::select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.started_at', 'subscriptions.ends_on', DB::raw('0 as subscription'))
+        $query = clients::select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'clients.created_at', 'subscriptions.started_at', 'subscriptions.ends_on', DB::raw('0 as subscription'))
             ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
             ->where('subscriptions.status', 1)
-            ->where('subscriptions.ends_on', '<', $today);
+            ->where('subscriptions.ends_on', '<', $today)
+            ->orderByDesc('clients.created_at');
+
 
         if (!empty($search_value)) {
             $query->where('clients.name', 'like', '%' . $search_value . '%');
