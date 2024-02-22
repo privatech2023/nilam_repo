@@ -333,6 +333,7 @@ class subscriptionController extends Controller
                 ->orderByDesc('updated_at')
                 ->where('status', '=', 1)
                 ->first();
+
             $start_date = '';
             $end_date = '';
             if ($update_date != null) {
@@ -352,6 +353,7 @@ class subscriptionController extends Controller
             $subscription->started_at =  $start_date;
             $subscription->status = 0;
             $subscription->ends_on =  $end_date;
+
             $subscription->validity_days = $package->duration_in_days;
             $subscription->devices = $package->devices;
             $subscription->save();

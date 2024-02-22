@@ -65,6 +65,7 @@ class subscriptionController extends Controller
                 ->get()
                 ->toArray();
         } elseif (!empty($valueStatus)) {
+
             $data = DB::table('clients')
                 ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
                 ->Join('subscriptions', function ($join) use ($today) {
@@ -83,7 +84,9 @@ class subscriptionController extends Controller
                 ->whereRaw("DATE(subscriptions.updated_at) = ?", [$valueRegistration])
                 ->orderBy('subscriptions.updated_at', 'desc')
                 ->get();
+
         } else {
+
             $data = DB::table('clients')
                 ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
                 ->Join('subscriptions', function ($join) use ($today) {
@@ -117,11 +120,13 @@ class subscriptionController extends Controller
 
         $query = DB::table('clients')
             ->select('clients.client_id', 'subscriptions.updated_at', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
+
             ->leftJoin('subscriptions', function ($join) use ($today) {
                 $join->on('clients.client_id', '=', 'subscriptions.client_id');
             })
             ->where('subscriptions.status', 1)
             ->where('subscriptions.ends_on', '>=', $today)
+
             ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on', 'subscriptions.updated_at')
             ->orderByDesc('subscriptions.updated_at');
 
@@ -136,6 +141,7 @@ class subscriptionController extends Controller
         if (!empty($valueRegistration)) {
             $valueRegistration = date('Y-m-d', strtotime($valueRegistration));
             $query->whereRaw("DATE(subscriptions.updated_at) = ?", [$valueRegistration]);
+
         }
 
         $total_count = $query->get();
@@ -165,6 +171,7 @@ class subscriptionController extends Controller
 
         $query = DB::table('clients')
             ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at')
+
             ->leftJoin('subscriptions', function ($join) use ($today) {
                 $join->on('clients.client_id', '=', 'subscriptions.client_id')
                     ->where('subscriptions.validity_days', null);
@@ -208,7 +215,6 @@ class subscriptionController extends Controller
         $search_value = $request->input('search.value');
         $valueStatus = $request->input('status');
         $valueRegistration = request('registration', '');
-
         $query = clients::select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at', 'subscriptions.started_at', 'subscriptions.ends_on', DB::raw('0 as subscription'))
             ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
             ->where('subscriptions.status', 1)
@@ -227,6 +233,7 @@ class subscriptionController extends Controller
         if (!empty($valueRegistration)) {
             $valueRegistration = date('Y-m-d', strtotime($valueRegistration));
             $query->whereRaw("DATE(subscriptions.updated_at) = ?", [$valueRegistration]);
+
         }
 
         $total_count = $query->get()->count();
