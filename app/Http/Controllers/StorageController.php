@@ -77,7 +77,7 @@ class StorageController extends Controller
         $subscription->plan_id = $storage->id;
         $subscription->save();
         $data['razorPay'] = $razorCreate;
-        return view('Frontend/razorpay/checkout', $data);
+        return view('frontend/razorpay/checkout', $data);
     }
 
     public function ajaxCallAllStorages(Request $request)

@@ -311,14 +311,15 @@ class GalleryController extends Controller
                     'status' => false,
                     'message' => 'Failed to upload photo',
                     'errors' => (object) $validator->errors()->toArray(),
-                    'data' => (object) [],
+                    'data' => (object)[
+                        'upload_next' => false
+                    ],
                 ],
                 422,
             );
         }
 
         $data = $request->only(['device_id', 'photo', 'device_token']);
-
 
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user1 = clients::where('auth_token', 'LIKE', "%$token%")->first();
@@ -327,10 +328,11 @@ class GalleryController extends Controller
                 'status' => false,
                 'message' => 'Authorization failed',
                 'errors' => (object)[],
-                'data' => (object)[],
+                'data' => (object)[
+                    'upload_next' => false
+                ],
             ]);
         }
-
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize() / 1024;
         $user = clients::where('device_token', $data['device_token'])->first();
@@ -339,24 +341,28 @@ class GalleryController extends Controller
                 'status' => false,
                 'message' => 'No device found',
                 'errors' => (object)[],
-                'data' => (object)[],
+                'data' => (object)[
+                    'upload_next' => false
+                ],
             ], 406);
         }
         $gall = gallery_items::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
         $storage_size = 0;
+        $storage_pack = storage_txn::where('client_id', $user->client_id)
+            ->latest('created_at')
+            ->first();
+        $storage_all = storage_txn::where('client_id', $user->client_id)
+            ->latest('created_at')
+            ->get();
+        $storageType = 1; //1 for default storage and 2 for storage pack
+        $gall_id = 0;
         if ($gall->isNotEmpty()) {
             foreach ($gall as $g) {
                 $storage_size += $g->size;
             }
-            $storage_pack = storage_txn::where('client_id', $user->client_id)
-                ->latest('created_at')
-                ->first();
-            $storage_all = storage_txn::where('client_id', $user->client_id)
-                ->latest('created_at')
-                ->get();
             if ($storage_pack == null) {
                 $data = defaultStorage::first();
-                if ($storage_size >= ($data->storage * 1024)) {
+                if ($storage_size >= ($data->storage * 1024 * 1024)) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Device gallery upload failed',
@@ -367,6 +373,7 @@ class GalleryController extends Controller
                     ], 406);
                 }
             } else {
+                $storageType = 2;
                 foreach ($storage_all as $st) {
                     if ($st->status != 0) {
                         $validity = $st->plan_type == 'monthly' ? 30 : 365;
@@ -382,7 +389,7 @@ class GalleryController extends Controller
                                 ],
                             ], 406);
                         } else {
-                            if ($st->storage <= ($storage_size * 1024 * 1024)) {
+                            if (($st->storage * (1024 * 1024 * 1024)) <= $storage_size) {
                                 return response()->json([
                                     'status' => false,
                                     'message' => 'Storage limit exceeded',
@@ -391,6 +398,9 @@ class GalleryController extends Controller
                                         'upload_next' => false
                                     ],
                                 ], 406);
+                            } else {
+                                $gall_id = $st->id;
+                                break;
                             }
                         }
                     }
@@ -445,7 +455,6 @@ class GalleryController extends Controller
 
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
-
             $directory = 'gallery/images/' . $user->client_id . '/' . $user->device_id;
             $path = $request->photo->storeAs($directory, $filename, 's3');
             $gallery_item = gallery_items::create([
@@ -456,7 +465,65 @@ class GalleryController extends Controller
                 'size' => $sizeInBytes,
                 'media_url' => $filename,
             ]);
+            $gall2 = gallery_items::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
+            $storage_size2 = 0;
 
+
+
+            foreach ($gall2 as $g) {
+                $storage_size2 += $g->size;
+            }
+
+            if ($storageType == 1) {
+
+                $data = defaultStorage::first();
+                $remaining = ($data->storage * 1024 * 1024) - $storage_size2;
+                if ($remaining > 0) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Device gallery upload successful',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'upload_next' => true
+                        ],
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Device gallery upload successful',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'upload_next' => false
+                        ],
+                    ], 200);
+                }
+            } else {
+                $storage_all2 = storage_txn::where('client_id', $user->client_id)
+                    ->where('id', $gall_id)
+                    ->first();
+
+                $remaining2 = ($storage_all2->storage * (1024 * 1024 * 1024)) - $storage_size2;
+
+                if ($remaining2 > 0) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Device gallery upload successful',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'upload_next' => true
+                        ],
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Device gallery upload successful',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'upload_next' => false
+                        ],
+                    ], 200);
+                }
+            }
             return response()->json(
                 [
                     'status' => true,

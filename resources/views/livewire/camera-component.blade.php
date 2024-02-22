@@ -8,14 +8,35 @@
                     </svg>
                 </button>
             </a>
-        </div>
-        
-            @livewire('dropdown')
-        
+        </div>        
+            @livewire('dropdown')        
     </div>
 
 <div class="content-wrapper remove-background">
     <div id="frame">
+
+        {{-- modal delete --}}
+        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Are you sure you want to delete this item ?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="{{ url('/delete/image')}}" method="post">
+                    @csrf
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="deleteItemId" value=""/>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+              </div>
+            </div>
+        </div>
+
         <nav class="navbar navbar-light bg-light">
             <button class="btn btn-outline-success" type="button" wire:click="takePicture" onclick="load()">Take picture</button>
             <button class="btn btn-sm btn-outline btn-primary" style="width:3.8rem; font-size: 0.8em;"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" type="button">Refresh</button>
@@ -25,10 +46,15 @@
         </div>
         <div class="image-container">
             @foreach($images as $image)
-            <a href="{{ $image->s3Url() }}" data-lightbox="photo"
-                data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
-            <img src="{{ $image->s3Url() }}" alt="tools" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;">
-            </a>
+            <div style="position: relative; display: inline-block;">
+                <a href="{{ $image->s3Url() }}" data-lightbox="photo"
+                    data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
+                <img src="{{ $image->s3Url() }}" alt="Random Image" style="width: 165px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;">
+                </a>
+                <button id="delete" data-id="{{ $image->id }}" style="position: absolute; top: 3px; right: 2px; padding: 4px; background-color: rgb(141, 60, 228); color: white; border: none; border-radius: 10%; cursor: pointer; box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
             @endforeach
         </div>
     </div>
@@ -43,8 +69,14 @@
             $('.loader_bg').hide();
             setInterval(function() {
         $('#myModalconf').modal('hide');
+        $('#deleteModal').modal('hide');
             document.getElementById('cont-refresh-component-specific').click();
-        }, 10000);
+        }, 8000);
+        $(document).on('click','#delete', function () {
+            var id = this.getAttribute('data-id');
+                document.getElementById('deleteItemId').value = id;
+                $('#deleteModal').modal('show');
+        });
     });
 </script>
 </div>

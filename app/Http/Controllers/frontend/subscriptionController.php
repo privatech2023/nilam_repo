@@ -46,7 +46,6 @@ class subscriptionController extends Controller
     {
         $id = config('services.razorpay.key');
         $secret = config('services.razorpay.secret');
-
         return new Api($id, $secret);
     }
 
@@ -240,9 +239,7 @@ class subscriptionController extends Controller
                 $transaction->razorpay_order_id = $razorCreate->id;
                 $transaction_id = $transaction->txn_id;
                 $transaction->save();
-
                 $daysToAdd = $package->duration_in_days;
-
                 $lastSubscription = Subscriptions::where('client_id', $request->input('user_id'))
                     ->whereNull('validity_days')
                     ->latest()
@@ -261,31 +258,43 @@ class subscriptionController extends Controller
                         ->orderByDesc('updated_at')
                         ->where('status', '=', 1)
                         ->first();
+
+                    $start_date = '';
+                    $end_date = '';
+                    if ($update_date != null) {
+                        $end_date = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
+                        if (strtotime($update_date->ends_on) < strtotime(date('Y-m-d'))) {
+                            $start_date = date('Y-m-d', strtotime($update_date->ends_on));
+                        } else {
+                            $start_date =  date('Y-m-d');
+                        }
+                    } else {
+                        $start_date = date('Y-m-d');
+                        $end_date = strtotime(date('Y-m-d') . " +$daysToAdd days");
+                    }
                     $subscription = new subscriptions();
                     $subscription->client_id = $request->input('user_id');
                     $subscription->txn_id = $transaction_id;
-                    $subscription->started_at = strtotime($update_date->ends_on) < strtotime(date('Y-m-d')) || $update_date->ends_on == null ? date('Y-m-d') : date('Y-m-d', strtotime($update_date->ends_on));
+                    $subscription->started_at = $start_date;
                     $subscription->status = 0;
-                    $subscription->ends_on = $update_date->ends_on != null ? date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days")) : strtotime(date('Y-m-d') . " +$daysToAdd days");
+                    $subscription->ends_on = $end_date;
                     $subscription->validity_days = $package->duration_in_days;
                     $subscription->devices = $package->devices;
                     $subscription->save();
                 }
-
                 $data['razorPay'] = $razorCreate;
                 return view('frontend/razorpay/checkout', $data);
             }
         }
-
         $amountInPaise = (int)($request->input('pay-amount') * 100);
         $api = new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
+        // $api = new Api('rzp_test_NXVq5jIxTSjarF', 'GJZVIdVfDF874i7yMIHpLrU6');
         $razorCreate = $api->order->create(array(
             'receipt' => $receipt,
             'amount' => $amountInPaise,
             'currency' => 'INR',
             'notes' => array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3')
         ));
-
         $transaction = new transactions();
         $transaction->txn_id = $receipt;
         $transaction->client_id = $request->input('user_id');
@@ -324,12 +333,27 @@ class subscriptionController extends Controller
                 ->orderByDesc('updated_at')
                 ->where('status', '=', 1)
                 ->first();
+
+            $start_date = '';
+            $end_date = '';
+            if ($update_date != null) {
+                $end_date = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
+                if (strtotime($update_date->ends_on) < strtotime(date('Y-m-d'))) {
+                    $start_date = date('Y-m-d', strtotime($update_date->ends_on));
+                } else {
+                    $start_date =  date('Y-m-d');
+                }
+            } else {
+                $start_date = date('Y-m-d');
+                $end_date = strtotime(date('Y-m-d') . " +$daysToAdd days");
+            }
             $subscription = new subscriptions();
             $subscription->client_id = $request->input('user_id');
             $subscription->txn_id = $transaction_id;
-            $subscription->started_at = strtotime($update_date->ends_on) < strtotime(date('Y-m-d')) || $update_date->ends_on == null ? date('Y-m-d') : date('Y-m-d', strtotime($update_date->ends_on));
+            $subscription->started_at =  $start_date;
             $subscription->status = 0;
-            $subscription->ends_on = $update_date->ends_on != null ? date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days")) : strtotime(date('Y-m-d') . " +$daysToAdd days");
+            $subscription->ends_on =  $end_date;
+
             $subscription->validity_days = $package->duration_in_days;
             $subscription->devices = $package->devices;
             $subscription->save();

@@ -73,15 +73,7 @@ class ScreenRecordComponent extends Component
 
     public function contRefreshComponentSpecific()
     {
-        $device = clients::where('client_id', $this->userId)->first();
-        if ($device) {
-            $this->screenRecordings  = screen_recordings::where('user_id', $this->userId)
-                ->where('device_id', $device->device_id)
-                ->latest()
-                ->get();
-        } else {
-            $this->screenRecordings = [];
-        }
+        $this->mount($this->userId);
         $this->emit('refreshComponent');
     }
     public function recordScreen()

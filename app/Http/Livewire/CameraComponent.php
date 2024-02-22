@@ -46,15 +46,12 @@ class CameraComponent extends Component
             ]);
             return;
         }
-
         $data = [
             'device_token' =>  $device->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
         ];
-
-        // Send notification to device
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
@@ -70,19 +67,9 @@ class CameraComponent extends Component
             ]);
         }
     }
-
-
     public function contRefreshComponentSpecific()
     {
-        $device = clients::where('client_id', $this->userId)->first();
-        if ($device) {
-            $this->images = images::where('user_id', $this->userId)
-                ->where('device_id', $device->device_id)
-                ->latest()
-                ->get();
-        } else {
-            $this->images = [];
-        }
+        $this->mount($this->userId);
         $this->emit('refreshComponent');
     }
 
