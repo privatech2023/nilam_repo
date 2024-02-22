@@ -27,7 +27,7 @@
                         <div class="card-header">
                             <h3 class="card-title">All tokens</h3>
                             <div class="card-tools">
-                                @if(in_array('addToken', session('user_permissions')) || session('admin_name') == 'admin')
+                                @if(in_array('createToken', session('user_permissions')) || session('admin_name') == 'admin')
                             <a href="{{ url('/admin/add-token')}}" class="btn btn-block btn-success btn-sm">Create new</a>
                             @endif
                             </div>
@@ -172,7 +172,12 @@
                         </div>
                         <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+                            @if(in_array('updateToken', session('user_permissions')) || session('admin_name') == 'admin')
                             <button type="submit"  class="btn btn-outline-success">Update</button>
+                            @endif
+                            @if(in_array('updateToken', session('user_permissions')) || session('admin_name') == 'admin')
+                            <button type="submit"  class="btn btn-outline-success disabled" disabled>Update</button>
+                            @endif
                         </div>
                     </form>
                 </div>
