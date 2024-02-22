@@ -27,12 +27,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-
                         <div class="text-center">
                             <button id="rzp-button1" class="btn btn-secondary" style="margin-top: 3rem;">PAY NOW</button>
                         </div>
                         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                         <script>
+                            var url = "{{ route('razorpay.payment.success')}}"
                             var options = {
                                 "key": "{{ getenv('RAZORPAY_ID')}}",
                                 "amount": "{{ $razorPay['amount'] }}",
@@ -41,7 +41,13 @@
                                 "description": "Test Transaction",
                                 "image": "{{ asset('assets/frontend/images/web-logo.png') }}",
                                 "order_id": "{{ $razorPay['id'] }}",
-                                "callback_url": "{{ url('/razorpay/success') }}",
+                                // "callback_url": "{{ url('/razorpay/success') }}",
+                                "handler": function (response) {
+                                    window.location.href = url + 
+                                    '?razorpay_payment_id=' + response.razorpay_payment_id + 
+                                    '&razorpay_order_id=' + response.razorpay_order_id +
+                                    '&razorpay_signature=' + response.razorpay_signature;
+                                },
                                 "prefill": {
                                     "name": "{{ session('name') }}",
                                     "email": "{{ session('email') }}",

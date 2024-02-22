@@ -46,7 +46,6 @@ class subscriptionController extends Controller
     {
         $id = config('services.razorpay.key');
         $secret = config('services.razorpay.secret');
-
         return new Api($id, $secret);
     }
 
@@ -289,6 +288,7 @@ class subscriptionController extends Controller
         }
         $amountInPaise = (int)($request->input('pay-amount') * 100);
         $api = new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
+        // $api = new Api('rzp_test_NXVq5jIxTSjarF', 'GJZVIdVfDF874i7yMIHpLrU6');
         $razorCreate = $api->order->create(array(
             'receipt' => $receipt,
             'amount' => $amountInPaise,
