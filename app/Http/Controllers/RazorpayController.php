@@ -27,7 +27,6 @@ class RazorpayController extends Controller
                 Session::flash('error', 'Invalid order ID');
                 return redirect()->route('/subscription/packages');
             }
-            // Check if order exists in database
             $order = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
             if (!$order) {
                 Session::flash('error', 'Order ID not found');
@@ -50,10 +49,6 @@ class RazorpayController extends Controller
                 ]);
                 $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
                 if ($subscription == null) {
-                    // $storage = storage_txn::where('txn_id', $transaction->txn_id)->first();
-                    // $storage->update([
-                    //     'status' => 1
-                    // ]);
                     $subscription->update([
                         'status' => 2
                     ]);
@@ -93,7 +88,6 @@ class RazorpayController extends Controller
                         'status' => 2,
 
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
-                        // 'razorpay_signature' => $webhookSignature,
                     ]);
 
                     $subscription = subscriptions::where('txn_id', $payment->txn_id)->first();

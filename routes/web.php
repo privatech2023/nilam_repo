@@ -39,6 +39,7 @@ use App\Http\Livewire\TextToSpeech;
 use App\Http\Livewire\VibrateComponent;
 use App\Http\Livewire\VideoRecordComponent;
 use App\Models\settings;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -81,6 +82,21 @@ Route::get('/public/packages', function () {
 });
 
 Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
+
+route::get('/log', function () {
+    $logFile = storage_path('logs/laravel.log');
+    if (File::exists($logFile)) {
+        try {
+            $logs = File::get($logFile);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+        $logs = explode("\n", $logs);
+    } else {
+        $logs = ['Log file not found.'];
+    }
+    return view('frontend.admin.pages.logs', ['logs' => $logs]);
+});
 
 Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
 Route::group(['middleware' => 'client.auth'], function () {
