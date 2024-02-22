@@ -27,6 +27,7 @@ class CheckApkVersionController extends Controller
         $data = $request->only(['apk_version']);
 
         $apkVersionModel = apk_versions::first();
+
         if ($apkVersionModel == null) {
             return response()->json([
                 'status' => false,
@@ -35,6 +36,7 @@ class CheckApkVersionController extends Controller
                 'data' => (object)[],
             ], 422);
         }
+
         if ($apkVersionModel->version > $data['apk_version']) {
             return response()->json([
                 'status' => false,
