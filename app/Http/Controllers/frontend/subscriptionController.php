@@ -64,17 +64,19 @@ class subscriptionController extends Controller
             if ($request->input('code_name') != "") {
                 $code = activation_codes::whereRaw('BINARY code = ?', [$request->input('code_name')])->first();
 
-                if ($code == null && $request->input('package_id') != '') {
+                if ($code == null) {
                     $packageModel = packages::all();
                     $data = array(
                         'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
-                        'package' => $packageModel->where('id', $request->input('package_id'))->first(),
+                        // 'package' => $packageModel->where('id', $request->input('package_id'))->first(),
                     );
                     Session::flash('error', 'Invalid activation code');
-                    return view('frontend.pages.subscription.purchase', $data);
-                } elseif ($code == null || $code->is_active == 0 && $request->input('package_id') == '') {
+                    return redirect()->back();
+                    // return view('frontend.pages.subscription.purchase', $data);
+                } elseif ($code != null && $code->is_active == 0) {
                     Session::flash('error', 'Invalid activation code');
-                    return redirect()->route('/subscription/packages');
+                    return redirect()->back();
+                    // return redirect()->route('purchase.package', ['id' => session('user_id')]);
                 } else {
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
