@@ -84,31 +84,12 @@ class SyncController extends Controller
 
 
         $total_devices = 6;
-        // $sbs = subscriptions::where('client_id', $user->client_id)
-        //     ->where('status', 1)
-        //     ->where('ends_on', '>=', date('Y-m-d'))
-        //     ->orderByDesc('ends_on')
-        //     ->first();
-        // if ($sbs != null) {
-        //     $trans = transactions::where('txn_id', $sbs->txn_id)->first();
-        //     if ($trans->package_id != null) {
-        //         $packages = packages::where('id', $trans->package_id)->first();
-        //         $total_devices = $packages->devices;
-        //     } elseif ($trans->activation_id != null) {
-        //         $activation = activation_codes::where('c_id', $trans->activation_id)->first();
-        //         $total_devices = $activation->devices;
-        //     }
-        // } else {
-        //     $total_devices = 1;
-        // }
-
-        // If device_id and device_token are not empty and force_scan is false, then register new device
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
 
                 if ($user_match != null) {
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
-                    $user_match->update(['host' => $host]);
+                    $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
                     $count = $user_count;
                     return response()->json([
                         'status' => true,
@@ -149,7 +130,7 @@ class SyncController extends Controller
                 if ($user_match != null) {
                     $count = $user_count;
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
-                    $user_match->update(['host' => $host]);
+                    $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
                     return response()->json([
                         'status' => true,
                         'message' => 'Sync successful',
