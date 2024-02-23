@@ -82,7 +82,6 @@ class SyncController extends Controller
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
 
-
         $total_devices = 6;
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
