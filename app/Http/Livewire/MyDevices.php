@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
 use App\Models\my_devices;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
@@ -19,10 +20,13 @@ class MyDevices extends Component
             $this->userId = session('user_id');
         }
         $this->userId = $userId;
-
         $device = clients::where('client_id', $this->userId)->first();
         if ($device != null) {
-            $dev = my_devices::where('user_id', $this->userId)->get();
+            $dev = DB::table('my_devices')
+                ->join('devices', 'my_devices.host', '=', 'devices.host')
+                ->where('my_devices.user_id', $this->userId)
+                ->select('my_devices.*')
+                ->get();
             if ($dev->isNotEmpty()) {
                 foreach ($dev as $d) {
                     $this->deviceList[] = [
@@ -36,7 +40,6 @@ class MyDevices extends Component
                 }
             }
         }
-        // dd($this->deviceList);
     }
     public function sendNotification($action_to)
     {
