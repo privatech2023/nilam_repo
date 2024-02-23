@@ -32,7 +32,7 @@ class MessageSyncController extends Controller
         }
         $data = $request->only(['device_id', 'inbox', 'device_token']);
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
+        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->first();
 
         $device_id = $data['device_id'] ?? $user->device_id;
         if ($user == null) {
@@ -103,7 +103,7 @@ class MessageSyncController extends Controller
 
         $data = $request->only(['device_id', 'inbox', 'json_file', 'device_token']);
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
+        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,

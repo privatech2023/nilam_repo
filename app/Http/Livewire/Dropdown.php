@@ -20,7 +20,7 @@ class Dropdown extends Component
     }
     public function render()
     {
-        $this->devices = device::where('client_id', $this->userId)->select('device_id', 'device_name', 'device_token')->get();
+        $this->devices = device::where('client_id', $this->userId)->select('device_id', 'device_name', 'device_token', 'host')->get();
         $this->defaultDevice = clients::where('client_id', $this->userId)->first();
         return view('livewire.dropdown')->with(['devices' => $this->devices, 'defaultDevice' => $this->defaultDevice]);
     }

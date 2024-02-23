@@ -59,7 +59,7 @@
                                                         Plan</span>
                                                     <span class="info-box-number text-center text-muted mb-0">FREE</span>
                                                     <div class="text-center">
-                                                        <a href="{{ url('/storage-plan')}}" class="btn btn-xs btn-primary ">
+                                                        <a href="{{ url('/storage-plan')}}" class="btn btn-xs btn-primary disabled">
                                                             <i class="fa-solid fa-cart-shopping"></i> Purchase
                                                         </a>
                                                     </div>
