@@ -216,8 +216,6 @@
                         </div>
                     </form>
                   </div>
-
-
                   <div class="tab-pane" id="password">
                     <form action="{{ url('admin/clients/updatePassword') }}" method="post" class="form-horizontal">
                         @csrf
