@@ -75,6 +75,7 @@ class SyncController extends Controller
             ->where('ends_on', '>=', date('Y-m-d'))
             ->orderByDesc('ends_on')
             ->value('ends_on');
+        device::whereNull('host')->delete();
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
             ->first();
@@ -132,7 +133,7 @@ class SyncController extends Controller
                     $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
                     return response()->json([
                         'status' => true,
-                        'message' => 'Sync successful',
+                        'message' => 'Sync successful..',
                         'errors' => (object)[],
                         'data' => (object)[
                             'name' => $client->name,
@@ -164,7 +165,7 @@ class SyncController extends Controller
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
                     return response()->json([
                         'status' => true,
-                        'message' => 'Sync successful',
+                        'message' => 'Sync successful.',
                         'errors' => (object)[],
                         'data' => (object)[
                             'name' => $client->name,
