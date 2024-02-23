@@ -22,10 +22,9 @@ class MyDevices extends Component
         $this->userId = $userId;
         $device = clients::where('client_id', $this->userId)->first();
         if ($device != null) {
-            $dev = DB::table('my_devices')
-                ->join('devices', 'my_devices.host', '=', 'devices.host')
-                ->where('my_devices.user_id', $this->userId)
-                ->select('my_devices.*')
+            $dev = DB::table('devices')
+                ->where('client_id', $this->userId)
+                ->whereNotNull('android_version')
                 ->get();
             if ($dev->isNotEmpty()) {
                 foreach ($dev as $d) {

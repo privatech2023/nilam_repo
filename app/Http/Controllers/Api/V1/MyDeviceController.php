@@ -33,7 +33,7 @@ class MyDeviceController extends Controller
         $data = $request->only(['device_id', 'device_token', 'json_file']);
 
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
+        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -63,22 +63,20 @@ class MyDeviceController extends Controller
 
         try {
             $device_data = $json_file_content;
-
-            $devicelist = my_devices::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->first();
+            // $devicelist_count = device::where('host', $data['host'])->where('client_id', $user->client_id)->count();
+            // if ($devicelist_count > 1) {
+            //     my_devices::where('host', $data['host'])
+            //         ->where('user_id', $user->client_id)
+            //         ->delete();
+            // }
+            $devicelist = device::where('host', $data['host'])->where('client_id', $user->client_id)->first();
             if ($devicelist == null) {
-                // return response()->json($device_data);
-                $dev = new my_devices();
-                $dev->user_id = $user->client_id;
-                $dev->device_id = $device_id;
-                $dev->manufacturer = $device_data['manufacturer'];
-                $dev->android_version = $device_data['android-version'];
-                $dev->product = $device_data['product'];
-                $dev->model = $device_data['model'];
-                $dev->brand = $device_data['brand'];
-                $dev->device = $device_data['device'];
-                $dev->host = $device_data['host'];
-                $dev->battery = $device_data['battery'];
-                $dev->save();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No device found',
+                    'errors' => (object)[],
+                    'data' => (object)[],
+                ], 404);
             } else {
                 $devicelist->update([
                     'manufacturer' => $device_data['manufacturer'],
@@ -87,7 +85,6 @@ class MyDeviceController extends Controller
                     'model' => $device_data['model'],
                     'brand' => $device_data['brand'],
                     'device' => $device_data['device'],
-                    'host' => $device_data['host'],
                     'battery' => $device_data['battery'],
                 ]);
             }
@@ -118,8 +115,6 @@ class MyDeviceController extends Controller
                 'data' => (object)[],
             ], 500);
         }
-
-
         return response()->json([
             'status' => true,
             'message' => 'Messages uploaded',

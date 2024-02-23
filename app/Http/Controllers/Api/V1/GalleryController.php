@@ -44,7 +44,7 @@ class GalleryController extends Controller
             ]);
         }
         // Get user
-        $user = clients::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])->first();
+        $user = clients::where('device_id', $data['device_id'])->first();
 
         if ($user == null) {
             return response()->json([
@@ -335,7 +335,7 @@ class GalleryController extends Controller
         }
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize();
-        $user = clients::where('device_token', $data['device_token'])->first();
+        $user = clients::where('device_id', $data['device_id'])->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,

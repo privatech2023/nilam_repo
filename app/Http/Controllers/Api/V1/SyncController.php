@@ -84,13 +84,12 @@ class SyncController extends Controller
         $user_match = device::where('host', $host)->where('device_id', $data['device_id'])
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
-
         $total_devices = 6;
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
 
                 if ($user_match != null) {
-                    $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
+                    $client->update(['device_id' => $data['device_id']]);
                     $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
                     $count = $user_count;
                     Cache::put('sync', true);
@@ -133,7 +132,7 @@ class SyncController extends Controller
             } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
                     $count = $user_count;
-                    $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
+                    $client->update(['device_id' => $data['device_id']]);
                     $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
                     Cache::put('sync', true);
                     return response()->json([
@@ -167,7 +166,7 @@ class SyncController extends Controller
 
                     $count = $user_count + 1;
                     $device->save();
-                    $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
+                    $client->update(['device_id' => $data['device_id']]);
                     Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
@@ -206,7 +205,7 @@ class SyncController extends Controller
                 $device->host = $host;
                 $device->save();
                 $count = $user_count + 1;
-                $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
+                $client->update(['device_id' => $data['device_id']]);
                 Cache::put('sync', true);
                 return response()->json([
                     'status' => true,

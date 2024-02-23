@@ -17,21 +17,21 @@
                 @php
                     $deviceName = $device->device_name;
                 @endphp
-            @elseif($device->device_id != $defaultDevice->device_id)
+            {{-- @elseif($device->device_id != $defaultDevice->device_id)
             @php
             $deviceName = 'No device';
             @endphp
             @else
             @php
             $deviceName = 'Device';
-            @endphp
+            @endphp --}}
             @endif
       @endforeach
         {{ $deviceName }}
-    </button>
+      </button>
       <div class="dropdown-menu">
           @foreach ($devices as $device)
-              <a class="dropdown-item" href="{{ url('/default-device'.'/'.$device->device_id.'/'.$device->device_token) }}">{{ $device->device_name == '' ? 'Device' : $device->device_name }}</a>
+              <a class="dropdown-item" href="{{ url('/default-device'.'/'.$device->device_id) }}">{{ $device->device_name == '' ? 'Device' : $device->device_name }}</a>
           @endforeach
       </div>
   </div>
