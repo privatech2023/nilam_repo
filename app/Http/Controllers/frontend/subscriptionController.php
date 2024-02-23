@@ -108,8 +108,8 @@ class subscriptionController extends Controller
                         ->first();
                     if ($lastSubscription) {
                         $lastSubscription->txn_id = $transaction_id;
-                        $lastSubscription->started_at = now();
-                        $lastSubscription->ends_on = now()->addDays($daysToAdd);
+                        $lastSubscription->started_at = date('Y-m-d');
+                        $lastSubscription->ends_on = date('Y-m-d', strtotime("+$daysToAdd days"));
                         $lastSubscription->status = 1;
                         $lastSubscription->validity_days = $code->duration_in_days;
                         $lastSubscription->devices = $code->devices;
@@ -120,12 +120,25 @@ class subscriptionController extends Controller
                             ->orderByDesc('ends_on')
                             ->where('status', '=', 1)
                             ->first();
+                        $start_date = '';
+                        $end_date = '';
+                        if ($update_date != null) {
+                            $end_date = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
+                            if (strtotime($update_date->ends_on) < strtotime(date('Y-m-d'))) {
+                                $start_date = date('Y-m-d', strtotime($update_date->ends_on));
+                            } else {
+                                $start_date =  date('Y-m-d');
+                            }
+                        } else {
+                            $start_date = date('Y-m-d');
+                            $end_date = date('Y-m-d', strtotime("+$daysToAdd days"));
+                        }
                         $subscription = new subscriptions();
                         $subscription->client_id = $request->input('user_id');
                         $subscription->txn_id = $transaction_id;
-                        $subscription->started_at = strtotime($update_date->ends_on) < strtotime(date('Y-m-d')) ? date('Y-m-d') : date('Y-m-d', strtotime($update_date->ends_on));
+                        $subscription->started_at = $start_date;
                         $subscription->status = 1;
-                        $subscription->ends_on = date('Y-m-d', strtotime($update_date->ends_on . " +$daysToAdd days"));
+                        $subscription->ends_on = $end_date;
                         $subscription->validity_days = $code->duration_in_days;
                         $subscription->devices = $code->devices;
                         $subscription->save();
@@ -247,7 +260,7 @@ class subscriptionController extends Controller
                 if ($lastSubscription) {
                     $lastSubscription->txn_id = $transaction_id;
                     $lastSubscription->started_at = date('Y-m-d');
-                    $lastSubscription->ends_on = now()->addDays($daysToAdd);
+                    $lastSubscription->ends_on = date('Y-m-d', strtotime("+$daysToAdd days"));
                     $lastSubscription->status = 0;
                     $lastSubscription->validity_days = $package->duration_in_days;
                     $lastSubscription->devices = $package->devices;
@@ -270,7 +283,7 @@ class subscriptionController extends Controller
                         }
                     } else {
                         $start_date = date('Y-m-d');
-                        $end_date = strtotime(date('Y-m-d') . " +$daysToAdd days");
+                        $end_date = date('Y-m-d', strtotime("+$daysToAdd days"));
                     }
                     $subscription = new subscriptions();
                     $subscription->client_id = $request->input('user_id');
@@ -321,8 +334,8 @@ class subscriptionController extends Controller
             ->first();
         if ($lastSubscription) {
             $lastSubscription->txn_id = $transaction_id;
-            $lastSubscription->started_at = now();
-            $lastSubscription->ends_on = now()->addDays($daysToAdd);
+            $lastSubscription->started_at = date('Y-m-d');
+            $lastSubscription->ends_on = date('Y-m-d', strtotime("+$daysToAdd days"));
             $lastSubscription->status = 0;
             $lastSubscription->validity_days = $package->duration_in_days;
             $lastSubscription->devices = $package->devices;
@@ -344,7 +357,7 @@ class subscriptionController extends Controller
                 }
             } else {
                 $start_date = date('Y-m-d');
-                $end_date = strtotime(date('Y-m-d') . " +$daysToAdd days");
+                $end_date = date('Y-m-d', strtotime("+$daysToAdd days"));
             }
             $subscription = new subscriptions();
             $subscription->client_id = $request->input('user_id');

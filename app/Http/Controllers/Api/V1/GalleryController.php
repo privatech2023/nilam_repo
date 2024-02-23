@@ -334,7 +334,7 @@ class GalleryController extends Controller
             ]);
         }
         $photo = $request->file('photo');
-        $sizeInBytes = $photo->getSize() / 1024;
+        $sizeInBytes = $photo->getSize();
         $user = clients::where('device_token', $data['device_token'])->first();
         if ($user == null) {
             return response()->json([
@@ -465,15 +465,11 @@ class GalleryController extends Controller
                 'size' => $sizeInBytes,
                 'media_url' => $filename,
             ]);
-            $gall2 = gallery_items::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
+            $gall2 = gallery_items::where('device_id', $device_id)->where('user_id', $user->client_id)->get();
             $storage_size2 = 0;
-
-
-
             foreach ($gall2 as $g) {
                 $storage_size2 += $g->size;
             }
-
             if ($storageType == 1) {
 
                 $data = defaultStorage::first();
@@ -484,7 +480,8 @@ class GalleryController extends Controller
                         'message' => 'Device gallery upload successful',
                         'errors' => (object)[],
                         'data' => (object)[
-                            'upload_next' => true
+                            'upload_next' => true,
+                            'size' => $remaining
                         ],
                     ], 200);
                 } else {
@@ -501,16 +498,15 @@ class GalleryController extends Controller
                 $storage_all2 = storage_txn::where('client_id', $user->client_id)
                     ->where('id', $gall_id)
                     ->first();
-
                 $remaining2 = ($storage_all2->storage * (1024 * 1024 * 1024)) - $storage_size2;
-
                 if ($remaining2 > 0) {
                     return response()->json([
                         'status' => false,
                         'message' => 'Device gallery upload successful',
                         'errors' => (object)[],
                         'data' => (object)[
-                            'upload_next' => true
+                            'upload_next' => true,
+                            'size' => $remaining2
                         ],
                     ], 200);
                 } else {
