@@ -46,7 +46,6 @@ class LoginController extends Controller
                 Session::forget('user_data');
                 $request->session()->put('user_id', $user->client_id);
                 $request->session()->put('user_name', $user->name);
-
                 $subs = subscriptions::where('client_id', $user->client_id)
                     ->orderBy('created_at', 'desc')
                     ->first();

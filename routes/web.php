@@ -102,7 +102,7 @@ Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
     Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
     // Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
-    Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage']);
+    Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage'])->name('purchase.package');
     Route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
 
     Route::get('/razorpay/pay', [RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
