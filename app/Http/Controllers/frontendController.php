@@ -18,7 +18,8 @@ class frontendController extends Controller
     {
         if (session('user_id') != null) {
             $subs = subscriptions::where('client_id', session('user_id'))
-                ->orderBy('created_at', 'desc')
+                ->where('status', 1)
+                ->orderBy('updated_at', 'desc')
                 ->first();
             if ($subs != null) {
                 Session::put('validity', $subs->ends_on);

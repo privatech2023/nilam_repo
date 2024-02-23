@@ -331,7 +331,7 @@ class GalleryController extends Controller
                 'data' => (object)[
                     'upload_next' => false
                 ],
-            ]);
+            ], 401);
         }
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize();
@@ -344,7 +344,7 @@ class GalleryController extends Controller
                 'data' => (object)[
                     'upload_next' => false
                 ],
-            ], 406);
+            ], 404);
         }
         $gall = gallery_items::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
         $storage_size = 0;
@@ -365,7 +365,7 @@ class GalleryController extends Controller
                 if ($storage_size >= ($data->storage * 1024 * 1024)) {
                     return response()->json([
                         'status' => false,
-                        'message' => 'Device gallery upload failed',
+                        'message' => 'Go premium',
                         'errors' => (object)[],
                         'data' => (object)[
                             'upload_next' => false
@@ -437,7 +437,7 @@ class GalleryController extends Controller
                         'upload_next' => false
                     ],
                 ],
-                406,
+                404,
             );
         }
         try {
@@ -452,7 +452,6 @@ class GalleryController extends Controller
                 }
                 $model->delete();
             }
-
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
             $directory = 'gallery/images/' . $user->client_id . '/' . $user->device_id;
@@ -471,7 +470,6 @@ class GalleryController extends Controller
                 $storage_size2 += $g->size;
             }
             if ($storageType == 1) {
-
                 $data = defaultStorage::first();
                 $remaining = ($data->storage * 1024 * 1024) - $storage_size2;
                 if ($remaining > 0) {
@@ -539,7 +537,6 @@ class GalleryController extends Controller
                     'trace' => $th->getTrace(),
                 ];
             }
-
             return response()->json(
                 [
                     'status' => false,
