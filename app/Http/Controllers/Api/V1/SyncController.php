@@ -12,7 +12,9 @@ use App\Models\transactions;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class SyncController extends Controller
@@ -75,6 +77,7 @@ class SyncController extends Controller
             ->where('ends_on', '>=', date('Y-m-d'))
             ->orderByDesc('ends_on')
             ->value('ends_on');
+        device::whereNull('host')->delete();
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
             ->first();
@@ -82,34 +85,15 @@ class SyncController extends Controller
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
 
-
         $total_devices = 6;
-        // $sbs = subscriptions::where('client_id', $user->client_id)
-        //     ->where('status', 1)
-        //     ->where('ends_on', '>=', date('Y-m-d'))
-        //     ->orderByDesc('ends_on')
-        //     ->first();
-        // if ($sbs != null) {
-        //     $trans = transactions::where('txn_id', $sbs->txn_id)->first();
-        //     if ($trans->package_id != null) {
-        //         $packages = packages::where('id', $trans->package_id)->first();
-        //         $total_devices = $packages->devices;
-        //     } elseif ($trans->activation_id != null) {
-        //         $activation = activation_codes::where('c_id', $trans->activation_id)->first();
-        //         $total_devices = $activation->devices;
-        //     }
-        // } else {
-        //     $total_devices = 1;
-        // }
-
-        // If device_id and device_token are not empty and force_scan is false, then register new device
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
 
                 if ($user_match != null) {
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
-                    $user_match->update(['host' => $host]);
+                    $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
                     $count = $user_count;
+                    Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
                         'message' => 'Sync successful.',
@@ -131,6 +115,7 @@ class SyncController extends Controller
                         ],
                     ], 200);
                 } else {
+
                     return response()->json([
                         'status' => false,
                         'message' => 'New device',
@@ -149,10 +134,11 @@ class SyncController extends Controller
                 if ($user_match != null) {
                     $count = $user_count;
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
-                    $user_match->update(['host' => $host]);
+                    $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
+                    Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
-                        'message' => 'Sync successful',
+                        'message' => 'Sync successful..',
                         'errors' => (object)[],
                         'data' => (object)[
                             'name' => $client->name,
@@ -182,9 +168,10 @@ class SyncController extends Controller
                     $count = $user_count + 1;
                     $device->save();
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token']]);
+                    Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
-                        'message' => 'Sync successful',
+                        'message' => 'Sync successful.',
                         'errors' => (object)[],
                         'data' => (object)[
                             'name' => $client->name,
@@ -202,6 +189,7 @@ class SyncController extends Controller
                         ],
                     ], 200);
                 } else {
+                    Cache::put('sync', false);
                     return response()->json([
                         'status' => false,
                         'message' => 'Device limit exceeded',
@@ -219,6 +207,7 @@ class SyncController extends Controller
                 $device->save();
                 $count = $user_count + 1;
                 $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
+                Cache::put('sync', true);
                 return response()->json([
                     'status' => true,
                     'message' => 'Sync successful',
@@ -241,6 +230,8 @@ class SyncController extends Controller
                 ], 200);
             }
         } catch (Exception $e) {
+            Log::error('Error sync: ' . $e->getMessage());
+            Cache::put('sync', false);
             return response()->json([
                 'error' => $e->getMessage(),
             ]);

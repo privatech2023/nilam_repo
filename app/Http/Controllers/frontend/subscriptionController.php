@@ -30,8 +30,6 @@ class subscriptionController extends Controller
         Session::put('contact', $client->mobile_number);
         return view('frontend.pages.subscription.index', $data);
     }
-
-
     public function packages()
     {
         $packages = packages::where('is_active', 1)->get();
@@ -64,24 +62,26 @@ class subscriptionController extends Controller
             if ($request->input('code_name') != "") {
                 $code = activation_codes::whereRaw('BINARY code = ?', [$request->input('code_name')])->first();
 
-                if ($code == null && $request->input('package_id') != '') {
+                if ($code == null) {
                     $packageModel = packages::all();
                     $data = array(
                         'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
-                        'package' => $packageModel->where('id', $request->input('package_id'))->first(),
+                        // 'package' => $packageModel->where('id', $request->input('package_id'))->first(),
                     );
                     Session::flash('error', 'Invalid activation code');
-                    return view('frontend.pages.subscription.purchase', $data);
-                } elseif ($code == null || $code->is_active == 0 && $request->input('package_id') == '') {
-                    Session::flash('error', 'Invalid activation code');
-                    return redirect()->route('/subscription/packages');
+                    return redirect()->back();
+                    // return view('frontend.pages.subscription.purchase', $data);
+                } elseif ($code != null && $code->is_active == 0) {
+                    Session::flash('error', 'Activation code is already used');
+                    return redirect()->back();
+                    // return redirect()->route('purchase.package', ['id' => session('user_id')]);
                 } else {
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
-                        return redirect()->route('/subscription/packages');
+                        return redirect()->back();
                     } elseif ($code->expiry_date < date('Y-m-d')) {
                         Session::flash('error', 'Activation code is expired');
-                        return redirect()->route('/subscription/packages');
+                        return redirect()->back();
                     }
                     $transaction = new transactions();
                     $transaction->txn_id = $this->generateTxnId();
@@ -214,7 +214,6 @@ class subscriptionController extends Controller
         $client = clients::where('client_id', session('user_id'))->first();
         $receipt = (string) str::uuid();
         $package = packages::where('id', $request->input('package_id'))->first();
-
         if ($request->input('coupon_name') != null) {
             $coupon = coupons::whereRaw('BINARY coupon = ?', [$request->input('coupon_name')])->first();
             if ($coupon === null || $coupon->is_active == 0) {
