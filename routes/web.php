@@ -5,7 +5,7 @@ use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\ApkVersionController;
-use App\Http\Controllers\Client\DeleteController;
+use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\frontend\messageController;
