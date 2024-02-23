@@ -13,6 +13,13 @@ class device extends Model
         'device_id',
         'device_token',
         'client_id',
-        'host'
+        'host',
+        'manufacturer',
+        'android_version',
+        'product',
+        'model',
+        'brand',
+        'device',
+        'battery',
     ];
 }
