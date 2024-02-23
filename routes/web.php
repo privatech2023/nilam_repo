@@ -129,7 +129,7 @@ Route::group(['middleware' => 'client.auth'], function () {
     // features
     Route::group(['middleware' => 'client.validity'], function () {
 
-        Route::get('/delete/image', [DeleteController::class, 'destroy_camera']);
+        Route::post('/delete/image', [DeleteController::class, 'destroy_camera']);
 
 
         Route::get('/message/{userId}', MessageComponent::class)->name('messages');
