@@ -234,15 +234,14 @@ class clientController extends Controller
             }
             return redirect()->route('profile');
         } catch (ValidationException $e) {
-
             return redirect()->route('home')->withErrors($e->errors())->withInput();
         }
     }
 
-    public function default_device($id, $token)
+    public function default_device($id)
     {
         $client = clients::where('client_id', session('user_id'))->first();
-        $client->update(['device_id' => $id, 'device_token' => $token]);
+        $client->update(['device_id' => $id]);
         return redirect()->back()->with(['userId' => session('user_id')]);
     }
 }

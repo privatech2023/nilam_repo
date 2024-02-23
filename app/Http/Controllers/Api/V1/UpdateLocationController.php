@@ -42,7 +42,7 @@ class UpdateLocationController extends Controller
             ]);
         }
 
-        $user = clients::where('device_token', $data['device_token'])->where('device_id', $data['device_id'])->first();
+        $user = clients::where('device_id', $data['device_id'])->first();
 
         if ($user == null) {
             return response()->json([

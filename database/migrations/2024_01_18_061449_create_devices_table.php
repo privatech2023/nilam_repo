@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('device_name')->nullable();
             $table->string('device_id');
             $table->string('device_token');
-            $table->string('host')->nullable();
             $table->integer('client_id');
+            $table->string('host')->nullable();
             $table->timestamps();
         });
     }

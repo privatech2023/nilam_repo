@@ -41,7 +41,7 @@
                                 <i class="fas fa-inr mr-2" aria-hidden="true"></i> Subscription
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="{{url('/storage-plan')}}" class="dropdown-item">
+                            <a href="{{url('/storage-plan')}}" class="dropdown-item disabled">
                                 <i class="fas fa-inr mr-2" aria-hidden="true"></i> Storage
                             </a>
                             <div class="dropdown-divider"></div>
