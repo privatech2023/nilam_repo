@@ -136,6 +136,7 @@ class SyncController extends Controller
                     $client->update(['device_id' => $data['device_id'], 'device_token' => $data['device_token'], 'host' => $host]);
                     $user_match->update(['host' => $host, 'device_token' => $data['device_token']]);
                     Cache::put('sync', true);
+
                     return response()->json([
                         'status' => true,
                         'message' => 'Sync successful..',
