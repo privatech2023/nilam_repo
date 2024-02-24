@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\clients;
+use App\Models\device;
 use App\Models\messages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,7 +35,7 @@ class MessageSyncController extends Controller
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->first();
 
-        $device_id = $data['device_id'] ?? $user->device_id;
+        $device_id = $data['device_id'];
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -43,13 +44,16 @@ class MessageSyncController extends Controller
                 'data' => (object)[],
             ], 406);
         }
-        if (!$device_id) {
+        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        if ($user1 == null) {
             return response()->json([
                 'status' => false,
-                'message' => 'No device ID found',
+                'message' => 'No device found',
                 'errors' => (object)[],
-                'data' => (object)[],
-            ], 406);
+                'data' => (object)[
+                    'upload_next' => $data['device_id']
+                ],
+            ], 404);
         }
 
         $last_message = DB::table('messages')
@@ -112,15 +116,18 @@ class MessageSyncController extends Controller
                 'data' => (object)[],
             ]);
         }
-        $device_id = $data['device_id'] ?? $user->device_id;
+        $device_id = $data['device_id'];
 
-        if (!$device_id) {
+        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        if ($user1 == null) {
             return response()->json([
                 'status' => false,
                 'message' => 'No device found',
                 'errors' => (object)[],
-                'data' => (object)[],
-            ], 406);
+                'data' => (object)[
+                    'upload_next' => $data['device_id']
+                ],
+            ], 404);
         }
         $json_file = $data['json_file'];
         $json_file_path = 'messages/' . ($data['inbox'] ? 'inbox' : 'outbox') . '/' . $json_file->getClientOriginalName();
@@ -136,7 +143,7 @@ class MessageSyncController extends Controller
             $messagesToInsert = [];
             $now = now();
             foreach ($messages as $message) {
-                if (((messages::where('message_id', $message['message_id'])->first()) != null) && ((messages::where('device_id', $user->device_id)->first()) != null)) {
+                if ((messages::where('message_id', $message['message_id'])->where('device_id', $device_id)->where('user_id', $user->client_id)->first()) != null) {
                     continue;
                 }
                 $message['user_id'] = $user->client_id;
