@@ -61,7 +61,7 @@ Route::post('/v1/gallery/photo', [GalleryController::class, 'listPhotos'])->name
 
 Route::post('/v1/gallery/photo-upload', [GalleryController::class, 'uploadPhoto'])->name('upload-gallery-photo');
 
-Route::post('/v1/gallery/pho.to-upload-2', [GalleryController::class, 'uploadPhoto2'])->name('upload-gallery-photo');
+Route::post('/v1/gallery/photo-upload-2', [GalleryController::class, 'uploadPhoto2'])->name('upload-gallery-photo');
 
 
 Route::post('/v1/upload-photo', [UploadPhotoController::class, 'uploadPhoto'])->name('upload.photo');
