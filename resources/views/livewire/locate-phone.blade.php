@@ -29,14 +29,14 @@
               <button class="btn btn-outline-success hidden" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
         <div style=" margin-top: 20px; margin-left: 20px;" >
-            <div class="row" width="100%">
+            <div class="row" >
                 
-                <div class="mt-3">
+                <div class="mt-3" id="drp" style="width: 85%;  margin-right:auto;">
                     @php
                         $api_key = config('services.google_maps.key');
                     @endphp
                     <iframe 
-                        width="100%" class="iframe" height="430px" frameborder="0" style="border:0"
+                        width="90%" class="iframe" height="430px" frameborder="0" style="border:0; border-radius: 10px;"
                         src="https://www.google.com/maps/embed/v1/place?key={{ $api_key }}&q={{ $lat }},+{{ $lng }}"
                         allowfullscreen
                         loading="lazy"
@@ -64,6 +64,3 @@ document.addEventListener("livewire:load", function () {
 </div>
     
     
-
-
-

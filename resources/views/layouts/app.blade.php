@@ -1227,7 +1227,13 @@ audio::-webkit-media-controls-play-button:hover {
     width: 10%;
   }
   #bt{
-    margin-left: 30rem;
+    margin-left: 14rem;
+    margin-top: 10px;
+  }
+
+  #drp{
+    margin-left:auto;
+    
   }
 
 @media screen and (max-width: 760px) and (min-width: 320px){
@@ -1242,7 +1248,11 @@ audio::-webkit-media-controls-play-button:hover {
     margin-left:1rem;
   }
   #bt{
-    margin-left: 14.1rem;
+    margin-left: 10.5rem;
+    margin-top: 0;
+  }
+  #drp{
+    margin-left: 2%;
   }
   .contact-profile{
     width: 98%;

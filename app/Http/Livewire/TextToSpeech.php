@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
+use App\Models\device;
 use Illuminate\Support\Facades\Log;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
@@ -47,7 +48,8 @@ class TextToSpeech extends Component
 
     public function sendNotification($action_to)
     {
-        $device = clients::where('client_id', $this->userId)->first();
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->orderBy('updated_at', 'desc')->first();
 
         if (empty($device->device_token)) {
             $this->dispatchBrowserEvent('banner-message', [

@@ -22,8 +22,8 @@ class VibrateComponent extends Component
     }
     public function sendNotification($action_to)
     {
-        // If device token is empty
-        $client = clients::where('client_id', session('user_id'))->select('device_token')->first();
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $client = device::where('device_id', $client_id->device_id)->orderBy('updated_at', 'desc')->first();
         if ($client->device_token == null) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',

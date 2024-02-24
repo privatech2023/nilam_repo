@@ -20,7 +20,6 @@ class MyDeviceController extends Controller
             'json_file' => 'required|file|mimes:json|max:18000',
         ]);
 
-
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
