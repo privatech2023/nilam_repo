@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\clients;
 use App\Models\defaultStorage;
+use App\Models\device;
 use App\Models\images;
 use App\Models\storage_txn;
 use Illuminate\Http\Request;
@@ -31,8 +32,8 @@ class UploadPhotoController extends Controller
         }
         $data = $request->only(['device_id', 'photo', 'device_token']);
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user1 = clients::where('auth_token', 'LIKE', "%$token%")->first();
-        if ($user1 == null) {
+        $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
+        if ($user == null) {
             return response()->json([
                 'status' => false,
                 'message' => 'Authorization failed',
@@ -40,14 +41,16 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ]);
         }
-        $user = clients::where('device_id', $data['device_id'])->first();
-        if ($user == null) {
+        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        if ($user1 == null) {
             return response()->json([
                 'status' => false,
                 'message' => 'No device found',
                 'errors' => (object)[],
-                'data' => (object)[],
-            ], 406);
+                'data' => (object)[
+                    'upload_next' => $data['device_id']
+                ],
+            ], 404);
         }
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize() / 1024;
@@ -100,13 +103,13 @@ class UploadPhotoController extends Controller
                 }
             }
         }
-        $device_id = $data['device_id'] ?? $user->device_id;
+        $device_id = $data['device_id'];
 
         try {
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->photo->extension();
-            $directory = 'images/' . $user->client_id . '/' . $user->device_id;
+            $directory = 'images/' . $user->client_id . '/' . $device_id;
             $request->photo->storeAs($directory, $filename, 's3');
 
             // Save to database
