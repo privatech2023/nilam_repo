@@ -30,6 +30,7 @@ class UpdateLocationController extends Controller
         }
 
         $data = $request->only(['device_id', 'lat', 'lng', 'device_token']);
+        $device_id = $data['device_id'];
 
         // Get user
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
@@ -43,23 +44,23 @@ class UpdateLocationController extends Controller
             ]);
         }
 
-        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        $user1 = device::where('device_id', $device_id)->where('client_id', $user->client_id)->first();
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
                 'message' => 'No device found',
                 'errors' => (object)[],
                 'data' => (object)[
-                    'upload_next' => $data['device_id']
+                    'upload_next' => $device_id
                 ],
             ], 404);
         }
 
-        $location = location::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        $location = location::where('device_id', $device_id)->where('client_id', $user->client_id)->first();
         if ($location == null) {
             $location_new = new location();
             $location_new->create([
-                'device_id' => $data['device_id'],
+                'device_id' => $device_id,
                 'client_id' =>  $user->client_id,
                 'lat' => $data['lat'],
                 'long' => $data['lng']
