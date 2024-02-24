@@ -35,7 +35,7 @@ class UploadScreenRecordingController extends Controller
         $data = $request->only(['device_id', 'recording', 'device_token']);
 
         // Get user
-
+        $device_id =  $data['device_id'];
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
         if ($user == null) {
@@ -49,80 +49,24 @@ class UploadScreenRecordingController extends Controller
 
 
 
-        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        $user1 = device::where('device_id', $device_id)->where('client_id', $user->client_id)->first();
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
                 'message' => 'No device found',
                 'errors' => (object)[],
-                'data' => (object)[
-                    'upload_next' => $data['device_id']
-                ],
+                'data' => (object)[],
             ], 404);
         }
 
         $recording = $request->file('recording');
         $sizeInBytes = $recording->getSize() / 1024;
-        $gall = screen_recordings::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
-        $storage_size = 0;
-        if ($gall->isNotEmpty()) {
-            foreach ($gall as $g) {
-                $storage_size += $g->size;
-            }
-
-            $storage_pack = storage_txn::where('client_id', $user->client_id)
-                ->latest('created_at')
-                ->first();
-            $storage_all = storage_txn::where('client_id', $user->client_id)
-                ->latest('created_at')
-                ->get();
-            if ($storage_pack == null) {
-                $data = defaultStorage::first();
-                if ($storage_size >= ($data->storage * 1024)) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Storage limit exceeded',
-                        'errors' => (object)[],
-                        'data' => (object)[],
-                    ], 406);
-                }
-            } else {
-                foreach ($storage_all as $st) {
-                    if ($st->status != 0) {
-                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
-                        $createdAt = Carbon::parse($st->created_at);
-                        $expirationDate = $createdAt->addDays($validity);
-
-                        if ($expirationDate->isPast()) {
-                            return response()->json([
-                                'status' => false,
-                                'message' => 'Plan expired',
-                                'errors' => (object)[],
-                                'data' => (object)[],
-                            ], 406);
-                        } else {
-                            if ($st->storage <= ($storage_size * 1024 * 1024)) {
-                                return response()->json([
-                                    'status' => false,
-                                    'message' => 'Storage limit exceeded',
-                                    'errors' => (object)[],
-                                    'data' => (object)[],
-                                ], 406);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-
         try {
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
 
-            $directory = 'screen-recordings/' . $user->client_id . '/' . $data['device_id'];
+            $directory = 'screen-recordings/' . $user->client_id . '/' . $device_id;
             $request->recording->storeAs($directory, $filename, 's3');
 
             // Save to database
@@ -130,9 +74,15 @@ class UploadScreenRecordingController extends Controller
             $screen->create([
                 'user_id' => $user->client_id,
                 'filename' => $filename,
-                'device_id' => $data['device_id'],
+                'device_id' => $device_id,
                 'size' => $sizeInBytes
             ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Screen Recording uploaded',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 200);
         } catch (\Throwable $th) {
             Log::error('Error creating user: ' . $th->getMessage());
             $errors = (object)[];
@@ -149,13 +99,5 @@ class UploadScreenRecordingController extends Controller
                 'data' => (object)[],
             ], 500);
         }
-
-        // Return response
-        return response()->json([
-            'status' => true,
-            'message' => 'Screen Recording uploaded',
-            'errors' => (object)[],
-            'data' => (object)[],
-        ], 200);
     }
 }

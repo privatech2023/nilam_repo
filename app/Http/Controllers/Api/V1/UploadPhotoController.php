@@ -30,7 +30,9 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ], 422);
         }
+
         $data = $request->only(['device_id', 'photo', 'device_token']);
+        $device_id = $data['device_id'];
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
         if ($user == null) {
@@ -41,7 +43,7 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ]);
         }
-        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        $user1 = device::where('device_id', $device_id)->where('client_id', $user->client_id)->first();
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
@@ -54,56 +56,6 @@ class UploadPhotoController extends Controller
         }
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize() / 1024;
-        $gall = images::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
-        $storage_size = 0;
-        if ($gall->isNotEmpty()) {
-            foreach ($gall as $g) {
-                $storage_size += $g->size;
-            }
-            $storage_pack = storage_txn::where('client_id', $user->client_id)
-                ->latest('created_at')
-                ->first();
-            $storage_all = storage_txn::where('client_id', $user->client_id)
-                ->latest('created_at')
-                ->get();
-            if ($storage_pack == null) {
-                $data = defaultStorage::first();
-                if ($storage_size >= ($data->storage * 1024)) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Storage limit exceeded',
-                        'errors' => (object)[],
-                        'data' => (object)[],
-                    ], 406);
-                }
-            } else {
-                foreach ($storage_all as $st) {
-                    if ($st->status != 0) {
-                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
-                        $createdAt = Carbon::parse($st->created_at);
-                        $expirationDate = $createdAt->addDays($validity);
-                        if ($expirationDate->isPast()) {
-                            return response()->json([
-                                'status' => false,
-                                'message' => 'Plan expired',
-                                'errors' => (object)[],
-                                'data' => (object)[],
-                            ], 406);
-                        } else {
-                            if ($st->storage <= ($storage_size * 1024 * 1024)) {
-                                return response()->json([
-                                    'status' => false,
-                                    'message' => 'Storage limit exceeded',
-                                    'errors' => (object)[],
-                                    'data' => (object)[],
-                                ], 406);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        $device_id = $data['device_id'];
 
         try {
             // Generate filename
@@ -120,6 +72,14 @@ class UploadPhotoController extends Controller
                 'user_id' => $user->client_id,
                 'size' => $sizeInBytes,
             ]);
+
+            // Return response
+            return response()->json([
+                'status' => true,
+                'message' => 'Photo uploaded',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 200);
         } catch (\Throwable $th) {
             Log::error('Error creating user: ' . $th->getMessage());
             $errors = (object)[];
@@ -137,13 +97,5 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ], 500);
         }
-
-        // Return response
-        return response()->json([
-            'status' => true,
-            'message' => 'Photo uploaded',
-            'errors' => (object)[],
-            'data' => (object)[],
-        ], 200);
     }
 }
