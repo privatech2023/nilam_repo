@@ -30,7 +30,9 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ], 422);
         }
+
         $data = $request->only(['device_id', 'photo', 'device_token']);
+        $device_id = $data['device_id'];
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
         if ($user == null) {
@@ -41,7 +43,7 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ]);
         }
-        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        $user1 = device::where('device_id', $device_id)->where('client_id', $user->client_id)->first();
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
@@ -54,7 +56,7 @@ class UploadPhotoController extends Controller
         }
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize() / 1024;
-        $gall = images::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
+        $gall = images::where('device_id', $device_id)->where('user_id', $user->client_id)->get();
         $storage_size = 0;
         if ($gall->isNotEmpty()) {
             foreach ($gall as $g) {
@@ -103,7 +105,6 @@ class UploadPhotoController extends Controller
                 }
             }
         }
-        $device_id = $data['device_id'];
 
         try {
             // Generate filename
