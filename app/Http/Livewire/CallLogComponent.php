@@ -38,7 +38,8 @@ class CallLogComponent extends Component
     }
     public function sendNotification($action_to)
     {
-        $device = clients::where('client_id', $this->userId)->first();
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->orderBy('updated_at', 'desc')->first();
         if (empty($device->device_token)) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',

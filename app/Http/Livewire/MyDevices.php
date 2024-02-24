@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
+use App\Models\device;
 use App\Models\my_devices;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -42,7 +43,8 @@ class MyDevices extends Component
     }
     public function sendNotification($action_to)
     {
-        $client = clients::where('client_id', $this->userId)->first();
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $client = device::where('device_id', $client_id->device_id)->orderBy('updated_at', 'desc')->first();
         if ($client->device_token == null) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',

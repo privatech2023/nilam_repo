@@ -7,7 +7,7 @@
       </button>
   </div>
     @else
-    <div class="btn-group dropdown" id="bt">
+    <div class="btn-group dropdown" id="bt" >
       <button type="button" style="color:white; " class="btn btn-sm btn-outline dropdown-toggle custom-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         @php
             $deviceName = ''; 
@@ -17,14 +17,14 @@
                 @php
                     $deviceName = $device->device_name;
                 @endphp
-            {{-- @elseif($device->device_id != $defaultDevice->device_id)
+            @elseif($device->device_id != $defaultDevice->device_id)
             @php
-            $deviceName = 'No device';
+            continue
             @endphp
             @else
             @php
-            $deviceName = 'Device';
-            @endphp --}}
+            continue
+            @endphp
             @endif
       @endforeach
         {{ $deviceName }}
