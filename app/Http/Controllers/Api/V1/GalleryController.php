@@ -305,9 +305,9 @@ class GalleryController extends Controller
             'device_id' => 'required',
             'photo_id' => 'required',
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:300000',
-            'overwrite' => 'nullable|boolean',
             'device_token' => 'required'
         ]);
+
         if ($validator->fails()) {
             return response()->json(
                 [
@@ -321,9 +321,7 @@ class GalleryController extends Controller
                 422,
             );
         }
-
         $data = $request->only(['device_id', 'photo', 'device_token']);
-
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
         if ($user == null) {
@@ -336,6 +334,7 @@ class GalleryController extends Controller
                 ],
             ], 401);
         }
+        $device_id = $data['device_id'];
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize();
         $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
@@ -349,16 +348,17 @@ class GalleryController extends Controller
                 ],
             ], 404);
         }
-        $gall = gallery_items::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
+        $gall = gallery_items::where('user_id', $user->client_id)->get();
         $storage_size = 0;
         $storage_pack = storage_txn::where('client_id', $user->client_id)
             ->latest('created_at')
             ->first();
-        $storage_all = storage_txn::where('client_id', $user->client_id)
+        $storage_txn = storage_txn::where('client_id', $user->client_id)
             ->latest('created_at')
             ->get();
         $storageType = 1; //1 for default storage and 2 for storage pack
         $gall_id = 0;
+        $storage_ok = false;
         if ($gall->isNotEmpty()) {
             foreach ($gall as $g) {
                 $storage_size += $g->size;
@@ -374,10 +374,88 @@ class GalleryController extends Controller
                             'upload_next' => false
                         ],
                     ], 406);
+                } else {
+                    //
+                    try {
+                        $exists = gallery_items::where('device_gallery_id', $request->photo_id)
+                            ->where('device_id', $device_id)
+                            ->where('user_id', $user->client_id)
+                            ->exists();
+                        if ($exists) {
+                            $model = gallery_items::where('device_gallery_id', $request->photo_id)
+                                ->where('device_id', $device_id)
+                                ->where('user_id', $user->client_id)
+                                ->first();
+                            $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
+                            if ($exists) {
+                                Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
+                            }
+                            $model->delete();
+                        }
+                        $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                        $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
+                        $directory = 'gallery/images/' . $user->client_id . '/' . $device_id;
+                        $request->photo->storeAs($directory, $filename, 's3');
+                        gallery_items::create([
+                            'device_gallery_id' => $request->photo_id,
+                            'device_id' => $device_id,
+                            'user_id' => $user->client_id,
+                            'media_type' => 'image',
+                            'size' => $sizeInBytes,
+                            'media_url' => $filename,
+                        ]);
+                        $gall2 = gallery_items::where('user_id', $user->client_id)->get();
+                        $storage_size2 = 0;
+                        foreach ($gall2 as $g) {
+                            $storage_size2 += $g->size;
+                        }
+                        $remaining = ($data->storage * 1024 * 1024) - $storage_size2;
+                        if ($remaining > 0) {
+                            return response()->json([
+                                'status' => false,
+                                'message' => 'Device gallery upload successful',
+                                'errors' => (object)[],
+                                'data' => (object)[
+                                    'upload_next' => true,
+                                    'size' => $remaining
+                                ],
+                            ], 200);
+                        } else {
+                            return response()->json([
+                                'status' => false,
+                                'message' => 'Device gallery upload successful',
+                                'errors' => (object)[],
+                                'data' => (object)[
+                                    'upload_next' => false
+                                ],
+                            ], 200);
+                        }
+                    } catch (\Throwable $th) {
+                        $errors = (object) [];
+                        if (config('app.debug')) {
+                            $errors = (object) [
+                                'exception' => [$th->getMessage()],
+                                'trace' => $th->getTrace(),
+                            ];
+                        }
+                        return response()->json(
+                            [
+                                'status' => false,
+                                'message' => 'Failed to upload photo',
+                                'errors' => $errors,
+                                'data' => (object) [
+                                    'upload_next' => false
+                                ],
+                            ],
+                            500,
+                        );
+                    }
+
+                    //
                 }
             } else {
                 $storageType = 2;
-                foreach ($storage_all as $st) {
+                foreach ($storage_txn as $st) {
                     if ($st->status != 0) {
                         $validity = $st->plan_type == 'monthly' ? 30 : 365;
                         $createdAt = Carbon::parse($st->created_at);
@@ -402,155 +480,149 @@ class GalleryController extends Controller
                                     ],
                                 ], 406);
                             } else {
-                                $gall_id = $st->id;
+                                try {
+                                    $exists = gallery_items::where('device_gallery_id', $request->photo_id)
+                                        ->where('device_id', $device_id)
+                                        ->where('user_id', $user->client_id)
+                                        ->exists();
+                                    if ($exists) {
+                                        $model = gallery_items::where('device_gallery_id', $request->photo_id)
+                                            ->where('device_id', $device_id)
+                                            ->where('user_id', $user->client_id)
+                                            ->first();
+                                        $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                        if ($exists) {
+                                            Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                        }
+                                        $model->delete();
+                                    }
+                                    $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                                    $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
+                                    $directory = 'gallery/images/' . $user->client_id . '/' . $device_id;
+                                    $request->photo->storeAs($directory, $filename, 's3');
+                                    gallery_items::create([
+                                        'device_gallery_id' => $request->photo_id,
+                                        'device_id' => $device_id,
+                                        'user_id' => $user->client_id,
+                                        'media_type' => 'image',
+                                        'size' => $sizeInBytes,
+                                        'media_url' => $filename,
+                                    ]);
+                                    $gall2 = gallery_items::where('user_id', $user->client_id)->get();
+                                    $storage_size2 = 0;
+                                    foreach ($gall2 as $g) {
+                                        $storage_size2 += $g->size;
+                                    }
+                                    $storage_all2 = storage_txn::where('client_id', $user->client_id)
+                                        ->where('id', $st->id)
+                                        ->first();
+                                    $remaining = ($storage_all2->storage * (1024 * 1024 * 1024)) - $storage_size2;
+                                    if ($remaining > 0) {
+                                        return response()->json([
+                                            'status' => false,
+                                            'message' => 'Device gallery upload successful',
+                                            'errors' => (object)[],
+                                            'data' => (object)[
+                                                'upload_next' => true,
+                                                'size' => $remaining
+                                            ],
+                                        ], 200);
+                                    } else {
+                                        return response()->json([
+                                            'status' => false,
+                                            'message' => 'Device gallery upload successful',
+                                            'errors' => (object)[],
+                                            'data' => (object)[
+                                                'upload_next' => false
+                                            ],
+                                        ], 200);
+                                    }
+                                } catch (\Throwable $th) {
+                                    $errors = (object) [];
+                                    if (config('app.debug')) {
+                                        $errors = (object) [
+                                            'exception' => [$th->getMessage()],
+                                            'trace' => $th->getTrace(),
+                                        ];
+                                    }
+                                    return response()->json(
+                                        [
+                                            'status' => false,
+                                            'message' => 'Failed to upload photo',
+                                            'errors' => $errors,
+                                            'data' => (object) [
+                                                'upload_next' => false
+                                            ],
+                                        ],
+                                        500,
+                                    );
+                                }
                                 break;
                             }
                         }
+                    } else {
+                        continue;
                     }
                 }
             }
-        }
-        $device_id = $data['device_id'];
-        $exists = gallery_items::where('device_gallery_id', $request->photo_id)
-            ->where('device_id', $device_id)
-            ->where('user_id', $user->client_id)
-            ->exists();
-        if (!$request->overwrite) {
-            if ($exists) {
+        } else {
+            $exists = gallery_items::where('device_gallery_id', $request->photo_id)
+                ->where('device_id', $device_id)
+                ->where('user_id', $user->client_id)
+                ->exists();
+            try {
+                if ($exists) {
+                    $model = gallery_items::where('device_gallery_id', $request->photo_id)
+                        ->where('device_id', $device_id)
+                        ->where('user_id', $user->client_id)
+                        ->first();
+                    $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                    if ($exists) {
+                        Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                    }
+                    $model->delete();
+                }
+                $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
+                $directory = 'gallery/images/' . $user->client_id . '/' . $device_id;
+                $request->photo->storeAs($directory, $filename, 's3');
+                gallery_items::create([
+                    'device_gallery_id' => $request->photo_id,
+                    'device_id' => $device_id,
+                    'user_id' => $user->client_id,
+                    'media_type' => 'image',
+                    'size' => $sizeInBytes,
+                    'media_url' => $filename,
+                ]);
+
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Device gallery upload successful..',
+                    'errors' => (object)[],
+                    'data' => (object)[
+                        'upload_next' => false
+                    ],
+                ], 200);
+            } catch (\Throwable $th) {
+                $errors = (object) [];
+                if (config('app.debug')) {
+                    $errors = (object) [
+                        'exception' => [$th->getMessage()],
+                        'trace' => $th->getTrace(),
+                    ];
+                }
                 return response()->json(
                     [
                         'status' => false,
-                        'message' => 'Photo already exists',
-                        'errors' => (object) [],
+                        'message' => 'Failed to upload photo',
+                        'errors' => $errors,
                         'data' => (object) [
-                            'upload_next' => true
+                            'upload_next' => false
                         ],
                     ],
-                    200,
+                    500,
                 );
             }
-        }
-        if (!$device_id) {
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => 'No device found',
-                    'errors' => (object) [],
-                    'data' => (object) [
-                        'upload_next' => false
-                    ],
-                ],
-                404,
-            );
-        }
-        try {
-            if ($request->overwrite && $exists) {
-                $model = gallery_items::where('device_gallery_id', $request->photo_id)
-                    ->where('device_id', $device_id)
-                    ->where('user_id', $user->client_id)
-                    ->first();
-                $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
-                if ($exists) {
-                    Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
-                }
-                $model->delete();
-            }
-            $uuid = \Ramsey\Uuid\Uuid::uuid4();
-            $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
-            $directory = 'gallery/images/' . $user->client_id . '/' . $data['device_id'];
-            $path = $request->photo->storeAs($directory, $filename, 's3');
-            $gallery_item = gallery_items::create([
-                'device_gallery_id' => $request->photo_id,
-                'device_id' => $device_id,
-                'user_id' => $user->client_id,
-                'media_type' => 'image',
-                'size' => $sizeInBytes,
-                'media_url' => $filename,
-            ]);
-            $gall2 = gallery_items::where('device_id', $device_id)->where('user_id', $user->client_id)->get();
-            $storage_size2 = 0;
-            foreach ($gall2 as $g) {
-                $storage_size2 += $g->size;
-            }
-            if ($storageType == 1) {
-                $data = defaultStorage::first();
-                $remaining = ($data->storage * 1024 * 1024) - $storage_size2;
-                if ($remaining > 0) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Device gallery upload successful',
-                        'errors' => (object)[],
-                        'data' => (object)[
-                            'upload_next' => true,
-                            'size' => $remaining
-                        ],
-                    ], 200);
-                } else {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Device gallery upload successful',
-                        'errors' => (object)[],
-                        'data' => (object)[
-                            'upload_next' => false
-                        ],
-                    ], 200);
-                }
-            } else {
-                $storage_all2 = storage_txn::where('client_id', $user->client_id)
-                    ->where('id', $gall_id)
-                    ->first();
-                $remaining2 = ($storage_all2->storage * (1024 * 1024 * 1024)) - $storage_size2;
-                if ($remaining2 > 0) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Device gallery upload successful',
-                        'errors' => (object)[],
-                        'data' => (object)[
-                            'upload_next' => true,
-                            'size' => $remaining2
-                        ],
-                    ], 200);
-                } else {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Device gallery upload successful',
-                        'errors' => (object)[],
-                        'data' => (object)[
-                            'upload_next' => false
-                        ],
-                    ], 200);
-                }
-            }
-            return response()->json(
-                [
-                    'status' => true,
-                    'message' => 'Device gallery upload successful',
-                    'errors' => (object) [],
-                    'data' => (object)[
-                        'upload_next' => true
-                    ],
-                ],
-                200,
-            );
-        } catch (\Throwable $th) {
-            $errors = (object) [];
-            if (config('app.debug')) {
-                $errors = (object) [
-                    'exception' => [$th->getMessage()],
-                    'trace' => $th->getTrace(),
-                ];
-            }
-            return response()->json(
-                [
-                    'status' => false,
-                    'message' => 'Failed to upload photo',
-                    'errors' => $errors,
-                    'data' => (object) [
-                        'upload_next' => false
-                    ],
-                ],
-                500,
-            );
         }
     }
 }
