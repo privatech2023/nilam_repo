@@ -15,30 +15,6 @@
 
 <div class="content-wrapper remove-background">
     <div id="frame">
-
-        {{-- modal delete --}}
- <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Are you sure you want to delete this item ?</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="{{ url('/delete/image')}}" method="post">
-            @csrf
-        <div class="modal-footer">
-            <input type="text" name="id" id="deleteItemId" value=""/>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          <button type="submit" class="btn btn-primary">Yes</button>
-        </div>
-    </form>
-      </div>
-    </div>
-</div>
-
-
         <div class="loader_bg" style="display:none;">
             <div id="loader"></div>
         </div>
@@ -52,10 +28,12 @@
               <button class="btn btn-outline-success btn-sm"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
         {{-- <nav class="navbar navbar-light bg-light">
+              
+              
         </nav> --}}
-        <div style="display: flex; margin-top: 20px; margin-left: 10px; height:85%; overflow-x:auto;" class="audio">
-            <div >
-                {{-- @foreach ($recordings as $recording)
+        <div style="display: flex; margin-top: 20px; margin-left: 10px;" class="audio">
+            <div>
+                @foreach ($recordings as $recording)
                 <div class="border-2 p-1 rounded-md">
                     
                     <div class="flex justify-end">
@@ -68,20 +46,7 @@
                         Jan 24, 2024 11:35 AM
                     </p>
                 </div>
-                @endforeach --}}
-
-                <div class="border-2 p-1 rounded-md" style="display: flex; align-items: center;">
-                    <audio controls class="w-full" style="flex: 1;">
-                        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" class="bg-blue-500" type="audio/mpeg">
-                        Your browser does not support the audio element.
-                    </audio>
-                    <div>
-                        <button class="overlay-button delete" data-id="#" style="border: none; background: none; margin-left:4px;">
-                            <i class="fas fa-trash-alt delete-btn"></i>
-                        </button>
-                    </div>
-                </div>
-
+                @endforeach
             </div>
         </div>
     </div>
@@ -94,15 +59,8 @@
     </script>
     <script>
         document.addEventListener('livewire:load', function () {
-
-            $(document).on('click','.delete', function () {
-            var id = this.getAttribute('data-id');
-                document.getElementById('deleteItemId').value = id;
-                $('#deleteModal').modal('show');
-        });
+            $('.loader_bg').hide();
         });
     </script>
 </div>
     
-
-
