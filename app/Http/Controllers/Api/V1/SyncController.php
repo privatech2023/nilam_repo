@@ -70,7 +70,17 @@ class SyncController extends Controller
                 'data' => (object) [],
             ], 401);
         }
-
+        $duplicate = device::where('host', $host)->where('device_id', $data['device_id'])->orderBy('updated_at', 'desc')->get();
+        $flag = 0;
+        if (count($duplicate) > 1) {
+            foreach ($duplicate as $dd) {
+                if ($flag != 0) {
+                    device::where('id', $dd->id)->delete();
+                } else {
+                    $flag = 1;
+                }
+            }
+        }
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
