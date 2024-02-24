@@ -49,18 +49,14 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ], 406);
         }
-
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize() / 1024;
-
         $gall = images::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->get();
         $storage_size = 0;
-
         if ($gall->isNotEmpty()) {
             foreach ($gall as $g) {
                 $storage_size += $g->size;
             }
-
             $storage_pack = storage_txn::where('client_id', $user->client_id)
                 ->latest('created_at')
                 ->first();
@@ -83,7 +79,6 @@ class UploadPhotoController extends Controller
                         $validity = $st->plan_type == 'monthly' ? 30 : 365;
                         $createdAt = Carbon::parse($st->created_at);
                         $expirationDate = $createdAt->addDays($validity);
-
                         if ($expirationDate->isPast()) {
                             return response()->json([
                                 'status' => false,

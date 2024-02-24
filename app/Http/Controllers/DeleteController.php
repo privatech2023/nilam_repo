@@ -23,6 +23,12 @@ class DeleteController extends Controller
         $image = images::findOrFail($request->input('id'));
         $user = clients::where('client_id', session('user_id'))->first();
         $s3Path = 'images/' . $user->client_id . '/' . $user->device_id . '/' . $image->filename;
+
+        $temporaryUrl = Storage::disk('s3')->temporaryUrl(
+            $s3Path,
+            now()->addMinutes(5)
+        );
+
         Storage::disk('s3')->delete($s3Path);
         $image->delete();
         session()->flash('success', 'Image deleted successfully');
