@@ -7,7 +7,6 @@ use App\Models\clients;
 use App\Models\device;
 use App\Models\my_devices;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -68,7 +67,6 @@ class MyDeviceController extends Controller
                 //     'battery' => $device_data['battery'],
                 //     'updated_at' => now(),
                 // ]);
-
                 $devicelist->manufacturer = $device_data['manufacturer'];
                 $devicelist->android_version = $device_data['android-version'];
                 $devicelist->product = $device_data['product'];
@@ -76,6 +74,7 @@ class MyDeviceController extends Controller
                 $devicelist->brand = $device_data['brand'];
                 $devicelist->device = $device_data['device'];
                 $devicelist->battery = $device_data['battery'];
+                $devicelist->updated_at = now();
                 $devicelist->save();
 
                 return response()->json([
