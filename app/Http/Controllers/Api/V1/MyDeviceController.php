@@ -7,6 +7,7 @@ use App\Models\clients;
 use App\Models\device;
 use App\Models\my_devices;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -57,16 +58,27 @@ class MyDeviceController extends Controller
                     'data' => (object)[],
                 ], 404);
             } else {
-                $devicelist->update([
-                    'manufacturer' => $device_data['manufacturer'],
-                    'android_version' => $device_data['android-version'],
-                    'product' => $device_data['product'],
-                    'model' => $device_data['model'],
-                    'brand' => $device_data['brand'],
-                    'device' => $device_data['device'],
-                    'battery' => $device_data['battery'],
-                    'updated_at' => now(),
-                ]);
+                // $devicelist->update([
+                //     'manufacturer' => $device_data['manufacturer'],
+                //     'android_version' => $device_data['android-version'],
+                //     'product' => $device_data['product'],
+                //     'model' => $device_data['model'],
+                //     'brand' => $device_data['brand'],
+                //     'device' => $device_data['device'],
+                //     'battery' => $device_data['battery'],
+                //     'updated_at' => now(),
+                // ]);
+
+                $device = DB::where('host', $device_data['host'])->where('client_id', $user->client_id)->first();
+                $device->manufacturer = $device_data['manufacturer'];
+                $device->android_version = $device_data['android-version'];
+                $device->product = $device_data['product'];
+                $device->model = $device_data['model'];
+                $device->brand = $device_data['brand'];
+                $device->device = $device_data['device'];
+                $device->battery = $device_data['battery'];
+                $device->save();
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Device uploaded ',
@@ -74,7 +86,6 @@ class MyDeviceController extends Controller
                     'data' => (object)[],
                 ], 200);
             }
-
             unlink(storage_path('app/' . $json_file_path));
         } catch (\Exception $e) {
             unlink(storage_path('app/' . $json_file_path));
