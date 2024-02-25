@@ -97,10 +97,10 @@
     if(callList.length == 0){
         $('#myModalconf').modal('show');
     }
-      setInterval(function() {
-        $('#myModalconf').modal('hide');
-            document.getElementById('cont-refresh-component-specific').click();
-        }, 10000);
+      // setInterval(function() {
+      //   $('#myModalconf').modal('hide');
+      //       document.getElementById('cont-refresh-component-specific').click();
+      //   }, 10000);
      });
   </script>
 </div>
