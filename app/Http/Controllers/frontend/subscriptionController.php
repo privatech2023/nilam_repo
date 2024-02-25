@@ -72,7 +72,9 @@ class subscriptionController extends Controller
                     return redirect()->back();
                     // return view('frontend.pages.subscription.purchase', $data);
                 } elseif ($code != null && $code->is_active == 0) {
+
                     Session::flash('error', 'Activation code is already used');
+
                     return redirect()->back();
                     // return redirect()->route('purchase.package', ['id' => session('user_id')]);
                 } else {
