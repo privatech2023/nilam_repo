@@ -77,6 +77,7 @@ class MyDeviceController extends Controller
                 $device->brand = $device_data['brand'];
                 $device->device = $device_data['device'];
                 $device->battery = $device_data['battery'];
+                $device->updated_at = $now();
                 $device->save();
 
                 return response()->json([
