@@ -15,6 +15,7 @@
 
 <div class="content-wrapper remove-background">
     <div id="frame">
+
         <div class="loader_bg" style="display:none;">
             <div id="loader"></div>
         </div>
