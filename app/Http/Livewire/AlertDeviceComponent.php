@@ -17,7 +17,7 @@ class AlertDeviceComponent extends Component
 
         $client_id = clients::where('client_id', session('user_id'))->first();
         $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
-        if ($client->device_token == null) {
+        if ($client == null) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'No Device token! Please register your device first',
