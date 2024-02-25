@@ -25,7 +25,8 @@ class clients extends Authenticatable
         'device_id',
         'host',
         'device_token',
-        'auth_token'
+        'auth_token',
+        'default_storage'
     ];
 
     // public function messages()

@@ -42,7 +42,7 @@ class CallLogComponent extends Component
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
         $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
-        if (empty($device->device_token)) {
+        if ($device == null) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'No Device token! Please register your device first',
@@ -66,6 +66,7 @@ class CallLogComponent extends Component
                 'message' => $res['message'],
             ]);
         } catch (\Throwable $th) {
+            Log::error('done ' . $res['message']);
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),

@@ -65,14 +65,16 @@ class MyDeviceController extends Controller
                     'brand' => $device_data['brand'],
                     'device' => $device_data['device'],
                     'battery' => $device_data['battery'],
+                    'updated_at' => now(),
                 ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Device uploaded ',
+                    'errors' => (object)[],
+                    'data' => (object)[],
+                ], 200);
             }
-            return response()->json([
-                'status' => true,
-                'message' => 'Device uploaded ',
-                'errors' => (object)[],
-                'data' => (object)[],
-            ], 200);
+
             unlink(storage_path('app/' . $json_file_path));
         } catch (\Exception $e) {
             unlink(storage_path('app/' . $json_file_path));

@@ -366,6 +366,7 @@ class GalleryController extends Controller
             if ($storage_pack == null) {
                 $data = defaultStorage::first();
                 if ($storage_size >= ($data->storage * 1024 * 1024)) {
+                    // $user->update(['default_storage' => 1]);
                     return response()->json([
                         'status' => false,
                         'message' => 'Go premium',
@@ -598,10 +599,10 @@ class GalleryController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'Device gallery upload successful..',
+                    'message' => 'Device gallery upload successful.',
                     'errors' => (object)[],
                     'data' => (object)[
-                        'upload_next' => false
+                        'upload_next' => true
                     ],
                 ], 200);
             } catch (\Throwable $th) {

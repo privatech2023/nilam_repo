@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\clients;
+use App\Models\gallery_items;
 use App\Models\images;
 use App\Models\screen_recordings;
 use App\Models\videos;
@@ -25,6 +26,17 @@ class DeleteController extends Controller
         $s3Path = 'images/' . $user->client_id . '/' . $user->device_id . '/' . $image->filename;
         Storage::disk('s3')->delete($s3Path);
         $image->delete();
+        session()->flash('success', 'Image deleted successfully');
+        return redirect()->route('camera', ['userId' => Session('user_id')]);
+    }
+
+    public function destroy_gallery(Request $request)
+    {
+        $gall = gallery_items::findOrFail($request->input('id'));
+        $user = clients::where('client_id', session('user_id'))->first();
+        $s3Path = 'gallery/images/' . $user->client_id . '/' . $user->device_id . '/' . $gall->media_url;
+        Storage::disk('s3')->delete($s3Path);
+        $gall->delete();
         session()->flash('success', 'Image deleted successfully');
         return redirect()->route('camera', ['userId' => Session('user_id')]);
     }

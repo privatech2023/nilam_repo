@@ -24,8 +24,6 @@
             <button class="btn btn-outline-success btn-sm" wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
 
-
-        
         <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-x: auto; height:83%;" >
             @foreach($videos as $video)
             <div class="video-container" style="flex: 1 0 100%;">

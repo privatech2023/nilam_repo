@@ -131,6 +131,9 @@ Route::group(['middleware' => 'client.auth'], function () {
 
         Route::post('/delete/image', [DeleteController::class, 'destroy_camera']);
 
+        Route::post('/delete/gallery', [DeleteController::class, 'destroy_gallery']);
+
+
 
         Route::get('/message/{userId}', MessageComponent::class)->name('messages');
         Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
