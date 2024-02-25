@@ -26,7 +26,8 @@ class CallLogComponent extends Component
         $calls = call_logs::where('user_id', $user->client_id)
             ->where('device_id', $user->device_id)
             ->orderBy('date', 'desc')
-            ->paginate(10);
+            ->paginate(100);
+        // dd($calls);
         foreach ($calls as $c) {
             $this->callList[] = [
                 'name' => $c->name,
@@ -35,11 +36,12 @@ class CallLogComponent extends Component
                 'date' => $c->date
             ];
         }
+        // dd($this->callList);
     }
     public function sendNotification($action_to)
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
-        $device = device::where('device_id', $client_id->device_id)->orderBy('updated_at', 'desc')->first();
+        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
         if (empty($device->device_token)) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
@@ -73,19 +75,7 @@ class CallLogComponent extends Component
 
     public function contRefreshComponentSpecific()
     {
-        // $user = clients::where('client_id', $this->userId)->first();
-        // $calls = call_logs::where('user_id', $user->client_id)
-        //     ->where('device_id', $user->device_id)
-        //     ->orderBy('date', 'asc')
-        //     ->paginate(10);
-        // foreach ($calls as $c) {
-        //     $this->callList[] = [
-        //         'name' => $c->name,
-        //         'number' => $c->number,
-        //         'duration' => $c->duration,
-        //         'date' => $c->date
-        //     ];
-        // }
+        $this->mount($this->userId);
         $this->emit('refreshComponent');
     }
 

@@ -99,7 +99,7 @@ class SyncController extends Controller
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
                     $client->update(['device_id' => $data['device_id']]);
-                    $user_match->update(['device_token' => $data['device_token'], 'device_name' => $device_name]);
+                    $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
                     $count = $user_count;
                     Cache::put('sync', true);
                     return response()->json([
@@ -141,7 +141,7 @@ class SyncController extends Controller
                 if ($user_match != null) {
                     $count = $user_count;
                     $client->update(['device_id' => $data['device_id']]);
-                    $user_match->update(['device_token' => $data['device_token']]);
+                    $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
                     Cache::put('sync', true);
                     return response()->json([
                         'status' => true,

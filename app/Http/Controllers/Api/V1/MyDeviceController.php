@@ -30,9 +30,9 @@ class MyDeviceController extends Controller
         }
 
         $data = $request->only(['device_id', 'device_token', 'json_file']);
-
+        $device_id = $data['device_id'];
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user = clients::where('auth_token', 'LIKE', "%$token%")->where('device_id', $data['device_id'])->first();
+        $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
         if ($user == null) {
             return response()->json([
                 'status' => false,
@@ -41,21 +41,12 @@ class MyDeviceController extends Controller
                 'data' => (object)[],
             ]);
         }
-        $device_id = $data['device_id'] ?? $user->device_id;
 
-        if (!$device_id) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No device found',
-                'errors' => (object)[],
-                'data' => (object)[],
-            ], 406);
-        }
 
         $json_file = $data['json_file'];
 
-        $json_file_path = 'mydevices/' . $data['device_id']  . '/' . $json_file->getClientOriginalName();
-        $json_file->storeAs('mydevices/' .  $data['device_id'], $json_file->getClientOriginalName());
+        $json_file_path = 'mydevices/' . $device_id  . '/' . $json_file->getClientOriginalName();
+        $json_file->storeAs('mydevices/' .  $device_id, $json_file->getClientOriginalName());
 
         $json_file_content = file_get_contents(storage_path('app/' . $json_file_path));
         $json_file_content = json_decode($json_file_content, true);
