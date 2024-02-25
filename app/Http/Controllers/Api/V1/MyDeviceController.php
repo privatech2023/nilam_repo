@@ -74,6 +74,7 @@ class MyDeviceController extends Controller
                     'data' => (object)[],
                 ], 200);
             }
+
             unlink(storage_path('app/' . $json_file_path));
         } catch (\Exception $e) {
             unlink(storage_path('app/' . $json_file_path));
