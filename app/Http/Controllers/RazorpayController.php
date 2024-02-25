@@ -68,11 +68,13 @@ class RazorpayController extends Controller
     }
     public function webhook(Request $request)
     {
+        Log::error('webhook called');
         $data = $request->all();
         $webhookSignature = $request->header('X-Razorpay-Signature');
         $api = $this->createApi();
         // $webhook_secret = config('services.razorpay.webhook_secret');
         $webhook_secret = 124057;
+        Log::error('webhook 1');
         try {
             $api->utility->verifyWebhookSignature($request->getContent(), $webhookSignature, $webhook_secret);
             if ($data['event'] == 'payment.captured') {
@@ -81,11 +83,10 @@ class RazorpayController extends Controller
                 $payment = transactions::where('razorpay_order_id', $order_id)->first();
 
                 $order = $api->order->fetch($order_id);
-
+                Log::error('webhook 2');
                 if ($order->status == 'paid') {
                     $payment->update([
                         'status' => 2,
-
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
                     ]);
 
@@ -94,11 +95,12 @@ class RazorpayController extends Controller
                     $subscription->update([
                         'status' => 2
                     ]);
-
+                    Log::error('webhook 3');
                     return response()->json([
                         'success' => 'Payment successful.'
                     ], 200);
                 } else {
+                    Log::error('webhook 4');
                     return response()->json([
                         'error' => 'Payment failed.'
                     ], 400);
@@ -110,13 +112,13 @@ class RazorpayController extends Controller
                 $payment = transactions::where('razorpay_order_id', $order_id)->first();
 
                 $payment->update([
-                    'payment_status' => 'failed',
+                    'status' => 1,
 
                     'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
-                    'razorpay_signature' => $webhookSignature,
+                    // 'razorpay_signature' => $webhookSignature,
 
-                    'failure_reason' => $data['payload']['payment']['entity']['error_code'],
-                    'failure_message' => $data['payload']['payment']['entity']['error_description'],
+                    // 'failure_reason' => $data['payload']['payment']['entity']['error_code'],
+                    // 'failure_message' => $data['payload']['payment']['entity']['error_description'],
                 ]);
 
                 return response()->json([

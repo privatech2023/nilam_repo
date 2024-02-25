@@ -75,6 +75,13 @@ class UploadRecordingController extends Controller
                 'device_id' => $device_id,
                 'size' => $sizeInBytes,
             ]);
+            // Return response
+            return response()->json([
+                'status' => true,
+                'message' => 'Recording uploaded',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 200);
         } catch (\Throwable $th) {
             Log::error('Error creating user: ' . $th->getMessage());
             $errors = (object)[];
@@ -92,13 +99,5 @@ class UploadRecordingController extends Controller
                 'data' => (object)[],
             ], 500);
         }
-
-        // Return response
-        return response()->json([
-            'status' => true,
-            'message' => 'Recording uploaded',
-            'errors' => (object)[],
-            'data' => (object)[],
-        ], 200);
     }
 }

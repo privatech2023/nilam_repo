@@ -73,6 +73,7 @@ class AudioRecordComponent extends Component
                 'message' => $res['message'],
             ]);
         } catch (\Throwable $th) {
+            Log::error('done ' . $res['message']);
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),

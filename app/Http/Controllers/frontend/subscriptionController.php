@@ -28,6 +28,7 @@ class subscriptionController extends Controller
         Session::put('name', $client->user);
         Session::put('email', $client->email);
         Session::put('contact', $client->mobile_number);
+        Session::put('storage', 0);
         return view('frontend.pages.subscription.index', $data);
     }
     public function packages()
