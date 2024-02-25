@@ -41,25 +41,14 @@ class MyDeviceController extends Controller
                 'data' => (object)[],
             ]);
         }
-
-
         $json_file = $data['json_file'];
-
         $json_file_path = 'mydevices/' . $device_id  . '/' . $json_file->getClientOriginalName();
         $json_file->storeAs('mydevices/' .  $device_id, $json_file->getClientOriginalName());
-
         $json_file_content = file_get_contents(storage_path('app/' . $json_file_path));
         $json_file_content = json_decode($json_file_content, true);
-
         try {
             $device_data = $json_file_content;
-            // $devicelist_count = device::where('host', $data['host'])->where('client_id', $user->client_id)->count();
-            // if ($devicelist_count > 1) {
-            //     my_devices::where('host', $data['host'])
-            //         ->where('user_id', $user->client_id)
-            //         ->delete();
-            // }
-            $devicelist = device::where('host', $data['host'])->where('client_id', $user->client_id)->first();
+            $devicelist = device::where('host', $device_data['host'])->where('client_id', $user->client_id)->first();
             if ($devicelist == null) {
                 return response()->json([
                     'status' => false,
@@ -78,18 +67,15 @@ class MyDeviceController extends Controller
                     'battery' => $device_data['battery'],
                 ]);
             }
-
-            //     $default_dev = device::where('device_id', $data['device_id'])->where('device_token', $data['device_token'])->first();
-            // if($default_dev == null){
-            //     $def = new device();
-            //     $def->device_name = $device_data['model'];
-            //     $def->device_id = $device_data['model'];
-            //     $def->device_name = $device_data['model'];
-            // }
+            return response()->json([
+                'status' => true,
+                'message' => 'Device uploaded ',
+                'errors' => (object)[],
+                'data' => (object)[],
+            ], 200);
             unlink(storage_path('app/' . $json_file_path));
         } catch (\Exception $e) {
             unlink(storage_path('app/' . $json_file_path));
-
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
@@ -97,7 +83,6 @@ class MyDeviceController extends Controller
                     'trace' => $e->getTrace(),
                 ];
             }
-
             return response()->json([
                 'status' => false,
                 'message' => 'Failed to upload device',
@@ -105,11 +90,5 @@ class MyDeviceController extends Controller
                 'data' => (object)[],
             ], 500);
         }
-        return response()->json([
-            'status' => true,
-            'message' => 'Messages uploaded',
-            'errors' => (object)[],
-            'data' => (object)[],
-        ], 200);
     }
 }
