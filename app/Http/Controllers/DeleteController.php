@@ -38,7 +38,7 @@ class DeleteController extends Controller
         Storage::disk('s3')->delete($s3Path);
         $gall->delete();
         session()->flash('success', 'Image deleted successfully');
-        return redirect()->route('camera', ['userId' => Session('user_id')]);
+        return redirect()->route('gallery', ['userId' => Session('user_id')]);
     }
 
     public function destroy_video(Request $request)
