@@ -59,9 +59,15 @@
                                                         Plan</span>
                                                     <span class="info-box-number text-center text-muted mb-0">FREE</span>
                                                     <div class="text-center">
-                                                        <a href="{{ url('/storage-plan')}}" class="btn btn-xs btn-primary disabled">
+                                                        @if( session('storage') == 1)
+                                                        <a href="{{ url('/storage-plan')}}" class="btn btn-xs btn-primary ">
                                                             <i class="fa-solid fa-cart-shopping"></i> Purchase
                                                         </a>
+                                                        @else
+                                                        <a href="{{ url('/storage-plan')}}" class="btn btn-xs btn-primary disabled">
+                                                            <i class="fa-solid fa-cart-shopping"></i> Purchase
+                                                        </a> 
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>
