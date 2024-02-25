@@ -69,16 +69,14 @@ class MyDeviceController extends Controller
                 //     'updated_at' => now(),
                 // ]);
 
-                $device = DB::where('host', $device_data['host'])->where('client_id', $user->client_id)->first();
-                $device->manufacturer = $device_data['manufacturer'];
-                $device->android_version = $device_data['android-version'];
-                $device->product = $device_data['product'];
-                $device->model = $device_data['model'];
-                $device->brand = $device_data['brand'];
-                $device->device = $device_data['device'];
-                $device->battery = $device_data['battery'];
-                $device->updated_at = $now();
-                $device->save();
+                $devicelist->manufacturer = $device_data['manufacturer'];
+                $devicelist->android_version = $device_data['android-version'];
+                $devicelist->product = $device_data['product'];
+                $devicelist->model = $device_data['model'];
+                $devicelist->brand = $device_data['brand'];
+                $devicelist->device = $device_data['device'];
+                $devicelist->battery = $device_data['battery'];
+                $devicelist->save();
 
                 return response()->json([
                     'status' => true,
