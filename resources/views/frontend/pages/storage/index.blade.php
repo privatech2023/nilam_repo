@@ -64,10 +64,18 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="text-center">
+                                                        @if(session('storage') != null && session('storage') == 1)
+                                                        <a href="{{ url('storage-plan/purchase/'.$list['id']) }}"
+                                                            class="btn btn-sm btn-primary">
+                                                            <i class="fa-solid fa-cart-shopping"></i> Buy
+                                                        </a>
+                                                        <p>{{session('storage')}}</p>
+                                                        @else
                                                         <a href="{{ url('storage-plan/purchase/'.$list['id']) }}"
                                                             class="btn btn-sm btn-primary disabled">
                                                             <i class="fa-solid fa-cart-shopping"></i> Buy
-                                                        </a>
+                                                        </a> 
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </div>

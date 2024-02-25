@@ -16,6 +16,10 @@ class GalleryComponent extends Component
     public $gallery_items;
     public $galleryCount = 0;
 
+
+    public $start = 4;
+    public $skip;
+
     public function mount($userId)
     {
         $this->loadImages();
@@ -28,8 +32,19 @@ class GalleryComponent extends Component
     public function loadImages()
     {
         $clients = clients::where('client_id', $this->userId)->first();
-        $this->gallery_items = gallery_items::where('user_id', $clients->client_id)->where('device_id', $clients->device_id)->orderBy('created_at', 'desc')->get();
+        $this->gallery_items = gallery_items::where('user_id', $clients->client_id)
+            ->where('device_id', $clients->device_id)
+            ->orderBy('created_at', 'desc')
+            ->skip(0)
+            ->take($this->start)
+            ->get();
         $this->galleryCount = count($this->gallery_items);
+    }
+
+    public function loadMore()
+    {
+        $this->start += 4;
+        $this->mount($this->userId);
     }
 
     public function contRefreshComponentSpecific()
@@ -42,7 +57,7 @@ class GalleryComponent extends Component
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
         $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
-        if ($client->device_token == null) {
+        if ($client == null) {
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'No Device token! Please register your device first',
@@ -67,6 +82,7 @@ class GalleryComponent extends Component
                 'message' => $res['message'],
             ]);
         } catch (\Throwable $th) {
+            Log::error('done ' . $res['message']);
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => 'danger',
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
@@ -74,7 +90,6 @@ class GalleryComponent extends Component
         }
 
         // Reload images
-        $this->loadImages();
     }
 
     public function syncGallery()

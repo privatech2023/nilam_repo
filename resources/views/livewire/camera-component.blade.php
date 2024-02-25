@@ -109,7 +109,7 @@
                 <img src="{{ $image->s3Url() }}" alt="tools" class="image-item" >
                 <div class="button-container">
                     <a href="{{ $image->s3Url() }}" data-lightbox="photo" data-title="{{ $image->created_at->format('M d, Y h:i A') }}" class="overlay-button view-button"><i class="fas fa-eye"></i></a>
-                    <i class="fas fa-trash-alt delete-btn"><button class="overlay-button delete" data-id="{{ $image->id }}"></button></i>
+                    <button class="btn-link overlay-button delete" data-id="{{ $image->id }}"><i class="fas fa-trash-alt delete-btn"></i></button>
                 </div>
             </div>
             @endforeach
