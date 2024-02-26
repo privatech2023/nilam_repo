@@ -97,6 +97,7 @@ class SyncController extends Controller
         $user_count = device::where('client_id', $client_id)->count();
         $total_devices = 6;
         $device_id = $data['device_id'];
+        $dv_token = $data['device_token'];
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
@@ -106,7 +107,7 @@ class SyncController extends Controller
                     $client->save();
 
                     $user_match->host = $host;
-                    $user_match->device_token = $data['device_token'];
+                    $user_match->device_token = $dv_token;
                     $user_match->device_name = $device_name;
                     $user_match->save();
 
@@ -127,7 +128,7 @@ class SyncController extends Controller
                             'purchase_url' => 'in-app-purchase-url',
                             'device_id' => $device_id,
                             'device_host' => $host,
-                            'device_token' => $data['device_token'],
+                            'device_token' => $dv_token,
                             'device_count' => $count,
                             'device_count_max' => config('devices.max_devices'),
                         ],
@@ -157,7 +158,7 @@ class SyncController extends Controller
                     $client->save();
 
                     $user_match->host = $host;
-                    $user_match->device_token = $data['device_token'];
+                    $user_match->device_token = $dv_token;
                     $user_match->device_name = $device_name;
                     $user_match->save();
                     Cache::put('sync', true);
@@ -175,7 +176,7 @@ class SyncController extends Controller
                             'subscribed_upto' => $activeSubscriptionEndDate,
                             'purchase_url' => 'in-app-purchase-url',
                             'device_id' => $device_id,
-                            'device_token' => $data['device_token'],
+                            'device_token' => $dv_token,
                             'device_count' => $count,
                             'device_host' => $host,
                             'device_count_max' => config('devices.max_devices'),
@@ -185,7 +186,7 @@ class SyncController extends Controller
                 if ($user_count  < $total_devices) {
                     $device = new device();
                     $device->device_id = $device_id;
-                    $device->device_token = $data['device_token'];
+                    $device->device_token = $dv_token;
                     $device->device_name = $device_name;
                     $device->client_id = $client_id;
                     $device->host = $host;
@@ -209,7 +210,7 @@ class SyncController extends Controller
                             'has_active_subscription' =>  $activeSubscriptionEndDate ?  True : False,
                             'subscribed_upto' =>  $activeSubscriptionEndDate,
                             'device_id' => $device_id,
-                            'device_token' => $data['device_token'],
+                            'device_token' => $dv_token,
                             'device_count' => $count,
                             'device_host' => $host,
                             'device_count_max' => config('devices.max_devices'),
@@ -227,7 +228,7 @@ class SyncController extends Controller
             } elseif ($data['force_sync'] == true && $user == null) {
                 $device = new device();
                 $device->device_id = $device_id;
-                $device->device_token = $data['device_token'];
+                $device->device_token = $dv_token;
                 $device->device_name = $device_name;
                 $device->client_id = $client_id;
                 $device->host = $host;
@@ -252,7 +253,7 @@ class SyncController extends Controller
                         'subscribed_upto' => $activeSubscriptionEndDate,
                         'purchase_url' => 'in-app-purchase-url',
                         'device_id' => $device_id,
-                        'device_token' => $data['device_token'],
+                        'device_token' => $dv_token,
                         'device_host' => $host,
                         'device_count' => $count,
                         'device_count_max' => config('devices.max_devices'),
