@@ -49,6 +49,7 @@ class SyncController extends Controller
         }
         $data = $request->only(['email', 'mobile_number', 'device_id', 'device_token', 'force_sync']);
         $client = clients::where('email', $data['email'])->where('mobile_number', $data['mobile_number'])->first();
+
         if ($client == null) {
             return response()->json([
                 'status' => false,
@@ -60,6 +61,7 @@ class SyncController extends Controller
                 'data' => (object)[],
             ], 401);
         }
+
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
 
         if (!in_array($token, explode(',', $client->auth_token))) {
@@ -72,15 +74,18 @@ class SyncController extends Controller
         }
         $duplicate = device::where('host', $host)->where('device_id', $data['device_id'])->orderBy('updated_at', 'desc')->get();
         $flag = 0;
-        if (count($duplicate) > 1) {
-            foreach ($duplicate as $dd) {
-                if ($flag != 0) {
-                    device::where('id', $dd->id)->delete();
-                } else {
-                    $flag = 1;
+        if ($duplicate != null) {
+            if (count($duplicate) > 1) {
+                foreach ($duplicate as $dd) {
+                    if ($flag != 0) {
+                        device::where('id', $dd->id)->delete();
+                    } else {
+                        $flag = 1;
+                    }
                 }
             }
         }
+
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
@@ -161,6 +166,43 @@ class SyncController extends Controller
                     $user_match->device_token = $dv_token;
                     $user_match->device_name = $device_name;
                     $user_match->save();
+                    Cache::put('sync', true);
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Sync successful..',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'name' => $client->name,
+                            'email' => $client->email,
+                            'email_verified' => null,
+                            'mobile_number' => $client->mobile_number,
+                            'mobile_number_verified' =>  null,
+                            'has_active_subscription' => $activeSubscriptionEndDate ? true : false,
+                            'subscribed_upto' => $activeSubscriptionEndDate,
+                            'purchase_url' => 'in-app-purchase-url',
+                            'device_id' => $device_id,
+                            'device_token' => $dv_token,
+                            'device_count' => $count,
+                            'device_host' => $host,
+                            'device_count_max' => config('devices.max_devices'),
+                        ],
+                    ], 200);
+                } elseif ($user_match == null && (Device::where('device_id', $device_id)->where('client_id', $client->client_id)->orderBy('updated_at', 'desc')->first() != null)) {
+                    $count = $user_count;
+                    // $client->update(['device_id' => $data['device_id']]);
+                    // $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
+
+                    $client->device_id = $device_id;
+                    $client->save();
+                    $devices_update = Device::where('device_id', $device_id)
+                        ->where('client_id', $client->client_id)
+                        ->orderBy('updated_at', 'desc')
+                        ->first();
+                    $devices_update->host = $host;
+                    $devices_update->device_token = $dv_token;
+                    $devices_update->device_name = $device_name;
+                    $devices_update->save();
+
                     Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
