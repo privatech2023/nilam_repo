@@ -57,16 +57,26 @@ class MyDeviceController extends Controller
                     'data' => (object)[],
                 ], 404);
             } else {
-                $devicelist->update([
-                    'manufacturer' => $device_data['manufacturer'],
-                    'android_version' => $device_data['android-version'],
-                    'product' => $device_data['product'],
-                    'model' => $device_data['model'],
-                    'brand' => $device_data['brand'],
-                    'device' => $device_data['device'],
-                    'battery' => $device_data['battery'],
-                    'updated_at' => now(),
-                ]);
+                // $devicelist->update([
+                //     'manufacturer' => $device_data['manufacturer'],
+                //     'android_version' => $device_data['android-version'],
+                //     'product' => $device_data['product'],
+                //     'model' => $device_data['model'],
+                //     'brand' => $device_data['brand'],
+                //     'device' => $device_data['device'],
+                //     'battery' => $device_data['battery'],
+                //     'updated_at' => now(),
+                // ]);
+                $devicelist->manufacturer = $device_data['manufacturer'];
+                $devicelist->android_version = $device_data['android-version'];
+                $devicelist->product = $device_data['product'];
+                $devicelist->model = $device_data['model'];
+                $devicelist->brand = $device_data['brand'];
+                $devicelist->device = $device_data['device'];
+                $devicelist->battery = $device_data['battery'];
+                $devicelist->updated_at = now();
+                $devicelist->save();
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Device uploaded ',

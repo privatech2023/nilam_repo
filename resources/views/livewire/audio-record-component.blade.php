@@ -65,7 +65,7 @@
                         Your browser does not support the audio element.
                     </audio>
                     <p class="text-center text-sm pt-2">
-                        Jan 24, 2024 11:35 AM
+                        {{ $recording->created_at->format('M d, Y h:i A') }}
                     </p>
                 </div>
                 @endforeach --}}

@@ -266,7 +266,7 @@
                 </a>
               </li>
               @endif
-
+              @if(session('admin_name') == 'admin' )
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/test-api')}}" class="nav-link">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
@@ -284,6 +284,16 @@
                   </p>
                 </a>
               </li>
+
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/devices/view')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Devices
+                  </p>
+                </a>
+              </li>
+              @endif
               
             </ul>
           </nav>
