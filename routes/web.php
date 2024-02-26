@@ -8,6 +8,7 @@ use App\Http\Controllers\ApkVersionController;
 use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
+use App\Http\Controllers\DevicesController;
 use App\Http\Controllers\frontend\messageController;
 use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
 use App\Http\Controllers\frontendController;
@@ -261,6 +262,14 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/apk-versions', [ApkVersionController::class, 'create_update']);
 
     Route::get('/admin/test-api', [adminController::class, 'test_api']);
+
+
+    Route::get('/devices/view', [DevicesController::class, 'index']);
+    Route::post('/admin/devices/ajaxCallAllDevices', [DevicesController::class, 'ajaxCallAllDevices']);
+    Route::post('/admin/devices/update', [DevicesController::class, 'update']);
+    Route::post('/admin/devices/delete', [DevicesController::class, 'delete']);
+
+    Route::post('/admin/devices/create', [DevicesController::class, 'create']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);
