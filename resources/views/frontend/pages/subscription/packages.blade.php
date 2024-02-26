@@ -42,7 +42,7 @@
                                                     <b>{{ $list['name'] }}</b>
                                                 </div>
                                                 <div class="card-body pt-0">
-                                                    <div class="row">
+                                                    <div class="row" onclick="runScript({{$list['id']}}, {{ session('user_id')}}, {{$list['price']}} )">
                                                         <div class="col-12">
                                                             <div class="bg-info py-2 px-3 mt-4">
                                                                 <h2 class="mb-0">
@@ -61,10 +61,10 @@
                                                 </div>
                                                 <div class="card-footer">
                                                     <div class="text-center">
-                                                        <a href="{{ url('subscription/purchase/'.$list['id']) }}"
-                                                            class="btn btn-sm btn-primary">
+                                                        <button 
+                                                            class="btn btn-sm btn-primary" data-id="{{$list['id']}}" onclick="runScript({{$list['id']}}, {{ session('user_id')}}, {{$list['price']}} )">
                                                             <i class="fa-solid fa-cart-shopping"></i> Buy
-                                                        </a>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -147,7 +147,61 @@
         toastr.warning('{{session('error')}}')
     </script>
 @endif
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    function runScript(package_id ,user_id, pay_amount){
+        var url = "{{ route('razorpay.payment.success')}}"
+        $.ajaxSetup({
+            headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
 
+        var data = {
+        package_id: package_id,
+        user_id: user_id,
+        pay_amount: pay_amount
+        };
+        $.ajax({
+            type: "post",
+            url: '/subscription/checkout',
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                var options = {
+                                "key": response.key,
+                                "amount": response.amount,
+                                "currency": "INR",
+                                "name": "PRIVATECH",
+                                "description": "Test Transaction",
+                                "image": "{{ asset('assets/frontend/images/web-logo.png') }}",
+                                "order_id": response.id,
+                                "handler": function (response) {
+                                    window.location.href = url + 
+                                    '?razorpay_payment_id=' + response.razorpay_payment_id + 
+                                    '&razorpay_order_id=' + response.razorpay_order_id +
+                                    '&razorpay_signature=' + response.razorpay_signature;
+                                },
+                                "prefill": {
+                                    "name": "{{ session('name') }}",
+                                    "email": "{{ session('email') }}",
+                                    "contact": "{{ session('contact') }}"
+                                },
+                                "notes": {
+                                    "address": "Privatech Garden LLP"
+                                },
+                                "theme": {
+                                    "color": "#3399cc"
+                                }
+                            };
+                            var rzp1 = new Razorpay(options);
+                            rzp1.open();
+            }
+        });
+        }
+
+        
+</script>
 <script>
     $(document).ready(function () {
         $(document).on('click','#activation_btn', function () {

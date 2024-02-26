@@ -17,7 +17,7 @@ class RazorpayController extends Controller
     {
 
         return new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
-        // return new Api('rzp_test_NXVq5jIxTSjarF', 'GJZVIdVfDF874i7yMIHpLrU6');
+        // return new Api('rzp_test_MybG7Zi1r7BIIZ', 'mP17Yqy2Y10qgkbsE9QjhVeF');
     }
 
     public function success(Request $request)
