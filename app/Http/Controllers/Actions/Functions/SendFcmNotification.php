@@ -69,8 +69,8 @@ class SendFcmNotification extends Controller
         }
         $data = [
             'device_token' => $request->input('device_token'),
-            'title' => $request->input('title'),
-            'body' => $request->input('body'),
+            'title' => null,
+            'body' => null,
             'action_to' => $request->input('action_to'),
         ];
         try {
