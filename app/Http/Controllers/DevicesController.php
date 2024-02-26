@@ -37,21 +37,15 @@ class DevicesController extends Controller
                 ->take($length)
                 ->get();
         } elseif (!empty($valueStatus)) {
-            $query = DB::table('issue_tokens')
+            $query = DB::table('devices')
                 ->select('*')
                 ->where('status', $valueStatus)
                 ->get();
 
             $total_count = count($query);
 
-            $data = DB::table('issue_tokens')
-                ->leftJoin('clients', function ($join) {
-                    $join->on('issue_tokens.client_id', '=', 'clients.client_id')
-                        ->where('issue_tokens.client_id', '!=', null);
-                })
-                ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
-                ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
-                ->where('issue_tokens.status', $valueStatus)
+            $data = DB::table('devices')
+                ->where('devices.status', $valueStatus)
                 ->skip($start)
                 ->take($length)
                 ->get();

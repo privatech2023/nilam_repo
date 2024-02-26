@@ -427,16 +427,44 @@
                 data: "client_id"
             },
             {
-                data: "host"
+                data: "host",
+                render: function(data, type, row) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return "<span>NULL</span>";
+                    }
+                }
             },
             {
-                data: "manufacturer"
+                data: "manufacturer",
+                render: function(data, type, row) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return "<span>NULL</span>";
+                    }
+                }
             },
             {
-                data: "android_version"
+                data: "android_version",
+                render: function(data, type, row) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return "<span>NULL</span>";
+                    }
+                }
             },
             {
-                data: "updated_at"
+                data: "updated_at",
+                render: function(data, type, row) {
+                    if (data) {
+                        return data;
+                    } else {
+                        return "<span>NULL</span>";
+                    }
+                }
             },
             {
                 mRender: function(data, type, row) {
@@ -467,7 +495,7 @@
             },
 
         ],
-        bFilter: true, // to display datatable search
+        bFilter: true, 
     });
 
 
