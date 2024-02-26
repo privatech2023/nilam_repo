@@ -258,6 +258,13 @@ class SyncController extends Controller
                         'device_count_max' => config('devices.max_devices'),
                     ],
                 ], 200);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'sync failed',
+                    'errors' => (object)[],
+                    'data' => (object)[],
+                ], 404);
             }
         } catch (Exception $e) {
             Log::error('Error sync: ' . $e->getMessage());
