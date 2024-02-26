@@ -88,6 +88,7 @@ class SyncController extends Controller
             ->orderByDesc('ends_on')
             ->value('ends_on');
         device::whereNull('host')->delete();
+
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
             ->first();
@@ -95,11 +96,20 @@ class SyncController extends Controller
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
         $total_devices = 6;
+        $device_id = $data['device_id'];
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
-                    $client->update(['device_id' => $data['device_id']]);
-                    $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
+                    // $client->update(['device_id' => $device_id]);
+                    // $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
+                    $client->device_id = $device_id;
+                    $client->save();
+
+                    $user_match->host = $host;
+                    $user_match->device_token = $data['device_token'];
+                    $user_match->device_name = $device_name;
+                    $user_match->save();
+
                     $count = $user_count;
                     Cache::put('sync', true);
                     return response()->json([
@@ -115,7 +125,7 @@ class SyncController extends Controller
                             'has_active_subscription' => $activeSubscriptionEndDate ? true : false,
                             'subscribed_upto' => $activeSubscriptionEndDate,
                             'purchase_url' => 'in-app-purchase-url',
-                            'device_id' => $data['device_id'],
+                            'device_id' => $device_id,
                             'device_host' => $host,
                             'device_token' => $data['device_token'],
                             'device_count' => $count,
@@ -140,8 +150,16 @@ class SyncController extends Controller
             } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
                     $count = $user_count;
-                    $client->update(['device_id' => $data['device_id']]);
-                    $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
+                    // $client->update(['device_id' => $data['device_id']]);
+                    // $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
+
+                    $client->device_id = $device_id;
+                    $client->save();
+
+                    $user_match->host = $host;
+                    $user_match->device_token = $data['device_token'];
+                    $user_match->device_name = $device_name;
+                    $user_match->save();
                     Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
@@ -156,7 +174,7 @@ class SyncController extends Controller
                             'has_active_subscription' => $activeSubscriptionEndDate ? true : false,
                             'subscribed_upto' => $activeSubscriptionEndDate,
                             'purchase_url' => 'in-app-purchase-url',
-                            'device_id' => $data['device_id'],
+                            'device_id' => $device_id,
                             'device_token' => $data['device_token'],
                             'device_count' => $count,
                             'device_host' => $host,
@@ -166,14 +184,17 @@ class SyncController extends Controller
                 }
                 if ($user_count  < $total_devices) {
                     $device = new device();
-                    $device->device_id = $data['device_id'];
+                    $device->device_id = $device_id;
                     $device->device_token = $data['device_token'];
                     $device->device_name = $device_name;
                     $device->client_id = $client_id;
                     $device->host = $host;
                     $count = $user_count + 1;
                     $device->save();
-                    $client->update(['device_id' => $data['device_id']]);
+
+                    $client->device_id = $device_id;
+                    $client->save();
+
                     Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
@@ -187,7 +208,7 @@ class SyncController extends Controller
                             'mobile_number_verified' => null,
                             'has_active_subscription' =>  $activeSubscriptionEndDate ?  True : False,
                             'subscribed_upto' =>  $activeSubscriptionEndDate,
-                            'device_id' => $data['device_id'],
+                            'device_id' => $device_id,
                             'device_token' => $data['device_token'],
                             'device_count' => $count,
                             'device_host' => $host,
@@ -205,14 +226,17 @@ class SyncController extends Controller
                 }
             } elseif ($data['force_sync'] == true && $user == null) {
                 $device = new device();
-                $device->device_id = $data['device_id'];
+                $device->device_id = $device_id;
                 $device->device_token = $data['device_token'];
                 $device->device_name = $device_name;
                 $device->client_id = $client_id;
                 $device->host = $host;
                 $device->save();
                 $count = $user_count + 1;
-                $client->update(['device_id' => $data['device_id']]);
+
+                $client->device_id = $device_id;
+                $client->save();
+
                 Cache::put('sync', true);
                 return response()->json([
                     'status' => true,
@@ -227,7 +251,7 @@ class SyncController extends Controller
                         'has_active_subscription' => $activeSubscriptionEndDate ?  True : False,
                         'subscribed_upto' => $activeSubscriptionEndDate,
                         'purchase_url' => 'in-app-purchase-url',
-                        'device_id' => $data['device_id'],
+                        'device_id' => $device_id,
                         'device_token' => $data['device_token'],
                         'device_host' => $host,
                         'device_count' => $count,
