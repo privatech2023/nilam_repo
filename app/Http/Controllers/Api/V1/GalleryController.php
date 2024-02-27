@@ -387,10 +387,11 @@ class GalleryController extends Controller
                                 ->where('device_id', $device_id)
                                 ->where('user_id', $user->client_id)
                                 ->first();
-                            // $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
-                            // if ($exists) {
-                            //     Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
-                            // }
+
+                            $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
+                            if ($exists) {
+                                Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
+                            }
                             $model->delete();
                         }
                         $uuid = \Ramsey\Uuid\Uuid::uuid4();
