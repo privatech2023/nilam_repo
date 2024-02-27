@@ -4,8 +4,11 @@ namespace App\Http\Livewire;
 
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
+use App\Models\defaultStorage;
 use App\Models\device;
 use App\Models\gallery_items;
+use App\Models\storage_txn;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
@@ -16,6 +19,9 @@ class GalleryComponent extends Component
     public $gallery_items;
     public $galleryCount = 0;
 
+    public $store_more = true;
+    public $plan_expired = false;
+
 
     public $start = 4;
     public $skip;
@@ -23,6 +29,7 @@ class GalleryComponent extends Component
     public function mount($userId)
     {
         $this->loadImages();
+        $this->storage_count();
         if ($userId == null) {
             $this->userId = session('user_id');
         }
@@ -100,5 +107,55 @@ class GalleryComponent extends Component
     {
         $devices = device::where('client_id', $this->userId)->select('device_id', 'device_name')->get();
         return view('livewire.gallery-component', ['devices' => $devices]);
+    }
+
+
+    public function storage_count()
+    {
+        $gall = gallery_items::where('user_id', $this->userId)->get();
+        $storage_size = 0;
+        $storage_pack = storage_txn::where('client_id', $this->userId)
+            ->latest('created_at')
+            ->first();
+        $storage_txn = storage_txn::where('client_id', $this->userId)
+            ->latest('created_at')
+            ->get();
+        if ($gall->isNotEmpty()) {
+            foreach ($gall as $g) {
+                $storage_size += $g->size;
+            }
+            if ($storage_pack == null) {
+                $data = defaultStorage::first();
+                if ($storage_size >= ($data->storage * 1024 * 1024)) {
+                    $this->store_more = false;
+                    return;
+                } else {
+                    $this->store_more = true;
+                    return;
+                }
+            } else {
+                foreach ($storage_txn as $st) {
+                    if ($st->status != 0) {
+                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
+                        $createdAt = Carbon::parse($st->created_at);
+                        $expirationDate = $createdAt->addDays($validity);
+                        if ($expirationDate->isPast()) {
+                            $this->plan_expired = true;
+                            return;
+                        } else {
+                            if (($st->storage * (1024 * 1024 * 1024)) <= $storage_size) {
+                                $this->store_more = false;
+                                return;
+                            } else {
+                                $this->store_more = true;
+                                return;
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        }
     }
 }

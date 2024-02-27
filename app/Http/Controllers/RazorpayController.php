@@ -68,20 +68,16 @@ class RazorpayController extends Controller
     }
     public function webhook(Request $request)
     {
-        Log::error('webhook called');
         $data = $request->all();
         $webhookSignature = $request->header('X-Razorpay-Signature');
         $api = $this->createApi();
         // $webhook_secret = config('services.razorpay.webhook_secret');
         $webhook_secret = 124057;
-        Log::error('webhook 1');
         try {
             $api->utility->verifyWebhookSignature($request->getContent(), $webhookSignature, $webhook_secret);
             if ($data['event'] == 'payment.captured') {
                 $order_id = $data['payload']['payment']['entity']['order_id'];
-
                 $payment = transactions::where('razorpay_order_id', $order_id)->first();
-
                 $order = $api->order->fetch($order_id);
                 Log::error('webhook 2');
                 if ($order->status == 'paid') {
@@ -89,7 +85,6 @@ class RazorpayController extends Controller
                         'status' => 2,
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
                     ]);
-
                     $subscription = subscriptions::where('txn_id', $payment->txn_id)->first();
 
                     $subscription->update([
@@ -106,7 +101,6 @@ class RazorpayController extends Controller
                     ], 400);
                 }
             }
-            // If webhook is for payment failed
             if ($data['event'] == 'payment.failed') {
                 $order_id = $data['payload']['payment']['entity']['order_id'];
                 $payment = transactions::where('razorpay_order_id', $order_id)->first();
@@ -115,10 +109,6 @@ class RazorpayController extends Controller
                     'status' => 1,
 
                     'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
-                    // 'razorpay_signature' => $webhookSignature,
-
-                    // 'failure_reason' => $data['payload']['payment']['entity']['error_code'],
-                    // 'failure_message' => $data['payload']['payment']['entity']['error_description'],
                 ]);
 
                 return response()->json([

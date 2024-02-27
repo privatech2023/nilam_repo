@@ -72,7 +72,7 @@
                                                         <p>{{session('storage')}}</p>
                                                         @else
                                                         <a href="{{ url('storage-plan/purchase/'.$list['id']) }}"
-                                                            class="btn btn-sm btn-primary disabled">
+                                                            class="btn btn-sm btn-primary">
                                                             <i class="fa-solid fa-cart-shopping"></i> Buy
                                                         </a> 
                                                         @endif

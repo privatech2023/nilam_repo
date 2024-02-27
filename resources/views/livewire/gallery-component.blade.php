@@ -10,14 +10,16 @@
             </a>
         </div>
         
-            @livewire('dropdown')
-        
+            @livewire('dropdown')       
     </div>
+
+
+    
+    
 
 <div class="content-wrapper remove-background">
     <div id="frame">
-
-        {{-- modal delete --}}
+    {{-- modal delete --}}
  <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -40,6 +42,10 @@
 </div>
 
 
+
+
+
+
         <div class="loader_bg" style="display:none;">
             <div id="loader"></div>
         </div>
@@ -47,6 +53,7 @@
               <button class="btn btn-outline-success" type="button" wire:click="syncGallery" onclick="load()">Sync Gallery</button>
               <button class="btn btn-outline-success btn-sm" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
+
         <style>
             .row img{
                 width:250px;
@@ -106,14 +113,8 @@
 }
         </style>
         <div class="image-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; height: auto; overflow-y: auto;">
-            {{-- @foreach($gallery_items as $image)
-            <a href="{{ $image->s3Url() }}" data-lightbox="photo"
-                data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
-            <img src="{{ $image->s3Url() }}" alt="tools" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;">
-            </a>
-            @endforeach --}}
 
-            <div class="row">
+            {{-- <div class="row">
                 @foreach($gallery_items as $image)
                 <div class="image-wrapper">
                 <img src="{{ $image->s3Url() }}" alt="{{$image->id}}" style=" object-fit: cover; margin-right: 10px; border-radius: 6px;">
@@ -128,7 +129,7 @@
                     @if($gallery_items->count() % 4 == 0) 
                     <button class="btn btn-link p-0 m-0 text-primary" wire:click="loadMore">Load More</button>
                     @endif
-                </div>
+                </div> --}}
 
             
             
@@ -143,6 +144,51 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="store_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
+    <div class="modal-dialog modal-frame modal-notify modal-success modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <p class="pt-3 mx-4">Storage full. Please buy a storage plan to enjoy our gallery service
+                        <strong></strong>.
+                    </p>
+                    <a href="{{ url('/storage-plan')}}" class="btn btn-success">Get it
+                        <i class="fas fa-book ml-1 white-text"></i>
+                    </a>
+                    <a type="button" class="btn btn-outline-success waves-effect" data-dismiss="modal">No, thanks</a>
+                </div>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+
+<div class="modal fade" id="expire_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="true">
+    <div class="modal-dialog modal-frame modal-notify modal-success modal-dialog-centered" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <p class="pt-3 mx-4">Storage full. Please buy a storage plan to enjoy our gallery service
+                        <strong></strong>.
+                    </p>
+                    <a href="{{ url('/storage-plan')}}" class="btn btn-success">Get it
+                        <i class="fas fa-book ml-1 white-text"></i>
+                    </a>
+                    <a type="button" class="btn btn-outline-success waves-effect" data-dismiss="modal">No, thanks</a>
+                </div>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
 <script>
     function load() {
         $('.loader_bg').show();
@@ -151,6 +197,17 @@
 <script>
     document.addEventListener('livewire:load', function () {
         $('.loader_bg').hide();
+
+        const storeMoreValue = @this.store_more;
+        const plan = @this.plan_expired;
+        console.log(storeMoreValue);
+        if(storeMoreValue == false){
+            $('#store_modal').modal('show');
+        }
+
+        if(storeMoreValue == true){
+            $('#expire').modal('show');
+        }
         
         $(document).on('click','.delete', function () {
             var id = this.getAttribute('data-id');
