@@ -73,12 +73,15 @@ class SyncController extends Controller
             ], 401);
         }
 
+
+
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
             ->where('ends_on', '>=', date('Y-m-d'))
             ->orderByDesc('updated_at')
             ->value('ends_on');
+
         $subs = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
             ->where('ends_on', '>=', date('Y-m-d'))
@@ -95,6 +98,7 @@ class SyncController extends Controller
                 $total_devices = $dv_count_pack->devices;
             }
         }
+
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
             ->first();
@@ -184,7 +188,9 @@ class SyncController extends Controller
                             'device_count_max' => config('devices.max_devices'),
                         ],
                     ], 200);
+
                 } elseif ($user_match == null && $user_count  <= $total_devices) {
+
                     $count = $user_count;
                     $client->device_id = $device_id;
                     $client->save();
