@@ -114,7 +114,7 @@
         </style>
         <div class="image-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; height: auto; overflow-y: auto;">
 
-            {{-- <div class="row">
+             <div class="row">
                 @foreach($gallery_items as $image)
                 <div class="image-wrapper">
                 <img src="{{ $image->s3Url() }}" alt="{{$image->id}}" style=" object-fit: cover; margin-right: 10px; border-radius: 6px;">
@@ -129,7 +129,7 @@
                     @if($gallery_items->count() % 4 == 0) 
                     <button class="btn btn-link p-0 m-0 text-primary" wire:click="loadMore">Load More</button>
                     @endif
-                </div> --}}
+                </div> 
 
             
             
