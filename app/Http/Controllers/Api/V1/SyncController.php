@@ -72,26 +72,32 @@ class SyncController extends Controller
                 'data' => (object) [],
             ], 401);
         }
-        // $duplicate = device::where('host', $host)->where('device_id', $data['device_id'])->orderBy('updated_at', 'desc')->get();
-        // $flag = 0;
-        // if ($duplicate != null) {
-        //     if (count($duplicate) > 1) {
-        //         foreach ($duplicate as $dd) {
-        //             if ($flag != 0) {
-        //                 device::where('id', $dd->id)->delete();
-        //             } else {
-        //                 $flag = 1;
-        //             }
-        //         }
-        //     }
-        // }
+
+
+
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
             ->where('ends_on', '>=', date('Y-m-d'))
-            ->orderByDesc('ends_on')
+            ->orderByDesc('updated_at')
             ->value('ends_on');
-        // device::whereNull('host')->delete();
+
+        $subs = subscriptions::where('client_id', $client_id)
+            ->where('status', 1)
+            ->where('ends_on', '>=', date('Y-m-d'))
+            ->orderByDesc('updated_at')
+            ->first();
+        $total_devices = 1;
+        if ($subs != null) {
+            $txns = transactions::where('txn_id', $subs->txn_id)->first();
+            if ($txns->activation_id != null) {
+                $dv_count = activation_codes::where('c_id', $txns->activation_id)->first();
+                $total_devices = $dv_count->devices;
+            } elseif ($txns->package_id != null) {
+                $dv_count_pack = packages::where('id', $txns->package_id)->first();
+                $total_devices = $dv_count_pack->devices;
+            }
+        }
 
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
@@ -99,7 +105,7 @@ class SyncController extends Controller
         $user_match = device::where('host', $host)->where('device_id', $data['device_id'])
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
-        $total_devices = 6;
+
         $device_id = $data['device_id'];
         $dv_token = $data['device_token'];
         try {
@@ -182,7 +188,9 @@ class SyncController extends Controller
                             'device_count_max' => config('devices.max_devices'),
                         ],
                     ], 200);
-                } elseif ($user_match == null && $user_count  < $total_devices) {
+
+                } elseif ($user_match == null && $user_count  <= $total_devices) {
+
                     $count = $user_count;
                     $client->device_id = $device_id;
                     $client->save();
