@@ -30,7 +30,6 @@ class subscriptionController extends Controller
     public function ajaxCallAllClients()
     {
         $today = now('Asia/Kolkata');
-
         $params['draw'] = request('draw');
         $start = request('start');
         $length = request('length');
@@ -42,12 +41,18 @@ class subscriptionController extends Controller
         $valueRegistration = request('registration', '');
 
         if (!empty($search_value)) {
-            $query =  DB::table('clients')
+            $query = DB::table('clients')
                 ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->Join('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
+                ->join('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
+                ->where(function ($query) use ($search_value) {
+                    // Check if the search value contains only digits (assumed to be a mobile number)
+                    if (ctype_digit($search_value)) {
+                        $query->where('clients.mobile_number', 'like', '%' . $search_value . '%');
+                    } else {
+                        // If it contains non-digit characters, assume it's a name
+                        $query->where('clients.name', 'like', '%' . $search_value . '%');
+                    }
                 })
-                ->where('name', 'like', '%' . $search_value . '%')
                 ->orderBy('subscriptions.updated_at', 'desc')
                 ->get();
 
@@ -58,12 +63,17 @@ class subscriptionController extends Controller
                 ->Join('subscriptions', function ($join) use ($today) {
                     $join->on('clients.client_id', '=', 'subscriptions.client_id');
                 })
-                ->where('name', 'like', '%' . $search_value . '%')
+                ->where(function ($query) use ($search_value) {
+                    // Check if the search value contains only digits (assumed to be a mobile number)
+                    if (ctype_digit($search_value)) {
+                        $query->where('clients.mobile_number', 'like', '%' . $search_value . '%');
+                    } else {
+                        // If it contains non-digit characters, assume it's a name
+                        $query->where('clients.name', 'like', '%' . $search_value . '%');
+                    }
+                })
                 ->orderBy('subscriptions.updated_at', 'desc')
-                ->skip($start)
-                ->take($length)
-                ->get()
-                ->toArray();
+                ->get();
         } elseif (!empty($valueStatus)) {
             $data = DB::table('clients')
                 ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscriptions', 'subscriptions.started_at', 'subscriptions.ends_on')
@@ -126,7 +136,13 @@ class subscriptionController extends Controller
             ->orderByDesc('subscriptions.updated_at');
 
         if (!empty($searchValue)) {
-            $query->where('clients.name', 'like', '%' . $searchValue . '%');
+            $query->where(function ($query) use ($searchValue) {
+                if (ctype_digit($searchValue)) {
+                    $query->where('clients.mobile_number', 'like', '%' . $searchValue . '%');
+                } else {
+                    $query->where('clients.name', 'like', '%' . $searchValue . '%');
+                }
+            });
         }
 
         if (!empty($valueStatus)) {
@@ -173,7 +189,13 @@ class subscriptionController extends Controller
             ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.updated_at')
             ->orderByDesc('subscriptions.updated_at');
         if (!empty($search_value)) {
-            $query->where('clients.name', 'like', '%' . $search_value . '%');
+            $query->where(function ($query) use ($search_value) {
+                if (ctype_digit($search_value)) {
+                    $query->where('clients.mobile_number', 'like', '%' . $search_value . '%');
+                } else {
+                    $query->where('clients.name', 'like', '%' . $search_value . '%');
+                }
+            });
         }
         if (!empty($valueStatus)) {
             $query->where('clients.status', $valueStatus);
@@ -217,7 +239,13 @@ class subscriptionController extends Controller
 
 
         if (!empty($search_value)) {
-            $query->where('clients.name', 'like', '%' . $search_value . '%');
+            $query->where(function ($query) use ($search_value) {
+                if (ctype_digit($search_value)) {
+                    $query->where('clients.mobile_number', 'like', '%' . $search_value . '%');
+                } else {
+                    $query->where('clients.name', 'like', '%' . $search_value . '%');
+                }
+            });
         }
 
         if (!empty($valueStatus)) {

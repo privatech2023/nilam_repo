@@ -98,9 +98,9 @@ route::get('/log', function () {
     return view('frontend.admin.pages.logs', ['logs' => $logs]);
 });
 
-Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
+// Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
 Route::group(['middleware' => 'client.auth'], function () {
-    Route::get('/subscription', [FrontendSubscriptionController::class, 'index']);
+    Route::get('/subscription', [FrontendSubscriptionController::class, 'index'])->name('/subscription/packages');
     Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
     // Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
     Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage'])->name('purchase.package');
@@ -110,7 +110,7 @@ Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
 
     Route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
-    Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
+    // Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
 
     Route::get('/storage-plan', [StorageController::class, 'frontend_index']);
     Route::get('/storage-plan/purchase/{id}', [StorageController::class, 'purchase']);
