@@ -21,7 +21,6 @@ class SyncController extends Controller
 {
     public function sync(Request $request)
     {
-        // Validate the request...
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:clients,email',
             'mobile_number' => 'required|numeric|exists:clients,mobile_number',
@@ -73,15 +72,12 @@ class SyncController extends Controller
             ], 401);
         }
 
-
-
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
             ->where('ends_on', '>=', date('Y-m-d'))
             ->orderByDesc('updated_at')
             ->value('ends_on');
-
         $subs = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
             ->where('ends_on', '>=', date('Y-m-d'))
@@ -98,11 +94,10 @@ class SyncController extends Controller
                 $total_devices = $dv_count_pack->devices;
             }
         }
-
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
             ->first();
-        $user_match = device::where('host', $host)->where('device_id', $data['device_id'])
+        $user_match = device::where('host', $host)->where('device_id', $data['device_id'])->where('client_id', $client_id)
             ->first();
         $user_count = device::where('client_id', $client_id)->count();
 
@@ -111,8 +106,6 @@ class SyncController extends Controller
         try {
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
-                    // $client->update(['device_id' => $device_id]);
-                    // $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
                     $client->device_id = $device_id;
                     $client->save();
                     $user_match->host = $host;
@@ -188,9 +181,7 @@ class SyncController extends Controller
                             'device_count_max' => config('devices.max_devices'),
                         ],
                     ], 200);
-
                 } elseif ($user_match == null && $user_count  <= $total_devices) {
-
                     $count = $user_count;
                     $client->device_id = $device_id;
                     $client->save();
@@ -202,7 +193,6 @@ class SyncController extends Controller
                     $device->host = $host;
                     $count = $user_count + 1;
                     $device->save();
-
                     Cache::put('sync', true);
                     return response()->json([
                         'status' => true,
