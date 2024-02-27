@@ -72,27 +72,26 @@ class SyncController extends Controller
                 'data' => (object) [],
             ], 401);
         }
-        $duplicate = device::where('host', $host)->where('device_id', $data['device_id'])->orderBy('updated_at', 'desc')->get();
-        $flag = 0;
-        if ($duplicate != null) {
-            if (count($duplicate) > 1) {
-                foreach ($duplicate as $dd) {
-                    if ($flag != 0) {
-                        device::where('id', $dd->id)->delete();
-                    } else {
-                        $flag = 1;
-                    }
-                }
-            }
-        }
-
+        // $duplicate = device::where('host', $host)->where('device_id', $data['device_id'])->orderBy('updated_at', 'desc')->get();
+        // $flag = 0;
+        // if ($duplicate != null) {
+        //     if (count($duplicate) > 1) {
+        //         foreach ($duplicate as $dd) {
+        //             if ($flag != 0) {
+        //                 device::where('id', $dd->id)->delete();
+        //             } else {
+        //                 $flag = 1;
+        //             }
+        //         }
+        //     }
+        // }
         $client_id = $client->client_id;
         $activeSubscriptionEndDate = subscriptions::where('client_id', $client_id)
             ->where('status', 1)
             ->where('ends_on', '>=', date('Y-m-d'))
             ->orderByDesc('ends_on')
             ->value('ends_on');
-        device::whereNull('host')->delete();
+        // device::whereNull('host')->delete();
 
         $client = clients::where('client_id', $client_id)->first();
         $user = device::where('client_id', $client_id)
@@ -110,7 +109,6 @@ class SyncController extends Controller
                     // $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
                     $client->device_id = $device_id;
                     $client->save();
-
                     $user_match->host = $host;
                     $user_match->device_token = $dv_token;
                     $user_match->device_name = $device_name;
@@ -156,9 +154,6 @@ class SyncController extends Controller
             } elseif ($data['force_sync'] == true && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
                     $count = $user_count;
-                    // $client->update(['device_id' => $data['device_id']]);
-                    // $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
-
                     $client->device_id = $device_id;
                     $client->save();
 
@@ -187,21 +182,18 @@ class SyncController extends Controller
                             'device_count_max' => config('devices.max_devices'),
                         ],
                     ], 200);
-                } elseif ($user_match == null && (Device::where('device_id', $device_id)->where('client_id', $client->client_id)->orderBy('updated_at', 'desc')->first() != null)) {
+                } elseif ($user_match == null && $user_count  < $total_devices) {
                     $count = $user_count;
-                    // $client->update(['device_id' => $data['device_id']]);
-                    // $user_match->update(['host' => $host, 'device_token' => $data['device_token'], 'device_name' => $device_name]);
-
                     $client->device_id = $device_id;
                     $client->save();
-                    $devices_update = Device::where('device_id', $device_id)
-                        ->where('client_id', $client->client_id)
-                        ->orderBy('updated_at', 'desc')
-                        ->first();
-                    $devices_update->host = $host;
-                    $devices_update->device_token = $dv_token;
-                    $devices_update->device_name = $device_name;
-                    $devices_update->save();
+                    $device = new device();
+                    $device->device_id = $device_id;
+                    $device->device_token = $dv_token;
+                    $device->device_name = $device_name;
+                    $device->client_id = $client_id;
+                    $device->host = $host;
+                    $count = $user_count + 1;
+                    $device->save();
 
                     Cache::put('sync', true);
                     return response()->json([
@@ -217,40 +209,6 @@ class SyncController extends Controller
                             'has_active_subscription' => $activeSubscriptionEndDate ? true : false,
                             'subscribed_upto' => $activeSubscriptionEndDate,
                             'purchase_url' => 'in-app-purchase-url',
-                            'device_id' => $device_id,
-                            'device_token' => $dv_token,
-                            'device_count' => $count,
-                            'device_host' => $host,
-                            'device_count_max' => config('devices.max_devices'),
-                        ],
-                    ], 200);
-                }
-                if ($user_count  < $total_devices) {
-                    $device = new device();
-                    $device->device_id = $device_id;
-                    $device->device_token = $dv_token;
-                    $device->device_name = $device_name;
-                    $device->client_id = $client_id;
-                    $device->host = $host;
-                    $count = $user_count + 1;
-                    $device->save();
-
-                    $client->device_id = $device_id;
-                    $client->save();
-
-                    Cache::put('sync', true);
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'Sync successful.',
-                        'errors' => (object)[],
-                        'data' => (object)[
-                            'name' => $client->name,
-                            'email' => $client->email,
-                            'email_verified' => null,
-                            'mobile_number' => $client->mobile_number,
-                            'mobile_number_verified' => null,
-                            'has_active_subscription' =>  $activeSubscriptionEndDate ?  True : False,
-                            'subscribed_upto' =>  $activeSubscriptionEndDate,
                             'device_id' => $device_id,
                             'device_token' => $dv_token,
                             'device_count' => $count,
