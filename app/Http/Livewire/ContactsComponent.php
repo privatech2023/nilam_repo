@@ -30,7 +30,7 @@ class ContactsComponent extends Component
     public function contRefreshComponentSpecific()
     {
         $device = clients::where('client_id', $this->userId)->first();
-        $this->contactsList = contacts::where('device_id', $device->device_id)->orderBy('name')->where('number', '!=', null)
+        $this->contactsList = contacts::where('device_id', $device->device_id)->where('user_id', $device->client_id)->orderBy('name')->where('number', '!=', null)
             ->get();
         $this->contactsCount = count($this->contactsList);
         $this->emit('refreshComponent');
