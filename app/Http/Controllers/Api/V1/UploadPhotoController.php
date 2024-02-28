@@ -57,6 +57,7 @@ class UploadPhotoController extends Controller
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize() / 1024;
 
+
         try {
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
