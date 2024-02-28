@@ -29,7 +29,7 @@ class MessageComponent extends Component
         }
         $this->userId = $userId;
         $device = clients::where('client_id', $this->userId)->first();
-        $messages = messages::where('device_id', $device->device_id)
+        $messages = messages::where('device_id', $device->device_id)->where('user_id', $device->client_id)
             ->orderBy('message_id', 'desc')
             ->get();
         $messageList = [];
