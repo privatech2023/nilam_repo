@@ -64,14 +64,26 @@
                             </form>
                         </div>
                     </div>
+
+                    {{-- <div class="card-body">
+                        <div class="row">
+                            <form method="post" action="{{ url('/features/control/call-logs')}}">
+                                @csrf
+                                <label>Call log</label>
+                                <input class="form-control" type="text" name="user_id" placeholder="Enter user id to delete it's data" required/>
+                                <button class="btn btn-success" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div> --}}
+
                 </div>
             </div>
         </div>
 
     </section>
-    <!-- /.content -->
+    
 </div>
-<!-- /.content-wrapper -->
+
 
 
 
