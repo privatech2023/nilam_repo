@@ -30,9 +30,8 @@ class LostMessagesComponent extends Component
             ]);
             return;
         }
-
         if ($message == '') {
-            $message = 'This device belongs to ' . $device->name . '. Return it by calling at ' . $device->mobile_number;
+            $message = 'This device belongs to ' . $client_id->name . '. Return it by calling at ' . $client_id->mobile_number;
         }
         $data = [
             'device_token' => $device->device_token,
