@@ -79,7 +79,7 @@
         
         <style>
             .delete-btn{
-                margin-left: 60%;
+                margin-left: 50%;
                 border-radius: 15px;
             }
                         .video-container {
@@ -110,9 +110,8 @@
                 .video-container {
                     width: 100%; 
                 }
-            
                 .delete-btn{
-                margin-left: 40%;
+                margin-left: 30%;
                 border-radius: 15px;
             }
             }
