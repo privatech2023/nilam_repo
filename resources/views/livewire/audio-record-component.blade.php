@@ -28,10 +28,7 @@
               <button class="btn btn-outline-success" type="button" wire:click="recordVoice" onclick="load()">Record Audio</button>
               <button class="btn btn-outline-success btn-sm"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
-        {{-- <nav class="navbar navbar-light bg-light">
-              
-              
-        </nav> --}}
+
         <div style="display: flex; margin-top: 20px; margin-left: 10px;" class="audio">
             <div>
                 @foreach ($recordings as $recording)

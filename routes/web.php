@@ -9,6 +9,7 @@ use App\Http\Controllers\Client\DeleteController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\DevicesController;
+use App\Http\Controllers\FeaturesController;
 use App\Http\Controllers\frontend\messageController;
 use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
 use App\Http\Controllers\frontendController;
@@ -132,7 +133,8 @@ Route::group(['middleware' => 'client.auth'], function () {
 
         Route::post('/delete/image', [DeleteController::class, 'destroy_camera']);
         Route::post('/delete/gallery', [DeleteController::class, 'destroy_gallery']);
-
+        Route::post('/delete/video', [DeleteController::class, 'destroy_video']);
+        Route::post('/delete/screen-record', [DeleteController::class, 'destroy_screen_recording']);
 
         Route::get('/message/{userId}', MessageComponent::class)->name('messages');
         Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
@@ -268,6 +270,11 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/devices/delete', [DevicesController::class, 'delete']);
 
     Route::post('/admin/devices/create', [DevicesController::class, 'create']);
+
+    Route::get('/features/control', [FeaturesController::class, 'index']);
+    Route::post('/features/control/messages', [FeaturesController::class, 'messages']);
+    Route::post('/features/control/call-logs', [FeaturesController::class, 'call_logs']);
+    Route::post('/features/control/contacts', [FeaturesController::class, 'contacts']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

@@ -293,6 +293,15 @@
                   </p>
                 </a>
               </li>
+
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/features/control')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Features control
+                  </p>
+                </a>
+              </li>
               @endif
               
             </ul>
