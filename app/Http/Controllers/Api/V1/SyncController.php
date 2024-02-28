@@ -112,7 +112,6 @@ class SyncController extends Controller
                     $user_match->device_token = $dv_token;
                     $user_match->device_name = $device_name;
                     $user_match->save();
-
                     $count = $user_count;
                     Cache::put('sync', true);
                     return response()->json([
