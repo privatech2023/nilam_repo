@@ -82,7 +82,7 @@
         
         <style>
 .delete-btn{
-    margin-left: 60%;
+    margin-left: 50%;
     border-radius: 15px;
 }
             .video-container {
@@ -115,7 +115,7 @@
     }
 
     .delete-btn{
-    margin-left: 40%;
+    margin-left: 30%;
     border-radius: 15px;
 }
 }
@@ -143,7 +143,7 @@
             var id = this.getAttribute('data-id');
                 document.getElementById('deleteItemId').value = id;
                 $('#deleteModal').modal('show');
-        });
+            });
         });
     </script>
 </div>
