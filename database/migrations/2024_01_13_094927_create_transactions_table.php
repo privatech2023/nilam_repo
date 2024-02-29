@@ -31,6 +31,9 @@ return new class extends Migration
             $table->integer('package_id')->nullable();
             $table->string('package_name', 256)->nullable();
 
+            $table->integer('storage_id')->nullable();
+            $table->string('storage_name')->nullable();
+
             $table->integer('activation_id')->nullable();
             $table->string('activation_code', 256)->nullable();
 
