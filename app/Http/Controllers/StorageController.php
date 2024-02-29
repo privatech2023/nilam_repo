@@ -38,9 +38,7 @@ class StorageController extends Controller
     public function purchase($id)
     {
         $receipt = (string) str::uuid();
-
         $storage = storage::where('id', $id)->first();
-
         $amountInPaise = (int)($storage->price * 100);
         $api = new ApiApi(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
         $razorCreate = $api->order->create(array(
@@ -59,7 +57,9 @@ class StorageController extends Controller
         $transaction->tax_amt = $storage->tax;
         $transaction->paid_amt =  $storage->price;
         $transaction->plan_validity_days = $storage->plan_valdity == 'monthly' ? 30 : 365;
-        $transaction->package_name = $storage->name;
+        $transaction->storage_id = $storage->id;
+        $transaction->storage_name = $storage->name;
+        $transaction->package_name = 'Storage';
         $transaction->activation_code = null;
         $transaction->status = 1;
         $transaction->price = $storage->price;

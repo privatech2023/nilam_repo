@@ -32,6 +32,7 @@
                     <div class="card-header">
                         <h3 class="card-title">All packages</h3>
                         <div class="card-tools">
+                            <button type="button" class="btn-sm btn-danger"><a href="{{url('/log/clear')}}">Clear logs</a></button>
                             @if(in_array('createPackage', session('user_permissions')) || session('admin_name') == 'admin')
                             <button type="button" class="btn btn-block btn-success btn-sm" data-toggle="modal"
                                 data-target="#modal-add">Add device</button>

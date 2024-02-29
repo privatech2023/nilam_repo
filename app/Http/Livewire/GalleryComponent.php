@@ -124,21 +124,25 @@ class GalleryComponent extends Component
 
         $manual = manual_txns::where('client_id', $this->userId)->orderByDesc('updated_at')->first();
         if ($manual != null) {
+            if ($gall->isNotEmpty()) {
+                foreach ($gall as $g) {
+                    $storage_size += $g->size;
+                }
+            }
             $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
             $createdAt = Carbon::parse($manual->created_at);
             $expirationDate = $createdAt->addDays($validity);
             if ($expirationDate->isPast()) {
-                $this->plan_expired = true;
+                $this->plan_expired = false;
                 return;
             } elseif (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
-                $this->store_more = false;
+                $this->store_more = true;
                 return;
             } else {
-                $this->store_more = false;
+                $this->store_more = true;
                 return;
             }
-        }
-        if ($gall->isNotEmpty()) {
+        } elseif ($gall->isNotEmpty()) {
             foreach ($gall as $g) {
                 $storage_size += $g->size;
             }

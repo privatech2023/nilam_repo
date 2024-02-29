@@ -100,6 +100,19 @@ route::get('/log', function () {
     return view('frontend.admin.pages.logs', ['logs' => $logs]);
 });
 
+
+Route::get('/log/clear', function () {
+    $logFilePath = storage_path('logs/laravel.log'); // Adjust the path to your log file
+
+    if (File::exists($logFilePath)) {
+        // Clear the log file
+        File::put($logFilePath, '');
+        return redirect()->back();
+    } else {
+        return redirect()->back();
+    }
+});
+
 Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
 // client
 Route::group(['middleware' => 'client.auth'], function () {
