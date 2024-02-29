@@ -303,6 +303,7 @@ class subscriptionController extends Controller
                 'amount' => $razorCreate['amount'],
                 'id' => $razorCreate['id'],
                 'key' => getenv('RAZORPAY_KEY'),
+                // 'key' => "rzp_test_MybG7Zi1r7BIIZ"
             ];
             return response()->json($data);
         } catch (Exception $e) {

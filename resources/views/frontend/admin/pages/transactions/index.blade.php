@@ -30,7 +30,7 @@
                         <h3 class="card-title">All Transactions</h3>
                         <div class="card-tools">
                             <button type="button" class="btn btn-block btn-success btn-sm" data-toggle="modal"
-                                data-target="#modal-add">Add</button>
+                                data-target="#modal-add">Create Transaction</button>
                         </div>
                     </div>
                     <div class="card-body table-responsive">
@@ -77,6 +77,79 @@
         </div>
     </section>
     <!-- /.content -->
+
+
+
+
+    <!-- Add Modal-->
+<div class="modal fade" id="modal-add">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Create Transaction</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- form start -->
+                <form role="form" action="{{ url('/admin/createTransaction')}}" method="post">
+                    @csrf
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group input-group-sm">
+                                    <label for="name">Client mobile number</label>
+                                    <input type="text" class="form-control" name="client_mobile"
+                                        placeholder="Enter client id" autocomplete="off" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group input-group-sm">
+                                    <label for="exampleInputPassword1">Storage limit in GB</label>
+                                    <input type="number" class="form-control" name="storage"
+                                        placeholder="Storage limit" min="0" required autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group input-group-sm">
+                                    <label for="status">Validity</label>
+                                    <select class="form-control" name="storage_validity" required>
+                                    <option value="" selected>Select</option>
+                                    <option value="yearly">Yearly</option>
+                                    <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group input-group-sm">
+                                    <label for="amount">Device</label>
+                                    <input type="number" class="form-control tax-amt" name="device" placeholder="Number of devices" 
+                                        required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group input-group-sm">
+                                    <label for="amount">Subscription validity</label>
+                                    <input type="number" class="form-control tax-amt" name="subscription_validity" placeholder="subscription validity" 
+                                        required>
+                                </div>
+                            </div>
+                        </div>                       
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-sm swalDefaultSuccess">CREATE</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div> 
+
+
 </div>
 @if(session()->get('success'))
 <script type="text/javascript">

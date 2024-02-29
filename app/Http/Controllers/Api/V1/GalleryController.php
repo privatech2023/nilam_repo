@@ -7,6 +7,7 @@ use App\Models\clients;
 use App\Models\defaultStorage;
 use App\Models\device;
 use App\Models\gallery_items;
+use App\Models\manual_txns;
 use App\Models\storage_txn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -356,6 +357,8 @@ class GalleryController extends Controller
         $storage_txn = storage_txn::where('client_id', $user->client_id)
             ->latest('created_at')
             ->get();
+
+
         $storageType = 1; //1 for default storage and 2 for storage pack
         $gall_id = 0;
         $storage_ok = false;
@@ -363,7 +366,112 @@ class GalleryController extends Controller
             foreach ($gall as $g) {
                 $storage_size += $g->size;
             }
-            if ($storage_pack == null) {
+            $manual = manual_txns::where('client_id', $user->client_id)->orderByDesc('updated_at')->first();
+            if ($manual != null) {
+
+                $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
+                $createdAt = Carbon::parse($manual->created_at);
+                $expirationDate = $createdAt->addDays($validity);
+                if ($expirationDate->isPast()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Plan expired',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'upload_next' => false
+                        ],
+                    ], 406);
+                } else {
+                    if (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Storage limit exceeded',
+                            'errors' => (object)[],
+                            'data' => (object)[
+                                'upload_next' => false
+                            ],
+                        ], 406);
+                    } else {
+                        try {
+                            $exists = gallery_items::where('device_gallery_id', $request->photo_id)
+                                ->where('device_id', $device_id)
+                                ->where('user_id', $user->client_id)
+                                ->exists();
+                            if ($exists) {
+                                $model = gallery_items::where('device_gallery_id', $request->photo_id)
+                                    ->where('device_id', $device_id)
+                                    ->where('user_id', $user->client_id)
+                                    ->first();
+                                $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                if ($exists) {
+                                    Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                }
+                                $model->delete();
+                            }
+                            $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                            $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
+                            $directory = 'gallery/images/' . $user->client_id . '/' . $device_id;
+                            $request->photo->storeAs($directory, $filename, 's3');
+                            gallery_items::create([
+                                'device_gallery_id' => $request->photo_id,
+                                'device_id' => $device_id,
+                                'user_id' => $user->client_id,
+                                'media_type' => 'image',
+                                'size' => $sizeInBytes,
+                                'media_url' => $filename,
+                            ]);
+                            $gall2 = gallery_items::where('user_id', $user->client_id)->get();
+                            $storage_size2 = 0;
+                            foreach ($gall2 as $g) {
+                                $storage_size2 += $g->size;
+                            }
+                            // $storage_all2 = storage_txn::where('client_id', $user->client_id)
+                            //     ->where('id', $st->id)
+                            //     ->first();
+                            $remaining = ($manual->storage * (1024 * 1024 * 1024)) - $storage_size2;
+                            if ($remaining > 0) {
+                                return response()->json([
+                                    'status' => false,
+                                    'message' => 'Device gallery upload successful',
+                                    'errors' => (object)[],
+                                    'data' => (object)[
+                                        'upload_next' => true,
+                                        'size' => $remaining
+                                    ],
+                                ], 200);
+                            } else {
+                                return response()->json([
+                                    'status' => false,
+                                    'message' => 'Device gallery upload successful',
+                                    'errors' => (object)[],
+                                    'data' => (object)[
+                                        'upload_next' => false
+                                    ],
+                                ], 200);
+                            }
+                        } catch (\Throwable $th) {
+                            $errors = (object) [];
+                            if (config('app.debug')) {
+                                $errors = (object) [
+                                    'exception' => [$th->getMessage()],
+                                    'trace' => $th->getTrace(),
+                                ];
+                            }
+                            return response()->json(
+                                [
+                                    'status' => false,
+                                    'message' => 'Failed to upload photo',
+                                    'errors' => $errors,
+                                    'data' => (object) [
+                                        'upload_next' => false
+                                    ],
+                                ],
+                                500,
+                            );
+                        }
+                    }
+                }
+            } elseif ($storage_pack == null) {
                 $data = defaultStorage::first();
                 if ($storage_size >= ($data->storage * 1024 * 1024)) {
                     // $user->update(['default_storage' => 1]);
@@ -376,7 +484,6 @@ class GalleryController extends Controller
                         ],
                     ], 406);
                 } else {
-                    //
                     try {
                         $exists = gallery_items::where('device_gallery_id', $request->photo_id)
                             ->where('device_id', $device_id)
@@ -387,10 +494,6 @@ class GalleryController extends Controller
                                 ->where('device_id', $device_id)
                                 ->where('user_id', $user->client_id)
                                 ->first();
-                            // $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
-                            // if ($exists) {
-                            //     Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $data['device_id'] . '/' . $model->media_url);
-                            // }
                             $model->delete();
                         }
                         $uuid = \Ramsey\Uuid\Uuid::uuid4();
@@ -456,6 +559,8 @@ class GalleryController extends Controller
                 }
             } else {
                 $storageType = 2;
+                $c = 1;
+                $length_storage = $storage_txn->count();
                 foreach ($storage_txn as $st) {
                     if ($st->status != 0) {
                         $validity = $st->plan_type == 'monthly' ? 30 : 365;

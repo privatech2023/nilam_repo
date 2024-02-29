@@ -41,6 +41,7 @@ route::post('/v1/mobile-otp-verify', [ApiAuthController::class, 'mobileOtpVerify
 route::post('/v1/sync', [SyncController::class, 'sync']);
 
 Route::post('/v1/upload-message', [MessageSyncController::class, 'uploadMessages'])->name('upload.message');
+
 Route::post('/v1/last-message', [MessageSyncController::class, 'getLastMessage'])->name('last.message');
 
 Route::post('/v1/check-apk-version', [CheckApkVersionController::class, 'checkApkVersion'])->name('check-apk-version');
@@ -62,7 +63,6 @@ Route::post('/v1/gallery/photo', [GalleryController::class, 'listPhotos'])->name
 Route::post('/v1/gallery/photo-upload', [GalleryController::class, 'uploadPhoto'])->name('upload-gallery-photo');
 
 Route::post('/v1/gallery/photo-upload-2', [GalleryController::class, 'uploadPhoto2'])->name('upload-gallery-photo');
-
 
 Route::post('/v1/upload-photo', [UploadPhotoController::class, 'uploadPhoto'])->name('upload.photo');
 

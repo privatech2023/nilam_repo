@@ -99,11 +99,6 @@ class clientController extends Controller
                     $lastSubscription->validity_days = $request->input('validity_days');
                     $lastSubscription->save();
                 } else {
-                    // $update_date = Subscriptions::where('client_id', $request->input('user_id'))
-                    //     ->select('ends_on')
-                    //     ->orderByDesc('updated_at')
-                    //     ->where('status', '=', 1)
-                    //     ->first();
                     $subscription = new subscriptions();
                     $subscription->client_id = $request->input('client_id');
                     $subscription->txn_id = $transaction_id;
@@ -116,9 +111,7 @@ class clientController extends Controller
                 session()->flash('success', 'Subscription updated successfully');
                 return redirect()->route('view_client', ['id' => $request->input('client_id')]);
             } catch (\Exception $e) {
-
                 Log::error('Error creating user: ' . $e->getMessage());
-
                 Session::flash('error', $e->getMessage());
                 return redirect()->route('view_client', ['id' => $request->input('client_id')]);
             }
