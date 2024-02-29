@@ -5,7 +5,7 @@ use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\ApkVersionController;
-use App\Http\Controllers\DeleteController;
+use App\Http\Controllers\Client\DeleteController;
 use App\Http\Controllers\clientController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\DevicesController;
@@ -100,6 +100,19 @@ route::get('/log', function () {
     return view('frontend.admin.pages.logs', ['logs' => $logs]);
 });
 
+
+Route::get('/log/clear', function () {
+    $logFilePath = storage_path('logs/laravel.log'); // Adjust the path to your log file
+
+    if (File::exists($logFilePath)) {
+        // Clear the log file
+        File::put($logFilePath, '');
+        return redirect()->back();
+    } else {
+        return redirect()->back();
+    }
+});
+
 Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
 // client
 Route::group(['middleware' => 'client.auth'], function () {
@@ -133,11 +146,9 @@ Route::group(['middleware' => 'client.auth'], function () {
     Route::group(['middleware' => 'client.validity'], function () {
 
         Route::post('/delete/image', [DeleteController::class, 'destroy_camera']);
-
         Route::post('/delete/gallery', [DeleteController::class, 'destroy_gallery']);
         Route::post('/delete/video', [DeleteController::class, 'destroy_video']);
         Route::post('/delete/screen-record', [DeleteController::class, 'destroy_screen_recording']);
-
 
         Route::get('/message/{userId}', MessageComponent::class)->name('messages');
         Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
