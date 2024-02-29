@@ -34,7 +34,7 @@ class PackageController extends Controller
                 'devices' => 'required'
             ]);
             if ($validatedData->fails()) {
-                Session::flash('success', $validatedData->errors());
+                Session::flash('error', $validatedData->errors());
                 return redirect()->route('/admin/managePackages');
             }
             $package = packages::create([

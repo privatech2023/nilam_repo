@@ -49,7 +49,7 @@
         </nav>
 
         <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-x: auto; height:83%;" >
-            @foreach($videos as $video)
+            {{-- @foreach($videos as $video)
             <div class="video-container" >
                 <video controls class="w-full h-full">
                     <source src="{{$video->s3Url()}}" type="video/mp4">
@@ -60,10 +60,10 @@
                     <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="{{$video->id}}">Delete</button>
                 </p> 
             </div>
-            @endforeach
+            @endforeach --}}
 
 
-            {{-- <div class="video-container" >
+            <div class="video-container" >
                 <video controls class="w-full h-full">
                     <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
                     Your browser does not support the video element.
@@ -72,14 +72,9 @@
                     january 24, 2024
                     <button type="button" class="btn btn-sm btn-danger delete-btn"   onclick="deleteVideo(this)">Delete</button>
                 </p>            
-            </div> --}}
-
-
-
-
+            </div>
 
         </div>
-        
         <style>
 .delete-btn{
     margin-left: 50%;

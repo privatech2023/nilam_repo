@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\activation_codes;
 use App\Models\clients;
 use App\Models\device;
+use App\Models\manual_txns;
 use App\Models\packages;
 use App\Models\subscriptions;
 use App\Models\transactions;
@@ -86,7 +87,10 @@ class SyncController extends Controller
         $total_devices = 1;
         if ($subs != null) {
             $txns = transactions::where('txn_id', $subs->txn_id)->first();
-            if ($txns->activation_id != null) {
+            $manual = manual_txns::where('client_id', $client_id)->orderByDesc('updated_at')->first();
+            if ($manual != null) {
+                $total_devices = $manual->devices;
+            } elseif ($txns->activation_id != null) {
                 $dv_count = activation_codes::where('c_id', $txns->activation_id)->first();
                 $total_devices = $dv_count->devices;
             } elseif ($txns->package_id != null) {

@@ -34,7 +34,8 @@
                         <script>
                             var url = "{{ route('razorpay.payment.success')}}"
                             var options = {
-                                "key": "{{ getenv('RAZORPAY_ID')}}",
+                                "{{ getenv('RAZORPAY_KEY')}}"
+                                // "key": "rzp_test_MybG7Zi1r7BIIZ",
                                 "amount": "{{ $razorPay['amount'] }}",
                                 "currency": "INR",
                                 "name": "PRIVATECH",
