@@ -28,11 +28,13 @@ class DevicesController extends Controller
             $query = DB::table('devices')
                 ->select('*')
                 ->where('client_id', 'like', '%' . $search_value . '%')
+                ->orWhere('device_token', 'like', '%' . $search_value . '%')
                 ->get();
             $total_count = count($query);
 
             $data = DB::table('devices')
                 ->where('client_id', 'like', '%' . $search_value . '%')
+                ->orWhere('device_token', 'like', '%' . $search_value . '%')
                 ->skip($start)
                 ->take($length)
                 ->get();
