@@ -112,7 +112,6 @@ class SyncController extends Controller
                 if ($user_match != null) {
                     $client->device_id = $device_id;
                     $client->save();
-                    $user_match->host = $host;
                     $user_match->device_token = $dv_token;
                     $user_match->device_name = $device_name;
                     $user_match->save();
@@ -235,7 +234,6 @@ class SyncController extends Controller
                 $device->host = $host;
                 $device->save();
                 $count = $user_count + 1;
-
                 $client->device_id = $device_id;
                 $client->save();
 

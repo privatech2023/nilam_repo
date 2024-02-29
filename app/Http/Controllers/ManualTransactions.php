@@ -33,7 +33,6 @@ class ManualTransactions extends Controller
                 return redirect()->back();
             }
 
-
             try {
                 $transaction = new transactions();
                 $transaction->txn_id = (string) Str::uuid();
@@ -74,7 +73,6 @@ class ManualTransactions extends Controller
                     $subscription->validity_days = $request->input('subscription_validity');
                     $subscription->save();
                 }
-
                 $manual = new manual_txns();
                 $manual->client_id = $cl->client_id;
                 $manual->txn_id = $transaction_id;

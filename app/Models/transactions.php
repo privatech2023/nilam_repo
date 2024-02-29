@@ -31,5 +31,7 @@ class transactions extends Model
         'redirected',
         'razorpay_payment_id',
         'razorpay_signature',
+        'storage_id',
+        'storage_name'
     ];
 }
