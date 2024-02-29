@@ -21,26 +21,7 @@
             </div>
 
 {{-- modal delete --}}
-<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="{{ url('/delete/screen-record')}}" method="post">
-        @csrf
-        <div class="modal-footer">
-            <input type="hidden" name="id" id="deleteItemId" value=""/>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-          <button type="submit" class="btn btn-primary">Yes</button>
-        </div>
-    </form>
-    </div>
-    </div>
-</div>
+
 
         <span class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-record" viewBox="0 0 16 16">
                 <path d="M8 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8m0 1A5 5 0 1 0 8 3a5 5 0 0 0 0 10"/>
@@ -49,7 +30,7 @@
               <button class="btn btn-outline-success btn-sm"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
 
-        <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-x: auto; height:83%;" >
+        <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-y: auto; height:83%;" >
             @foreach($screenRecordings as $video)
             <div class="video-container" >
                 <video controls class="w-full h-full">
@@ -64,9 +45,11 @@
             @endforeach
 
             
-           {{-- <div class="video-container" >
+       
+
+            {{-- <div class="video-container" >
                 <video controls class="w-full h-full">
-                    <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+                    <source src="{{ asset('assets/frontend/images/screenshot.mp4')}}" type="video/mp4">
                     Your browser does not support the video element.
                 </video>
                 <p >
@@ -86,7 +69,7 @@
                 position: relative; /* Set position to relative */
                 width: 46%; 
                 height: auto; 
-                overflow: hidden; 
+                /* overflow: hidden;  */
             }
             
             .video-container p {
@@ -119,6 +102,27 @@
                     </style>
     </div>
 
+
+    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ url('/delete/screen-record')}}" method="post">
+                @csrf
+            <div class="modal-footer">
+                <input type="hidden" name="id" id="deleteItemId" value=""/>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="submit" class="btn btn-primary">Yes</button>
+            </div>
+        </form>
+          </div>
+        </div>
+    </div>
     </div>
     <script>
         function load() {
@@ -132,7 +136,8 @@
             var id = this.getAttribute('data-id');
                 document.getElementById('deleteItemId').value = id;
                 $('#deleteModal').modal('show');
-        });
+                console.log('hey')
+            });
         });
     </script>
 </div>
