@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>Error Logs</h1>
+    <button type="button"><a href="{{url('/log/clear')}}">Clear logs</a></button>
     <pre>
         @foreach ($logs as $log)
             {{ $log }}
