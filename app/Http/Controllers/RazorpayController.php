@@ -46,15 +46,22 @@ class RazorpayController extends Controller
                     'redirected' => true,
                     'razorpay_payment_id' => $request->razorpay_payment_id,
                 ]);
-                $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
-                if ($subscription == null) {
-                    $subscription->update([
-                        'status' => 2
-                    ]);
+                if ($transaction->storage_id != null) {
+                    $storage_txn = storage_txn::where('txn_id', $transaction->txn_id)->first();
+                    if ($storage_txn != null) {
+                        $storage_txn->update([
+                            'status' => 1
+                        ]);
+                    }
+                } else {
+                    $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
+                    if ($subscription != null) {
+                        $subscription->update([
+                            'status' => 2
+                        ]);
+                    }
                 }
-                $subscription->update([
-                    'status' => 2
-                ]);
+
                 Session::flash('success', 'Payment successfull');
                 return redirect()->route('home');
             } else {
