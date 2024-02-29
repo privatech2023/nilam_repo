@@ -100,46 +100,34 @@
                 </button>
             </div>
             <div class="modal-body">
-
                 <!-- form start -->
                 <form role="form" action="{{ url('/admin/createPackages')}}" method="post">
                     @csrf
                     <div class="card-body">
-
                         <div class="row">
-
                             <div class="col-sm-6">
-
                                 <div class="form-group input-group-sm">
                                     <label for="name">Package Name *</label>
                                     <input type="text" class="form-control" name="package_name"
                                         placeholder="Name of Package" autocomplete="off" required>
                                 </div>
-
                             </div>
-
                             <div class="col-sm-6">
-
                                 <div class="form-group input-group-sm">
                                     <label for="exampleInputPassword1">Duration in days</label>
                                     <input type="number" class="form-control" name="duration"
                                         placeholder="Duration in days" min="0" required autocomplete="off">
                                 </div>
                             </div>
-
-
                         </div>
-
                         <div class="row">
                             <div class="col-sm-6">
-
                                 <div class="form-group input-group-sm">
                                     <label for="amount">Amount</label>
                                     <input type="number" class="form-control net-amt" name="amount" placeholder="Amount"
                                         required autocomplete="off">
                                 </div>
                             </div>
-
                             <div class="col-sm-6">
                                 <div class="form-group input-group-sm">
                                     <label for="amount">Tax ({{ $gst_rate}}%)</label>
@@ -148,31 +136,23 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="row">
                             <div class="col-sm-6">
-
                                 <div class="form-group input-group-sm">
-
                                     <label for="amount">Price</label>
                                     <input type="number" class="form-control price-amt" name="price" placeholder="Price" required
                                         readonly>
-
                                 </div>
-
                             </div>
                             <div class="col-sm-6">
-
                                 <div class="form-group input-group-sm">
                                     <label>Status</label>
                                     <select class="form-control" name="status">
                                         <option value="1" selected>Active</option>
                                         <option value="0">Disabled </option>
-
                                     </select>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group input-group">
@@ -189,19 +169,15 @@
                         </div>
                     </div>
                     <!-- /.card-body -->
-
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary btn-sm swalDefaultSuccess">CREATE</button>
                     </div>
                 </form>
-
             </div>
-
         </div>
         <!-- /.modal-content -->
     </div>
-
-</div> <!-- /.modal-dialog -->
+</div> 
 
 
 

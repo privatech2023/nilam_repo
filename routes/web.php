@@ -15,6 +15,7 @@ use App\Http\Controllers\frontend\subscriptionController as FrontendSubscription
 use App\Http\Controllers\frontendController;
 use App\Http\Controllers\issueTokenController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ManualTransactions;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\RegisterController;
@@ -99,10 +100,10 @@ route::get('/log', function () {
     return view('frontend.admin.pages.logs', ['logs' => $logs]);
 });
 
-// Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
+Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
+// client
 Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/subscription', [FrontendSubscriptionController::class, 'index'])->name('/subscription/packages');
-    Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
     // Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
     Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage'])->name('purchase.package');
     Route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
@@ -277,6 +278,8 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/features/control/messages', [FeaturesController::class, 'messages']);
     Route::post('/features/control/call-logs', [FeaturesController::class, 'call_logs']);
     Route::post('/features/control/contacts', [FeaturesController::class, 'contacts']);
+
+    Route::post('/admin/createTransaction', [ManualTransactions::class, 'manual']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

@@ -53,10 +53,8 @@ class ContactsComponent extends Component
             'action_to' => $action_to,
         ];
         try {
-
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-
             $this->dispatchBrowserEvent('banner-message', [
                 'style' => $res['status'] ? 'success' : 'danger',
                 'message' => $res['message'],
