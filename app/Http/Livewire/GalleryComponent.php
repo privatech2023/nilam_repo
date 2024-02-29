@@ -133,13 +133,13 @@ class GalleryComponent extends Component
             $createdAt = Carbon::parse($manual->created_at);
             $expirationDate = $createdAt->addDays($validity);
             if ($expirationDate->isPast()) {
-                $this->plan_expired = true;
+                $this->plan_expired = false;
                 return;
             } elseif (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
-                $this->store_more = false;
+                $this->store_more = true;
                 return;
             } else {
-                $this->store_more = false;
+                $this->store_more = true;
                 return;
             }
         } elseif ($gall->isNotEmpty()) {
