@@ -79,7 +79,7 @@ class RazorpayController extends Controller
         $webhookSignature = $request->header('X-Razorpay-Signature');
         $api = $this->createApi();
         // $webhook_secret = config('services.razorpay.webhook_secret');
-        $webhook_secret = 124057;
+        $webhook_secret = getenv('WEBHOOK_SECRET');
         try {
             $api->utility->verifyWebhookSignature($request->getContent(), $webhookSignature, $webhook_secret);
             if ($data['event'] == 'payment.captured') {
@@ -92,11 +92,20 @@ class RazorpayController extends Controller
                         'status' => 2,
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
                     ]);
-                    $subscription = subscriptions::where('txn_id', $payment->txn_id)->first();
+                    if ($payment->storage_id != null) {
+                        $storage_txn = storage_txn::where('txn_id', $payment->storage_id)->first();
+                        if ($storage_txn != null) {
+                            $storage_txn->update([
+                                'status' => 1
+                            ]);
+                        }
+                    } else {
+                        $subscription = subscriptions::where('txn_id', $payment->txn_id)->first();
+                        $subscription->update([
+                            'status' => 2
+                        ]);
+                    }
 
-                    $subscription->update([
-                        'status' => 2
-                    ]);
                     Log::error('webhook 3');
                     return response()->json([
                         'success' => 'Payment successful.'
