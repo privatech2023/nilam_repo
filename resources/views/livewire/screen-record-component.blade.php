@@ -44,8 +44,6 @@
             </div>
             @endforeach
 
-            
-       
 
             {{-- <div class="video-container" >
                 <video controls class="w-full h-full">
