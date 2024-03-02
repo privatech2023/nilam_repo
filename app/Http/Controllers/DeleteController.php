@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\clients;
 use App\Models\gallery_items;
 use App\Models\images;
+use App\Models\recordings;
 use App\Models\screen_recordings;
 use App\Models\videos;
 use Illuminate\Http\Request;
@@ -61,5 +62,15 @@ class DeleteController extends Controller
         $image->delete();
         session()->flash('success', 'Image deleted successfully');
         return redirect()->route('screen-record', ['userId' => Session('user_id')]);
+    }
+    public function destroy_audio(Request $request)
+    {
+        $image = recordings::findOrFail($request->input('id'));
+        $user = clients::where('client_id', session('user_id'))->first();
+        $s3Path = 'recordings/' . $user->client_id . '/' . $user->device_id . '/' . $image->filename;
+        Storage::disk('s3')->delete($s3Path);
+        $image->delete();
+        session()->flash('success', 'Image deleted successfully');
+        return redirect()->route('audio-record', ['userId' => Session('user_id')]);
     }
 }
