@@ -17,6 +17,27 @@
 <div class="content-wrapper remove-background">
     <div id="frame">
 
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageModalLabel">Image View</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img id="modalImage" src="" class="img-fluid" alt="Image">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+
+
+
  {{-- modal delete --}}
  <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -48,12 +69,6 @@
             <div id="loader"></div>
         </div>
         <div class="image-container" style="overflow: auto;">
-            {{-- @foreach($images as $image)
-            <a href="{{ $image->s3Url() }}" data-lightbox="photo"
-                data-title="{{ $image->created_at->format('M d, Y h:i A') }}">
-            <img src="{{ $image->s3Url() }}" alt="tools" style="width: 160px; height: 160px; object-fit: cover; margin-right: 10px; border-radius: 6px;">
-            </a>
-            @endforeach --}}
 
             <style>
                 .image-wrapper {
@@ -79,28 +94,46 @@
 }
 
 .overlay-button {
-    background-color: rgba(255, 255, 255, 0.5);
+    /* background-color: rgba(255, 255, 255, 0.5); */
     border: none;
     padding: 5px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     margin: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Add transition effect */
+    transition: background-color 0.3s ease, margin 0.3s ease; /* Add margin to transition */
 }
 
 .view-button {
-    color: rgb(1, 136, 1); /* Color for "view" icon */
+    color: white; 
 }
 
 .delete-btn {
-    color: rgb(197, 5, 5); /* Color for "delete" icon */
+    color: white;
 }
 
 .image-wrapper:hover .button-container {
-    opacity: 1; /* Show buttons on hover */
+    opacity: 1; 
 }
 .image-wrapper:hover .button-container {
     display: block; /* Show buttons on hover */
+}
+
+
+/* .modal-dialog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+} */
+.modal-body {
+    text-align: center;
+}
+
+#modalImage {
+    max-width: 100%;
+    max-height: 100%;
+    display: inline-block;
 }
 
             </style>
@@ -108,11 +141,25 @@
             <div class="image-wrapper">
                 <img src="{{ $image->s3Url() }}" alt="tools" class="image-item" >
                 <div class="button-container">
-                    <a href="{{ $image->s3Url() }}" data-lightbox="photo" data-title="{{ $image->created_at->format('M d, Y h:i A') }}" class="overlay-button view-button"><i class="fas fa-eye"></i></a>
-                    <button class="btn-link overlay-button delete" data-id="{{ $image->id }}"><i class="fas fa-trash-alt delete-btn"></i></button>
+                    <button class="btn btn-info btn-sm view-button " style="width: 65px; padding: 0;" type="button" data-toggle="modal" data-target="#imageModal" data-src="{{ $image->s3Url() }}" >View</button>
+                    <button class="btn-sm  overlay-button delete-btn delete" data-id="{{ $image->id }}" style="padding: 0; color:white; background-color: rgb(223, 83, 67); width: 55px; margin-top: 16px; margin-bottom: 0;" >Delete</button>
                 </div>
+                <p>{{ $image->created_at->format('M d, Y h:i A') }}</p>
             </div>
             @endforeach
+
+            {{-- <div class="image-wrapper">
+                <img src="https://picsum.photos/200" alt="tools" class="image-item" >
+                <div class="button-container">
+                    <button class="btn btn-info btn-sm view-button " style="width: 65px; padding: 0;" type="button" data-toggle="modal" data-target="#imageModal" data-src="https://picsum.photos/200" >View</button>
+                    <button class="btn-sm  overlay-button delete-btn delete " data-id="1" style="padding: 0; color:white; background-color: rgb(223, 83, 67); width: 55px; margin-top: 16px; margin-bottom: 0;" >Delete</button>
+                </div>
+                <p>January 29, 2023</p>
+            </div> --}}
+
+            
+            
+
         </div>
     </div>
 </div>
@@ -129,6 +176,11 @@
             var id = this.getAttribute('data-id');
                 document.getElementById('deleteItemId').value = id;
                 $('#deleteModal').modal('show');
+        });
+
+        $('.view-button').click(function() {
+            var imageUrl = $(this).data('src');
+            $('#modalImage').attr('src', imageUrl);
         });
     });
 </script>

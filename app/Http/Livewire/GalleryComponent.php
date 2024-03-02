@@ -12,6 +12,8 @@ use App\Models\storage_txn;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Intervention\Image\Facades\Image;
+
 
 class GalleryComponent extends Component
 {
@@ -24,7 +26,7 @@ class GalleryComponent extends Component
     public $plan_expired = false;
 
 
-    public $start = 4;
+    public $start = 40;
     public $skip;
 
     public function mount($userId)
@@ -49,10 +51,25 @@ class GalleryComponent extends Component
         $this->galleryCount = count($this->gallery_items);
     }
 
+    public function compress()
+    {
+        $clients = clients::where('client_id', $this->userId)->first();
+        if ($this->gallery_items->isNotEmpty()) {
+            foreach ($this->gallery_items as $gal) {
+                foreach ($this->gallery_items as $gal) {
+                    $image = Image::make($gal->s3Url());
+                    $image->encode('jpg', 50);
+                    $image->save(public_path('compressed_images/' . $this->userId . '/' . $clients->device_id . '/' . $gal->id . '.jpg'));
+                }
+            }
+        }
+    }
+
     public function loadMore()
     {
-        $this->start += 4;
-        $this->mount($this->userId);
+        // $this->start += 4;
+        // $this->mount($this->userId);
+        $this->emit('loadmore');
     }
 
     public function contRefreshComponentSpecific()
@@ -72,15 +89,12 @@ class GalleryComponent extends Component
             ]);
             return;
         }
-
         $data = [
             'device_token' => $client->device_token,
             'title' => null,
             'body' => null,
             'action_to' => $action_to,
         ];
-
-        // Send notification to device
         try {
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
@@ -96,8 +110,6 @@ class GalleryComponent extends Component
                 'message' => 'Failed to send ' . $action_to . ' notification! - ' . $th->getMessage(),
             ]);
         }
-
-        // Reload images
     }
 
     public function syncGallery()
@@ -110,7 +122,6 @@ class GalleryComponent extends Component
         return view('livewire.gallery-component', ['devices' => $devices]);
     }
 
-
     public function storage_count()
     {
         $gall = gallery_items::where('user_id', $this->userId)->get();
@@ -121,7 +132,6 @@ class GalleryComponent extends Component
         $storage_txn = storage_txn::where('client_id', $this->userId)
             ->latest('created_at')
             ->get();
-
         $manual = manual_txns::where('client_id', $this->userId)->orderByDesc('updated_at')->first();
         if ($manual != null) {
             if ($gall->isNotEmpty()) {

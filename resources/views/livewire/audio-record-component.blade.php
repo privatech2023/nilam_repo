@@ -19,6 +19,29 @@
         <div class="loader_bg" style="display:none;">
             <div id="loader"></div>
         </div>
+
+
+                {{-- modal delete --}}
+ <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ url('/delete/video')}}" method="post">
+            @csrf
+        <div class="modal-footer">
+            <input type="hidden" name="id" id="deleteItemId" value=""/>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-primary">Yes</button>
+        </div>
+    </form>
+      </div>
+    </div>
+</div>
         <nav class="navbar navbar-light bg-light">
             
             <span class="text-secondary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-mic" viewBox="0 0 16 16">
@@ -29,7 +52,7 @@
               <button class="btn btn-outline-success btn-sm"  wire:click="contRefreshComponentSpecific" id="cont-refresh-component-specific" style="margin-left:3px;" type="button">Refresh</button>
         </nav>
 
-        <div style="display: flex; margin-top: 20px; margin-left: 10px;" class="audio">
+        <div style="display: flex; margin-top: 20px; margin-left: 10px; height: 85%; overflow-y:auto;" class="audio">
             <div>
                 @foreach ($recordings as $recording)
                 <div class="border-2 p-1 rounded-md">
@@ -42,9 +65,28 @@
                     </audio>
                     <p class="text-center text-sm pt-2">
                         {{ $recording->created_at->format('M d, Y h:i A') }}
+                        <button type="button" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; border-radius: 7px;" data-id="{{ $recording->id}}">Delete</button>
                     </p>
                 </div>
+                <hr>
                 @endforeach
+
+
+                
+                {{-- <div class="border-2 p-1 rounded-md">
+                    <div class="flex justify-end">
+                    </div>
+                    <audio controls="" class="w-full">
+                        <source src="https://musopen.org/music/recordings/?instrument=203" class="bg-blue-500" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <p class="text-center text-sm pt-2">
+                        January 24, 2023
+                        <button type="button" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; border-radius: 7px;" data-id="1">Delete</button>
+                    </p>
+                </div>
+                <hr> --}}
+                
             </div>
         </div>
     </div>
@@ -58,6 +100,13 @@
     <script>
         document.addEventListener('livewire:load', function () {
             $('.loader_bg').hide();
+
+            $(document).on('click','.delete-btn', function () {
+            var id = this.getAttribute('data-id');
+                document.getElementById('deleteItemId').value = id;
+                $('#deleteModal').modal('show');
+            });
+
         });
     </script>
 </div>
