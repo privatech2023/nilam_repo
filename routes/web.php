@@ -148,6 +148,7 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::post('/delete/image', [DeleteController::class, 'destroy_camera']);
         Route::post('/delete/gallery', [DeleteController::class, 'destroy_gallery']);
         Route::post('/delete/video', [DeleteController::class, 'destroy_video']);
+        Route::post('/delete/audio', [DeleteController::class, 'destroy_audio']);
         Route::post('/delete/screen-record', [DeleteController::class, 'destroy_screen_recording']);
 
         Route::get('/message/{userId}', MessageComponent::class)->name('messages');
