@@ -105,7 +105,6 @@ class RazorpayController extends Controller
                             'status' => 2
                         ]);
                     }
-
                     Log::error('webhook 3');
                     return response()->json([
                         'success' => 'Payment successful.'
