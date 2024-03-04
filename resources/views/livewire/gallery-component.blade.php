@@ -13,6 +13,7 @@
     </div>
 <div class="content-wrapper remove-background">
     <div id="frame">
+
     {{-- modal delete --}}
  <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -34,6 +35,23 @@
       </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageModalLabel">Image View</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <img id="modalImage" src="" class="img-fluid" alt="Image">
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -62,7 +80,7 @@
             .row img {
             width: 150px;
             height: 150px;
-            }
+                }
             }
 
             .image-wrapper {
@@ -72,7 +90,7 @@
     border-radius: 6px;
 }
 
-            .button-container {
+.button-container {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -82,47 +100,59 @@
 }
 
 .overlay-button {
-    background-color: rgba(255, 255, 255, 0.5);
+    /* background-color: rgba(255, 255, 255, 0.5); */
     border: none;
     padding: 5px;
-    border-radius: 55%;
+    /* border-radius: 50%; */
     margin: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Add transition effect */
+    transition: background-color 0.3s ease, margin 0.3s ease; /* Add margin to transition */
 }
 
 .view-button {
-    color: rgb(1, 136, 1); /* Color for "view" icon */
+    color: white; 
 }
 
 .delete-btn {
-    color: rgb(197, 5, 5); 
+    color: white;
 }
 
 .image-wrapper:hover .button-container {
-    opacity: 1; /* Show buttons on hover */
+    opacity: 1; 
 }
 .image-wrapper:hover .button-container {
-    display: block; /* Show buttons on hover */
+    display: block; 
 }
-        </style>
+
+.modal-body {
+    text-align: center;
+}
+
+#modalImage {
+    max-width: 100%;
+    max-height: 100%;
+    display: inline-block;
+}
+    </style>
+
+
         <div class="image-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; height: auto; overflow-y: auto;">
             <div class="row">
                 @foreach($gallery_items as $image)
                 <div class="image-wrapper">
                 <img src="{{ $image->s3Url() }}" alt="{{$image->id}}" style=" object-fit: cover; margin-right: 10px; border-radius: 6px;">
                 <div class="button-container">
-                    <a href="{{ $image->s3Url() }}" data-lightbox="photo"  class="overlay-button view-button"><i class="fas fa-eye"></i></a>
-                    <button class="btn-link overlay-button delete" data-id="{{ $image->id }}"><i class="fas fa-trash-alt delete-btn"></i></button>
+                    <button class="btn btn-info btn-sm view-button " style="width: 65px; padding: 0;" type="button" data-toggle="modal" data-target="#imageModal" data-src="{{ $image->s3Url() }}" >View</button>
+                    <button class="btn-sm  overlay-button delete-btn delete " data-id="{{$image->id}}" style="padding: 0; color:white; background-color: rgb(223, 83, 67); width: 55px; margin-top: 16px; margin-bottom: 0;" >Delete</button>
                 </div>
                 </div>
-                @endforeach
+                @endforeach                
             </div>
-                <div class="text-center" style="margin-top: 10px; margin-left: 1rem; margin-bottom: 2rem;">
-                    @if($gallery_items->count() % 4 == 0) 
-                    <button class="btn btn-link p-0 m-0 text-primary" wire:click="loadMore">Load More</button>
-                    @endif
-                </div>
+            <div class="text-center" style="margin-top: 10px; margin-left: 1rem; margin-bottom: 2rem;">
+                @if($store_more == false || $plan_expired == true) 
+                <button class="btn btn-sm btn-link btn-secondary text-white" wire:click="loadMore">Load More</button>
+                @endif
+            </div>
         </div>
     </div>
 </div>
@@ -163,6 +193,8 @@
         </div>
     </div>
 </div>
+
+
 <script>
     function load() {
         $('.loader_bg').show();
@@ -182,8 +214,23 @@
         }       
         $(document).on('click','.delete', function () {
             var id = this.getAttribute('data-id');
-                document.getElementById('deleteItemId').value = id;
-                $('#deleteModal').modal('show');
+            document.getElementById('deleteItemId').value = id;
+            $('#deleteModal').modal('show');
+        });
+
+
+        Livewire.on('loadmore', function () {
+            if(storeMoreValue == false){
+            $('#store_modal').modal('show');
+            }
+            if(storeMoreValue == true){
+            $('#expire').modal('show');
+            } 
+        });
+
+        $('.view-button').click(function() {
+            var imageUrl = $(this).data('src');
+            $('#modalImage').attr('src', imageUrl);
         });
     });
 </script>
