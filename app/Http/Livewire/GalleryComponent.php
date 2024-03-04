@@ -51,6 +51,7 @@ class GalleryComponent extends Component
         $this->galleryCount = count($this->gallery_items);
     }
 
+
     // public function compress()
     // {
     //     $clients = clients::where('client_id', $this->userId)->first();
@@ -64,6 +65,7 @@ class GalleryComponent extends Component
     //         }
     //     }
     // }
+
 
     public function loadMore()
     {
