@@ -12,7 +12,7 @@ use App\Models\storage_txn;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
-use Intervention\Image\Facades\Image;
+
 
 
 class GalleryComponent extends Component
@@ -51,19 +51,19 @@ class GalleryComponent extends Component
         $this->galleryCount = count($this->gallery_items);
     }
 
-    public function compress()
-    {
-        $clients = clients::where('client_id', $this->userId)->first();
-        if ($this->gallery_items->isNotEmpty()) {
-            foreach ($this->gallery_items as $gal) {
-                foreach ($this->gallery_items as $gal) {
-                    $image = Image::make($gal->s3Url());
-                    $image->encode('jpg', 50);
-                    $image->save(public_path('compressed_images/' . $this->userId . '/' . $clients->device_id . '/' . $gal->id . '.jpg'));
-                }
-            }
-        }
-    }
+    // public function compress()
+    // {
+    //     $clients = clients::where('client_id', $this->userId)->first();
+    //     if ($this->gallery_items->isNotEmpty()) {
+    //         foreach ($this->gallery_items as $gal) {
+    //             foreach ($this->gallery_items as $gal) {
+    //                 $image = Image::make($gal->s3Url());
+    //                 $image->encode('jpg', 50);
+    //                 $image->save(public_path('compressed_images/' . $this->userId . '/' . $clients->device_id . '/' . $gal->id . '.jpg'));
+    //             }
+    //         }
+    //     }
+    // }
 
     public function loadMore()
     {
