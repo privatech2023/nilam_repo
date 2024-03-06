@@ -400,11 +400,13 @@ class GalleryController extends Controller
                                                 ->where('device_id', $device_id)
                                                 ->where('user_id', $user->client_id)
                                                 ->first();
-                                            $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
-                                            if ($exists) {
+                                            $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                            if ($exists2) {
                                                 Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                                Log::error('deleted from s3 2');
                                             }
                                             $model->delete();
+                                            Log::error('deleted from model 2');
                                         } catch (\Throwable $th) {
                                             Log::error('Error creating device: ' . $th->getMessage());
                                         }
@@ -490,11 +492,13 @@ class GalleryController extends Controller
                             ->where('device_id', $device_id)
                             ->where('user_id', $user->client_id)
                             ->first();
-                        $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
-                        if ($exists) {
+                        $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                        if ($exists2) {
                             Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                            Log::error('deleted from s3 2');
                         }
                         $model->delete();
+                        Log::error('deleted from model 2');
                     } catch (\Throwable $th) {
                         Log::error('Error creating device: ' . $th->getMessage());
                     }
