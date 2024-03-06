@@ -74,6 +74,7 @@ class GalleryController extends Controller
                 $query->where('device_id', $device_id);
             }
             $photos = $query->get();
+            Log::info('Retrieved photos from the gallery', ['photos' => $photos->toArray()]);
             return response()->json(
                 [
                     'status' => true,
