@@ -58,7 +58,9 @@ class GalleryController extends Controller
         // Get user
         $user = clients::where('device_id', $data['device_id'])->first();
         $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
-        Log::error('heyyyy5');
+        Log::error($data['device_id']);
+        Log::error($user->client_id);
+        Log::error($user1);
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
