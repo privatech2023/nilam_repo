@@ -112,11 +112,9 @@ class GalleryComponent extends Component
     }
 
     public function syncGallery()
-    {
-        for ($i = 0; $i <= 4; $i++) {
+    {       
             $this->sendNotification('sync_gallery');
-            sleep(2);
-        }
+            sleep(4);
     }
     public function render()
     {
