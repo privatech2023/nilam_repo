@@ -25,12 +25,10 @@ class GalleryController extends Controller
 {
     public function listPhotos(Request $request)
     {
-        Log::error('heyyyy1');
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable',
             'device_token' => 'required'
         ]);
-        Log::error('heyyyy2');
         if ($validator->fails()) {
             return response()->json(
                 [
@@ -42,7 +40,6 @@ class GalleryController extends Controller
                 422,
             );
         }
-        Log::error('heyyyy3');
         $data = $request->only(['device_id', 'device_token']);
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user1_auth = clients::where('auth_token', 'LIKE', "%$token%")->first();
@@ -58,9 +55,6 @@ class GalleryController extends Controller
         // Get user
         // $user = clients::where('device_id', $data['device_id'])->first();
         $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user1_auth->client_id)->first();
-        Log::error($data['device_id']);
-        Log::error($user1_auth->client_id);
-        Log::error($user1);
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
@@ -71,7 +65,7 @@ class GalleryController extends Controller
                 ],
             ], 404);
         }
-        Log::error('heyyyy6');
+
         $device_id = $data['device_id'];
         try {
             $query = gallery_items::where('user_id', $user1_auth->client_id)
