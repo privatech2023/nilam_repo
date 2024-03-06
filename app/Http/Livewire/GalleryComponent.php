@@ -11,6 +11,7 @@ use App\Models\manual_txns;
 use App\Models\storage_txn;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 
@@ -26,7 +27,7 @@ class GalleryComponent extends Component
     public $plan_expired = false;
 
 
-    public $start = 40;
+    public $start = 12;
     public $skip;
 
     public function mount($userId)
@@ -42,33 +43,30 @@ class GalleryComponent extends Component
     public function loadImages()
     {
         $clients = clients::where('client_id', $this->userId)->first();
-        $this->gallery_items = gallery_items::where('user_id', $clients->client_id)
-            ->where('device_id', $clients->device_id)
-            ->orderBy('created_at', 'desc')
-            ->skip(0)
-            ->take($this->start)
-            ->get();
-        $this->galleryCount = count($this->gallery_items);
+        if (session()->has('current_image_count') && session('current_image_count') > 0) {
+            $this->gallery_items = gallery_items::where('user_id', $clients->client_id)
+                ->where('device_id', $clients->device_id)
+                ->orderBy('created_at', 'desc')
+                ->skip(0)
+                ->take(session('current_image_count'))
+                ->get();
+            $this->galleryCount = count($this->gallery_items);
+        } else {
+            $this->gallery_items = gallery_items::where('user_id', $clients->client_id)
+                ->where('device_id', $clients->device_id)
+                ->orderBy('created_at', 'desc')
+                ->skip(0)
+                ->take($this->start)
+                ->get();
+            $this->galleryCount = count($this->gallery_items);
+        }
     }
-
-    // public function compress()
-    // {
-    //     $clients = clients::where('client_id', $this->userId)->first();
-    //     if ($this->gallery_items->isNotEmpty()) {
-    //         foreach ($this->gallery_items as $gal) {
-    //             foreach ($this->gallery_items as $gal) {
-    //                 $image = Image::make($gal->s3Url());
-    //                 $image->encode('jpg', 50);
-    //                 $image->save(public_path('compressed_images/' . $this->userId . '/' . $clients->device_id . '/' . $gal->id . '.jpg'));
-    //             }
-    //         }
-    //     }
-    // }
 
     public function loadMore()
     {
-        // $this->start += 4;
-        // $this->mount($this->userId);
+        $this->start += 12;
+        Session::put('current_image_count', $this->start);
+        $this->mount($this->userId);
         $this->emit('loadmore');
     }
 
@@ -114,7 +112,10 @@ class GalleryComponent extends Component
 
     public function syncGallery()
     {
-        $this->sendNotification('sync_gallery');
+        for ($i = 0; $i <= 4; $i++) {
+            $this->sendNotification('sync_gallery');
+            sleep(2);
+        }
     }
     public function render()
     {

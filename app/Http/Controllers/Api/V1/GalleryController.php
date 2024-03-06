@@ -1,6 +1,11 @@
 <?php
 
+
 namespace App\Http\Controllers\Api\V1;
+
+
+
+
 
 use App\Http\Controllers\Controller;
 use App\Models\clients;
@@ -13,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+
 
 class GalleryController extends Controller
 {
@@ -60,17 +66,13 @@ class GalleryController extends Controller
         }
 
         $device_id = $data['device_id'];
-
         try {
             $query = gallery_items::where('user_id', $user->client_id)
                 ->select('device_id', 'device_gallery_id', 'media_url', 'media_type', 'created_at');
-
             if ($device_id) {
                 $query->where('device_id', $device_id);
             }
-
             $photos = $query->get();
-
             return response()->json(
                 [
                     'status' => true,
@@ -88,7 +90,6 @@ class GalleryController extends Controller
                     'trace' => $e->getTrace(),
                 ];
             }
-
             return response()->json(
                 [
                     'status' => false,
@@ -109,7 +110,6 @@ class GalleryController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:300000',
             'device_token' => 'required'
         ]);
-
         if ($validator->fails()) {
             return response()->json(
                 [
@@ -160,7 +160,9 @@ class GalleryController extends Controller
             ->get();
 
 
-        $storageType = 1; //1 for default storage and 2 for storage pack
+
+
+        $storageType = 1;
         $gall_id = 0;
         $storage_ok = false;
         if ($gall->isNotEmpty()) {
@@ -169,7 +171,6 @@ class GalleryController extends Controller
             }
             $manual = manual_txns::where('client_id', $user->client_id)->orderByDesc('updated_at')->first();
             if ($manual != null) {
-
                 $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
                 $createdAt = Carbon::parse($manual->created_at);
                 $expirationDate = $createdAt->addDays($validity);
@@ -212,6 +213,8 @@ class GalleryController extends Controller
                             $uuid = \Ramsey\Uuid\Uuid::uuid4();
                             $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
                             $directory = 'gallery/images/' . $user->client_id . '/' . $device_id;
+                            $thumbnail_directory = 'gallery/images/' . $user->client_id . '/' . 'thumbnails' . '/' . $device_id;
+                            $request->photo->storeAs($thumbnail_directory, $filename, 's3');
                             $request->photo->storeAs($directory, $filename, 's3');
                             gallery_items::create([
                                 'device_gallery_id' => $request->photo_id,
@@ -395,6 +398,7 @@ class GalleryController extends Controller
                                             ->where('device_id', $device_id)
                                             ->where('user_id', $user->client_id)
                                             ->first();
+                                        return response()->json($model);
                                         $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
                                         if ($exists2) {
                                             Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
