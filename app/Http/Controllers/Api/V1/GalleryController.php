@@ -25,7 +25,7 @@ class GalleryController extends Controller
 {
     public function listPhotos(Request $request)
     {
-        Log::error('listing called');
+
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable',
             'device_token' => 'required'
@@ -74,7 +74,7 @@ class GalleryController extends Controller
                 $query->where('device_id', $device_id);
             }
             $photos = $query->get();
-            Log::info('Retrieved photos from the gallery', ['photos' => $photos->toArray()]);
+            Log::error($photos);
             return response()->json(
                 [
                     'status' => true,
