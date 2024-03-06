@@ -64,14 +64,14 @@ class GalleryController extends Controller
                 ],
             ], 404);
         }
-
+        Log::error('heyyyy');
         $device_id = $data['device_id'];
         try {
             $query = gallery_items::where('user_id', $user->client_id)
                 ->select('device_id', 'device_gallery_id', 'media_url', 'media_type', 'created_at');
-                $query->where('device_id', $device_id);
+            $query->where('device_id', $device_id);
             $photos = $query->get();
-            Log::error('heyyyy');
+
             return response()->json(
                 [
                     'status' => true,
