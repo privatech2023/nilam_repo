@@ -25,11 +25,11 @@ class GalleryController extends Controller
 {
     public function listPhotos(Request $request)
     {
+        Log::error('listing called');
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable',
             'device_token' => 'required'
         ]);
-
         if ($validator->fails()) {
             return response()->json(
                 [
