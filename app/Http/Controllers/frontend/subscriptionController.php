@@ -22,9 +22,6 @@ class subscriptionController extends Controller
     public function index()
     {
         $logged_user = session()->get('user_id');
-        // $data = array(
-        //     'subs_status' => $this->getSubStatus($logged_user),
-        // );
         $client = clients::where('client_id', $logged_user)->first();
         Session::put('name', $client->user);
         Session::put('email', $client->email);

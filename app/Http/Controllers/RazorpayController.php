@@ -102,7 +102,7 @@ class RazorpayController extends Controller
                     } else {
                         $subscription = subscriptions::where('txn_id', $payment->txn_id)->first();
                         $subscription->update([
-                            'status' => 2
+                            'status' => 1
                         ]);
                     }
                     Log::error('webhook 3');

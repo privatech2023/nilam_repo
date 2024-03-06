@@ -31,7 +31,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="{{ url('/delete/video')}}" method="post">
+        <form action="{{ url('/delete/audio')}}" method="post">
             @csrf
         <div class="modal-footer">
             <input type="hidden" name="id" id="deleteItemId" value=""/>
