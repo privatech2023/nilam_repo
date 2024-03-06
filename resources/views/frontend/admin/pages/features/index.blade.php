@@ -65,16 +65,16 @@
                         </div>
                     </div>
 
-                    {{-- <div class="card-body">
+                    <div class="card-body">
                         <div class="row">
-                            <form method="post" action="{{ url('/features/control/call-logs')}}">
+                            <form method="post" action="{{ url('/features/control/gallery')}}">
                                 @csrf
-                                <label>Call log</label>
+                                <label>Gallery</label>
                                 <input class="form-control" type="text" name="user_id" placeholder="Enter user id to delete it's data" required/>
                                 <button class="btn btn-success" type="submit">Submit</button>
                             </form>
                         </div>
-                    </div> --}}
+                    </div>
 
                 </div>
             </div>
