@@ -160,9 +160,6 @@ class GalleryController extends Controller
             ->latest('created_at')
             ->get();
 
-
-
-
         $storageType = 1;
         $gall_id = 0;
         $storage_ok = false;
@@ -290,6 +287,7 @@ class GalleryController extends Controller
                             ->where('device_id', $device_id)
                             ->where('user_id', $user->client_id)
                             ->exists();
+                        Log::error('in exists');
                         if ($exists) {
                             $model = gallery_items::where('device_gallery_id', $request->photo_id)
                                 ->where('device_id', $device_id)
@@ -298,8 +296,10 @@ class GalleryController extends Controller
                             $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
                             if ($exists2) {
                                 Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                Log::error('deleted from s3 1');
                             }
                             $model->delete();
+                            Log::error('deleted from model 1');
                         }
                         $uuid = \Ramsey\Uuid\Uuid::uuid4();
                         $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
@@ -495,10 +495,10 @@ class GalleryController extends Controller
                         $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
                         if ($exists2) {
                             Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
-                            Log::error('deleted from s3 2');
+                            Log::error('deleted from s3 3');
                         }
                         $model->delete();
-                        Log::error('deleted from model 2');
+                        Log::error('deleted from model 3');
                     } catch (\Throwable $th) {
                         Log::error('Error creating device: ' . $th->getMessage());
                     }
