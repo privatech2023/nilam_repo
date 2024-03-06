@@ -141,7 +141,7 @@
                 @foreach($gallery_items as $image)
                 <div class="image-wrapper">
                 <img src="{{ $image->s3Url() }}" alt="{{$image->id}}" style=" object-fit: cover; margin-right: 10px; border-radius: 6px;">
-
+                {{-- <p>{{$image->device_gallery_id}}</p> --}}
                 <div class="button-container">
                     <button class="btn btn-info btn-sm view-button " style="width: 65px; padding: 0;" type="button" data-toggle="modal" data-target="#imageModal" data-src="{{ $image->s3Url() }}" >View</button>
                     <button class="btn-sm  overlay-button delete-btn delete " data-id="{{$image->id}}" style="padding: 0; color:white; background-color: rgb(223, 83, 67); width: 55px; margin-top: 16px; margin-bottom: 0;" >Delete</button>
@@ -150,7 +150,7 @@
                 @endforeach                
             </div>
             <div class="text-center" style="margin-top: 10px; margin-left: 1rem; margin-bottom: 2rem;">
-                @if($gallery_items->count() % 12 == 0 && $gallery_items->count() != 0) 
+                @if($gallery_items->count() != 0) 
                 <button class="btn btn-sm btn-link btn-secondary text-white" wire:click="loadMore">Load More</button>
                 @endif
             </div>
