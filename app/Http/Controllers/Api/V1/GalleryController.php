@@ -16,6 +16,7 @@ use App\Models\manual_txns;
 use App\Models\storage_txn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -394,16 +395,19 @@ class GalleryController extends Controller
                                         ->where('user_id', $user->client_id)
                                         ->exists();
                                     if ($exists) {
-                                        $model = gallery_items::where('device_gallery_id', $request->photo_id)
-                                            ->where('device_id', $device_id)
-                                            ->where('user_id', $user->client_id)
-                                            ->first();
-                                        return response()->json($model);
-                                        $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
-                                        if ($exists2) {
-                                            Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                        try {
+                                            $model = gallery_items::where('device_gallery_id', $request->photo_id)
+                                                ->where('device_id', $device_id)
+                                                ->where('user_id', $user->client_id)
+                                                ->first();
+                                            $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                            if ($exists) {
+                                                Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                            }
+                                            $model->delete();
+                                        } catch (\Throwable $th) {
+                                            Log::error('Error creating device: ' . $th->getMessage());
                                         }
-                                        $model->delete();
                                     }
                                     $uuid = \Ramsey\Uuid\Uuid::uuid4();
                                     $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
@@ -481,15 +485,19 @@ class GalleryController extends Controller
                 ->exists();
             try {
                 if ($exists) {
-                    $model = gallery_items::where('device_gallery_id', $request->photo_id)
-                        ->where('device_id', $device_id)
-                        ->where('user_id', $user->client_id)
-                        ->first();
-                    $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
-                    if ($exists) {
-                        Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                    try {
+                        $model = gallery_items::where('device_gallery_id', $request->photo_id)
+                            ->where('device_id', $device_id)
+                            ->where('user_id', $user->client_id)
+                            ->first();
+                        $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                        if ($exists) {
+                            Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                        }
+                        $model->delete();
+                    } catch (\Throwable $th) {
+                        Log::error('Error creating device: ' . $th->getMessage());
                     }
-                    $model->delete();
                 }
                 $uuid = \Ramsey\Uuid\Uuid::uuid4();
                 $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
