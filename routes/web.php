@@ -290,6 +290,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/features/control/messages', [FeaturesController::class, 'messages']);
     Route::post('/features/control/call-logs', [FeaturesController::class, 'call_logs']);
     Route::post('/features/control/contacts', [FeaturesController::class, 'contacts']);
+    Route::post('/features/control/gallery', [FeaturesController::class, 'gallery']);
 
     Route::post('/admin/createTransaction', [ManualTransactions::class, 'manual']);
 });
