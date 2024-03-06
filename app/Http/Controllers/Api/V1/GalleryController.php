@@ -56,10 +56,10 @@ class GalleryController extends Controller
         }
         Log::error('heyyyy4');
         // Get user
-        $user = clients::where('device_id', $data['device_id'])->first();
-        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        // $user = clients::where('device_id', $data['device_id'])->first();
+        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user1_auth->client_id)->first();
         Log::error($data['device_id']);
-        Log::error($user->client_id);
+        Log::error($user1_auth->client_id);
         Log::error($user1);
         if ($user1 == null) {
             return response()->json([
@@ -74,7 +74,7 @@ class GalleryController extends Controller
         Log::error('heyyyy6');
         $device_id = $data['device_id'];
         try {
-            $query = gallery_items::where('user_id', $user->client_id)
+            $query = gallery_items::where('user_id', $user1_auth->client_id)
                 ->select('device_id', 'device_gallery_id', 'media_url', 'media_type', 'created_at');
             $query->where('device_id', $device_id);
             $photos = $query->get();
