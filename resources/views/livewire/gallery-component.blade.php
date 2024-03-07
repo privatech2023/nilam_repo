@@ -129,6 +129,9 @@
     max-height: 80%;
     display: inline-block;
 }
+#imageModal {
+    max-height: 76%;
+}
     </style>
 
 
