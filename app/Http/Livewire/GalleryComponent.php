@@ -25,8 +25,6 @@ class GalleryComponent extends Component
 
     public $store_more = true;
     public $plan_expired = false;
-
-
     public $start = 12;
     public $skip;
 
@@ -112,10 +110,8 @@ class GalleryComponent extends Component
 
     public function syncGallery()
     {
-        for ($i = 0; $i <= 4; $i++) {
-            $this->sendNotification('sync_gallery');
-            sleep(2);
-        }
+        $this->sendNotification('sync_gallery');
+        sleep(4);
     }
     public function render()
     {

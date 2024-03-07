@@ -29,7 +29,6 @@ class GalleryController extends Controller
             'device_id' => 'nullable',
             'device_token' => 'required'
         ]);
-
         if ($validator->fails()) {
             return response()->json(
                 [
@@ -52,9 +51,10 @@ class GalleryController extends Controller
                 'data' => (object)[],
             ]);
         }
+        Log::error('heyyyy4');
         // Get user
-        $user = clients::where('device_id', $data['device_id'])->first();
-        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+        // $user = clients::where('device_id', $data['device_id'])->first();
+        $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user1_auth->client_id)->first();
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
@@ -68,12 +68,11 @@ class GalleryController extends Controller
 
         $device_id = $data['device_id'];
         try {
-            $query = gallery_items::where('user_id', $user->client_id)
+            $query = gallery_items::where('user_id', $user1_auth->client_id)
                 ->select('device_id', 'device_gallery_id', 'media_url', 'media_type', 'created_at');
-            if ($device_id) {
-                $query->where('device_id', $device_id);
-            }
+            $query->where('device_id', $device_id);
             $photos = $query->get();
+
             return response()->json(
                 [
                     'status' => true,
@@ -159,9 +158,6 @@ class GalleryController extends Controller
         $storage_txn = storage_txn::where('client_id', $user->client_id)
             ->latest('created_at')
             ->get();
-
-
-
 
         $storageType = 1;
         $gall_id = 0;
@@ -290,6 +286,7 @@ class GalleryController extends Controller
                             ->where('device_id', $device_id)
                             ->where('user_id', $user->client_id)
                             ->exists();
+                        Log::error('in exists');
                         if ($exists) {
                             $model = gallery_items::where('device_gallery_id', $request->photo_id)
                                 ->where('device_id', $device_id)
@@ -298,8 +295,10 @@ class GalleryController extends Controller
                             $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
                             if ($exists2) {
                                 Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                Log::error('deleted from s3 1');
                             }
                             $model->delete();
+                            Log::error('deleted from model 1');
                         }
                         $uuid = \Ramsey\Uuid\Uuid::uuid4();
                         $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
@@ -400,11 +399,13 @@ class GalleryController extends Controller
                                                 ->where('device_id', $device_id)
                                                 ->where('user_id', $user->client_id)
                                                 ->first();
-                                            $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
-                                            if ($exists) {
+                                            $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                            if ($exists2) {
                                                 Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                                Log::error('deleted from s3 2');
                                             }
                                             $model->delete();
+                                            Log::error('deleted from model 2');
                                         } catch (\Throwable $th) {
                                             Log::error('Error creating device: ' . $th->getMessage());
                                         }
@@ -490,11 +491,13 @@ class GalleryController extends Controller
                             ->where('device_id', $device_id)
                             ->where('user_id', $user->client_id)
                             ->first();
-                        $exists = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
-                        if ($exists) {
+                        $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                        if ($exists2) {
                             Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                            Log::error('deleted from s3 3');
                         }
                         $model->delete();
+                        Log::error('deleted from model 3');
                     } catch (\Throwable $th) {
                         Log::error('Error creating device: ' . $th->getMessage());
                     }
