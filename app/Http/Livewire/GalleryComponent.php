@@ -60,6 +60,7 @@ class GalleryComponent extends Component
         }
     }
 
+
     public function loadMore()
     {
         $this->start += 12;

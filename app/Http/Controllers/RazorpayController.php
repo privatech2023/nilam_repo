@@ -57,7 +57,7 @@ class RazorpayController extends Controller
                     $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
                     if ($subscription != null) {
                         $subscription->update([
-                            'status' => 2
+                            'status' => 1
                         ]);
                     }
                 }
