@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            //
+            $table->integer('storage_id')->nullable();
+            $table->string('storage_name', 299)->nullable();
         });
     }
 
