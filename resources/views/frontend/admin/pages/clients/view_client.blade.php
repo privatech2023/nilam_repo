@@ -106,6 +106,7 @@
                         <th style="width: 00%">Type</th>
                         <th style="width: 10%">Validity</th>
                         <th style="width: 10%">Status</th>
+                        <th style="width: 10%">Invoice</th>
                     </tr>
                   </thead>
                   <tbody>          
@@ -120,6 +121,13 @@
                         <td>{{ $list['txn_type'] }}</td>
                         <td>{{ $list['plan_validity_days'] }}</td>
                         <td>{{ $list['status'] == 1 ? 'Pending' : 'Success' }}</td>
+                        <td>
+                          @if($list['status'] != 1)
+                              <a href="{{ url('/admin/invoice/'.$list['txn_id'])}}" target="_blank" class="btn btn-sm btn-primary btn-default"><i class="fas fa-print"></i> Print</a>
+                          @else
+                              <button class="btn btn-sm btn-danger btn-default text-sm" disabled>No invoice</button>
+                          @endif
+                      </td>
                     </tr>
                 @endforeach
                 

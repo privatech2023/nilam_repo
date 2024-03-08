@@ -867,6 +867,7 @@ class ComposerStaticInit699f9a7b680380e2c4fda790a0cb8db4
         'App\\Models\\gallery_items' => __DIR__ . '/../..' . '/app/Models/gallery_items.php',
         'App\\Models\\groups' => __DIR__ . '/../..' . '/app/Models/groups.php',
         'App\\Models\\images' => __DIR__ . '/../..' . '/app/Models/images.php',
+        'App\\Models\\invoice' => __DIR__ . '/../..' . '/app/Models/invoice.php',
         'App\\Models\\issue_token' => __DIR__ . '/../..' . '/app/Models/issue_token.php',
         'App\\Models\\issue_type' => __DIR__ . '/../..' . '/app/Models/issue_type.php',
         'App\\Models\\location' => __DIR__ . '/../..' . '/app/Models/location.php',

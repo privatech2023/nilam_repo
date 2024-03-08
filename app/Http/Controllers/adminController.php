@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\activation_codes;
+use App\Models\clients;
 use App\Models\coupons;
 use App\Models\groups;
+use App\Models\invoice;
 use App\Models\packages;
 use App\Models\roles;
 use App\Models\transactions;
 use App\Models\User;
 use App\Models\user_groups;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -179,5 +182,51 @@ class adminController extends Controller
     public function test_api()
     {
         return view('frontend.admin.pages.test-api');
+    }
+
+    public function invoice($id)
+    {
+        $frontend = new frontendController;
+        $data['gst_rate'] = $frontend->getSettings('gst_rate');
+
+        $txn = transactions::where('txn_id', $id)->first();
+
+        if ($txn->txn_mode != 'MANUAL') {
+            if ($txn->package_id == null) {
+                $validity =  $txn->plan_valdity_days;
+                $v = packages::where('duration_in_days', $validity)->first();
+                if ($v == null) {
+                    $product = 'PRIVATECH PACKAGE(ACTIVATION CODE)';
+                } else {
+                    $product = $v->name;
+                }
+            } else {
+                $product = $txn->package_name;
+            }
+        } else {
+            $product =  'SPECIAL PACK';
+        }
+
+
+        $client = clients::where('client_id', $txn->client_id)->first();
+
+        $check_invoice = invoice::where('txn_id', $id)->first();
+        if ($check_invoice != null) {
+            return view('invoice-print', $data)->with(['txn' => $txn, 'client' => $client, 'invoice' => $check_invoice, 'product' => $product]);
+        } else {
+            $latestInvoice = invoice::orderBy('id', 'desc')->first();
+            $invoiceNumber = $latestInvoice ? intval($latestInvoice->invoice_number) + 1 : 1000;
+
+            $invoice = new invoice();
+            $invoice->invoice_number = $invoiceNumber;
+            $invoice->txn_id = $id;
+            $invoice->client_id = $txn->client_id;
+            $invoice->invoice_date = now();
+            $invoice->billing_date = Carbon::parse($txn->updated_at)->toDateString();
+            $invoice->total_amount = $txn->paid_amt;
+            $invoice->save();
+
+            return view('invoice-print', $data)->with(['txn' => $txn, 'client' => $client, 'invoice' => $invoice, 'product' => $product]);
+        }
     }
 }
