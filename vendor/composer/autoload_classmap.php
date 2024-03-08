@@ -119,6 +119,7 @@ return array(
     'App\\Models\\gallery_items' => $baseDir . '/app/Models/gallery_items.php',
     'App\\Models\\groups' => $baseDir . '/app/Models/groups.php',
     'App\\Models\\images' => $baseDir . '/app/Models/images.php',
+    'App\\Models\\invoice' => $baseDir . '/app/Models/invoice.php',
     'App\\Models\\issue_token' => $baseDir . '/app/Models/issue_token.php',
     'App\\Models\\issue_type' => $baseDir . '/app/Models/issue_type.php',
     'App\\Models\\location' => $baseDir . '/app/Models/location.php',
