@@ -298,7 +298,8 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/admin/invoice/{id}', [adminController::class, 'invoice']);
 
     Route::post('/admin/client/print', [adminController::class, 'client_print']);
-    Route::get('/admin/client/print-view', [adminController::class, 'client_print_view']);
+
+    Route::post('/admin/client/print-view', [adminController::class, 'client_print_view']);
 
 });
 
