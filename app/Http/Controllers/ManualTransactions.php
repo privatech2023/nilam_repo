@@ -106,4 +106,45 @@ class ManualTransactions extends Controller
 
         return $randomNumber;
     }
+
+
+    public function update_manual(Request $request)
+    {
+        try {
+            $validatedData =  Validator::make($request->all(), [
+                'client_mobile' => 'required',
+            ]);
+            $cl = clients::where('mobile_number', $request->input('client_mobile'))->first();
+            if ($validatedData->fails()) {
+                Session::flash('error', $validatedData->errors());
+                return redirect()->back();
+            } elseif ($cl == null) {
+                Session::flash('error', 'No client found with this mobile number');
+                return redirect()->back();
+            }
+
+            try {
+                $manual = manual_txns::where('client_id', $cl->client_id)->first();
+                if ($request->input('device') != '') {
+                    $manual->devices = $request->input('device');
+                } elseif ($request->input('storage') != '') {
+                    $manual->storage = $request->input('storage');
+                } elseif ($request->input('storage_validity') != '') {
+                    $manual->storage_validity = $request->input('storage_validity');
+                }
+                $manual->update();
+
+                session()->flash('success', 'transaction updated successfully');
+                return redirect()->back();
+            } catch (\Exception $e) {
+                Log::error('Error creating user: ' . $e->getMessage());
+                Session::flash('error', $e->getMessage());
+                return redirect()->route('view_client', ['id' => $request->input('client_id')]);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error creating user: ' . $e->getMessage());
+
+            return redirect()->back()->withErrors(['error' => 'An error occurred. Please try again.'])->withInput();
+        }
+    }
 }
