@@ -12,21 +12,21 @@
     </div>
     @if(session('store_more') == false)
     <div class="container">
-        <span class="text-md breadcrumb-text lead" style="color: #6e668d; margin-left: 3px;">STORAGE FULL</span>
+        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE FULL</span>
     </div>
     @elseif(session('plan_expired') == true)
     <div class="container">
-        <span class="text-md breadcrumb-text lead" style="color: #6e668d; margin-left: 3px;">STORAGE PLAN EXPIRED</span>
+        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE PLAN EXPIRED</span>
     </div>
     @else 
     <div class="container">
-        <span class="text-md breadcrumb-text lead" style="color: #6e668d; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
+        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
     </div>
     <div class="container">
         @if(session('remaining_days') == 'DEFAULT PACK')
-        <span class="text-md breadcrumb-text lead" style="color: #6e668d; margin-left: 3px;">{{session('remaining_days')}}</span>
+        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">{{session('remaining_days')}}</span>
         @else
-        <span class="text-md breadcrumb-text lead" style="color: #6e668d; margin-left: 3px;">{{session('remaining_days')}} DAYS</span>
+        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">{{session('remaining_days')}} DAYS</span>
         @endif
     </div>
     @endif
