@@ -175,7 +175,6 @@
     var viewButton = '';
     var deleteButton = '';
 
-    // Checking adminName and user permissions
     var adminName = {!! json_encode(session('admin_name')) !!}; // Convert PHP session data to JavaScript variable
     var userPermissions = {!! json_encode(session('user_permissions')) !!}; // Convert PHP session data to JavaScript variable
 
@@ -244,9 +243,27 @@ function printData() {
         type: 'POST',
         data: { tableData: tableData },
         success: function(response) {
-            console.log(response)
-            var url = '/admin/client/print-view?tableData=' + encodeURIComponent(JSON.stringify(response));
-            window.open(url, '_blank'); 
+            // console.log(response)
+            // var url = '/admin/client/print-view?tableData=' + encodeURIComponent(JSON.stringify(response));
+            // window.location.href = url; 
+
+            var form = document.createElement('form');
+        form.method = 'POST'; 
+        form.action = '/admin/client/print-view'; 
+
+        var csrfToken = document.createElement('input');
+csrfToken.type = 'hidden';
+csrfToken.name = '_token'; 
+csrfToken.value = '{{ csrf_token() }}';
+        var tableDataInput = document.createElement('input');
+        tableDataInput.type = 'hidden';
+        tableDataInput.name = 'tableData'; 
+        tableDataInput.value = JSON.stringify(response); 
+        form.appendChild(tableDataInput);
+        form.appendChild(csrfToken);
+        document.body.appendChild(form);
+            console.log(csrfToken);
+        form.submit();
         },
         error: function(xhr, status, error) {
             console.error(error);
