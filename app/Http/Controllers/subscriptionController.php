@@ -29,6 +29,7 @@ class subscriptionController extends Controller
 
     public function ajaxCallAllClients()
     {
+
         $draw = request('draw');
         $start = request('start');
         $length = request('length');
@@ -36,10 +37,12 @@ class subscriptionController extends Controller
         $valueStatus = request('status', '');
         $valueRegistration = request('registration', '');
 
+
         $query = DB::table('clients')
             ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
             ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
             ->orderByDesc('subscriptions.updated_at');
+
         if (!empty($searchValue)) {
             $query->where(function ($query) use ($searchValue) {
                 if (ctype_digit($searchValue)) {
@@ -49,22 +52,27 @@ class subscriptionController extends Controller
                 }
             });
         }
+
         if (!empty($valueStatus)) {
             $query->where('clients.status', $valueStatus);
         }
+
         if (!empty($valueRegistration)) {
             $valueRegistration = date('Y-m-d', strtotime($valueRegistration));
             $query->whereDate('subscriptions.updated_at', $valueRegistration);
         }
         $total_count = $query->count();
 
+
         $data = $query->skip($start)->take($length)->get();
+
         $json_data = [
             "draw" => intval($draw),
             "recordsTotal" => $total_count,
             "recordsFiltered" => $total_count,
             "data" => $data,
         ];
+
         return response()->json($json_data);
     }
 
