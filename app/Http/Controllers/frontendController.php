@@ -148,7 +148,7 @@ class frontendController extends Controller
                 } else {
                     $this->store_more = true;
                     $this->remaining_days = 'DEFAULT PACK';
-                    $this->storage_left = $data->storage;
+                    $this->storage_left = intval($data->storage - ($storage_size / (1024 * 1024)));
                     return;
                 }
             } else {
