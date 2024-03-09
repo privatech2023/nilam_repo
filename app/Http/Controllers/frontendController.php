@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\defaultStorage;
 use App\Models\device;
+use App\Models\gallery_items;
+use App\Models\manual_txns;
 use App\Models\settings;
+use App\Models\storage_txn;
 use App\Models\subscriptions;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -13,6 +18,10 @@ use Illuminate\Support\Facades\Session;
 
 class frontendController extends Controller
 {
+    public $storage_left = 0;
+    public $remaining_days = '';
+    public $plan_expired = false;
+    public $store_more = true;
 
     public function home()
     {
@@ -26,6 +35,13 @@ class frontendController extends Controller
             } else {
                 Session::put('validity', null);
             }
+            $this->storage_count();
+
+            Session::put('storage_left', $this->storage_left);
+            Session::put('remaining_days', $this->remaining_days);
+            Session::put('plan_expired', $this->plan_expired);
+            Session::put('store_more', $this->store_more);
+            // dd(session::all());
         }
         Session::forget('user_data');
         return view('frontend/pages/index');
@@ -33,19 +49,13 @@ class frontendController extends Controller
 
     public function sendOTP($number, $message)
     {
-        // Account details
         $apiKey = urlencode(getenv('TL_API_KEY'));
-
-        // Message details
         $numbers = array($number);
         $sender = urlencode(getenv('TL_SENDER'));
         $message = rawurlencode($message);
         $numbers = implode(',', $numbers);
 
-
-        // Prepare data for POST request
         $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-
         $ch = curl_init('https://api.textlocal.in/send/');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_POST, true);
@@ -63,24 +73,19 @@ class frontendController extends Controller
 
     public function sendEmailOtp($address, $totp)
     {
-
         $data =  array("otp" => $totp);
-
         try {
             Mail::to($address)
                 ->send(new \App\Mail\OtpMail($data));
         } catch (\Exception $e) {
-
             dd($e);
         }
     }
 
     public function getSettings($key)
     {
-
         $settingsModel = new settings();
         $setting = $settingsModel->where('key', $key)->first();
-
         return $setting ? $setting->value : null;
     }
 
@@ -93,5 +98,112 @@ class frontendController extends Controller
             $data = 1;
         }
         return response()->json($data);
+    }
+
+
+    public function storage_count()
+    {
+        $gall = gallery_items::where('user_id', session('user_id'))->get();
+        $storage_size = 0;
+        $storage_pack = storage_txn::where('client_id', session('user_id'))
+            ->latest('created_at')
+            ->first();
+        $storage_txn = storage_txn::where('client_id', session('user_id'))
+            ->latest('created_at')
+            ->get();
+        $manual = manual_txns::where('client_id', session('user_id'))->orderByDesc('updated_at')->first();
+        if ($manual != null) {
+            $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
+            $createdAt = Carbon::parse($manual->created_at);
+            $expirationDate = $createdAt->addDays($validity);
+            if ($gall->isNotEmpty()) {
+                foreach ($gall as $g) {
+                    $storage_size += $g->size;
+                }
+                if ($expirationDate->isPast()) {
+                    $this->plan_expired = true;
+                    return;
+                } elseif (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
+                    $this->store_more = false;
+                    return;
+                } else {
+                    $this->remaining_days = $expirationDate->diffInDays(Carbon::now());
+                    $this->storage_left = intval(($manual->storage * 1024) - ($storage_size / (1024 * 1024)));
+                    return;
+                }
+            } else {
+                $this->remaining_days = $expirationDate->diffInDays(Carbon::now());
+                $this->storage_left = $manual->storage * 1024;
+                return;
+            }
+        } elseif ($gall->isNotEmpty()) {
+            foreach ($gall as $g) {
+                $storage_size += $g->size;
+            }
+            if ($storage_pack == null) {
+                $data = defaultStorage::first();
+                if ($storage_size >= ($data->storage * 1024 * 1024)) {
+                    $this->store_more = false;
+                    return;
+                } else {
+                    $this->store_more = true;
+                    $this->remaining_days = 'DEFAULT PACK';
+                    $this->storage_left = $data->storage;
+                    return;
+                }
+            } else {
+                foreach ($storage_txn as $st) {
+                    if ($st->status != 0) {
+                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
+                        $createdAt = Carbon::parse($st->created_at);
+                        $expirationDate = $createdAt->addDays($validity);
+                        if ($expirationDate->isPast()) {
+                            $this->plan_expired = true;
+                            return;
+                        } else {
+                            if (($st->storage * (1024 * 1024 * 1024)) <= $storage_size) {
+                                $this->store_more = false;
+                                return;
+                            } else {
+                                $this->storage_left = intval(($st->storage * 1024) - ($storage_size / (1024 * 1024)));
+                                $this->remaining_days = $expirationDate->diffInDays(Carbon::now());
+                                $this->store_more = true;
+                                return;
+                            }
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+            }
+        } else {
+            if ($storage_pack == null) {
+                $data = defaultStorage::first();
+                $this->store_more = true;
+                $this->remaining_days = 'DEFAULT PACK';
+                $this->storage_left = $data->storage;
+                return;
+            } else {
+                foreach ($storage_txn as $st) {
+                    if ($st->status != 0) {
+                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
+                        $createdAt = Carbon::parse($st->created_at);
+                        $expirationDate = $createdAt->addDays($validity);
+                        if ($expirationDate->isPast()) {
+                            $this->plan_expired = true;
+                            return;
+                        } else {
+                            $this->storage_left = intval($st->storage * 1024);
+                            $this->remaining_days = $expirationDate->diffInDays(Carbon::now());
+                            $this->store_more = true;
+                            return;
+                        }
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            return;
+        }
     }
 }
