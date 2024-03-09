@@ -135,18 +135,20 @@ class GalleryComponent extends Component
                 foreach ($gall as $g) {
                     $storage_size += $g->size;
                 }
-            }
-            $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
-            $createdAt = Carbon::parse($manual->created_at);
-            $expirationDate = $createdAt->addDays($validity);
-            if ($expirationDate->isPast()) {
-                $this->plan_expired = false;
-                return;
-            } elseif (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
-                $this->store_more = true;
-                return;
+                $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
+                $createdAt = Carbon::parse($manual->created_at);
+                $expirationDate = $createdAt->addDays($validity);
+                if ($expirationDate->isPast()) {
+                    $this->plan_expired = true;
+                    return;
+                } elseif (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
+                    $this->store_more = false;
+                    return;
+                } else {
+                    $this->store_more = true;
+                    return;
+                }
             } else {
-                $this->store_more = true;
                 return;
             }
         } elseif ($gall->isNotEmpty()) {
@@ -185,6 +187,8 @@ class GalleryComponent extends Component
                     }
                 }
             }
+        } else {
+            return;
         }
     }
 }

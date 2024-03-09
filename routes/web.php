@@ -293,8 +293,11 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/features/control/gallery', [FeaturesController::class, 'gallery']);
 
     Route::post('/admin/createTransaction', [ManualTransactions::class, 'manual']);
+    Route::post('/admin/updateTransaction', [ManualTransactions::class, 'update_manual']);
 
     Route::get('/admin/invoice/{id}', [adminController::class, 'invoice']);
+    Route::post('/admin/client/print', [adminController::class, 'client_print']);
+    Route::get('/admin/client/print-view', [adminController::class, 'client_print_view']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

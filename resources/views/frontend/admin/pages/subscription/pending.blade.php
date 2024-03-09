@@ -44,6 +44,9 @@
                                             <option value="2">Disabled</option>
                                         </select>
                                     </td>
+                                    <td>
+                                        <button id="printButton" class="btn btn-outline-primary btn-sm">Print</button>
+                                    </td>
                                 </tr>
                             </table>
                             <table class="float-right">
@@ -121,8 +124,8 @@
     var dataTable = $('#dataTable').DataTable({
 
         lengthMenu: [
-            [10, 30, -1],
-            [10, 30, "All"]
+            [10, 30, 50, 100],
+            [10, 30, 50, 100]
         ], // page length options
         bProcessing: true,
         serverSide: true,
@@ -251,6 +254,29 @@
     $('#searchByStatus, #registration_date').change(function() {
     dataTable.draw();
 });
+
+function printData() {
+        var table = dataTable.rows().data();
+        var tableData = table.rows().data().toArray();
+        $.ajax({
+        url: '/admin/client/print',
+        type: 'POST',
+        data: { tableData: tableData },
+        success: function(response) {
+            console.log(response)
+            var url = '/admin/client/print-view?tableData=' + encodeURIComponent(JSON.stringify(response));
+            window.open(url, '_blank'); 
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+    }
+
+
+    $('#printButton').on('click', function() {
+        printData();
+    });
         });
     </script>
 
