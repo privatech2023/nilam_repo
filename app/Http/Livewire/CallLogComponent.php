@@ -26,7 +26,7 @@ class CallLogComponent extends Component
         $calls = call_logs::where('user_id', $user->client_id)
             ->where('device_id', $user->device_id)
             ->orderBy('date', 'desc')
-            ->paginate(100);
+            ->paginate(200);
         // dd($calls);
         foreach ($calls as $c) {
             $this->callList[] = [

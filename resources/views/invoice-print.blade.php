@@ -27,7 +27,7 @@
       <div class="col-12" >
         <h2 class="page-header">
           <img src="{{ asset('assets/frontend/images/web-logo.png')}}" style="width: 100px; height: 100px;"> PRIVATECH GARDEN LLP
-          <small class="float-right" style="margin-top: 2rem;">Date: {{ $invoice->invoice_date}}</small>
+          {{-- <small class="float-right" style="margin-top: 2rem;">Date: {{ $invoice->invoice_date}}</small> --}}
         </h2>
       </div>
       <!-- /.col -->

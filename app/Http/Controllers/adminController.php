@@ -229,4 +229,16 @@ class adminController extends Controller
             return view('invoice-print', $data)->with(['txn' => $txn, 'client' => $client, 'invoice' => $invoice, 'product' => $product]);
         }
     }
+
+    public function client_print(Request $request)
+    {
+        $tableData = $request->input('tableData');
+        return response()->json($tableData);
+    }
+
+    public function client_print_view(Request $request)
+    {
+        $tableData = json_decode($request->input('tableData'));
+        return view('clients-print', ['tableData' => $tableData]);
+    }
 }
