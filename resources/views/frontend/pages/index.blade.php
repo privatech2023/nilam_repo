@@ -9,22 +9,6 @@
     <div>
         <span class="text-md breadcrumb-text" ><a href="{{ url('/')}}">Home </a>/ Dashboard</span>
     </div>
-    @if(session('store_more') == false)
-    <div>
-        <span class="text-md breadcrumb-text lead" style="color: #6e668d; margin-left: 3px;">STORAGE FULL</span>
-    </div>
-    @elseif(session('plan_expired') == true)
-    <div>
-        <span class="text-md breadcrumb-text lead" style="color: #ff007f; margin-left: 3px;">STORAGE PLAN EXPIRED</span>
-    </div>
-    @else
-    <div>
-        <span class="text-md breadcrumb-text lead" style="color: #ff007f; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
-    </div>
-    <div>
-        <span class="text-md breadcrumb-text lead" style="color: #ff007f; margin-left: 3px;">{{session('remaining_days')}} DAYS REMAINING</span>
-    </div>
-    @endif
 </div>
 @endif
     <div class="content-wrapper remove-background">
