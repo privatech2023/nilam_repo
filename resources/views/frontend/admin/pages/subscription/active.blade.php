@@ -39,6 +39,7 @@
                     <div class="card-body">
                         <!-- Custom Filter -->
                         <table class="float-right">
+                            
                             <tr>
                                 <td>
                                     <select class="form-control form-control-sm" id='searchByStatus'>
@@ -47,9 +48,12 @@
                                         <option value='2'>Disabled</option>
                                     </select>
                                 </td>
+                                <td>
+                                    <button id="printButton" class="btn btn-outline-primary btn-sm">Print</button>
+                                </td>
+                                
                             </tr>
                         </table>
-
                         <table class="float-right">
                             <tr>
                                 <td>
@@ -57,7 +61,6 @@
                                 </td>
                             </tr>
                         </table>
-
                         <table id="dataTable" class="table table-bordered table-striped table-hover">
                             <thead>
                                 <tr>
@@ -108,24 +111,21 @@
 </div>
 
 <script>
-
     $(document).ready(function() {
     var i = 1;
-
     $.ajaxSetup({
             headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
             });
-
     $("#clientTree").addClass('menu-open');
     $("#clientMenu").addClass('active');
     $("#clientSubMenuActive").addClass('active');
 
     var dataTable = $('#dataTable').DataTable({
         lengthMenu: [
-            [10, 30, -1],
-            [10, 30, "All"]
+            [10, 30, 50, 100],
+            [10, 30, 50, 100]
         ],
         bProcessing: true,
         serverSide: true,
@@ -188,9 +188,7 @@
 
     return viewButton + ' ' + deleteButton;
 }
-
-
-             }
+            }
         ],
         columnDefs: [
             { orderable: false, targets: [0, 1, 2, 3] },
@@ -211,7 +209,6 @@
             });
         }
     });
-
     $(document).on('click','.btn-delete', function(event) {
         var id = $(this).data('id');
         var name = $(this).data('name');
@@ -219,10 +216,33 @@
         $('#delName').text(name);
         $('#modal-delete').modal('show');
     });
-
     $('#searchByStatus, #registration_date').change(function() {
     dataTable.draw();
 });
+
+function printData() {
+        var table = dataTable.rows().data();
+        var tableData = table.rows().data().toArray();
+        $.ajax({
+        url: '/admin/client/print',
+        type: 'POST',
+        data: { tableData: tableData },
+        success: function(response) {
+            console.log(response)
+            var url = '/admin/client/print-view?tableData=' + encodeURIComponent(JSON.stringify(response));
+            window.open(url, '_blank'); 
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+    }
+
+
+    $('#printButton').on('click', function() {
+        printData();
+    });
+
 });
 </script>
 
