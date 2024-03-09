@@ -29,93 +29,45 @@ class subscriptionController extends Controller
 
     public function ajaxCallAllClients()
     {
-        $today = now('Asia/Kolkata');
-        $params['draw'] = request('draw');
+        $draw = request('draw');
         $start = request('start');
         $length = request('length');
-        $total_count = [];
-        $data = [];
-
+        $searchValue = request('search.value', '');
         $valueStatus = request('status', '');
-        $search_value = request('search.value', '');
         $valueRegistration = request('registration', '');
 
-        if (!empty($search_value)) {
-            $query = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->join('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
-                ->where(function ($query) use ($search_value) {
-                    if (ctype_digit($search_value)) {
-                        $query->where('clients.mobile_number', 'like', '%' . $search_value . '%');
-                    } else {
-                        $query->where('clients.name', 'like', '%' . $search_value . '%');
-                    }
-                })
-                ->orderBy('subscriptions.updated_at', 'desc')
-                ->get();
-
-            $total_count = $query->toArray();
-
-            $data = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->Join('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->where(function ($query) use ($search_value) {
-                    if (ctype_digit($search_value)) {
-                        $query->where('clients.mobile_number', 'like', '%' . $search_value . '%');
-                    } else {
-                        $query->where('clients.name', 'like', '%' . $search_value . '%');
-                    }
-                })
-                ->orderBy('subscriptions.updated_at', 'desc')
-                ->skip($start)
-                ->take($length)
-                ->get();
-        } elseif (!empty($valueStatus)) {
-            $data = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->Join('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->where('clients.status', $valueStatus)
-                ->orderBy('subscriptions.updated_at', 'desc')
-                ->skip($start)
-                ->take($length)
-                ->get();
-        } elseif (!empty($valueRegistration)) {
-            $valueRegistration = date('Y-m-d', strtotime($valueRegistration));
-            $data = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->Join('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->whereRaw("DATE(subscriptions.updated_at) = ?", [$valueRegistration])
-                ->orderBy('subscriptions.updated_at', 'desc')
-                ->skip($start)
-                ->take($length)
-                ->get();
-        } else {
-            $data = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->Join('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->orderBy('subscriptions.updated_at', 'desc')
-                ->skip($start)
-                ->take($length)
-                ->get();
+        $query = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
+            ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
+            ->orderByDesc('subscriptions.updated_at');
+        if (!empty($searchValue)) {
+            $query->where(function ($query) use ($searchValue) {
+                if (ctype_digit($searchValue)) {
+                    $query->where('clients.mobile_number', 'like', '%' . $searchValue . '%');
+                } else {
+                    $query->where('clients.name', 'like', '%' . $searchValue . '%');
+                }
+            });
         }
+        if (!empty($valueStatus)) {
+            $query->where('clients.status', $valueStatus);
+        }
+        if (!empty($valueRegistration)) {
+            $valueRegistration = date('Y-m-d', strtotime($valueRegistration));
+            $query->whereDate('subscriptions.updated_at', $valueRegistration);
+        }
+        $total_count = $query->count();
 
+        $data = $query->skip($start)->take($length)->get();
         $json_data = [
-            "draw" => intval($params['draw']),
-            "recordsTotal" => count($data),
-            "recordsFiltered" => count($data),
-            "data" => $data
+            "draw" => intval($draw),
+            "recordsTotal" => $total_count,
+            "recordsFiltered" => $total_count,
+            "data" => $data,
         ];
-
         return response()->json($json_data);
     }
+
 
 
     public function ajaxCallAllClientsActive()
