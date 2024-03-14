@@ -183,7 +183,7 @@ class SyncController extends Controller
                             'device_count_max' => config('devices.max_devices'),
                         ],
                     ], 200);
-                } elseif ($user_match == null && $user_count  < $total_devices) {
+                } elseif ($user_match == null && $user_count  <= $total_devices) {
                     $count = $user_count;
                     $client->device_id = $device_id;
                     $client->save();
