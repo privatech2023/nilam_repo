@@ -45,25 +45,30 @@ class GalleryComponent extends Component
             $this->gallery_items = gallery_items::where('user_id', $clients->client_id)
                 ->where('device_id', $clients->device_id)
                 ->orderBy('created_at', 'desc')
-                ->skip(0)
-                ->take(session('current_image_count'))
                 ->get();
+
+            // ->skip(0)
+            // ->take(session('current_image_count'))
+
             $this->galleryCount = count($this->gallery_items);
         } else {
             $this->gallery_items = gallery_items::where('user_id', $clients->client_id)
                 ->where('device_id', $clients->device_id)
                 ->orderBy('created_at', 'desc')
-                ->skip(0)
-                ->take($this->start)
                 ->get();
+
+            // ->skip(0)
+            //->take($this->start)
+
+
             $this->galleryCount = count($this->gallery_items);
         }
     }
 
     public function loadMore()
     {
-        $this->start += 12;
-        Session::put('current_image_count', $this->start);
+        // $this->start += 12;
+        // Session::put('current_image_count', $this->start);
         $this->mount($this->userId);
         $this->emit('loadmore');
     }
