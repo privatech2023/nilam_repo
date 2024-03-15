@@ -139,7 +139,7 @@
             <div class="row">
                 @foreach($gallery_items as $image)
                 <div class="image-wrapper">
-                <img src="{{ $image->s3Url() }}" alt="{{$image->id}}" style=" object-fit: cover; margin-right: 10px; border-radius: 6px;">
+                <img src="{{ $image->s3Url() }}" alt="{{$image->id}}" style=" object-fit: cover; margin-right: 10px; border-radius: 6px;" loading="lazy">
                 <div class="button-container">
                     <button class="btn btn-info btn-sm view-button " style="width: 65px; padding: 0;" type="button" data-toggle="modal" data-target="#imageModal" data-src="{{ $image->s3Url() }}" >View</button>
                     <button class="btn-sm  overlay-button delete-btn delete " data-id="{{$image->id}}" style="padding: 0; color:white; background-color: rgb(223, 83, 67); width: 55px; margin-top: 16px; margin-bottom: 0;" >Delete</button>
@@ -147,9 +147,24 @@
                 </div>
                 @endforeach                
             </div>
-            <div class="text-center" style="margin-top: 10px; margin-left: 1rem; margin-bottom: 2rem;">
-                @if($gallery_items->count() != 0) 
-                <button class="btn btn-sm btn-link btn-secondary text-white" wire:click="loadMore">Load More</button>
+
+
+            {{-- <div class="row">
+                @for($i = 0; $i <= 100; $i++)
+                <div class="image-wrapper">
+                <img src="https://picsum.photos/200/300" alt="hey" style=" object-fit: cover; margin-right: 10px; border-radius: 6px;" loading="lazy">
+                <div class="button-container">
+                    <button class="btn btn-info btn-sm view-button " style="width: 65px; padding: 0;" type="button" data-toggle="modal" data-target="#imageModal" data-src="https://picsum.photos/200/300" >View</button>
+                    <button class="btn-sm  overlay-button delete-btn delete " data-id="1" style="padding: 0; color:white; background-color: rgb(223, 83, 67); width: 55px; margin-top: 16px; margin-bottom: 0;" >Delete</button>
+                </div>
+                </div>
+                @endfor                
+            </div> --}}
+
+
+            <div class="text-center" style="margin-top: 10px; margin-left: 0rem; margin-right:1rem; margin-bottom: 2rem; width:100%;">
+                @if($store_more == false || $plan_expired == true) 
+                <button class="btn btn-sm btn-link btn-secondary text-white" style="width:80%;" wire:click="loadMore">LOAD MORE</button>
                 @endif
             </div>
         </div>
