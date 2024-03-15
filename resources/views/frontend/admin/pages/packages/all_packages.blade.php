@@ -232,7 +232,7 @@
                                 <div class="form-group input-group-sm">
 
                                     <label for="amount">Amount</label>
-                                    <input type="number" class="form-control net-amt" name="amount" id="idAmount" placeholder="Amount"
+                                    <input type="number" class="form-control net-amt2" name="amount" id="idAmount" placeholder="Amount"
                                         required autocomplete="off" value="">
 
                                 </div>
@@ -411,6 +411,7 @@
             },
             {
                 mRender: function(data, type, row) {
+                    console.log(row)
                     if (row.is_active == 1) {
                         return '<span class="badge bg-success">ACTIVE</span>';
                     } else {
@@ -513,8 +514,24 @@
         updatePrice();
         });
 
+        $(document).on('keyup', '.net-amt2', function(){
+        updatePrice2();
+        });
+
     function updatePrice(){
     var tmp_amt =  $('.net-amt').val();
+    console.log(tmp_amt)
+    var gst = {{ $gst_rate}};
+    var tax_amt = parseFloat(tmp_amt*gst)/100;
+    var new_price = parseFloat(tmp_amt)+parseFloat(tax_amt);
+    new_price = new_price.toFixed(2);
+    $('.tax-amt').val(tax_amt);
+    $('.price-amt').val(new_price);
+    }
+
+    function updatePrice2(){
+    var tmp_amt =  $('.net-amt2').val();
+    console.log(tmp_amt)
     var gst = {{ $gst_rate}};
     var tax_amt = parseFloat(tmp_amt*gst)/100;
     var new_price = parseFloat(tmp_amt)+parseFloat(tax_amt);
