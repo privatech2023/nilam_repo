@@ -314,7 +314,6 @@ class issueTokenController extends Controller
             $data1 = DB::table('clients')
                 ->select('*')
                 ->where('name', 'like', '%' . $search_value . '%')
-                ->orderBy('created_at', 'desc')
                 ->get();
             $data =  DB::table('issue_tokens')
                 ->leftJoin('clients', function ($join) {
@@ -333,7 +332,6 @@ class issueTokenController extends Controller
             $query = DB::table('issue_tokens')
                 ->select('*')
                 ->where('status', $valueStatus)
-                ->orderBy('created_at', 'desc')
                 ->get();
 
             $total_count = count($query);
@@ -363,6 +361,7 @@ class issueTokenController extends Controller
                     ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                     ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                     ->where('issue_tokens.id', $tt->token_id)
+                    ->orderBy('issue_tokens.created_at', 'desc')
                     ->skip($start)
                     ->take($length)
                     ->get();
