@@ -245,6 +245,7 @@ class issueTokenController extends Controller
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->whereIn('issue_tokens.client_id', $data1->pluck('client_id'))
+                ->orderBy('issue_tokens.start_date', 'desc')
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -265,6 +266,7 @@ class issueTokenController extends Controller
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                 ->where('issue_tokens.status', $valueStatus)
+                ->orderBy('issue_tokens.start_date', 'desc')
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -277,6 +279,7 @@ class issueTokenController extends Controller
                 })
                 ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                 ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
+                ->orderBy('issue_tokens.start_date', 'desc')
                 ->skip($start)
                 ->take($length)
                 ->get();
@@ -361,7 +364,7 @@ class issueTokenController extends Controller
                     ->join('issue_types', 'issue_tokens.issue_type', '=', 'issue_types.id')
                     ->select('issue_tokens.*', 'clients.name as client_name', 'issue_types.name as issue_type_name')
                     ->where('issue_tokens.id', $tt->token_id)
-                    ->orderBy('issue_tokens.created_at', 'desc')
+                    ->orderBy('issue_tokens.updated_at', 'desc')
                     ->skip($start)
                     ->take($length)
                     ->get();
