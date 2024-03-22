@@ -140,6 +140,7 @@ class GalleryController extends Controller
         $photo = $request->file('photo');
         $sizeInBytes = $photo->getSize();
         $user1 = device::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+
         if ($user1 == null) {
             return response()->json([
                 'status' => false,
@@ -159,14 +160,12 @@ class GalleryController extends Controller
             ->latest('created_at')
             ->get();
 
-        $storageType = 1;
-        $gall_id = 0;
-        $storage_ok = false;
         if ($gall->isNotEmpty()) {
             foreach ($gall as $g) {
                 $storage_size += $g->size;
             }
             $manual = manual_txns::where('client_id', $user->client_id)->orderByDesc('updated_at')->first();
+            return response()->json('here');
             if ($manual != null) {
                 $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
                 $createdAt = Carbon::parse($manual->created_at);
