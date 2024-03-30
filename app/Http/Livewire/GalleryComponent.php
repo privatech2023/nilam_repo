@@ -134,6 +134,8 @@ class GalleryComponent extends Component
         $storage_txn = storage_txn::where('client_id', $this->userId)
             ->latest('created_at')
             ->get();
+
+        $cd = 0;
         $manual = manual_txns::where('client_id', $this->userId)->orderByDesc('updated_at')->first();
         if ($manual != null) {
             if ($gall->isNotEmpty()) {
@@ -172,6 +174,7 @@ class GalleryComponent extends Component
             } else {
                 foreach ($storage_txn as $st) {
                     if ($st->status != 0) {
+                        $cd = 1;
                         $validity = $st->plan_type == 'monthly' ? 30 : 365;
                         $createdAt = Carbon::parse($st->created_at);
                         $expirationDate = $createdAt->addDays($validity);
@@ -189,6 +192,17 @@ class GalleryComponent extends Component
                         }
                     } else {
                         continue;
+                    }
+                }
+                // if storage_txn status is all pending
+                if ($cd == 0) {
+                    $data = defaultStorage::first();
+                    if ($storage_size >= ($data->storage * 1024 * 1024)) {
+                        $this->store_more = false;
+                        return;
+                    } else {
+                        $this->store_more = true;
+                        return;
                     }
                 }
             }
