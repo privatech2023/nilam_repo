@@ -95,7 +95,11 @@ class SyncController extends Controller
                 $total_devices = $dv_count->devices;
             } elseif ($txns->package_id != null) {
                 $dv_count_pack = packages::where('id', $txns->package_id)->first();
-                $total_devices = $dv_count_pack->devices;
+                if ($dv_count_pack == null) {
+                    $total_devices = 1;
+                } else {
+                    $total_devices = $dv_count_pack->devices;
+                }
             }
         }
         $client = clients::where('client_id', $client_id)->first();
