@@ -70,7 +70,11 @@
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
+<<<<<<< HEAD
                             <tr>
+=======
+                              <tr>
+>>>>>>> main
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Actions</th>
@@ -89,7 +93,11 @@
                             </tr>
                             @endforeach
                             </tbody>
+<<<<<<< HEAD
                         </table>
+=======
+                          </table>
+>>>>>>> main
                     </div>
                 </div>
             </div>

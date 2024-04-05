@@ -18,6 +18,7 @@ class RegisterController extends Controller
     // clients create
     public function create_user(Request $request)
     {
+
         try {
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
@@ -29,9 +30,11 @@ class RegisterController extends Controller
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
+
             $user = clients::where('email', $request->input('email'))
                 ->orWhere('mobile_number', $request->input('mobile_number'))
                 ->first();
+
             if ($user != null) {
                 session()->flash('error', 'User already exists');
                 return redirect()->back();
@@ -50,6 +53,7 @@ class RegisterController extends Controller
                 'started_at' => null,
                 'ends_on' => null,
                 'validity_days' => null,
+
                 'status' => 2, //1 Active | 2 Pending 
                 'is_previous' => 1,
             ];
@@ -62,6 +66,7 @@ class RegisterController extends Controller
             session()->flash('success', 'Registered succesfully');
             $commission = new CommissionController;
             $commission->distribute_clients($client_id);
+
             return redirect()->route('home')->with(['success' => 'Registered successfully']);
         } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());

@@ -53,6 +53,7 @@ class subscriptionController extends Controller
         }
 
 
+
         if (!empty($searchValue)) {
             $query->where(function ($query) use ($searchValue) {
                 if (ctype_digit($searchValue)) {
@@ -125,6 +126,7 @@ class subscriptionController extends Controller
         }
 
 
+
         if (!empty($searchValue)) {
             $query->where(function ($query) use ($searchValue) {
                 if (ctype_digit($searchValue)) {
@@ -193,6 +195,7 @@ class subscriptionController extends Controller
                 ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.updated_at')
                 ->orderByDesc('subscriptions.updated_at');
         }
+
 
         if (!empty($search_value)) {
             $query->where(function ($query) use ($search_value) {

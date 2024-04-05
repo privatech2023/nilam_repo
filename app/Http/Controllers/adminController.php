@@ -26,6 +26,7 @@ class adminController extends Controller
 {
     public function index()
     {
+
         if ((session('admin_name') == 'admin') || (session('admin_name') == 'Privatech management admin')) {
             $query1 = DB::table('clients')
                 ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
@@ -91,6 +92,7 @@ class adminController extends Controller
                 ->havingRaw('COUNT(subscriptions.client_id) > 0')
                 ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
         }
+
 
 
         $total_count_all = $query1->toArray();

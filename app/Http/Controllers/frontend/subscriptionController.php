@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
+
 use App\Http\Controllers\UplineController;
 use App\Models\activation_codes;
 use App\Models\clients;
@@ -14,6 +15,7 @@ use App\Models\subscriptions;
 use App\Models\transactions;
 use App\Models\user_clients;
 use App\Models\user_groups;
+
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -79,6 +81,7 @@ class subscriptionController extends Controller
                     $packageModel = packages::all();
                     $data = array(
                         'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
+
                     );
                     Session::flash('error', 'Invalid activation code');
                     return redirect()->back();
@@ -89,6 +92,7 @@ class subscriptionController extends Controller
                     return redirect()->back();
                 } else {
                     $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
+
 
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
@@ -126,9 +130,10 @@ class subscriptionController extends Controller
                         $lastSubscription->ends_on = date('Y-m-d', strtotime("+$daysToAdd days"));
                         $lastSubscription->status = 1;
                         $lastSubscription->validity_days = $code->duration_in_days;
-                        $lastSubscription->devices = $code->devices;
+
                         $lastSubscription->promoter_id = $user_mapped->user_id;
                         $lastSubscription->is_previous = 1;
+
                         $lastSubscription->save();
                     } else {
                         $update_date = Subscriptions::where('client_id', $request->input('user_id'))
@@ -157,13 +162,16 @@ class subscriptionController extends Controller
                         $subscription->ends_on = $end_date;
                         $subscription->validity_days = $code->duration_in_days;
                         $subscription->devices = $code->devices;
+
                         $subscription->promoter_id = $user_mapped->user_id;
                         $subscription->is_previous = 1;
+
                         $subscription->save();
                     }
                     $code->is_active = 0;
                     $code->used_by = $request->input('user_id');
                     $code->save();
+
 
                     $group = user_groups::where('u_id', $user_mapped->user_id)->first();
                     $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
@@ -176,6 +184,7 @@ class subscriptionController extends Controller
 
                     $upline_earning = new UplineController;
                     $upline_earning->upline_commission($user_mapped->user_id);
+
                     Session::flash('success', 'Payment Success');
                     return redirect()->route('home');
                 }
@@ -259,6 +268,7 @@ class subscriptionController extends Controller
 
             $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
 
+
             $transaction = new transactions();
             $transaction->txn_id = $receipt;
             $transaction->client_id = $request->input('user_id');
@@ -290,8 +300,10 @@ class subscriptionController extends Controller
                 $lastSubscription->status = 0;
                 $lastSubscription->validity_days = $package->duration_in_days;
                 $lastSubscription->devices = $package->devices;
+
                 $lastSubscription->promoter_id = $user_mapped->user_id;
                 $lastSubscription->is_previous = 1;
+
                 $lastSubscription->save();
             } else {
                 $update_date = subscriptions::where('client_id', $request->input('user_id'))
@@ -320,8 +332,10 @@ class subscriptionController extends Controller
                 $subscription->ends_on =  $end_date;
                 $subscription->validity_days = $package->duration_in_days;
                 $subscription->devices = $package->devices;
+
                 $subscription->promoter_id = $user_mapped->user_id;
                 $subscription->is_previous = 1;
+
                 $subscription->save();
             }
             $data = [

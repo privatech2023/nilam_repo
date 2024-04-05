@@ -7,18 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class subscriptions extends Model
 {
-    use HasFactory;
+        use HasFactory;
 
-    protected $primaryKey = 'subs_id';
-    protected $fillable = [
-        'client_id',
-        'txn_id',
-        'started_at',
-        'ends_on',
-        'validity_days',
-        'status',
-        'devices',
-        'promoter_id',
-        'is_previous'
-    ];
+        protected $primaryKey = 'subs_id';
+        protected $fillable = [
+                'client_id',
+                'txn_id',
+                'started_at',
+                'ends_on',
+                'validity_days',
+                'status',
+                'devices',
+                'promoter_id',
+                'is_previous'
+
+        ];
 }

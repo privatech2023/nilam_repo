@@ -7,10 +7,12 @@ use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\ApkVersionController;
 use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\clientController;
+
 use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\DevicesController;
 use App\Http\Controllers\EarningsController;
+
 use App\Http\Controllers\FeaturesController;
 use App\Http\Controllers\frontend\messageController;
 use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
@@ -27,7 +29,9 @@ use App\Http\Controllers\settingsController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\subscriptionController;
 use App\Http\Controllers\transactionsController;
+
 use App\Http\Controllers\UplineController;
+
 use App\Http\Controllers\usersController;
 use App\Http\Livewire\AlertDeviceComponent;
 use App\Http\Livewire\AudioRecordComponent;
@@ -303,6 +307,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/client/print', [adminController::class, 'client_print']);
 
     Route::post('/admin/client/print-view', [adminController::class, 'client_print_view']);
+
 
     Route::get('/admin/commission', [CommissionController::class, 'index']);
     Route::post('/admin/createCommission', [CommissionController::class, 'create_commission']);

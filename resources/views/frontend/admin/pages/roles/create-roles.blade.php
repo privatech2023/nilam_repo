@@ -135,6 +135,7 @@
                         <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
                         <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
                         <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
+<<<<<<< HEAD
                       </tr>  
                       
                       <tr>
@@ -142,6 +143,9 @@
                         <td><input type="checkbox" class="permission-checkbox" name="permission[]" id="permission" value="commissionYes" onclick="toggleCheckbox(this)"> Yes</td>
                         <td><input type="checkbox" class="permission-checkbox" name="permission[]" id="permission" value="commissionNo" onclick="toggleCheckbox(this)"> No</td>
                       </tr> 
+=======
+                      </tr>                              
+>>>>>>> main
                       </tbody>
                     </table>
                     </div>
@@ -167,6 +171,7 @@
     </section>
     <!-- /.content -->
   </div>
+<<<<<<< HEAD
 
   <script>
     function toggleCheckbox(checkbox) {
@@ -179,4 +184,6 @@
         }
     }
 </script>
+=======
+>>>>>>> main
 @endsection
