@@ -13,10 +13,12 @@
     @if(session('store_more') == false)
     <div class="container">
         <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE FULL</span>
+        <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a>
     </div>
     @elseif(session('plan_expired') == true)
     <div class="container">
         <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE PLAN EXPIRED</span>
+        <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a>
     </div>
     @else 
     <div class="container">

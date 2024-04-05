@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->integer('storage_id')->nullable();
-            $table->string('storage_name', 299)->nullable();
+        Schema::create('uplines', function (Blueprint $table) {
+            $table->id();
+            $table->integer('upline_id');
+            $table->integer('role')->nullable();
+            $table->text('users')->nullable();
+            $table->string('amount')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -26,8 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('uplines');
     }
 };

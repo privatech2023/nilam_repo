@@ -70,7 +70,7 @@
                     <div class="card-body">
                         <table class="table table-striped">
                             <thead>
-                              <tr>
+                            <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Actions</th>
@@ -89,7 +89,7 @@
                             </tr>
                             @endforeach
                             </tbody>
-                          </table>
+                        </table>
                     </div>
                 </div>
             </div>

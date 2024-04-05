@@ -129,7 +129,13 @@
                       <i class="far fa-circle nav-icon"></i>
                       <p>View all</p>
                     </a>
-                  </li>                
+                  </li>   
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/earnings/view')}}" class="nav-link" id="clientSubMenuEarning">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Earnings</p>
+                    </a>
+                  </li>              
                 </ul>
               </li>
               @endif
@@ -193,6 +199,19 @@
                       <p>User roles</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/commission')}}" class="nav-link" id="employeeSubMenuCommissions">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Commission</p>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/upline')}}" class="nav-link" id="employeeSubMenuUpline">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Upline</p>
+                    </a>
+                  </li>
                   @endif
                 </ul>
               </li>
@@ -236,6 +255,12 @@
                   </p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/earnings/view')}}" class="nav-link" id="clientSubMenuEarning">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My earnings</p>
+                </a>
+              </li> 
 
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/manageStorage')}}" class="nav-link" id="storageMenu">

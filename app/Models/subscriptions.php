@@ -17,6 +17,8 @@ class subscriptions extends Model
         'ends_on',
         'validity_days',
         'status',
-        'devices'
+        'devices',
+        'promoter_id',
+        'is_previous'
     ];
 }

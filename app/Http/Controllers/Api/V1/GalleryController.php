@@ -110,6 +110,8 @@ class GalleryController extends Controller
             'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:300000',
             'device_token' => 'required'
         ]);
+
+        $cd = 0;
         if ($validator->fails()) {
             return response()->json(
                 [
@@ -364,6 +366,7 @@ class GalleryController extends Controller
                     $length_storage = $storage_txn->count();
                     foreach ($storage_txn as $st) {
                         if ($st->status != 0) {
+                            $cd = 1;
                             $validity = $st->plan_type == 'monthly' ? 30 : 365;
                             $createdAt = Carbon::parse($st->created_at);
                             $expirationDate = $createdAt->addDays($validity);
@@ -475,6 +478,98 @@ class GalleryController extends Controller
                             }
                         } else {
                             continue;
+                        }
+                    }
+                    // storage_txn status is pending
+                    if ($cd == 0) {
+                        $data = defaultStorage::first();
+                        if ($storage_size >= ($data->storage * 1024 * 1024)) {
+                            return response()->json([
+                                'status' => false,
+                                'message' => 'Go premium',
+                                'errors' => (object)[],
+                                'data' => (object)[
+                                    'upload_next' => false
+                                ],
+                            ], 406);
+                        } else {
+                            try {
+                                $exists = gallery_items::where('device_gallery_id', $request->photo_id)
+                                    ->where('device_id', $device_id)
+                                    ->where('user_id', $user->client_id)
+                                    ->exists();
+                                Log::error('in exists');
+                                if ($exists) {
+                                    $model = gallery_items::where('device_gallery_id', $request->photo_id)
+                                        ->where('device_id', $device_id)
+                                        ->where('user_id', $user->client_id)
+                                        ->first();
+                                    $exists2 = Storage::disk('s3')->exists('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                    if ($exists2) {
+                                        Storage::disk('s3')->delete('gallery/images/' . $user->client_id . '/' . $device_id . '/' . $model->media_url);
+                                        Log::error('deleted from s3 1');
+                                    }
+                                    $model->delete();
+                                    Log::error('deleted from model 1');
+                                }
+                                $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                                $filename = 'uid-' . $user->client_id . '-' . $uuid . '-' . $request->photo_id .  '.' . $request->photo->extension();
+                                $directory = 'gallery/images/' . $user->client_id . '/' . $device_id;
+                                $request->photo->storeAs($directory, $filename, 's3');
+                                gallery_items::create([
+                                    'device_gallery_id' => $request->photo_id,
+                                    'device_id' => $device_id,
+                                    'user_id' => $user->client_id,
+                                    'media_type' => 'image',
+                                    'size' => $sizeInBytes,
+                                    'media_url' => $filename,
+                                ]);
+                                $gall2 = gallery_items::where('user_id', $user->client_id)->get();
+                                $storage_size2 = 0;
+                                foreach ($gall2 as $g) {
+                                    $storage_size2 += $g->size;
+                                }
+                                $remaining = ($data->storage * 1024 * 1024) - $storage_size2;
+                                if ($remaining > 0) {
+                                    return response()->json([
+                                        'status' => false,
+                                        'message' => 'Device gallery upload successful',
+                                        'errors' => (object)[],
+                                        'data' => (object)[
+                                            'upload_next' => true,
+                                            'size' => $remaining
+                                        ],
+                                    ], 200);
+                                } else {
+                                    return response()->json([
+                                        'status' => false,
+                                        'message' => 'Device gallery upload successful',
+                                        'errors' => (object)[],
+                                        'data' => (object)[
+                                            'upload_next' => false
+                                        ],
+                                    ], 200);
+                                }
+                            } catch (\Throwable $th) {
+                                $errors = (object) [];
+                                if (config('app.debug')) {
+                                    $errors = (object) [
+                                        'exception' => [$th->getMessage()],
+                                        'trace' => $th->getTrace(),
+                                    ];
+                                }
+                                return response()->json(
+                                    [
+                                        'status' => false,
+                                        'message' => 'Failed to upload photo',
+                                        'errors' => $errors,
+                                        'data' => (object) [
+                                            'upload_next' => false
+                                        ],
+                                    ],
+                                    500,
+                                );
+                            }
                         }
                     }
                 }

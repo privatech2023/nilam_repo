@@ -114,6 +114,7 @@ class frontendController extends Controller
                 ->latest('created_at')
                 ->get();
             $manual = manual_txns::where('client_id', session('user_id'))->orderByDesc('updated_at')->first();
+            $cd = 0;
             if ($manual != null) {
                 $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
                 $createdAt = Carbon::parse($manual->created_at);
@@ -156,6 +157,7 @@ class frontendController extends Controller
                 } else {
                     foreach ($storage_txn as $st) {
                         if ($st->status != 0) {
+                            $cd = 1;
                             $validity = $st->plan_type == 'monthly' ? 30 : 365;
                             $createdAt = Carbon::parse($st->created_at);
                             $expirationDate = $createdAt->addDays($validity);
@@ -177,6 +179,19 @@ class frontendController extends Controller
                             continue;
                         }
                     }
+                    // if storage_txn status is pending
+                    if ($cd == 0) {
+                        $data = defaultStorage::first();
+                        if ($storage_size >= ($data->storage * 1024 * 1024)) {
+                            $this->store_more = false;
+                            return;
+                        } else {
+                            $this->store_more = true;
+                            $this->remaining_days = 'DEFAULT PACK';
+                            $this->storage_left = intval($data->storage - ($storage_size / (1024 * 1024)));
+                            return;
+                        }
+                    }
                 }
             } else {
                 if ($storage_pack == null) {
@@ -188,6 +203,7 @@ class frontendController extends Controller
                 } else {
                     foreach ($storage_txn as $st) {
                         if ($st->status != 0) {
+                            $cd = 1;
                             $validity = $st->plan_type == 'monthly' ? 30 : 365;
                             $createdAt = Carbon::parse($st->created_at);
                             $expirationDate = $createdAt->addDays($validity);
@@ -203,6 +219,13 @@ class frontendController extends Controller
                         } else {
                             continue;
                         }
+                    }
+                    if ($cd == 0) {
+                        $data = defaultStorage::first();
+                        $this->store_more = true;
+                        $this->remaining_days = 'DEFAULT PACK';
+                        $this->storage_left = $data->storage;
+                        return;
                     }
                 }
                 return;

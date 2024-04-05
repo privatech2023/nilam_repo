@@ -1,47 +1,45 @@
 @extends('layouts.adminFrontend')
 @section('main-container')
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
+<!-- Content Header (Page header) -->
+<section class="content-header">
+<div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Create roles</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">User</a></li>
-              <li class="breadcrumb-item active">Roles</li>
-            </ol>
-          </div>
+        <div class="col-sm-6">
+        <h1>Create roles</h1>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+        <li class="breadcrumb-item"><a href="#">User</a></li>
+        <li class="breadcrumb-item active">Roles</li>
+        </ol>
+        </div>
+        </div>
+</div><!-- /.container-fluid -->
+</section>
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
+<!-- Main content -->
+<section class="content">
+<div class="container-fluid">
         <div class="row">
-          <div class="col-md-12 col-12">
-            
-            <!-- /.card -->
+        <div class="col-md-12 col-12">
 
-            <div class="card card-outline card-info">
-              <div class="card-header">
+        <div class="card card-outline card-info">
+        <div class="card-header">
                 <span>
-                    <a href="{{ url('/admin')}}" class="btn btn-outline-info btn-sm">
-                      <i class="fas fa-long-arrow-alt-left mr-1">
-                      </i>
-                      Back
-                    </a>
-                  </span>
-              </div>
-              <!-- /.card-header -->
-              <div class="card-body">
+                <a href="{{ url('/admin')}}" class="btn btn-outline-info btn-sm">
+                <i class="fas fa-long-arrow-alt-left mr-1">
+                </i>
+                Back
+                </a>
+                </span>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
                 <form method="post" action="{{ url('/admin/roles/update') }}">
-                    @csrf
-                    <input type="hidden" name="row_id" value="{{ $data['group_id'] }}">
-                    <div class="card-body">
+                @csrf
+                <input type="hidden" name="row_id" value="{{ $data['group_id'] }}">
+                <div class="card-body">
                         <span class="text-danger mb-1">{{ $errors->first('role_name') }}</span>
                         <div class="form-group">
                         <label for="group_name">Role Name</label>
@@ -63,12 +61,12 @@
                                         <th>Update</th>
                                         <th>View</th>
                                         <th>Delete</th>
-                                    </tr>
+                                </tr>
                                 </thead>
                                 <tbody>
 
 
-                                    <tr>
+                                <tr>
                                         <td>Clients</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createClient"
@@ -86,8 +84,8 @@
                                                 value="deleteClient"
                                                 {{ in_array('deleteClient', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
-                                    </tr>
-                                    <tr>
+                                </tr>
+                                <tr>
                                         <td>Activation codes</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createCode"
@@ -106,9 +104,9 @@
                                                 {{ in_array('deleteCode', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Dealers</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createDealer"
@@ -127,9 +125,9 @@
                                                 {{ in_array('deleteDealer', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Packages</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createPackage"
@@ -148,9 +146,9 @@
                                                 {{ in_array('deletePackage', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Transactions</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createTransaction"
@@ -169,9 +167,9 @@
                                                 {{ in_array('deleteTransaction', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Reports</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createReport"
@@ -190,9 +188,9 @@
                                                 {{ in_array('deleteReport', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Users</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createUser"
@@ -211,9 +209,9 @@
                                                 {{ in_array('deleteUser', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Roles</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createRole"
@@ -232,9 +230,9 @@
                                                 {{ in_array('deleteRole', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Settings</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createSetting"
@@ -253,9 +251,9 @@
                                                 {{ in_array('deleteSetting', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
 
-                                    </tr>
+                                </tr>
 
-                                    <tr>
+                                <tr>
                                         <td>Token</td>
                                         <td> <input type="checkbox" name="permission[]" id="permission"
                                                 value="createToken"
@@ -293,36 +291,45 @@
                                                 {{ in_array('itAll', $serialize_permission) ? 'checked' : '' }}>
                                         </td>
                                 </tr>
-
+                                <tr>
+                                        <td>Earn commission</td>
+                                        <td><input class="permission-checkbox" type="checkbox" name="permission[]" id="permission"
+                                                value="commissionYes"
+                                                {{ in_array('commissionYes', $serialize_permission) ? 'checked' : '' }} onclick="toggleCheckbox(this)"> Yes</td>
+                                        <td><input class="permission-checkbox" type="checkbox" name="permission[]" id="permission"
+                                                        value="commissionNo"
+                                                        {{ in_array('commissionNo', $serialize_permission) ? 'checked' : '' }} onclick="toggleCheckbox(this)"> No</td>
+                                </tr> 
                                 </tbody>
-                            </table>
-
+                        </table>
                         </div>
 
 
                         <div class="card-footer">
-                            <a href="{{ url('/admin/roles') }}"
-                                class="btn btn-warning btn-sm">Back</a>
-                            <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+                        <a href="{{ url('/admin/roles') }}"
+                        class="btn btn-warning btn-sm">Back</a>
+                        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
                         </div>
 
-                    </div>
+                </div>
                 </form>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
-        
-        <!-- /.row -->
-        
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
+        </div>
+        </div>
+        </div>
+</div>
+</section>
+</div>
+<script>
+        function toggleCheckbox(checkbox) {
+        if (checkbox.checked) {
+                document.querySelectorAll('.permission-checkbox').forEach(function (element) {
+                if (element !== checkbox) {
+                        element.checked = false;
+                }
+                });
+        }
+        }
+</script>
+
 @endsection
