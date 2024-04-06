@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Actions\Functions\SendFcmNotification as FunctionsSendFcmNotification;
 use App\Http\Controllers\activationCodeController;
+use App\Http\Controllers\Actions\Functions\SendFcmNotification as FunctionsSendFcmNotification;
+use App\Http\Controllers\activationCodeController;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\ApkVersionController;
@@ -17,6 +19,9 @@ use App\Http\Controllers\frontend\subscriptionController as FrontendSubscription
 use App\Http\Controllers\frontendController;
 use App\Http\Controllers\issueTokenController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ManualTransactions;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\RazorpayController;
 use App\Http\Controllers\ManualTransactions;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\RazorpayController;
@@ -61,18 +66,35 @@ Route::get('/register', function () {
 Route::get('/', [frontendController::class, 'home'])->name('home');
 
 Route::get('login/client', [LoginController::class, 'index'])->name('login');
+Route::get('/login', function () {
+    return redirect()->route('login');
+});
 
+Route::get('/register', function () {
+    return redirect()->route('register/client');
+});
+
+Route::get('/', [frontendController::class, 'home'])->name('home');
+
+Route::get('login/client', [LoginController::class, 'index'])->name('login');
+
+Route::get('register/client', [RegisterController::class, 'index'])->name('register/client');
 Route::get('register/client', [RegisterController::class, 'index'])->name('register/client');
 
 Route::post('login/client', [LoginController::class, 'login']);
+Route::post('login/client', [LoginController::class, 'login']);
 
+Route::get('client/logout', [LoginController::class, 'logout']);
 Route::get('client/logout', [LoginController::class, 'logout']);
 
 Route::post('register/client', [RegisterController::class, 'create_user']);
+Route::post('register/client', [RegisterController::class, 'create_user']);
 
+Route::post('check/client', [LoginController::class, 'check_client']);
 Route::post('check/client', [LoginController::class, 'check_client']);
 Route::post('/login_options/client/', [LoginController::class, 'login_options']);
 Route::get('/login_options/client', [LoginController::class, 'login_options_index']);
+Route::get('login_password/client', function () {
 Route::get('login_password/client', function () {
     return view('frontend.auth.login_password');
 });
@@ -80,7 +102,48 @@ Route::post('login/password/client', [LoginController::class, 'login_with_passwo
 Route::get('get_otp/client', [LoginController::class, 'generate_otp']);
 Route::get('login_otp/client', [LoginController::class, 'index_otp'])->name('login_otp/client');
 Route::post('login_otp/client', [LoginController::class, 'login_otp']);
+Route::post('login/password/client', [LoginController::class, 'login_with_password']);
+Route::get('get_otp/client', [LoginController::class, 'generate_otp']);
+Route::get('login_otp/client', [LoginController::class, 'index_otp'])->name('login_otp/client');
+Route::post('login_otp/client', [LoginController::class, 'login_otp']);
 
+Route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
+Route::post('login/reset-password', [LoginController::class, 'reset_password']);
+
+Route::get('/public/packages', function () {
+    return redirect()->route('/subscription/packages');
+});
+
+route::get('/log', function () {
+    $logFile = storage_path('logs/laravel.log');
+    if (File::exists($logFile)) {
+        try {
+            $logs = File::get($logFile);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+        $logs = explode("\n", $logs);
+    } else {
+        $logs = ['Log file not found.'];
+    }
+    return view('frontend.admin.pages.logs', ['logs' => $logs]);
+});
+
+
+Route::get('/log/clear', function () {
+    $logFilePath = storage_path('logs/laravel.log'); // Adjust the path to your log file
+
+    if (File::exists($logFilePath)) {
+        // Clear the log file
+        File::put($logFilePath, '');
+        return redirect()->back();
+    } else {
+        return redirect()->back();
+    }
+});
+
+Route::post('/payment/razorpay/webhook', [RazorpayController::class, 'webhook'])->name('razorpay.payment.webhook');
+// client
 Route::get('login/forgot-password', [LoginController::class, 'forgot_password']);
 Route::post('login/reset-password', [LoginController::class, 'reset_password']);
 
@@ -173,13 +236,70 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
         Route::get('/default-device/{id}', [clientController::class, 'default_device']);
     });
+    Route::get('/subscription', [FrontendSubscriptionController::class, 'index'])->name('/subscription/packages');
+    // Route::get('/subscription/packages', [FrontendSubscriptionController::class, 'packages'])->name('/subscription/packages');
+    Route::get('/subscription/purchase/{id}', [FrontendSubscriptionController::class, 'purchasePackage'])->name('purchase.package');
+    Route::post('/subscription/pay', [FrontendSubscriptionController::class, 'checkout_activation_code']);
+
+    Route::get('/razorpay/pay', [RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
+    Route::get('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
+
+    Route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
+    // Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
+
+    Route::get('/storage-plan', [StorageController::class, 'frontend_index']);
+    Route::get('/storage-plan/purchase/{id}', [StorageController::class, 'purchase']);
+
+    Route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
+
+    Route::post('/messages', [messageController::class, 'index'])->name('/messages');
+
+    Route::get('/profile', [clientController::class, 'profile_index'])->name('profile');
+    Route::post('/profile-update', [clientController::class, 'profile_update_frontend']);
+
+    Route::get('/issue-token', [issueTokenController::class, 'index'])->name('issue_token');
+    Route::post('/raise-issue', [issueTokenController::class, 'create']);
+
+    Route::get('/get/device/{id}', [frontendController::class, 'get_devices']);
+
+    // features
+    Route::group(['middleware' => 'client.validity'], function () {
+
+        Route::post('/delete/image', [DeleteController::class, 'destroy_camera']);
+        Route::post('/delete/gallery', [DeleteController::class, 'destroy_gallery']);
+        Route::post('/delete/video', [DeleteController::class, 'destroy_video']);
+        Route::post('/delete/audio', [DeleteController::class, 'destroy_audio']);
+        Route::post('/delete/screen-record', [DeleteController::class, 'destroy_screen_recording']);
+
+        Route::get('/message/{userId}', MessageComponent::class)->name('messages');
+        Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
+        Route::get('/camera/{userId}', CameraComponent::class)->name('camera');
+        Route::get('/call-log/{userId}', CallLogComponent::class)->name('call-log');
+        Route::get('/audio-record/{userId}', AudioRecordComponent::class)->name('audio-record');
+        Route::get('/alert-device/{userId}', AlertDeviceComponent::class);
+        Route::get('/vibrate-device/{userId}', VibrateComponent::class);
+        Route::get('/screen-record/{userId}', ScreenRecordComponent::class)->name('screen-record');
+        Route::get('/video-record/{userId}', VideoRecordComponent::class)->name('video');
+        Route::get('/gallery/{userId}', GalleryComponent::class)->name('gallery');
+        Route::get('/filemanager/{userId}', FilemanagerComponent::class);
+        Route::get('/lost-messages/{userId}', LostMessagesComponent::class);
+        Route::get('/locate-phone/{userId}', LocatePhone::class);
+        Route::get('/text-to-speech/{userId}', TextToSpeech::class);
+        Route::get('/my-devices/{userId}', MyDevices::class);
+
+        Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
+        Route::get('/default-device/{id}', [clientController::class, 'default_device']);
+    });
 });
 
 
 
 //admin
 Route::get('/admin/login', [adminController::class, 'login_index']);
+Route::get('/admin/login', [adminController::class, 'login_index']);
 
+Route::post('/admin/login', [adminController::class, 'login']);
+Route::get('/admin/logout', [adminController::class, 'logout']);
 Route::post('/admin/login', [adminController::class, 'login']);
 Route::get('/admin/logout', [adminController::class, 'logout']);
 
