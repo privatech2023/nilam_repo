@@ -74,7 +74,6 @@ class subscriptionController extends Controller
         try {
             if ($request->input('code_name') != "") {
                 $code = activation_codes::whereRaw('BINARY code = ?', [$request->input('code_name')])->first();
-
                 if ($code == null) {
                     $packageModel = packages::all();
                     $data = array(
