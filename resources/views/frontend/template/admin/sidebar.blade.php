@@ -10,6 +10,7 @@
           </li>
           <li class="nav-item d-none d-sm-inline-block">
             <a href="{{ url('/admin')}}" class="nav-link">Home</a>
+            <a href="{{ url('/admin')}}" class="nav-link">Home</a>
           </li>
           <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Contact</a>
@@ -34,10 +35,12 @@
           <li class="nav-item dropdown">
             <a class="nav-link" data-toggle="dropdown" href="#">
               {{ strtoupper(session('admin_name')) }}
+              {{ strtoupper(session('admin_name')) }}
               <i class="far fa-user"></i>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
               <span class="dropdown-item doropdown-header">Manage User</span>
+              <a href="{{ url('/admin/profile/'.session('admin_id'))}}" class="dropdown-item">
               <a href="{{ url('/admin/profile/'.session('admin_id'))}}" class="dropdown-item">
                 <!-- Message Start -->
                 <i class="fas fa-envelope mr-2"></i>
@@ -45,6 +48,7 @@
                 <!-- Message End -->
               </a>
               <div class="dropdown-divider"></div>
+              <a href="{{ url('/admin/settings')}}" class="dropdown-item">
               <a href="{{ url('/admin/settings')}}" class="dropdown-item">
                 <!-- Message Start -->
                 <i class="fas fa-users mr-2"></i>
@@ -90,12 +94,16 @@
                   with font-awesome or any other icon font library -->
               <li class="nav-item has-treeview menu-open">
                 <a href="{{ url('/admin')}}" class="nav-link ">
+                <a href="{{ url('/admin')}}" class="nav-link ">
                   <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
                     Dashboard
                   </p>
                 </a>
               </li>
+              @if(in_array('viewClient', session('user_permissions')) || session('admin_name') == 'admin')
+              <li class="nav-item has-treeview" id="clientTree">
+                <a href="#" class="nav-link" id="clientMenu">
               @if(in_array('viewClient', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview" id="clientTree">
                 <a href="#" class="nav-link" id="clientMenu">
@@ -108,11 +116,13 @@
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
                     <a href="{{ url('/admin/subscription/active')}}" class="nav-link" id="clientSubMenuActive">
+                    <a href="{{ url('/admin/subscription/active')}}" class="nav-link" id="clientSubMenuActive">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Active</p>
                     </a>
                   </li>
                   <li class="nav-item">
+                    <a href="{{ url('/admin/subscription/pending')}}" class="nav-link" id="clientSubMenuPending">
                     <a href="{{ url('/admin/subscription/pending')}}" class="nav-link" id="clientSubMenuPending">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Pending</p>
@@ -120,18 +130,30 @@
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/admin/subscription/expired')}}" class="nav-link" id="clientSubMenuExpired">
+                    <a href="{{ url('/admin/subscription/expired')}}" class="nav-link" id="clientSubMenuExpired">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Expired</p>
                     </a>
                   </li>
                   <li class="nav-item">
                     <a href="{{ url('/admin/subscription/index')}}" class="nav-link" id="clientSubMenuAll">
+                    <a href="{{ url('/admin/subscription/index')}}" class="nav-link" id="clientSubMenuAll">
                       <i class="far fa-circle nav-icon"></i>
                       <p>View all</p>
                     </a>
-                  </li>                
+                  </li>   
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/earnings/view')}}" class="nav-link" id="clientSubMenuEarning">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Earnings</p>
+                    </a>
+                  </li>              
                 </ul>
               </li>
+              @endif
+              
+              <li class="nav-item has-treeview" id="packageTree">
+                <a href="#" class="nav-link" id="packageMenu">
               @endif
               
               <li class="nav-item has-treeview" id="packageTree">
@@ -143,9 +165,12 @@
                   </p>
                 </a>
                 
+                
                 <ul class="nav nav-treeview">
                   @if(in_array('viewPackage', session('user_permissions')) || session('admin_name') == 'admin')
+                  @if(in_array('viewPackage', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
+                    <a href="{{ url('/admin/managePackages')}}" class="nav-link" id="packageSubMenuManage">
                     <a href="{{ url('/admin/managePackages')}}" class="nav-link" id="packageSubMenuManage">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage packages</p>
@@ -153,22 +178,31 @@
                   </li>
                   @endif
                   @if(in_array('viewCode', session('user_permissions')) || session('admin_name') == 'admin')
+                  @endif
+                  @if(in_array('viewCode', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
+                    <a href="{{ url('/admin/activationCodes')}}" class="nav-link" id="packageSubMenuCodes">
                     <a href="{{ url('/admin/activationCodes')}}" class="nav-link" id="packageSubMenuCodes">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Activation codes</p>
                     </a>
                   </li>
                   
+                  
                   <li class="nav-item">
+                    <a href="{{ url('/admin/manageCoupons')}}" class="nav-link" id="packageSubMenuCoupons">
                     <a href="{{ url('/admin/manageCoupons')}}" class="nav-link" id="packageSubMenuCoupons">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Coupons</p>
                     </a>
                   </li>
                   @endif
+                  @endif
                 </ul>
               </li>
+              @if(in_array('viewUser', session('user_permissions')) || session('admin_name') == 'admin')
+              <li class="nav-item has-treeview" id="employeeTree">
+                <a href="#" class="nav-link" id="employeeMenu">
               @if(in_array('viewUser', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview" id="employeeTree">
                 <a href="#" class="nav-link" id="employeeMenu">
@@ -180,17 +214,35 @@
                 </a>
                 <ul class="nav nav-treeview">
                 
+                
                   <li class="nav-item">
+                    <a href="{{ url('/admin/users')}}" class="nav-link" id="employeeSubMenuManage">
                     <a href="{{ url('/admin/users')}}" class="nav-link" id="employeeSubMenuManage">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Manage employees</p>
                     </a>
                   </li>                  
                   @if(in_array('viewRole', session('user_permissions')) || session('admin_name') == 'admin')
+                  </li>                  
+                  @if(in_array('viewRole', session('user_permissions')) || session('admin_name') == 'admin')
                   <li class="nav-item">
+                    <a href="{{ url('/admin/roles')}}" class="nav-link" id="employeeSubMenuRoles">
                     <a href="{{ url('/admin/roles')}}" class="nav-link" id="employeeSubMenuRoles">
                       <i class="far fa-circle nav-icon"></i>
                       <p>User roles</p>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/commission')}}" class="nav-link" id="employeeSubMenuCommissions">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Commission</p>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="{{ url('/admin/upline')}}" class="nav-link" id="employeeSubMenuUpline">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Upline</p>
                     </a>
                   </li>
                   @endif
@@ -236,6 +288,12 @@
                   </p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{ url('/admin/earnings/view')}}" class="nav-link" id="clientSubMenuEarning">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>My earnings</p>
+                </a>
+              </li> 
 
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/manageStorage')}}" class="nav-link" id="storageMenu">
@@ -248,12 +306,62 @@
               @if(in_array('viewSetting', session('user_permissions')) || session('admin_name') == 'admin')
               <li class="nav-item has-treeview">
                 <a href="{{ url('/admin/settings')}}" class="nav-link" id="settingsMenu">
+                <a href="{{ url('/admin/settings')}}" class="nav-link" id="settingsMenu">
                   <i class="nav-icon fas fa-solid fa-gear"></i>
                   <p>
                     Settings
                   </p>
                 </a>
               </li>
+              @endif
+
+              @if(session('admin_name') == 'admin' || in_array('itAll', session('user_permissions')) )
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/admin/technical/token')}}" class="nav-link" id="techTokensMenu">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Technical issue tokens
+                  </p>
+                </a>
+              </li>
+              @endif
+              @if(session('admin_name') == 'admin' )
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/admin/test-api')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Test Api
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/log')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Logs
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/devices/view')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Devices
+                  </p>
+                </a>
+              </li>
+
+              <li class="nav-item has-treeview">
+                <a href="{{ url('/features/control')}}" class="nav-link">
+                  <i class="nav-icon fas fa-solid fa-gear"></i>
+                  <p>
+                    Features control
+                  </p>
+                </a>
+              </li>
+              @endif
               @endif
 
               @if(session('admin_name') == 'admin' || in_array('itAll', session('user_permissions')) )

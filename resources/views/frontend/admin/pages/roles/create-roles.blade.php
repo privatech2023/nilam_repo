@@ -135,7 +135,13 @@
                         <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
                         <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
                         <td><input type="checkbox" name="permission[]" id="permission" value="itAll"></td>
-                      </tr>                              
+                      </tr>  
+                      
+                      <tr>
+                        <td>Earn commission</td>
+                        <td><input type="checkbox" class="permission-checkbox" name="permission[]" id="permission" value="commissionYes" onclick="toggleCheckbox(this)"> Yes</td>
+                        <td><input type="checkbox" class="permission-checkbox" name="permission[]" id="permission" value="commissionNo" onclick="toggleCheckbox(this)"> No</td>
+                      </tr> 
                       </tbody>
                     </table>
                     </div>
@@ -161,4 +167,16 @@
     </section>
     <!-- /.content -->
   </div>
+
+  <script>
+    function toggleCheckbox(checkbox) {
+        if (checkbox.checked) {
+            document.querySelectorAll('.permission-checkbox').forEach(function (element) {
+                if (element !== checkbox) {
+                    element.checked = false;
+                }
+            });
+        }
+    }
+</script>
 @endsection

@@ -7,8 +7,10 @@ use App\Http\Controllers\Api\V1\ApiAuthController;
 use App\Http\Controllers\ApkVersionController;
 use App\Http\Controllers\DeleteController;
 use App\Http\Controllers\clientController;
+use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\DevicesController;
+use App\Http\Controllers\EarningsController;
 use App\Http\Controllers\FeaturesController;
 use App\Http\Controllers\frontend\messageController;
 use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
@@ -25,6 +27,7 @@ use App\Http\Controllers\settingsController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\subscriptionController;
 use App\Http\Controllers\transactionsController;
+use App\Http\Controllers\UplineController;
 use App\Http\Controllers\usersController;
 use App\Http\Livewire\AlertDeviceComponent;
 use App\Http\Livewire\AudioRecordComponent;
@@ -301,6 +304,29 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     Route::post('/admin/client/print-view', [adminController::class, 'client_print_view']);
 
+    Route::get('/admin/commission', [CommissionController::class, 'index']);
+    Route::post('/admin/createCommission', [CommissionController::class, 'create_commission']);
+    Route::get('/admin/distributeClients', [CommissionController::class, 'distribute_clients_old']);
+    Route::get('/admin/commission/pay', [CommissionController::class, 'index_pay_commission']);
+
+    Route::get('/admin/earnings/view', [EarningsController::class, 'index']);
+    Route::post('/admin/earnings/ajaxAllEarnings', [EarningsController::class, 'ajaxAllEarnings']);
+
+    Route::get('/admin/upline', [UplineController::class, 'index'])->name('/admin/upline');
+    Route::post('/admin/upline/create', [UplineController::class, 'create']);
+
+    Route::get('/admin/view-upline/{id}', [UplineController::class, 'view_upline']);
+
+    Route::post('/admin/upline/delete-user', [UplineController::class, 'delete_user']);
+    Route::post('/admin/upline/delete-role', [UplineController::class, 'delete_role']);
+
+    Route::get('/admin/earnings/upline_earning_view', [EarningsController::class, 'index_2']);
+    Route::post('/admin/earnings/ajaxAllUplineEarnings', [EarningsController::class, 'ajaxAllUplineEarnings']);
+
+    Route::get('/admin/users-earnings', [CommissionController::class, 'index_earning_users']);
+
+    Route::get('/admin/get_direct_earnings/{id}', [EarningsController::class, 'get_direct_earnings']);
+    Route::get('/admin/get_upline_earnings/{id}', [EarningsController::class, 'get_upline_earnings']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

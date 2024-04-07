@@ -18,7 +18,6 @@ class StorageController extends Controller
     public function index()
     {
         $default = defaultStorage::first();
-
         if ($default == null) {
             $default = 100;
         } else {
