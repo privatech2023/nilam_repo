@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\groups;
 use App\Models\User;
+use App\Models\user_clients;
 use App\Models\user_groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -105,7 +106,11 @@ class usersController extends Controller
             }
             // $user->password = bcrypt($request->input('password'));
             $user->save();
-
+            if ($request->input('status') == 2) {
+                user_clients::where('user_id', $request->input('user_id'))->delete();
+                $d = new CommissionController;
+                $d->distribute_clients_old();
+            }
             if ($logged_user) {
                 $last_user_id = $user->id;
                 if ($last_user_id) {
