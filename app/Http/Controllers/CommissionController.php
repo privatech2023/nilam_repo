@@ -38,11 +38,13 @@ class CommissionController extends Controller
         foreach ($upline_all as $u) {
             $group1 = user_groups::where('g_id', $u->upline_id)->get();
             foreach ($group1 as $g1) {
-                $data = User::where('id', $g1->u_id)->first();
-                $upline_data[] = [
-                    'user_id' => $data->id,
-                    'user_name' => $data->name
-                ];
+                $data = User::where('id', $g1->u_id)->where('status', 1)->first();
+                if ($data != null) {
+                    $upline_data[] = [
+                        'user_id' => $data->id,
+                        'user_name' => $data->name
+                    ];
+                }
             }
         }
 
@@ -50,11 +52,13 @@ class CommissionController extends Controller
         foreach ($group2 as $g2) {
             $users = user_groups::where('g_id', $g2->id)->get();
             foreach ($users as $u) {
-                $data2 = User::where('id', $u->u_id)->first();
-                $direct_data[] = [
-                    'user_id' => $data2->id,
-                    'user_name' => $data2->name
-                ];
+                $data2 = User::where('id', $u->u_id)->where('status', 1)->first();
+                if ($data2 != null) {
+                    $direct_data[] = [
+                        'user_id' => $data2->id,
+                        'user_name' => $data2->name
+                    ];
+                }
             }
         }
         return view('frontend.admin.pages.commission.pay')->with(['upline' => $upline_data, 'directs' => $direct_data]);
@@ -94,7 +98,10 @@ class CommissionController extends Controller
         $iterate_count = 1;
         if (!$groups->isEmpty()) {
             $groupIds = $groups->pluck('id')->toArray();
-            $users = user_groups::whereIn('g_id', $groupIds)->get();
+            $users = user_groups::whereIn('g_id', $groupIds)
+                ->join('users', 'user_groups.id', '=', 'users.id')
+                ->where('users.status', 1)
+                ->get();
             if (!$users->isEmpty()) {
                 $user_count = count($users);
                 $this->loop_iterate($users, $ids, $iterate_count, $user_count);
@@ -147,7 +154,10 @@ class CommissionController extends Controller
     {
         $groups = groups::where('permissions', 'LIKE', '%commissionYes%')->get();
         $groupIds = $groups->pluck('id')->toArray();
-        $users = user_groups::whereIn('g_id', $groupIds)->get();
+        $users = user_groups::whereIn('g_id', $groupIds)
+            ->join('users', 'user_groups.id', '=', 'users.id')
+            ->where('users.status', 1)
+            ->get();
         $client_ids = clients::pluck('client_id')->toArray();
         $user_count = count($users);
 
@@ -162,7 +172,7 @@ class CommissionController extends Controller
                 return true;
             }
             $client_id = array_shift($client_ids);
-            $existingEntry = user_clients::where('user_id', $client_id)
+            $existingEntry = user_clients::where('client_id', $client_id)
                 ->first();
             if ($existingEntry == null) {
                 if (count($client_ids) == 0) {
