@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\clients;
 use App\Models\subscriptions;
-use App\Models\subscriptions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
