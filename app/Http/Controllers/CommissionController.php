@@ -151,85 +151,54 @@ class CommissionController extends Controller
 
 
     // distibute old clients
-    // public function distribute_clients_old()
-    // {
-    //     $groups = groups::where('permissions', 'LIKE', '%commissionYes%')->get();
-    //     Log::error('groups: ' . $groups);
-    //     $groupIds = $groups->pluck('id')->toArray();
-    //     $users = user_groups::whereIn('g_id', $groupIds)
-    //         ->join('users', 'user_groups.id', '=', 'users.id')
-    //         ->where('users.status', 1)
-    //         ->get();
-    //     Log::error('groups: ' . $users);
-    //     $client_ids = clients::pluck('client_id')->toArray();
-    //     $user_count = count($users);
-
-    //     $this->test($users, $client_ids, $user_count);
-    //     return redirect()->back();
-    // }
-
-    // public function test($users, $client_ids, $user_count)
-    // {
-    //     for ($i = 0; $i <= $user_count; $i++) {
-    //         if (empty($client_ids)) {
-    //             return true;
-    //         }
-    //         $client_id = array_shift($client_ids);
-    //         $existingEntry = user_clients::where('client_id', $client_id)
-    //             ->first();
-    //         if ($existingEntry == null) {
-    //             if (count($client_ids) == 0) {
-    //                 user_clients::create([
-    //                     'user_id' => $users[$i]->id,
-    //                     'client_id' => $client_id,
-    //                     'flag' => 1
-    //                 ]);
-    //             } else {
-    //                 user_clients::create([
-    //                     'user_id' => $users[$i]->id,
-    //                     'client_id' => $client_id
-    //                 ]);
-    //             }
-    //         }
-    //         if (!isset($users[$i + 1])) {
-    //             $i = 0 - 1;
-    //         }
-    //     }
-    // }
-
-
     public function distribute_clients_old()
     {
-        $groupIds = groups::where('permissions', 'LIKE', '%commissionYes%')->pluck('id')->toArray();
+        $groups = groups::where('permissions', 'LIKE', '%commissionYes%')->get();
+        Log::error('groups: ' . $groups);
+        $groupIds = $groups->pluck('id')->toArray();
         $users = user_groups::whereIn('g_id', $groupIds)
             ->join('users', 'user_groups.id', '=', 'users.id')
             ->where('users.status', 1)
             ->get();
+        Log::error('groups: ' . $users);
+        $client_ids = clients::pluck('client_id')->toArray();
 
-        $clientIds = clients::pluck('client_id')->toArray();
+        $chunkedClientIds = array_chunk($client_ids, 500);
+        $user_count = count($users);
+        // Iterate over each chunk
+        foreach ($chunkedClientIds as $chunk) {
+            $this->test($users, $chunk, $user_count);
+        }
 
-        $this->test($users, $clientIds);
-
+        // $this->test($users, $client_ids, $user_count);
         return redirect()->back();
     }
 
-    public function test($users, $clientIds)
+    public function test($users, $client_ids, $user_count)
     {
-        foreach ($clientIds as $clientId) {
-            foreach ($users as $user) {
-                $existingEntry = user_clients::where('client_id', $clientId)->first();
-                if ($existingEntry === null) {
+        for ($i = 0; $i <= $user_count; $i++) {
+            if (empty($client_ids)) {
+                return true;
+            }
+            $client_id = array_shift($client_ids);
+            $existingEntry = user_clients::where('client_id', $client_id)
+                ->first();
+            if ($existingEntry == null) {
+                if (count($client_ids) == 0) {
                     user_clients::create([
-                        'user_id' => $user->id,
-                        'client_id' => $clientId,
+                        'user_id' => $users[$i]->id,
+                        'client_id' => $client_id,
                         'flag' => 1
                     ]);
                 } else {
                     user_clients::create([
-                        'user_id' => $user->id,
-                        'client_id' => $clientId
+                        'user_id' => $users[$i]->id,
+                        'client_id' => $client_id
                     ]);
                 }
+            }
+            if (!isset($users[$i + 1])) {
+                $i = 0 - 1;
             }
         }
     }
