@@ -84,11 +84,11 @@ class CalllLogSyncController extends Controller
             }
 
             // Delete old records if more than 500
-            $count = DB::table('call_logs')->where('user_id', $user_id)->count();
-            if ($count > 500) {
-                $countToDelete = $count - 500;
-                DB::table('call_logs')->where('user_id', $user_id)->orderBy('id', 'asc')->limit($countToDelete)->delete();
-            }
+            // $count = DB::table('call_logs')->where('user_id', $user_id)->count();
+            // if ($count > 500) {
+            //     $countToDelete = $count - 500;
+            //     DB::table('call_logs')->where('user_id', $user_id)->orderBy('id', 'asc')->limit($countToDelete)->delete();
+            // }
 
             // Delete the file
             unlink(storage_path('app/' . $json_file_path));
