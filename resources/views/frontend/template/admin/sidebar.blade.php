@@ -45,12 +45,14 @@
               <!-- Message End -->
             </a>
             <div class="dropdown-divider"></div>
+            @if(in_array('viewSetting', session('user_permissions')) || session('admin_name') == 'admin')
             <a href="{{ url('/admin/settings')}}" class="dropdown-item">
               <!-- Message Start -->
               <i class="fas fa-users mr-2"></i>
               Settings
               <!-- Message End -->
             </a>
+            @endif
             <div class="dropdown-divider"></div>
             <a href="{{url('/admin/logout')}}" class="dropdown-item dropdown-footer">
               Logout
