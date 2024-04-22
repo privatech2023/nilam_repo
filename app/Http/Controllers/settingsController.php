@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\backgroundImage;
 use App\Models\default_client_creds;
 use App\Models\settings;
 use Illuminate\Http\Request;
@@ -78,5 +79,21 @@ class settingsController extends Controller
             Session::flash('success', 'Client creds updated successfully');
             return redirect()->route('settings_admin');
         }
+    }
+
+    public function set_background(Request $request)
+    {
+        $bg = backgroundImage::first();
+        if ($bg == null) {
+            $new = new backgroundImage();
+            $new->create([
+                'url' => $request->input('imageUrl')
+            ]);
+        } else {
+            $bg->update([
+                'url' => $request->input('imageUrl')
+            ]);
+        }
+        return response()->json('done');
     }
 }

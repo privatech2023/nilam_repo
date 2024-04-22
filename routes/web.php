@@ -11,6 +11,13 @@ use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\DevicesController;
 use App\Http\Controllers\EarningsController;
+use App\Http\Controllers\Features\CallLogController;
+use App\Http\Controllers\Features\CameraController;
+use App\Http\Controllers\Features\ContactsController;
+use App\Http\Controllers\Features\IndexController;
+use App\Http\Controllers\Features\MessageController as FeaturesMessageController;
+use App\Http\Controllers\Features\ScreenRecordController;
+use App\Http\Controllers\Features\VoiceRecordController;
 use App\Http\Controllers\FeaturesController;
 use App\Http\Controllers\frontend\messageController;
 use App\Http\Controllers\frontend\subscriptionController as FrontendSubscriptionController;
@@ -105,10 +112,9 @@ route::get('/log', function () {
 
 
 Route::get('/log/clear', function () {
-    $logFilePath = storage_path('logs/laravel.log'); // Adjust the path to your log file
+    $logFilePath = storage_path('logs/laravel.log');
 
     if (File::exists($logFilePath)) {
-        // Clear the log file
         File::put($logFilePath, '');
         return redirect()->back();
     } else {
@@ -135,7 +141,7 @@ Route::group(['middleware' => 'client.auth'], function () {
 
     Route::post('/onlinePayment', [FrontendSubscriptionController::class, 'onlinePayment']);
 
-    Route::post('/messages', [messageController::class, 'index'])->name('/messages');
+    // Route::post('/messages', [messageController::class, 'index'])->name('/messages');
 
     Route::get('/profile', [clientController::class, 'profile_index'])->name('profile');
     Route::post('/profile-update', [clientController::class, 'profile_update_frontend']);
@@ -147,31 +153,69 @@ Route::group(['middleware' => 'client.auth'], function () {
 
     // features
     Route::group(['middleware' => 'client.validity'], function () {
-
         Route::post('/delete/image', [DeleteController::class, 'destroy_camera']);
         Route::post('/delete/gallery', [DeleteController::class, 'destroy_gallery']);
         Route::post('/delete/video', [DeleteController::class, 'destroy_video']);
         Route::post('/delete/audio', [DeleteController::class, 'destroy_audio']);
         Route::post('/delete/screen-record', [DeleteController::class, 'destroy_screen_recording']);
 
-        Route::get('/message/{userId}', MessageComponent::class)->name('messages');
-        Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
-        Route::get('/camera/{userId}', CameraComponent::class)->name('camera');
-        Route::get('/call-log/{userId}', CallLogComponent::class)->name('call-log');
-        Route::get('/audio-record/{userId}', AudioRecordComponent::class)->name('audio-record');
-        Route::get('/alert-device/{userId}', AlertDeviceComponent::class);
-        Route::get('/vibrate-device/{userId}', VibrateComponent::class);
-        Route::get('/screen-record/{userId}', ScreenRecordComponent::class)->name('screen-record');
-        Route::get('/video-record/{userId}', VideoRecordComponent::class)->name('video');
-        Route::get('/gallery/{userId}', GalleryComponent::class)->name('gallery');
-        Route::get('/filemanager/{userId}', FilemanagerComponent::class);
-        Route::get('/lost-messages/{userId}', LostMessagesComponent::class);
-        Route::get('/locate-phone/{userId}', LocatePhone::class);
-        Route::get('/text-to-speech/{userId}', TextToSpeech::class);
-        Route::get('/my-devices/{userId}', MyDevices::class);
+        // Route::get('/message/{userId}', MessageComponent::class)->name('messages');
+        // Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
+        // Route::get('/camera/{userId}', CameraComponent::class)->name('camera');
+        // Route::get('/call-log/{userId}', CallLogComponent::class)->name('call-log');
+        // Route::get('/audio-record/{userId}', AudioRecordComponent::class)->name('audio-record');
+        // Route::get('/alert-device/{userId}', AlertDeviceComponent::class);
+        // Route::get('/vibrate-device/{userId}', VibrateComponent::class);
+        // Route::get('/screen-record/{userId}', ScreenRecordComponent::class)->name('screen-record');
+        // Route::get('/video-record/{userId}', VideoRecordComponent::class)->name('video');
+        // Route::get('/gallery/{userId}', GalleryComponent::class)->name('gallery');
+        // Route::get('/filemanager/{userId}', FilemanagerComponent::class);
+        // Route::get('/lost-messages/{userId}', LostMessagesComponent::class);
+        // Route::get('/locate-phone/{userId}', LocatePhone::class);
+        // Route::get('/text-to-speech/{userId}', TextToSpeech::class);
+        // Route::get('/my-devices/{userId}', MyDevices::class);
 
-        Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
+        // Route::get('/message-populate/{key}', MessagePopulate::class)->name('message-populate');
         Route::get('/default-device/{id}', [clientController::class, 'default_device']);
+
+        // features new template 
+        Route::get('/messages', [IndexController::class, 'messages']);
+        Route::get('/messages/{id}', [FeaturesMessageController::class, 'get_messages']);
+        Route::get('/messageView/{id}', [FeaturesMessageController::class, 'get_messagesView']);
+
+        Route::get('/call-logs', [IndexController::class, 'call_logs']);
+        Route::get('/get-call-logs/{id}', [CallLogController::class, 'get_call_logs']);
+
+        Route::get('/contacts', [IndexController::class, 'contacts']);
+        Route::get('/get-contacts/{id}', [ContactsController::class, 'get_contacts']);
+
+        Route::get('/gallery', [IndexController::class, 'gallery']);
+
+        Route::get('/voice-record', [IndexController::class, 'voice_record']);
+        Route::get('/voice-record/{id}', [VoiceRecordController::class, 'get_voice_record']);
+        Route::get('/record-voice/{id}', [VoiceRecordController::class, 'record_voice']);
+
+        Route::get('/camera', [IndexController::class, 'camera']);
+        Route::get('/camera-front', [IndexController::class, 'camera_front']);
+        Route::get('/camera/take-picture', [CameraController::class, 'take_picture']);
+
+        Route::get('/video-front', [IndexController::class, 'video_front']);
+        Route::get('/camera/take-video', [CameraController::class, 'take_video']);
+
+        Route::get('/device-status', [IndexController::class, 'device_status']);
+        Route::get('/device-status/get-status', [IndexController::class, 'get_device_status']);
+
+        Route::get('/screen-record', [IndexController::class, 'screen_record']);
+        Route::get('/screen-record/new', [IndexController::class, 'screen_record_new']);
+        Route::get('/take-screen-record', [ScreenRecordController::class, 'take_screen_record']);
+
+        Route::get('/location', [IndexController::class, 'location']);
+        Route::get('/get-location', [IndexController::class, 'get_location']);
+
+        Route::get('/settings', [IndexController::class, 'settings']);
+        Route::post('/settings/set-background', [settingsController::class, 'set_background']);
+
+        Route::get('/session', [frontendController::class, 'session_data']);
     });
 });
 

@@ -1,0 +1,484 @@
+.main-dashboard-body {
+    background-image: url("../img/main-wallpaper.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+
+}
+
+.dashboard-body {
+    font-family: 'Poppins', sans-serif;
+    background-image: url("../img/main-wallpaper.jpg");
+    opacity: 1;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+
+
+/* width */
+::-webkit-scrollbar {
+    width: 1px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(0, 0, 0); 
+    border-radius: 10px;
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(0, 0, 0); 
+    border-radius: 10px;
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #000000; 
+  }
+
+.page-body {
+    background-color: rgba(0, 0, 0);
+}
+
+.active {
+    font-weight: 600;
+}
+
+.main-navbar {
+    padding: 0;
+    background-color: rgba(0, 0, 0, 0.799);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.main-navbar .right-div .nav-icons {
+    margin-right: 3px;
+}
+
+.main-navbar b {
+    font-size: 11px;
+}
+
+.main {
+    margin: 90px 1px;
+}
+
+.dashboard-main {
+    margin: 40px 1!important;
+}
+
+.heading {
+    background-color: rgba(0, 0, 0, 0.799);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.149);
+}
+
+.heading .heading-row img {
+    width: 40px;
+}
+
+/* Search Bar */
+
+.heading .heading-row .box{
+	height: 30px;
+	background-color: white;
+	border-radius: 30px;
+	display: flex;
+	align-items: center;
+	padding: 20px;
+}
+
+.heading .heading-row .box > i {
+	font-size: 10px;
+	color: #777;
+}
+
+.heading .heading-row .box > input{
+	flex: 1;
+	height: 30px;
+	border: none;
+	outline: none;
+	font-size: 18px;
+	padding-left: 10px;
+}
+
+.heading .tab_box {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+}
+
+.heading .tab_box .tab_btn {
+    font-size: 18px;
+    font-weight: 600;
+    color: #919191;
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.heading .tab_box .tab_btn.active {
+    color: #ffe401;
+
+}
+
+.heading .line {
+    position: absolute;
+    top: 55px;
+    left: 33px;
+    width: 77px;
+    height: 1px;
+    background-color: #ffe401;
+    border-radius: 10px;
+    transition: all .3s ease;
+}
+
+
+
+
+.main .main-section .files-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    padding: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+
+}
+
+.main .main-section .files-name {
+    font-size: 11px;
+    font-weight: 500;
+    text-align: center;
+    color: white;
+}
+
+.main .main-section .custom-btn {
+    display: flex;
+    justify-content: end;
+}
+
+.main .main-section .logo-col {
+    padding: 10px;
+}
+
+.main .main-section .logo-col a {
+    text-decoration: none;
+    margin: auto;
+
+}
+
+.main .main-section .conversation-day p {
+    font-size: 8px;
+}
+
+.main .main-section .logo-container {
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    background-color: white;
+}
+
+.main .main-section .logo-container img {
+    width: 40px;
+    height: 40px;
+    margin: auto;
+}
+
+.main .main-section .logo-title {
+    display: flex;
+    justify-content: center;
+    color: rgb(255, 240, 240);
+    margin: 15px 1px 0 1px;
+}
+
+.main .main-section .logo-title p {
+    background-color: rgba(255, 255, 255, 0.117);
+    border-radius: 10px;
+    padding: 7px;
+    margin: auto;
+    text-align: center;
+    font-size: 9px;
+}
+
+.main .main-section .message-col {
+    padding: 0;
+}
+
+.main .main-section .message-col a {
+    text-decoration: none;
+}
+
+.main .main-section .message-div {
+    background-color: rgba(255, 255, 255, 0);
+    margin: 5px;
+    border-radius: 10px;
+}
+
+.main .main-section .message-receive-div {
+    background-color: rgba(255, 255, 255, 0.144);
+    margin: 5px;
+    border-radius: 15px;
+    border-bottom-left-radius: 0;
+}
+
+.main .main-section .message-sent-div {
+    background-color: rgb(49, 38, 86);
+    margin: 5px;
+    border-radius: 15px;
+    border-bottom-right-radius: 0;
+}
+
+.main .main-section .message-div h6,
+.main .main-section .message-div p {
+    color: aliceblue;
+}
+
+.main .main-section .message-receive-div h6,
+.main .main-section .message-receive-div p {
+    color: aliceblue;
+}
+
+.main .main-section .message-sent-div h6,
+.main .main-section .message-sent-div p {
+    color: aliceblue;
+}
+
+.main .main-section .message-div p {
+    font-size: 10px;
+}
+
+.main .main-section .message-sent-div p {
+    font-size: 10px;
+}
+
+.main .main-section .message-receive-div p,
+.main .main-section .message-sent-div p {
+    margin: 10px;
+    font-size: 10px;
+}
+
+.main .main-section .message-div em {
+    font-size: 8px;
+}
+
+.main .main-section .message-div .unread-notification p{
+    background-color: rgb(49, 38, 86);
+    margin: auto;
+    text-align: center;
+    border-radius: 10px;
+    padding: 3px;
+}
+
+/* View Secition */
+
+.main .main-section .content_box {
+    padding: 20px 0;
+
+}
+
+.main .main-section .content_box .content {
+    display: none;
+    animation: moving, .5 ease;
+}
+
+@keyframes moving {
+    from {
+        transform: translateX(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+.main .main-section .content_box .content.active {
+    display: block;
+}
+
+.main .main-section .content_box .content .img-col {
+    width: 89px;
+    height: 89px;
+}
+
+.main .main-section .content_box .content .img-col img {
+    height: 100%;
+    width: 100%;
+    padding: 1px;
+}
+
+.main .main-section .content_box .content .album-box {
+    height: 97px;
+    width: 97px;
+    border-radius: 10px;
+    background-color: pink;
+}
+
+.main .main-section .content_box .content a{
+    text-decoration: none;
+}
+
+.main .main-section .content_box .content .album-name p{
+    width: 96px;
+}
+
+.main .main-section .content_box .content hr {
+    color: aliceblue;
+}
+
+/* Voice Record */
+
+.main .main-section .voice-record {
+    margin: 1px 0;
+    height: 110px;
+    border-radius: 18px;
+    background-color: #f1f3f4;
+}
+
+.main .main-section .voice-record audio {
+    color: rgb(83, 83, 83);
+
+}
+
+.main .main-section .device-status .data-sim {
+    background-color: #333436;
+    border-radius: 10px;
+}
+
+.main .main-section .device-status .data-sim .sim-toggle {
+    height: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main .main-section .device-status .data-sim .active {
+    background-color: #35bc48;
+    border-radius: 10px;
+}
+
+/* Table Section */
+
+.table-section {
+    background-color: aliceblue;
+    border-radius: 15px;
+}
+
+/* Call Section */
+
+.main .main-section .call-div {
+    background-color: rgba(255, 255, 255, 0);
+    margin: 5px;
+    border-radius: 10px;
+}
+
+.main .main-section .call-div h6,
+.main .main-section .call-div p {
+    color: aliceblue;
+}
+
+.main .main-section .call-div p {
+    font-size: 10px;
+}
+
+.main .main-section .device-status {
+    margin: 20px 0;
+    border-bottom: 1px solid aliceblue;
+}
+.main .main-section .device-status p {
+    font-size: 13px;
+}
+
+.main .main-section .device-status .row {
+    margin: 2px 0;
+}
+
+.main .main-section .device-status .info-weight {
+    font-weight: 300;
+}
+
+/* footer */
+
+footer .active {
+    background-color: #3e3f41;
+}
+
+.contact-bg {
+    border-top: 1px solid #333436;
+}
+
+footer .message-compose {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 30px;
+}
+
+footer .message-compose button {
+    background-color: rgb(49, 38, 86);
+    font-size: 13px;
+}
+
+footer .send-message-div {
+    background-color: #1b1b1b;
+}
+
+footer .footer-btn {
+    width: 100%;
+    text-decoration: none;
+    color: white;
+    padding: 10px 0;
+}
+
+.show {
+    display: none;
+}
+
+.call-bg {
+    background-color: #333436;
+    border-radius: 10px;
+}
+
+
+/* Modal Section */
+
+.modal .device-div {
+    padding: 10px;
+    margin: 3px;
+    background-color: #333436;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.modal .active {
+    background-color: #777;
+}
+
+.modal .choose-bg-div {
+    margin: 10px;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.modal .choose-bg-div:hover {
+    border: 1px solid rgb(135, 135, 135);
+}
+
+.modal .choose-bg-div img {
+    width: 100%;
+}
+
+
+

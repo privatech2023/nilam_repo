@@ -215,7 +215,6 @@ class clientController extends Controller
                 'password' => 'required|min:8',
                 'confirm_password' => 'required|same:password'
             ]);
-
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             } else {

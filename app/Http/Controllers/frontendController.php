@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\backgroundImage;
 use App\Models\defaultStorage;
 use App\Models\device;
 use App\Models\gallery_items;
@@ -45,7 +46,10 @@ class frontendController extends Controller
             // dd(session::all());
         }
         Session::forget('user_data');
-        return view('frontend/pages/index');
+
+        $bg = backgroundImage::first();
+
+        return view('frontend/pages/index')->with(['bg' => $bg]);
     }
 
     public function sendOTP($number, $message)
@@ -233,5 +237,12 @@ class frontendController extends Controller
         } catch (\Exception $e) {
             Log::error('error main: ' . $e->getMessage());
         }
+    }
+
+
+    public function session_data()
+    {
+        $data = Session::all();
+        return response()->json('hey');
     }
 }

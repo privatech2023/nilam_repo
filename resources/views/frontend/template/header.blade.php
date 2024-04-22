@@ -10,7 +10,6 @@
      <link rel="icon" type="image/x-icon" href="{{url('assets/frontend/images/favicon-32x32.png')}}"> 
     <link rel="apple-touch-icon" sizes="180x180"
         href="{{url('assets/frontend/images/favicon/apple-touch-icon.png')}}">
-
     <link rel="icon" type="image/png" sizes="32x32" href="{{url('assets/frontend/images/favicon/favicon-32x32.png')}}">
 
 

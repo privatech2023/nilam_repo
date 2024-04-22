@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->integer('storage_id')->nullable();
-            $table->string('storage_name', 299)->nullable();
+        Schema::create('background_images', function (Blueprint $table) {
+            $table->id();
+            $table->text('url')->nullable()->default(url('/assets_2/img/billy-huynh-W8KTS-mhFUE-unsplash.jpg'));
+            $table->timestamps();
         });
     }
 
@@ -26,8 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('background_images');
     }
 };
