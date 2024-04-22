@@ -909,7 +909,7 @@
             
             $('#modalLoginPrompt').modal('hide');
             // Set the end date for the countdown
-            var endDate = new Date("May 12, 2024 00:00:00").getTime();
+            var endDate = new Date("May 21, 2024 00:00:00").getTime();
 
             // Update the countdown every second
             var x = setInterval(function () {
