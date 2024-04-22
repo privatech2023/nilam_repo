@@ -90,7 +90,7 @@
                         <div class="row">
                             @if($images->count() > 0)
                             @foreach($images as $image)
-                            <div class="col-3 p-0 img-col img-open" data-src="{{$image->s3Url}}" data-id="{{$image->id}}">
+                            <div class="col-3 p-0 img-col img-open" data-src="{{$image->s3Url()}}" data-id="{{$image->id}}">
                                 <img src="{{$image->s3Url}}" alt="img">
                             </div>
                             @endforeach
