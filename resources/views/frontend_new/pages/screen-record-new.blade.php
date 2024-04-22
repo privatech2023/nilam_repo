@@ -172,7 +172,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -180,7 +180,7 @@
                 @csrf
             <div class="modal-footer">
                 <input type="hidden" name="id" id="deleteItemId" value=""/>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
               <button type="submit" class="btn btn-primary">Yes</button>
             </div>
         </form>
