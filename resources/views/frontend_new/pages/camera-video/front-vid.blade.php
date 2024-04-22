@@ -178,7 +178,7 @@
 
                         <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-x: auto; height:83%;" >
                             @if($recordings->count() > 0)
-                            @foreach($recordings as $recording)
+                            @foreach($recordings as $video)
                             <div class="video-container" >
                                 <video controls class="w-full h-full">
                                     <source src="{{$video->s3Url()}}" type="video/mp4">
