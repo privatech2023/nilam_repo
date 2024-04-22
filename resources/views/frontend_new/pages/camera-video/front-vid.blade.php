@@ -61,12 +61,12 @@
     
     @media screen and (max-width: 1228px) {
         .video-container {
-            width: 90%;
+            width: 95%;
             height: 70%;
         }
     
         .delete-btn{
-        margin-left: 30%;
+        margin-left: auto;
         border-radius: 15px;
     }
     }
