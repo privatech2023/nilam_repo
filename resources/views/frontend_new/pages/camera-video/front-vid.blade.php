@@ -30,6 +30,47 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('assets_2/css/style.css')}}">
 </head>
+<style>
+    .delete-btn{
+        margin-left: 50%;
+        border-radius: 15px;
+    }
+                .video-container {
+        position: relative; /* Set position to relative */
+        width: 46%; 
+        height: auto; 
+        overflow: hidden; 
+    }
+    
+    .video-container p {
+        /* position: absolute;  */
+        bottom: 0;
+        width: 100%;
+        text-align: left;
+        background-color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+        padding: 5px 10px; 
+        border-radius: 10px;
+    }
+    
+    .video-container video {
+        width: 100%; /* Set video width to 100% */
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(61, 34, 79, 0.5);
+    }
+    
+    @media screen and (max-width: 1228px) {
+        .video-container {
+            width: 100%; 
+        }
+    
+        .delete-btn{
+        margin-left: 30%;
+        border-radius: 15px;
+    }
+    }
+    
+            </style>
 
 <body class="page-body">
     <!--  Header Section -->
@@ -136,7 +177,7 @@
 
                         <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-x: auto; height:83%;" >
                             @if($recordings->count() > 0)
-                            @foreach($recordings as $video)
+                            @foreach($recordings as $recording)
                             <div class="video-container" >
                                 <video controls class="w-full h-full">
                                     <source src="{{$video->s3Url()}}" type="video/mp4">
@@ -216,7 +257,6 @@
         $(document).ready(function () {
 
             $(document).on('click', '.delete-btn', function () {
-                    alert('hey')
             var id = this.getAttribute('data-id');
                 document.getElementById('deleteItemId').value = id;
                 $('#deleteModal').modal('show');
