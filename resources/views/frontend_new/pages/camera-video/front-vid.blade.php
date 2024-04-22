@@ -88,8 +88,8 @@
             <div class="container-fluid">
                 <div class="content_box">
                     <div class=" container-fluid content active">
-                        <div class="row">
-                            @if($recordings->count() > 0)
+                        {{-- <div class="row"> --}}
+                            {{-- @if($recordings->count() > 0)
                             @foreach($recordings as $recording)
                             <div class="col-3 p-0" >
                                 <video controls class="w-full h-full">
@@ -102,15 +102,88 @@
                             <div class="col-3 p-0 img-col" >
                                 <p style="color:white;">No videos</p>
                             </div>
-                            @endif
+                            @endif --}}
                             
+                            {{-- <div class="col-3 p-0">
+                                <video controls class="w-full h-full">
+                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                                    Your browser does not support the video element.
+                                </video>
+                            </div>
+
+                            <div class="col-3 p-0">
+                                <video controls class="w-full h-full">
+                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                                    Your browser does not support the video element.
+                                </video>
+                            </div>
+                            <div class="col-3 p-0">
+                                <video controls class="w-full h-full">
+                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                                    Your browser does not support the video element.
+                                </video>
+                            </div>
+
+                            <div class="col-3 p-0">
+                                <video controls class="w-full h-full">
+                                    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                                    Your browser does not support the video element.
+                                </video>
+                            </div>
+                            
+                            
+                        </div> --}}
+
+                        <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-x: auto; height:83%;" >
+                            @if($recordings->count() > 0)
+                            @foreach($recordings as $recording)
+                            <div class="video-container" >
+                                <video controls class="w-full h-full">
+                                    <source src="{{$video->s3Url()}}" type="video/mp4">
+                                    Your browser does not support the video element.
+                                </video>
+                                <p >
+                                    {{ $video->created_at->format('M d, Y h:i A') }}
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn"  data-id="{{$video->id}}">Delete</button>
+                                </p>            
+                            </div>
+                            @endforeach
+                            @else 
+                            <div class="col-3 p-0 img-col" >
+                                <p style="color:white;">No videos</p>
+                            </div>
+                            @endif
                         </div>
+
+
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
+
+     {{-- modal delete --}}
+ <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="{{ url('/delete/video')}}" method="post">
+            @csrf
+        <div class="modal-footer">
+            <input type="hidden" name="id" id="deleteItemId" value=""/>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+          <button type="submit" class="btn btn-primary">Yes</button>
+        </div>
+    </form>
+      </div>
+    </div>
+</div>
     <!-- Main Section Ends -->
 
 
@@ -141,6 +214,15 @@
 
     <script>
         $(document).ready(function () {
+
+            $(document).on('click', '.delete-btn', function () {
+                    alert('hey')
+            var id = this.getAttribute('data-id');
+                document.getElementById('deleteItemId').value = id;
+                $('#deleteModal').modal('show');
+            });
+
+
             $(".tap").click(function () {
                 var act = $(this).closest(".call-container").hasClass("call-bg");
                 console.log(act);
@@ -166,6 +248,8 @@
                         }, 10000);
                     }
                 });
+
+                
             });
         });
     </script>
