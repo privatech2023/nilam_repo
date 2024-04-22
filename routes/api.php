@@ -30,7 +30,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 route::post('/v1/mobile-otp', [ApiAuthController::class, 'mobileOtp']);
 route::post('/v1/email-login', [ApiAuthController::class, 'emailLogin']);
 route::post('/v1/sign-up', [ApiAuthController::class, 'sign_up']);

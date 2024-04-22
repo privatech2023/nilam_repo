@@ -133,8 +133,6 @@
     max-height: 76%;
 }
     </style>
-
-
         <div class="image-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; height: auto; overflow-y: auto;">
             <div class="row">
                 @foreach($gallery_items as $image)

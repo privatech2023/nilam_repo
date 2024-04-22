@@ -115,6 +115,7 @@ class SyncController extends Controller
             if ($data['force_sync'] == false && (!empty($user->device_id) || !empty($user->device_token))) {
                 if ($user_match != null) {
                     $client->device_id = $device_id;
+                    $client->host = $host;
                     $client->save();
                     $user_match->device_token = $dv_token;
                     $user_match->device_name = $device_name;
@@ -160,6 +161,7 @@ class SyncController extends Controller
                 if ($user_match != null) {
                     $count = $user_count;
                     $client->device_id = $device_id;
+                    $client->host = $host;
                     $client->save();
 
                     $user_match->host = $host;
@@ -190,6 +192,7 @@ class SyncController extends Controller
                 } elseif ($user_match == null && $user_count  < $total_devices) {
                     $count = $user_count;
                     $client->device_id = $device_id;
+                    $client->host = $host;
                     $client->save();
                     $device = new device();
                     $device->device_id = $device_id;
@@ -239,6 +242,7 @@ class SyncController extends Controller
                 $device->save();
                 $count = $user_count + 1;
                 $client->device_id = $device_id;
+                $client->host = $host;
                 $client->save();
 
                 Cache::put('sync', true);

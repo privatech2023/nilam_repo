@@ -136,7 +136,6 @@ class MessageSyncController extends Controller
         // Read the file contents
         $json_file_content = file_get_contents(storage_path('app/' . $json_file_path));
         $json_file_content = json_decode($json_file_content, true);
-
         try {
             $messages = $json_file_content['data'];
 

@@ -28,7 +28,7 @@ class DeleteController extends Controller
         Storage::disk('s3')->delete($s3Path);
         $image->delete();
         session()->flash('success', 'Image deleted successfully');
-        return redirect()->route('camera', ['userId' => Session('user_id')]);
+        return redirect()->back();
     }
 
     public function destroy_gallery(Request $request)
@@ -39,7 +39,7 @@ class DeleteController extends Controller
         Storage::disk('s3')->delete($s3Path);
         $gall->delete();
         session()->flash('success', 'Image deleted successfully');
-        return redirect()->route('gallery', ['userId' => Session('user_id')]);
+        return redirect()->back();
     }
 
     public function destroy_video(Request $request)
@@ -50,7 +50,7 @@ class DeleteController extends Controller
         Storage::disk('s3')->delete($s3Path);
         $image->delete();
         session()->flash('success', 'Image deleted successfully');
-        return redirect()->route('video', ['userId' => Session('user_id')]);
+        return redirect()->back();
     }
 
     public function destroy_screen_recording(Request $request)
@@ -61,7 +61,7 @@ class DeleteController extends Controller
         Storage::disk('s3')->delete($s3Path);
         $image->delete();
         session()->flash('success', 'Image deleted successfully');
-        return redirect()->route('screen-record', ['userId' => Session('user_id')]);
+        return redirect()->back();
     }
     public function destroy_audio(Request $request)
     {
@@ -71,6 +71,6 @@ class DeleteController extends Controller
         Storage::disk('s3')->delete($s3Path);
         $image->delete();
         session()->flash('success', 'Image deleted successfully');
-        return redirect()->route('audio-record', ['userId' => Session('user_id')]);
+        return redirect()->back();
     }
 }

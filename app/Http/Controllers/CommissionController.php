@@ -12,6 +12,7 @@ use App\Models\user_clients;
 use App\Models\user_groups;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -153,15 +154,23 @@ class CommissionController extends Controller
     public function distribute_clients_old()
     {
         $groups = groups::where('permissions', 'LIKE', '%commissionYes%')->get();
+        Log::error('groups: ' . $groups);
         $groupIds = $groups->pluck('id')->toArray();
         $users = user_groups::whereIn('g_id', $groupIds)
             ->join('users', 'user_groups.id', '=', 'users.id')
             ->where('users.status', 1)
             ->get();
+        Log::error('groups: ' . $users);
         $client_ids = clients::pluck('client_id')->toArray();
-        $user_count = count($users);
 
-        $this->test($users, $client_ids, $user_count);
+        $chunkedClientIds = array_chunk($client_ids, 500);
+        $user_count = count($users);
+        // Iterate over each chunk
+        foreach ($chunkedClientIds as $chunk) {
+            $this->test($users, $chunk, $user_count);
+        }
+
+        // $this->test($users, $client_ids, $user_count);
         return redirect()->back();
     }
 
