@@ -21,6 +21,6 @@ class MessageController extends Controller
     public function get_messagesView($id)
     {
         $data = messages::where('number', $id)->get();
-        return view('frontend_new.pages.messageInside')->with(['data' => $data, 'number' => $id]);
+        return view('frontend_new.pages.messageinside')->with(['data' => $data, 'number' => $id]);
     }
 }
