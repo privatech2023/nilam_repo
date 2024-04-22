@@ -209,7 +209,7 @@
 </div>
 @endif
 <div class="timer" style="z-index: 1000;">
-                <strong>Upcoming features, May 12, 2024: </strong><span id="countdown" class="text-sm"></span>
+                <strong>Upcoming features, May 21, 2024: </strong><span id="countdown" class="text-sm"></span>
             </div>
 
 
