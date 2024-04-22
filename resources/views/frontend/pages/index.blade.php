@@ -90,7 +90,7 @@
 <nav class="navbar main-navbar fixed-top">
     <div class="container">
         <div class="left-div text-light">
-            <b>11:11 AM </b>
+            <h4 >PRIVATECH</h4>
         </div>
         @php
     $validity = session('validity');
@@ -177,9 +177,9 @@
         <!-- Main Section -->
         <main class="main" style="margin: 40px 1px;">
             @if(session('user_name'))
-<div class="row mt-3 welcome" style="margin-top: 4px; margin-left:8px;">
-    <div class="col-9" >
-        <h2  class="welcome-text text-white" style="text-transform: uppercase;">{{session('user_name')}} </h2>
+<div class="row mt-3 welcome" style="margin-top: 20px; margin-left:8px;">
+    <div class="col-9" style="margin-top:5px;">
+        <p  class="welcome-text text-white " style="text-transform: uppercase; font-size: 1.3em;">{{session('user_name')}} </p>
     </div>
     @if(session('store_more') == false)
     <div class="container">
