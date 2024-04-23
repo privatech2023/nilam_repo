@@ -228,6 +228,11 @@ class IndexController extends Controller
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
         $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+
+        if ($client == null) {
+            return;
+        }
+
         $data = [
             'device_token' => $client->device_token,
             'title' => null,
