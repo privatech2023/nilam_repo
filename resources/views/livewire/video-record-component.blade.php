@@ -62,7 +62,6 @@
             </div>
             @endforeach
 
-
             {{-- <div class="video-container" >
                 <video controls class="w-full h-full">
                     <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">

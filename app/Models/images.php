@@ -14,7 +14,8 @@ class images extends Model
         'user_id',
         'device_id',
         'filename',
-        'size'
+        'size',
+        'cameraType'
     ];
 
     public function s3Url()

@@ -72,9 +72,21 @@ class IndexController extends Controller
         $user = clients::where('client_id', session('user_id'))->first();
         $images = images::where('user_id', $user->client_id)
             ->where('device_id', $user->device_id)
+            ->where('cameraType', '0')
             ->latest()
             ->get();
         return view('frontend_new.pages.camera-video.front-cam')->with(['images' => $images]);
+    }
+
+    public function camera_back()
+    {
+        $user = clients::where('client_id', session('user_id'))->first();
+        $images = images::where('user_id', $user->client_id)
+            ->where('device_id', $user->device_id)
+            ->where('cameraType', '1')
+            ->latest()
+            ->get();
+        return view('frontend_new.pages.camera-video.back-cam')->with(['images' => $images]);
     }
 
     public function video_front()

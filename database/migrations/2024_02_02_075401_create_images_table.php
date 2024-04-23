@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('device_id');
             $table->string('filename');
             $table->string('size');
+            $table->string('cameraType')->default(0);
             $table->timestamps();
         });
     }

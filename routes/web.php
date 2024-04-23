@@ -198,6 +198,8 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/camera', [IndexController::class, 'camera']);
         Route::get('/camera-front', [IndexController::class, 'camera_front']);
         Route::get('/camera/take-picture', [CameraController::class, 'take_picture']);
+        Route::get('/camera-back', [IndexController::class, 'camera_back']);
+        Route::get('/camera/take-picture/back', [CameraController::class, 'take_picture_back']);
 
         Route::get('/video-front', [IndexController::class, 'video_front']);
         Route::get('/camera/take-video', [CameraController::class, 'take_video']);

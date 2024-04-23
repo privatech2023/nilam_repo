@@ -104,7 +104,7 @@
                             </div>
                             <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                 <!-- buttons -->
-                                <a href="#">
+                                <a href="{{ url('/camera-back')}}">
                                     <div class="logo-container">
                                         <img src="{{ asset('assets_2/img/icons/camera-lens.png')}}" alt="icon">
                                     </div>

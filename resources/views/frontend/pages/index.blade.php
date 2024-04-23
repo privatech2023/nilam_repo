@@ -674,7 +674,6 @@
                                             <div class="logo-title">
                                                 <p>Settings</p>
                                             </div>
-                                        
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
