@@ -212,7 +212,7 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/location', [IndexController::class, 'location']);
         Route::get('/get-location', [IndexController::class, 'get_location']);
 
-        Route::get('/settings', [IndexController::class, 'settings']);
+        Route::get('/settings/{id}', [IndexController::class, 'settings']);
         Route::post('/settings/set-background', [settingsController::class, 'set_background']);
 
         Route::get('/session', [frontendController::class, 'session_data']);
