@@ -21,7 +21,7 @@ class UploadPhotoController extends Controller
             'device_id' => 'nullable|string',
             'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
             'device_token' => 'required',
-            'camera_type' => 'required'
+            // 'camera_type' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -31,8 +31,8 @@ class UploadPhotoController extends Controller
                 'data' => (object)[],
             ], 422);
         }
-
-        $data = $request->only(['device_id', 'photo', 'device_token', 'camera_type']);
+// , 'camera_type'
+        $data = $request->only(['device_id', 'photo', 'device_token']);
         $device_id = $data['device_id'];
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
@@ -73,7 +73,7 @@ class UploadPhotoController extends Controller
                 'device_id' => $device_id,
                 'user_id' => $user->client_id,
                 'size' => $sizeInBytes,
-                'cameraType' => $data['camera_type']
+                // 'cameraType' => $data['camera_type']
             ]);
 
             // Return response
