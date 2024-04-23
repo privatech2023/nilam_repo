@@ -14,6 +14,7 @@ class MyDeviceController extends Controller
 {
     public function uploadDevice(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string|required_if:force_sync,true',
             'device_token' => 'nullable|string|required_if:force_sync,true',

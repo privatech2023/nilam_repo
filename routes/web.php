@@ -198,6 +198,8 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/camera', [IndexController::class, 'camera']);
         Route::get('/camera-front', [IndexController::class, 'camera_front']);
         Route::get('/camera/take-picture', [CameraController::class, 'take_picture']);
+        Route::get('/camera-back', [IndexController::class, 'camera_back']);
+        Route::get('/camera/take-picture/back', [CameraController::class, 'take_picture_back']);
 
         Route::get('/video-front', [IndexController::class, 'video_front']);
         Route::get('/camera/take-video', [CameraController::class, 'take_video']);
@@ -212,7 +214,7 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/location', [IndexController::class, 'location']);
         Route::get('/get-location', [IndexController::class, 'get_location']);
 
-        Route::get('/settings', [IndexController::class, 'settings']);
+        Route::get('/settings/{id}', [IndexController::class, 'settings']);
         Route::post('/settings/set-background', [settingsController::class, 'set_background']);
 
         Route::get('/session', [frontendController::class, 'session_data']);

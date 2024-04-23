@@ -72,9 +72,21 @@ class IndexController extends Controller
         $user = clients::where('client_id', session('user_id'))->first();
         $images = images::where('user_id', $user->client_id)
             ->where('device_id', $user->device_id)
+            ->where('cameraType', '0')
             ->latest()
             ->get();
         return view('frontend_new.pages.camera-video.front-cam')->with(['images' => $images]);
+    }
+
+    public function camera_back()
+    {
+        $user = clients::where('client_id', session('user_id'))->first();
+        $images = images::where('user_id', $user->client_id)
+            ->where('device_id', $user->device_id)
+            ->where('cameraType', '1')
+            ->latest()
+            ->get();
+        return view('frontend_new.pages.camera-video.back-cam')->with(['images' => $images]);
     }
 
     public function video_front()
@@ -88,22 +100,12 @@ class IndexController extends Controller
     {
         $device = clients::where('client_id', session('user_id'))->first();
         if ($device != null) {
-            $dev = DB::table('my_devices')
-                ->where('user_id', session('user_id'))
+            $dev = DB::table('devices')
+                ->where('client_id', session('user_id'))
                 ->where('device_id', $device->device_id)
                 ->whereNotNull('android_version')
                 ->first();
             if ($dev != null) {
-                // foreach ($dev as $d) {
-                //     $deviceList[] = [
-                //         'manufacturer' => $d->manufacturer,
-                //         'model' => $d->model,
-                //         'version' => $d->android_version,
-                //         'host' => $d->host,
-                //         'battery' => $d->battery,
-                //         'updated_at' => $d->updated_at,
-                //     ];
-                // }
                 return view('frontend_new.pages.device-status')->with(['status' => $dev]);
             } else {
                 return view('frontend_new.pages.device-status')->with(['status' => 0]);

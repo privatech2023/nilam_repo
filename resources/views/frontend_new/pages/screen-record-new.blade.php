@@ -34,7 +34,46 @@
 
 
 </head>
-
+<style>
+    .delete-btn{
+        margin-left: 50%;
+        border-radius: 15px;
+    }
+                .video-container {
+        position: relative; /* Set position to relative */
+        width: 46%; 
+        height: auto; 
+        /* overflow: hidden;  */
+    }
+    
+    .video-container p {
+        /* position: absolute;  */
+        bottom: 0;
+        width: 100%;
+        text-align: left;
+        background-color: rgba(255, 255, 255, 0.7);
+        margin: 0;
+        padding: 5px 10px; 
+        border-radius: 10px;
+    }
+    
+    .video-container video {
+        width: 100%; /* Set video width to 100% */
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(61, 34, 79, 0.5);
+    }
+    
+    @media screen and (max-width: 1228px) {
+        .video-container {
+            width: 100%; 
+        }
+        .delete-btn{
+        margin-left: 30%;
+        border-radius: 15px;
+    }
+    }
+    
+            </style>
 <body class="page-body">
 
     <!--  Header Section -->
@@ -88,11 +127,11 @@
         </div>
         <section class="main-section">
             <div class="container-fluid">
-                <div class="row">
+                {{-- <div class="row">
                     <div class=" col-12">
                         <div class="container-fluid">
                             <div class="row">
-                                {{--  --}}
+                                
                                 @if($screenRecordings->count() > 0)
                                 @foreach($screenRecordings as $video)
                                 <video controls class="w-full h-full">
@@ -107,6 +146,20 @@
                         </div>
                     </div>
 
+                </div>  --}}
+                <div class="border-2 p-1 rounded-md" style="display: flex; flex-wrap: wrap; gap: 10px; overflow-y: auto; height:83%;" >
+                    @foreach($screenRecordings as $video)
+            <div class="video-container" >
+                <video controls class="w-full h-full">
+                    <source src="{{$video->s3Url()}}" type="video/mp4">
+                    Your browser does not support the video element.
+                </video>
+                <p >
+                    {{ $video->created_at->format('M d, Y h:i A') }}
+                    <button type="button" class="btn btn-sm btn-danger delete-btn" data-id="{{$video->id}}">Delete</button>
+                </p>  
+            </div>
+            @endforeach
                 </div>
             </div>
         </section>
@@ -114,6 +167,26 @@
     <!-- Main Section Ends -->
 
 
+    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="{{ url('/delete/screen-record')}}" method="post">
+                @csrf
+            <div class="modal-footer">
+                <input type="hidden" name="id" id="deleteItemId" value=""/>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+              <button type="submit" class="btn btn-primary">Yes</button>
+            </div>
+        </form>
+          </div>
+        </div>
+    </div>
     <!-- Footer Section -->
 
     <!-- <footer class="bg-body-tertiary fixed-bottom text-center text-lg-start m-2 contact-bg">
@@ -141,6 +214,14 @@
 
     <script>
         $(document).ready(function () {
+
+            $(document).on('click','.delete-btn', function () {
+            var id = this.getAttribute('data-id');
+                document.getElementById('deleteItemId').value = id;
+                $('#deleteModal').modal('show');
+                console.log('hey')
+            });
+
             $(".tap").click(function () {
                 var act = $(this).closest(".call-container").hasClass("call-bg");
                 console.log(act);

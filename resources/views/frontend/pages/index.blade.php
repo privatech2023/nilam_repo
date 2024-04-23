@@ -90,11 +90,12 @@
 <nav class="navbar main-navbar fixed-top">
     <div class="container">
         <div class="left-div text-light">
-            <b>11:11 AM </b>
+            <h4 >PRIVATECH</h4>
         </div>
         @php
     $validity = session('validity');
     $currentDate = date('Y-m-d');
+    $user_id = session('user_id')
     @endphp
         <ul style="margin-top:2px;">
 
@@ -177,9 +178,9 @@
         <!-- Main Section -->
         <main class="main" style="margin: 40px 1px;">
             @if(session('user_name'))
-<div class="row mt-3 welcome" style="margin-top: 4px; margin-left:8px;">
-    <div class="col-9" >
-        <h2  class="welcome-text text-white" style="text-transform: uppercase;">{{session('user_name')}} </h2>
+<div class="row mt-3 welcome" style="margin-top: 20px; margin-left:8px;">
+    <div class="col-9" style="margin-top:5px;">
+        <p  class="welcome-text text-white " style="text-transform: uppercase; font-size: 1.3em;">{{session('user_name')}} </p>
     </div>
     @if(session('store_more') == false)
     <div class="container">
@@ -209,7 +210,7 @@
 </div>
 @endif
 <div class="timer" style="z-index: 1000;">
-                <strong>Upcoming features, May 12, 2024: </strong><span id="countdown" class="text-sm"></span>
+                <strong>Upcoming features, May 21, 2024: </strong><span id="countdown" class="text-sm"></span>
             </div>
 
 
@@ -673,12 +674,11 @@
                                             <div class="logo-title">
                                                 <p>Settings</p>
                                             </div>
-                                        
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
-                                        <a href="{{ url('/settings')}}">
+                                        <a href="{{ url('/settings/' . $user_id)}}">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
                                             </div>
@@ -909,7 +909,7 @@
             
             $('#modalLoginPrompt').modal('hide');
             // Set the end date for the countdown
-            var endDate = new Date("May 12, 2024 00:00:00").getTime();
+            var endDate = new Date("May 21, 2024 00:00:00").getTime();
 
             // Update the countdown every second
             var x = setInterval(function () {
