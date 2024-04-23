@@ -37,21 +37,11 @@ class subscriptionController extends Controller
         $valueStatus = request('status', '');
         $valueRegistration = request('registration', '');
 
-        if (session('admin_name') == 'admin') {
-            $query = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->orderByDesc('subscriptions.updated_at');
-        } else {
-            $query = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->orderByDesc('subscriptions.updated_at');
-        }
 
+        $query = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'subscriptions.updated_at', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
+            ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
+            ->orderByDesc('subscriptions.updated_at');
 
         if (!empty($searchValue)) {
             $query->where(function ($query) use ($searchValue) {
@@ -99,31 +89,15 @@ class subscriptionController extends Controller
         $valueStatus = request('status', '');
         $valueRegistration = request('registration', '');
 
-        if (session('admin_name') == 'admin') {
-            $query = DB::table('clients')
-                ->select('clients.client_id', 'subscriptions.updated_at', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->leftJoin('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('subscriptions.status', 1)
-                ->where('subscriptions.ends_on', '>=', $today)
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on', 'subscriptions.updated_at')
-                ->orderByDesc('subscriptions.updated_at');
-        } else {
-            $query = DB::table('clients')
-                ->select('clients.client_id', 'subscriptions.updated_at', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
-                ->leftJoin('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->where('subscriptions.status', 1)
-                ->where('subscriptions.ends_on', '>=', $today)
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on', 'subscriptions.updated_at')
-                ->orderByDesc('subscriptions.updated_at');
-        }
-
+        $query = DB::table('clients')
+            ->select('clients.client_id', 'subscriptions.updated_at', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription', 'subscriptions.started_at', 'subscriptions.ends_on')
+            ->leftJoin('subscriptions', function ($join) use ($today) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id');
+            })
+            ->where('subscriptions.status', 1)
+            ->where('subscriptions.ends_on', '>=', $today)
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.started_at', 'subscriptions.ends_on', 'subscriptions.updated_at')
+            ->orderByDesc('subscriptions.updated_at');
 
         if (!empty($searchValue)) {
             $query->where(function ($query) use ($searchValue) {
@@ -169,31 +143,15 @@ class subscriptionController extends Controller
         $search_value = request('status', '');
         $valueRegistration = request('registration', '');
 
-        if (session('admin_name') == 'admin') {
-            $query = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at')
-                ->leftJoin('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id')
-                        ->where('subscriptions.validity_days', null);
-                })
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->havingRaw('COUNT(subscriptions.client_id) > 0')
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.updated_at')
-                ->orderByDesc('subscriptions.updated_at');
-        } else {
-            $query = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at')
-                ->leftJoin('subscriptions', function ($join) use ($today) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id')
-                        ->where('subscriptions.validity_days', null);
-                })
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->havingRaw('COUNT(subscriptions.client_id) > 0')
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.updated_at')
-                ->orderByDesc('subscriptions.updated_at');
-        }
-
+        $query = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at')
+            ->leftJoin('subscriptions', function ($join) use ($today) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id')
+                    ->where('subscriptions.validity_days', null);
+            })
+            ->havingRaw('COUNT(subscriptions.client_id) > 0')
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status', 'subscriptions.updated_at')
+            ->orderByDesc('subscriptions.updated_at');
         if (!empty($search_value)) {
             $query->where(function ($query) use ($search_value) {
                 if (ctype_digit($search_value)) {
@@ -237,23 +195,11 @@ class subscriptionController extends Controller
         $valueStatus = $request->input('status');
         $valueRegistration = request('registration', '');
 
-        if (session('admin_name') == 'admin') {
-            $query = clients::select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at', 'subscriptions.started_at', 'subscriptions.ends_on', DB::raw('0 as subscription'))
-                ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('subscriptions.status', 1)
-                ->where('subscriptions.ends_on', '<', $today)
-                ->orderByDesc('subscriptions.updated_at');
-        } else {
-            $query = clients::select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at', 'subscriptions.started_at', 'subscriptions.ends_on', DB::raw('0 as subscription'))
-                ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->where('subscriptions.status', 1)
-                ->where('subscriptions.ends_on', '<', $today)
-                ->orderByDesc('subscriptions.updated_at');
-        }
-
+        $query = clients::select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.updated_at', 'subscriptions.started_at', 'subscriptions.ends_on', DB::raw('0 as subscription'))
+            ->leftJoin('subscriptions', 'clients.client_id', '=', 'subscriptions.client_id')
+            ->where('subscriptions.status', 1)
+            ->where('subscriptions.ends_on', '<', $today)
+            ->orderByDesc('subscriptions.updated_at');
 
 
         if (!empty($search_value)) {
