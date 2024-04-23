@@ -95,6 +95,7 @@
         @php
     $validity = session('validity');
     $currentDate = date('Y-m-d');
+    $user_id = session('user_id')
     @endphp
         <ul style="margin-top:2px;">
 
@@ -678,7 +679,7 @@
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
-                                        <a href="{{ url('/settings')}}">
+                                        <a href="{{ url('/settings/' . $user_id)}}">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
                                             </div>
