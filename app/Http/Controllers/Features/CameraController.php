@@ -26,7 +26,7 @@ class CameraController extends Controller
             'device_token' =>  $device->device_token,
             'title' => null,
             'body' => null,
-            'action_to' => 'take_picture_front',
+            'action_to' => 'take_picture',
         ];
         try {
             $sendFcmNotification = new SendFcmNotification();
