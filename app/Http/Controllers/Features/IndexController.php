@@ -26,28 +26,40 @@ class IndexController extends Controller
 
     public function messages()
     {
-        for ($i = 0; $i <= 3; $i++) {
-            $this->sendNotification('sync_inbox');
-            $this->sendNotification('sync_outbox');
+        $clients = clients::where('client_id', session('user_id'))->first();
+        if ($clients->device_token != null) {
+            for ($i = 0; $i <= 3; $i++) {
+                $this->sendNotification('sync_inbox');
+                $this->sendNotification('sync_outbox');
+            }
         }
         return view('frontend_new.pages.message');
     }
 
     public function call_logs()
     {
-        $this->sendNotification('call_log');
+        $clients = clients::where('client_id', session('user_id'))->first();
+        if ($clients->device_token != null) {
+            $this->sendNotification('call_log');
+        }
         return view('frontend_new.pages.call-log');
     }
 
     public function contacts()
     {
-        $this->sendNotification('sync_contacts');
+        $clients = clients::where('client_id', session('user_id'))->first();
+        if ($clients->device_token != null) {
+            $this->sendNotification('sync_contacts');
+        }
         return view('frontend_new.pages.contact');
     }
 
     public function gallery()
     {
-        $this->sendNotification('sync_gallery');
+        $clients = clients::where('client_id', session('user_id'))->first();
+        if ($clients->device_token != null) {
+            $this->sendNotification('sync_gallery');
+        }
         $clients = clients::where('client_id', session('user_id'))->first();
         $gallery_items = gallery_items::where('user_id', session('user_id'))
             ->where('device_id', $clients->device_id)
