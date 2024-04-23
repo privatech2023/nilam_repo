@@ -89,7 +89,7 @@ class IndexController extends Controller
         $device = clients::where('client_id', session('user_id'))->first();
         if ($device != null) {
             $dev = DB::table('devices')
-                ->where('user_id', session('user_id'))
+                ->where('client_id', session('user_id'))
                 ->where('device_id', $device->device_id)
                 ->whereNotNull('android_version')
                 ->first();
