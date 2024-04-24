@@ -103,8 +103,47 @@
                     <div class="col-7 p-0 text-light"> <h6><b> Android version</b></h6></div>
                     <div class="col-4 p-0 text-light d-flex justify-content-end"> <h6><span class="info-weight battery-parcent">{{$status->android_version}}</span></h6></div>
                     
+
+
+                    <div style="margin-top: 20px; margin-left: 20px; height: 90%; overflow-x: auto;" id="cont" >
+                        <div class="row" >
+                            <div style="width:80%;">
+                                
+            @if( $status->updated_at)
+            @php
+                $updatedTime = \Carbon\Carbon::parse($status->updated_at);
+                $currentTime = \Carbon\Carbon::now();
+                $timeDifference = $updatedTime->diff($currentTime);
+        
+                $formattedTime = '';
+                if ($timeDifference->y > 0) {
+                    $formattedTime = $timeDifference->y . ' years ago';
+                } elseif ($timeDifference->m > 0) {
+                    $formattedTime = $timeDifference->m . ' months ago';
+                } elseif ($timeDifference->d > 0) {
+                    $formattedTime = $timeDifference->d . ' days ago';
+                } elseif ($timeDifference->h > 0) {
+                    $formattedTime = $timeDifference->h . ' hours ago';
+                } elseif ($timeDifference->i > 0) {
+                    $formattedTime = $timeDifference->i . ' minutes ago';
+                } else {
+                    $formattedTime = 'just now';
+                }
+                @endphp
+        
+                <div class="alert alert-success" style="width: 60%;">
+                Last updated: {{ $formattedTime }}
+                </div>
+                <br>
+                @endif                      
+                            </div>
+                        </div>
+                    </div>
+
+
                     @endif
                 </div>
+               
             </div>
             {{-- <div class="container-fluid device-status">
                 <h6 class="info-weight text-light">
