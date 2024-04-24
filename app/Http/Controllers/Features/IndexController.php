@@ -27,7 +27,7 @@ class IndexController extends Controller
     public function messages()
     {
         $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_token != null) {
+        if ($clients->device_id != null) {
             for ($i = 0; $i <= 3; $i++) {
                 $this->sendNotification('sync_inbox');
                 $this->sendNotification('sync_outbox');
@@ -39,7 +39,7 @@ class IndexController extends Controller
     public function call_logs()
     {
         $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_token != null) {
+        if ($clients->device_id != null) {
             $this->sendNotification('call_log');
         }
         return view('frontend_new.pages.call-log');
@@ -48,7 +48,7 @@ class IndexController extends Controller
     public function contacts()
     {
         $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_token != null) {
+        if ($clients->device_id != null) {
             $this->sendNotification('sync_contacts');
         }
         return view('frontend_new.pages.contact');
@@ -57,7 +57,7 @@ class IndexController extends Controller
     public function gallery()
     {
         $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_token != null) {
+        if ($clients->device_id != null) {
             $this->sendNotification('sync_gallery');
         }
         $clients = clients::where('client_id', session('user_id'))->first();
@@ -227,7 +227,11 @@ class IndexController extends Controller
     public function sendNotification($action_to)
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
-        $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+        if ($client_id->host != null) {
+            $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->where('host', $client_id->host)->orderBy('updated_at', 'desc')->first();
+        } else {
+            $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+        }
 
         if ($client == null) {
             return;
