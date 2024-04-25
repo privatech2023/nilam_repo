@@ -17,6 +17,7 @@ class UploadPhotoController extends Controller
 {
     public function uploadPhoto(Request $request)
     {
+        Log::error('in camera api');
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
