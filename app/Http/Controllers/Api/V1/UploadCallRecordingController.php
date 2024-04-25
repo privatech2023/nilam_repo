@@ -3,42 +3,35 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\call_recording;
 use App\Models\clients;
-use App\Models\defaultStorage;
 use App\Models\device;
-use App\Models\images;
-use App\Models\storage_txn;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
-class UploadPhotoController extends Controller
+class UploadCallRecordingController extends Controller
 {
-    public function uploadPhoto(Request $request)
+    public function uploadRecording(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
-            'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
+            'recording' => 'required|file|mimes:mp3,wav,ogg,aac|max:25000',
             'device_token' => 'required',
         ]);
+
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to upload photo',
+                'message' => 'Failed to upload recording',
                 'errors' => (object)$validator->errors()->toArray(),
                 'data' => (object)[],
             ], 422);
         }
-
-        if ($request->has('cameraType')) {
-            $cameraType = $request->input('cameraType');
-        } else {
-            $cameraType = 0;
-        }
-
-        $data = $request->only(['device_id', 'photo', 'device_token']);
+        $data = $request->only(['device_id', 'recording', 'device_token']);
         $device_id = $data['device_id'];
+        // Get user
+
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
         $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
         if ($user == null) {
@@ -56,37 +49,31 @@ class UploadPhotoController extends Controller
                 'message' => 'No device found',
                 'errors' => (object)[],
                 'data' => (object)[
-                    'upload_next' => $data['device_id']
+                    'upload_next' => $device_id
                 ],
             ], 404);
         }
-        $photo = $request->file('photo');
-        $sizeInBytes = $photo->getSize() / 1024;
 
-
+        $recording = $request->file('recording');
+        $sizeInBytes = $recording->getSize() / 1024;
         try {
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
-            $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->photo->extension();
-            $directory = 'images/' . $user->client_id . '/' . $device_id;
-            $request->photo->storeAs($directory, $filename, 's3');
-
-            if ($data['camera_type']) {
-            }
+            $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
+            $directory = 'call_recordings/' . $user->client_id . '/' . $device_id;
+            $request->recording->storeAs($directory, $filename, 's3');
             // Save to database
-            $imagescr = new images();
-            $imagescr->create([
+            $record = new call_recording();
+            $record->create([
+                'user_id' => $user->client_id,
                 'filename' => $filename,
                 'device_id' => $device_id,
-                'user_id' => $user->client_id,
-                'size' => $sizeInBytes,
-                'cameraType' => $cameraType
+                // 'size' => $sizeInBytes,
             ]);
-
             // Return response
             return response()->json([
                 'status' => true,
-                'message' => 'Photo uploaded',
+                'message' => 'Recording uploaded',
                 'errors' => (object)[],
                 'data' => (object)[],
             ], 200);
@@ -99,10 +86,9 @@ class UploadPhotoController extends Controller
                     'trace' => $th->getTrace(),
                 ];
             }
-
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to upload photo',
+                'message' => 'Failed to upload recording',
                 'errors' => $errors,
                 'data' => (object)[],
             ], 500);

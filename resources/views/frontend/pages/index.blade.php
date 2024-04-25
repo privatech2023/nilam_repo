@@ -302,19 +302,6 @@
                                     @endif
 
 
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
-                                        <!-- buttons -->
-                                        <a href="{{ asset('assets_2/pages/files.html')}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/folder.png')}}" alt="icon">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Files</p>
-                                            </div>
-                                        </a>
-                                    </div>
-
-
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
@@ -353,17 +340,6 @@
                                     </div>
                                     @endif
 
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
-                                        <!-- buttons -->
-                                        <a href="{{ asset('assets_2/pages/whatsapp.html')}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="icon">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>WhatsApp</p>
-                                            </div>
-                                        </a>
-                                    </div>
 
 
                                     @if(!session('user_name'))
@@ -403,7 +379,7 @@
                                         
                                     </div>
                                     @endif
-
+                                    
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
@@ -442,6 +418,7 @@
                                     </div>
                                     @endif
 
+
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
@@ -479,6 +456,424 @@
                                         
                                     </div>
                                     @endif
+
+
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Device Status</p>
+                                            </div>
+                                        
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
+                                        <!-- buttons -->
+                                        <a href="{{ url('/device-status')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Device Status</p>
+                                            </div>
+                                        </a>
+                                    </div> 
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Device Status</p>
+                                            </div>
+                                        
+                                    </div>
+                                    @endif
+
+                                    
+
+                                    
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Screen Record</p>
+                                            </div>
+                                        
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
+                                        <!-- buttons -->
+                                        <a href="{{ url('/screen-record')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Screen Record</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Screen Record</p>
+                                            </div>
+                                        
+                                    </div>
+                                    @endif
+                                    
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Location</p>
+                                            </div>
+                                        
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
+                                        <!-- buttons -->
+                                        <a href="{{ url('/location')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Location</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col "  data-bs-toggle="modal" data-bs-target="#modalSubs" >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Location</p>
+                                            </div>
+                                        
+                                    </div>
+                                    @endif
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Settings</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
+                                        <!-- buttons -->
+                                        <a href="{{ url('/settings/' . $user_id)}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Settings</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Settings</p>
+                                            </div>
+                                        
+                                    </div>
+                                    @endif
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Alert device</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="{{ url('/alert-device')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Alert device</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Alert device</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/text-speech.png') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Text to speech</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="{{ url('/text-to-speech')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/text-speech.png') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Text to speech</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/text-speech.png') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Text to speech</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Lost message</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="{{ url('/lost-message')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Lost message</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Lost message</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Vibrate</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="{{ url('/vibrate-device')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Vibrate</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Vibrate</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Whatsapp</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="https://web.whatsapp.com/">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Whatsapp</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Whatsapp</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/facebook.svg.webp')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Facebook</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="https://www.facebook.com/">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/facebook.svg.webp')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Facebook</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/facebook.svg.webp')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Facebook</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Instagram</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="https://www.facebook.com/">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Instagram</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Instagram</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+
+
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
+                                        <!-- buttons -->
+                                        <a href="assets/pages/apps.html">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/user-interface.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Apps</p>
+                                            </div>
+                                        </a>
+                                    </div>
+
+                                    
 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col disabled ">
                                         <!-- buttons -->
@@ -526,7 +921,7 @@
                                     </div>
                                     <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
                                         <!-- buttons -->
-                                        <a href="assets/pages/call-record.html">
+                                        <a href="{{ url('/call-recording')}}">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
                                             </div>
@@ -536,170 +931,31 @@
                                         </a>
                                     </div>
 
-
-                                    @if(!session('user_name'))
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
-                                        <!-- buttons -->
-                                        
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Device Status</p>
-                                            </div>
-                                        
-                                    </div>
-                                    @elseif($validity != null && $currentDate < $validity)
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
-                                        <!-- buttons -->
-                                        <a href="{{ url('/device-status')}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Device Status</p>
-                                            </div>
-                                        </a>
-                                    </div> 
-                                    @else
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
-                                        <!-- buttons -->
-                                        
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Device Status</p>
-                                            </div>
-                                        
-                                    </div>
-                                    @endif
-
+                                    
                                     <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
                                         <!-- buttons -->
-                                        <a href="assets/pages/apps.html">
+                                        <a href="{{ asset('assets_2/pages/files.html')}}">
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/user-interface.png')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/folder.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
-                                                <p>Apps</p>
+                                                <p>Files</p>
                                             </div>
                                         </a>
                                     </div>
 
-                                    @if(!session('user_name'))
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
+                                    /* <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
                                         <!-- buttons -->
-                                        
+                                        <a href="{{ asset('assets_2/pages/whatsapp.html')}}">
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
-                                                <p>Screen Record</p>
-                                            </div>
-                                        
-                                    </div>
-                                    @elseif($validity != null && $currentDate < $validity)
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
-                                        <!-- buttons -->
-                                        <a href="{{ url('/screen-record')}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Screen Record</p>
+                                                <p>WhatsApp</p>
                                             </div>
                                         </a>
-                                    </div>
-                                    @else
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
-                                        <!-- buttons -->
-                                        
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Screen Record</p>
-                                            </div>
-                                        
-                                    </div>
-                                    @endif
-
-                                    @if(!session('user_name'))
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
-                                        <!-- buttons -->
-                                        
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Location</p>
-                                            </div>
-                                        
-                                    </div>
-                                    @elseif($validity != null && $currentDate < $validity)
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
-                                        <!-- buttons -->
-                                        <a href="{{ url('/location')}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Location</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    @else
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col "  data-bs-toggle="modal" data-bs-target="#modalSubs" >
-                                        <!-- buttons -->
-                                        
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Location</p>
-                                            </div>
-                                        
-                                    </div>
-                                    @endif
-
-
-                                    @if(!session('user_name'))
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
-                                        <!-- buttons -->
-                                        
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Settings</p>
-                                            </div>
-                                    </div>
-                                    @elseif($validity != null && $currentDate < $validity)
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
-                                        <!-- buttons -->
-                                        <a href="{{ url('/settings/' . $user_id)}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Settings</p>
-                                            </div>
-                                        </a>
-                                    </div>
-                                    @else
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
-                                        <!-- buttons -->
-                                        
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Settings</p>
-                                            </div>
-                                        
-                                    </div>
-                                    @endif
+                                    </div> */
+                                    
                                 </div>
                             </div>
                         </div>

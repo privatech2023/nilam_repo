@@ -87,8 +87,8 @@ class RegisterController extends Controller
             $request->session()->put('user_id', $newClient->client_id);
             $request->session()->put('user_name', $newClient->name);
             session()->flash('success', 'Registered succesfully');
-            $commission = new CommissionController;
-            $commission->distribute_clients($client_id);
+            // $commission = new CommissionController;
+            // $commission->distribute_clients($client_id);
             return redirect()->route('home')->with(['success' => 'Registered successfully']);
             $request->session()->put('user_name', $newClient->name);
             session()->flash('success', 'Registered succesfully');
