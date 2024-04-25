@@ -73,7 +73,7 @@ class IndexController extends Controller
     public function voice_record()
     {
         $client = clients::where('client_id', session('user_id'))->first();
-        $recording = recordings::where('user_id', session('user_id'))->where('device_id', $client->device_id)->get();
+        $recording = recordings::where('user_id', session('user_id'))->where('device_id', $client->device_id)->orderBy('created_at', 'desc')->get();
         return view('frontend_new.pages.voice-record')->with(['recordings' => $recording]);
     }
 
