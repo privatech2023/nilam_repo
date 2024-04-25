@@ -425,13 +425,15 @@ class IndexController extends Controller
         }
         if ($request->input('message') == '') {
             $message = 'This device belongs to ' . $client_id->name . '. Return it by calling at ' . $client_id->mobile_number;
+        } else {
+            $message = $request->input('message');
         }
         $data = [
             'device_token' => $device->device_token,
             'title' => null,
             'body' => null,
             'action_to' => 'lost_message',
-            'messageR' => $request->input('message')
+            'messageR' => $message
         ];
 
         // Send notification to device

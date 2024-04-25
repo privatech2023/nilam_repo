@@ -85,20 +85,18 @@
 <body class="dashboard-body body-bg-img">
 
     <div class="mobile-container">
-
-        <!--  Header Section -->
-<nav class="navbar main-navbar fixed-top">
-    <div class="container">
-        <div class="left-div text-light">
-            <h4 >PRIVATECH</h4>
-        </div>
         @php
     $validity = session('validity');
     $currentDate = date('Y-m-d');
     $user_id = session('user_id')
     @endphp
+        <!--  Header Section -->
+<nav class="navbar main-navbar fixed-top">
+    <div class="container">
+        <div class="left-div text-light">
+            <h4>PRIVATECH</h4>
+        </div>    
         <ul style="margin-top:2px;">
-
             <li class="nav-item dropdown">
                 <a class="nav-link text-white" data-bs-toggle="dropdown" href="#">
                     <i class="fas fa-bars"></i>
@@ -767,7 +765,7 @@
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
-                                        <a href="https://web.whatsapp.com/">
+                                        <a href="https://web.whatsapp.com">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
                                             </div>
@@ -793,7 +791,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/facebook.svg.webp')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
@@ -804,7 +802,7 @@
                                         <!-- buttons -->
                                         <a href="https://www.facebook.com/">
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/facebook.svg.webp')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
@@ -815,14 +813,13 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/facebook.svg.webp')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
                                             </div>
                                     </div>
                                     @endif
-
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
@@ -837,7 +834,7 @@
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
-                                        <a href="https://www.facebook.com/">
+                                        <a href="https://www.instagram.com">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
                                             </div>
@@ -901,7 +898,7 @@
                                         <!-- buttons -->
                                         <a href="{{ asset('assets_2/pages/gmail.html')}}">
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/gmail.png')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/gmail.png')}}" alt="facebook">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Gmail</p>
@@ -912,7 +909,7 @@
                                         <!-- buttons -->
                                         <a href="index.html">
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/remote-control.png')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/remote-control.png')}}" alt="facebook">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Remote Control</p>
@@ -923,7 +920,7 @@
                                         <!-- buttons -->
                                         <a href="{{ url('/call-recording')}}">
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
+                                                <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="facebook">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Call Recording</p>
@@ -943,18 +940,6 @@
                                             </div>
                                         </a>
                                     </div>
-
-                                    /* <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
-                                        <!-- buttons -->
-                                        <a href="{{ asset('assets_2/pages/whatsapp.html')}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="icon">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>WhatsApp</p>
-                                            </div>
-                                        </a>
-                                    </div> */
                                     
                                 </div>
                             </div>

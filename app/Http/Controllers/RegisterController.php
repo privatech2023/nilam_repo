@@ -90,9 +90,6 @@ class RegisterController extends Controller
             // $commission = new CommissionController;
             // $commission->distribute_clients($client_id);
             return redirect()->route('home')->with(['success' => 'Registered successfully']);
-            $request->session()->put('user_name', $newClient->name);
-            session()->flash('success', 'Registered succesfully');
-            return redirect()->route('home')->with(['success' => 'Registered successfully']);
         } catch (\Exception $e) {
             Log::error('Error creating user: ' . $e->getMessage());
             return redirect()->back()->withErrors(['error' => 'An error occurred. Please try again.'])->withInput();
