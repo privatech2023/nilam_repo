@@ -765,7 +765,7 @@
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
-                                        <a href="https://web.whatsapp.com">
+                                        <a href="#" id="openWhatsappWeb">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
                                             </div>
@@ -1145,6 +1145,19 @@
         toastr.warning('{{session('error')}}')
     </script>
 @endif
+
+<script>
+document.getElementById('openWhatsappWeb').addEventListener('click', function(event) {
+    event.preventDefault();
+    
+    // Set the user agent to a desktop version
+    navigator.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36';
+    
+    // Open the URL in a new window
+    window.open('https://web.whatsapp.com', '_blank');
+});
+</script>
+
     <script>
         $(document).ready(function () {
             
