@@ -74,8 +74,7 @@ class UploadPhotoController extends Controller
             $directory = 'images/' . $user->client_id . '/' . $device_id;
             $request->photo->storeAs($directory, $filename, 's3');
 
-            if ($data['camera_type']) {
-            }
+            
             // Save to database
             $imagescr = new images();
             $imagescr->create([
