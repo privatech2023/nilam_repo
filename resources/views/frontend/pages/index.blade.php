@@ -790,10 +790,8 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
-
-                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
-
+                                        <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
@@ -804,9 +802,7 @@
                                         <!-- buttons -->
                                         <a href="https://www.facebook.com/">
                                             <div class="logo-container">
-
-                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
-
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
@@ -816,10 +812,8 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
-
-                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
-
+                                        <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
