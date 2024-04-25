@@ -185,7 +185,7 @@
                         </div>
                         <div class="col-12 p-0">
                             <audio class="w-100" id="plyr-audio-player" controls>
-                                <source src="${recording.s3Url()}" type="audio/mp3" />
+                                <source src="${recording.s3Url}" type="audio/mp3" />
                             </audio>
                             <button type="button" data-src="${recording.id}" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;">Delete</button>
                         </div>
