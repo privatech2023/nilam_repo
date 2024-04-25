@@ -1,354 +1,286 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
 
-namespace App\Http\Controllers\Features;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Recording</title>
 
-use App\Http\Controllers\Actions\Functions\SendFcmNotification;
-use App\Http\Controllers\Controller;
-use App\Models\clients;
-use App\Models\defaultStorage;
-use App\Models\device;
-use App\Models\gallery_items;
-use App\Models\images;
-use App\Models\location;
-use App\Models\manual_txns;
-use App\Models\recordings;
-use App\Models\screen_recordings;
-use App\Models\storage_txn;
-use App\Models\videos;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+    <!-- Favicons -->
+    <link href="{{ asset('assets/frontend/images/favicon-32x32.png')}}" rel="icon">
+    <link href="{{ asset('assets_2/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
-class IndexController extends Controller
-{
-    public $plan_expired = false;
-    public $store_more = true;
+    <!-- bootstrap CDN -->
 
-    public function messages()
-    {
-        $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_id != null) {
-            for ($i = 0; $i <= 3; $i++) {
-                $this->sendNotification('sync_inbox');
-                $this->sendNotification('sync_outbox');
-            }
-        }
-        return view('frontend_new.pages.message');
-    }
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    public function call_logs()
-    {
-        $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_id != null) {
-            $this->sendNotification('call_log');
-        }
-        return view('frontend_new.pages.call-log');
-    }
+    <!-- Fontawesome CDN -->
 
-    public function contacts()
-    {
-        $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_id != null) {
-            $this->sendNotification('sync_contacts');
-        }
-        return view('frontend_new.pages.contact');
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    public function gallery()
-    {
-        $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_id != null) {
-            $this->sendNotification('sync_gallery');
-        }
-        $clients = clients::where('client_id', session('user_id'))->first();
-        $gallery_items = gallery_items::where('user_id', session('user_id'))
-            ->where('device_id', $clients->device_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
-        $this->storage_count();
-        return view('frontend_new.pages.gallery')->with(['gallery_items' => $gallery_items, 'plan_expired' => $this->plan_expired, 'store_more' => $this->store_more]);
-    }
+    <!-- Poppins CDN -->
 
-    public function voice_record()
-    {
-        $client = clients::where('client_id', session('user_id'))->first();
-        $recording = recordings::where('user_id', session('user_id'))->where('device_id', $client->device_id)->orderBy('created_at', 'desc')->get();
-        return view('frontend_new.pages.voice-record')->with(['recordings' => $recording]);
-    }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
-    public function camera()
-    {
-        return view('frontend_new.pages.camera');
-    }
+    <!-- Custom CSS -->
 
-    public function camera_front()
-    {
-        $user = clients::where('client_id', session('user_id'))->first();
-        $images = images::where('user_id', $user->client_id)
-            ->where('device_id', $user->device_id)
-            ->where('cameraType', '0')
-            ->latest()
-            ->get();
-        return view('frontend_new.pages.camera-video.front-cam')->with(['images' => $images]);
-    }
-
-    public function camera_back()
-    {
-        $user = clients::where('client_id', session('user_id'))->first();
-        $images = images::where('user_id', $user->client_id)
-            ->where('device_id', $user->device_id)
-            ->where('cameraType', '1')
-            ->latest()
-            ->get();
-        return view('frontend_new.pages.camera-video.back-cam')->with(['images' => $images]);
-    }
-
-    public function video_front()
-    {
-        $client = clients::where('client_id', session('user_id'))->first();
-        $recording = videos::where('user_id', $client->client_id)->where('device_id', $client->device_id)->latest()->get();
-        return view('frontend_new.pages.camera-video.front-vid')->with(['recordings' => $recording]);
-    }
-
-    public function device_status()
-    {
-        $device = clients::where('client_id', session('user_id'))->first();
-        if ($device != null) {
-            $dev = DB::table('devices')
-                ->where('client_id', session('user_id'))
-                ->where('device_id', $device->device_id)
-                ->whereNotNull('android_version')
-                ->first();
-            if ($dev != null) {
-                return view('frontend_new.pages.device-status')->with(['status' => $dev]);
-            } else {
-                return view('frontend_new.pages.device-status')->with(['status' => 0]);
-            }
-        }
-    }
-
-    public function get_device_status()
-    {
-        $client_id = clients::where('client_id', session('user_id'))->first();
-        $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
-        $data = [
-            'device_token' => $client->device_token,
-            'title' => null,
-            'body' => null,
-            'action_to' => 'device_status',
-        ];
-        try {
-            $sendFcmNotification = new SendFcmNotification();
-            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-            Log::error('done ' . $res['message']);
-            return response()->json(['message' => $res['message']]);
-        } catch (\Throwable $th) {
-            Log::error('done ' . $res['message']);
-            return response()->json(['message' => $res['message']]);
-        }
-    }
+    <link rel="stylesheet" href="{{ asset('assets_2/css/style.css')}}">
 
 
-    public function screen_record()
-    {
-        $device = clients::where('client_id', session('user_id'))->first();
-        if ($device) {
-            $screenRecordings  = screen_recordings::where('user_id', session('user_id'))
-                ->where('device_id', $device->device_id)
-                ->latest()
-                ->get();
-        } else {
-            $screenRecordings = [];
-        }
-        return view('frontend_new.pages.screen-record')->with(['screenRecordings' => $screenRecordings]);
-    }
+</head>
 
-    public function screen_record_new()
-    {
-        $device = clients::where('client_id', session('user_id'))->first();
-        if ($device) {
-            $screenRecordings  = screen_recordings::where('user_id', session('user_id'))
-                ->where('device_id', $device->device_id)
-                ->latest()
-                ->get();
-        } else {
-            $screenRecordings = [];
-        }
-        return view('frontend_new.pages.screen-record-new')->with(['screenRecordings' => $screenRecordings]);
-    }
+<body class="page-body">
 
-    public function location()
-    {
-        $device = clients::where('client_id', session('user_id'))->first();
-        $latlong = location::where('client_id', session('user_id'))->where('device_id', $device->device_id)->first();
-        if ($latlong != null) {
-            $lat = $latlong->lat;
-            $lng = $latlong->long;
-            $userId = session('user_id');
-        } else {
-            $lat = '';
-            $lng = '';
-            $userId = session('user_id');
-        }
-        return view('frontend_new.pages.location')->with(['lat' => $lat, 'lng' => $lng, 'userId' => $userId]);
-    }
-
-    public function get_location()
-    {
-        $client_id = clients::where('client_id', session('user_id'))->first();
-        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
-
-        $data = [
-            'device_token' => $device->device_token,
-            'title' => null,
-            'body' => null,
-            'action_to' => 'locate_phone',
-        ];
-
-        // Send notification to device
-        try {
-            $sendFcmNotification = new SendFcmNotification();
-            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-            Log::error('done ' . $res['message'] . ' notification! - ');
-            return response()->json(['message' => $res['message']]);
-        } catch (\Throwable $th) {
-            Log::error('not done ' . $res['message'] . ' notification! - ');
-            return response()->json(['message' => $res['message']]);
-        }
-    }
+    <!--  Header Section -->
+    {{-- <nav class="navbar main-navbar fixed-top">
+        <div class="container">
+            <div class="left-div text-light">
+                <b>11:11 AM </b>
+            </div>
+            <div class="right-div text-light">
+                <i class="fa-solid fa-signal"></i>
+                <i class="fa-solid fa-signal"></i>
+                <i class="fa-solid nav-icons fa-wifi"></i>
+                <i class="fa-solid nav-icons fa-battery-full"></i>
+                <b>99%</b>
+            </div>
+        </div>
+    </nav> --}}
 
 
-    public function settings()
-    {
-        $devices = device::where('client_id', session('user_id'))->get();
-        $client = clients::where('client_id', session('user_id'))->first();
-        return view('frontend_new.pages.settings')->with(['devices' => $devices, 'client' => $client]);
-    }
+    
+    <!--  Header Section Ends -->
 
-    //fcm notification
-    public function sendNotification($action_to)
-    {
-        $client_id = clients::where('client_id', session('user_id'))->first();
-        if ($client_id->host != null) {
-            $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->where('host', $client_id->host)->orderBy('updated_at', 'desc')->first();
-        } else {
-            $client = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
-        }
-
-        if ($client == null) {
-            return;
-        }
-
-        $data = [
-            'device_token' => $client->device_token,
-            'title' => null,
-            'body' => null,
-            'action_to' => $action_to,
-        ];
-        try {
-            $sendFcmNotification = new SendFcmNotification();
-            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
-            Log::error('done ' . $res['message']);
-            return;
-        } catch (\Throwable $th) {
-            Log::error('Failed to send ' . $action_to . ' notification! - ' . $th->getMessage());
-            return;
-        }
-    }
+    <!-- heading Section -->
+    <section class="heading fixed-top mt-4">
+        <div class="container-fluid p-0">
+            <div class="row m-2 heading-row">
+                <div class="col-1 p-0 d-flex align-items-center justify-content-center">
+                    <button onclick="history.back()" class="btn btn-sm text-light"><i
+                        class="fa-solid fa-arrow-left text-light"></i></button>
+                </div>
+                <div class="col-10 d-flex align-items-center justify-content-center text-light">
+                    <h5>Voice Recording</h5>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <button class="btn btn-outline-primary btn-sm" id="record-audio">Record audio</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Heading Section Ends -->
 
 
-    public function call_recording()
-    {
-        return view('frontend_new.pages.call-record');
-    }
+
+    <!-- Main Section -->
+    <main class="main" style="margin-top: 10rem;">
+
+        <div class="text-center loader" style="display:none;  background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
+            <div class="spinner-border" role="status">
+            <span class="sr-only" style="color:white;">Loading...</span>
+            </div>
+        </div>
+
+        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="{{ url('/delete/audio')}}" method="post">
+                    @csrf
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="deleteItemId" value=""/>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+              </div>
+            </div>
+        </div>
 
 
-    // storage_count
-    public function storage_count()
-    {
-        $gall = gallery_items::where('user_id', session('user_id'))->get();
-        $storage_size = 0;
-        $storage_pack = storage_txn::where('client_id', session('user_id'))
-            ->latest('created_at')
-            ->first();
-        $storage_txn = storage_txn::where('client_id', session('user_id'))
-            ->latest('created_at')
-            ->get();
 
-        $cd = 0;
-        $manual = manual_txns::where('client_id', session('user_id'))->orderByDesc('updated_at')->first();
-        if ($manual != null) {
-            if ($gall->isNotEmpty()) {
-                foreach ($gall as $g) {
-                    $storage_size += $g->size;
+        <section class="main-section">
+            <div class="container-fluid">
+                <div class="row records">
+
+                    <!-- Records -->
+                    @if(count($recordings) != 0)
+                    @foreach($recordings as $recording)
+                    <div class="col-12 voice-record">
+                        <div class="container-fluid" style="padding: 0 5px; position: relative;">
+                            <div class="row pt-1">
+                                <div class="col-12">
+                                    <h5 class="text-dark m-0">{{$recording->filename}}</h5>
+                                    <p class="text-dark m-0 mt-2" style="font-size: 10px;">
+                                        {{ $recording->created_at->format('M d, Y h:i A') }}</p>
+                                </div>
+                                <div class="col-12 p-0">
+                                    <audio class="w-100" id="plyr-audio-player" controls>
+                                        <source src="{{ $recording->s3Url() }}" type="audio/mp3" />
+                                    </audio>
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;" data-id="{{ $recording->id}}">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                    @else
+                    <p style="color: white;">No recordings</p>
+                    @endif
+                </div>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- Main Section Ends -->
+
+
+    <!-- Footer Section -->
+
+    <!-- <footer class="bg-body-tertiary fixed-bottom text-center text-lg-start m-2 contact-bg">
+        
+    </footer> -->
+
+    <!-- Footer Section Ends -->
+
+    <!-- Bootstrap Script -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <!-- Fontawesome Script -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+        integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- JQuery Script -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        @php
+        $user_id = session('user_id');
+        @endphp
+    <script>
+        $(document).ready(function () {
+            var user_id = {!! json_encode($user_id) !!};
+            $(".tap").click(function () {
+                var act = $(this).closest(".call-container").hasClass("call-bg");
+                console.log(act);
+                if (act == 0) {
+
+                    $(".show").slideUp();
+                    $(".call-container").removeClass("call-bg");
                 }
-                $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
-                $createdAt = Carbon::parse($manual->created_at);
-                $expirationDate = $createdAt->addDays($validity);
-                if ($expirationDate->isPast()) {
-                    $this->plan_expired = true;
-                    return;
-                } elseif (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
-                    $this->store_more = false;
-                    return;
-                } else {
-                    $this->store_more = true;
-                    return;
-                }
-            } else {
-                return;
-            }
-        } elseif ($gall->isNotEmpty()) {
-            foreach ($gall as $g) {
-                $storage_size += $g->size;
-            }
-            if ($storage_pack == null) {
-                $data = defaultStorage::first();
-                if ($storage_size >= ($data->storage * 1024 * 1024)) {
-                    $this->store_more = false;
-                    return;
-                } else {
-                    $this->store_more = true;
-                    return;
-                }
-            } else {
-                foreach ($storage_txn as $st) {
-                    if ($st->status != 0) {
-                        $cd = 1;
-                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
-                        $createdAt = Carbon::parse($st->created_at);
-                        $expirationDate = $createdAt->addDays($validity);
-                        if ($expirationDate->isPast()) {
-                            $this->plan_expired = true;
-                            return;
-                        } else {
-                            if (($st->storage * (1024 * 1024 * 1024)) <= $storage_size) {
-                                $this->store_more = false;
-                                return;
-                            } else {
-                                $this->store_more = true;
-                                return;
-                            }
-                        }
-                    } else {
-                        continue;
+                $(this).next(".show").slideToggle("slow");
+                $(this).closest(".call-container").toggleClass("call-bg");
+            });
+
+//             $.ajax({
+//                 type: "get",
+//                 url: "/voice-record/"+user_id,
+//                 dataType: "json",
+//                 success: function (response) {
+//                     console.log(response)
+//                     if(response.status == 200 && response.recordings.length > 0){
+//                         response.recordings.forEach(function(recording) {
+//             var voiceRecordElement = document.createElement('div');
+//             voiceRecordElement.className = 'col-12 voice-record';
+
+//             function formatDate(dateString) {
+//     const date = new Date(dateString);
+//     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+//     const formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
+//     return formattedDate;
+// }
+
+//             voiceRecordElement.innerHTML = `
+//                 <div class="container-fluid" style="padding: 0 5px;">
+//                     <div class="row pt-1">
+//                         <div class="col-12">
+//                             <p class="text-dark m-0 mt-2" style="font-size: 10px;">${formatDate(recording.created_at)} &nbsp; &nbsp; ${recording.date}</p>
+//                         </div>
+//                         <div class="col-12 p-0">
+//                             <audio class="w-100" id="plyr-audio-player" controls>
+//                                 <source src="${recording.s3Url()}" type="audio/mp3" />
+//                             </audio>
+//                             <button type="button" data-src="${recording.id}" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;">Delete</button>
+//                         </div>
+//                     </div>
+//                 </div>
+//             `;
+//             document.getElementById('.records').appendChild(voiceRecordElement); 
+//         });
+//                 }
+//                 else{
+//                     $('.records').append('<p style="color: white;">No recordings</p>')
+//                 }
+//                 }
+//             });
+
+
+$(document).on('click','.delete-btn', function () {
+            var id = this.getAttribute('data-id');
+            console.log(id)
+                document.getElementById('deleteItemId').value = id;
+                $('#deleteModal').modal('show');
+            });
+
+            $(document).on('click', '#record-audio', function () {
+                $.ajax({
+                    type: "get",
+                    url: "/record-voice/"+user_id,
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response.message);
+                        $('.loader').show();
+                        setTimeout(function() {
+                        $('.loader').hide();
+                        location.reload();
+                        }, 10000);
                     }
-                }
-                // if storage_txn status is all pending
-                if ($cd == 0) {
-                    $data = defaultStorage::first();
-                    if ($storage_size >= ($data->storage * 1024 * 1024)) {
-                        $this->store_more = false;
-                        return;
-                    } else {
-                        $this->store_more = true;
-                        return;
-                    }
-                }
-            }
-        } else {
-            return;
-        }
-    }
-}
+                });
+            });
+        });
+    </script>
+
+    <script>
+        const tabs = document.querySelectorAll('.tab_btn');
+        const all_content = document.querySelectorAll('.content');
+
+        tabs.forEach((tab, index) => {
+            tab.addEventListener('click', (e) => {
+                tabs.forEach(tab => { tab.classList.remove('active') });
+                tab.classList.add('active');
+
+                var line = document.querySelector('.line');
+                line.style.width = e.target.offsetWidth + "px";
+                line.style.left = e.target.offsetLeft + "px";
+
+                all_content.forEach(content => { content.classList.remove('active') })
+                all_content[index].classList.add('active');
+
+            })
+
+        })
+    </script>
+
+    <script>
+        const audioPlayer = new Plyr('#plyr-audio-player');
+    </script>
+</body>
+
+</html>
