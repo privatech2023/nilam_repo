@@ -125,7 +125,7 @@
                     data-bs-target="#bgModal">
                     <div class="row">
                         <div class="col-10">
-                            <h6><b>Change Backkground Image</b></h6>
+                            <h6><b>Change Background Image</b></h6>
                         </div>
                         <div class="col-2 d-flex justify-content-end">
                             <i class="fa-solid fa-angle-right"></i>
@@ -133,6 +133,9 @@
                         </div>
                     </div>
                 </a>
+
+
+
                 <a class="text-light p-0 m-2 text-decoration-none" href="device-status.html">
                     <div class="row">
                         <a href="{{ url('client/logout')}}" style="text-decoration: none;">
