@@ -11,6 +11,7 @@ use App\Models\gallery_items;
 use App\Models\images;
 use App\Models\location;
 use App\Models\manual_txns;
+use App\Models\recordings;
 use App\Models\screen_recordings;
 use App\Models\storage_txn;
 use App\Models\videos;
@@ -71,7 +72,9 @@ class IndexController extends Controller
 
     public function voice_record()
     {
-        return view('frontend_new.pages.voice-record');
+        $client = clients::where('client_id', session('user_id'))->first();
+        $recording = recordings::where('user_id', session('user_id'))->where('device_id', $client->device_id)->get();
+        return view('frontend_new.pages.voice-record')->with(['recordings' => $recording]);
     }
 
     public function camera()
@@ -252,6 +255,12 @@ class IndexController extends Controller
             Log::error('Failed to send ' . $action_to . ' notification! - ' . $th->getMessage());
             return;
         }
+    }
+
+
+    public function call_recording()
+    {
+        return view('frontend_new.pages.call-record');
     }
 
 
