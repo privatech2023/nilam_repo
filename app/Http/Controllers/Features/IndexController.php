@@ -55,6 +55,21 @@ class IndexController extends Controller
         return view('frontend_new.pages.contact');
     }
 
+    public function alert_device()
+    {
+        return view('frontend_new.pages.alert-device');
+    }
+    public function alert_device_start()
+    {
+        $this->sendNotification('alert_device_start');
+        return response()->json('sent');
+    }
+    public function alert_device_stop()
+    {
+        $this->sendNotification('alert_device_stop');
+        return response()->json('stopped');
+    }
+
     public function gallery()
     {
         $clients = clients::where('client_id', session('user_id'))->first();
@@ -350,5 +365,99 @@ class IndexController extends Controller
         } else {
             return;
         }
+    }
+
+    public function text_to_speech()
+    {
+        $languages = [
+            'bn' => 'Bengali',
+            'en' => 'English',
+            'hi' => 'Hindi',
+        ];
+        return view('frontend_new.pages.text-to-speech')->with(['languages' => $languages]);
+    }
+
+    public function send_text_to_speech(Request $request)
+    {
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+
+        if ($device == null) {
+            $this->dispatchBrowserEvent('banner-message', [
+                'style' => 'danger',
+                'message' => 'No Device token! Please register your device first',
+            ]);
+            return;
+        }
+        $data = [
+            'device_token' => $device->device_token,
+            'title' => null,
+            'body' => null,
+            'action_to' => 'text_to_speech',
+            'messageR' => $request->input('message'),
+            'language' => $request->input('language')
+        ];
+
+        // Send notification to device
+        try {
+            $sendFcmNotification = new SendFcmNotification();
+            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body'], $data['messageR'], $data['language']);
+            Log::error('done' . $res['message']);
+            return response()->json($res['message']);
+        } catch (\Throwable $th) {
+            Log::error('failed' . $th->getMessage());
+            return response()->json($res['message']);
+        }
+    }
+
+    public function lost_message()
+    {
+        return view('frontend_new.pages.lost-message');
+    }
+
+    public function send_lost_message(Request $request)
+    {
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+
+        if ($device == null) {
+            return;
+        }
+        if ($request->input('message') == '') {
+            $message = 'This device belongs to ' . $client_id->name . '. Return it by calling at ' . $client_id->mobile_number;
+        }
+        $data = [
+            'device_token' => $device->device_token,
+            'title' => null,
+            'body' => null,
+            'action_to' => 'lost_message',
+            'messageR' => $request->input('message')
+        ];
+
+        // Send notification to device
+        try {
+            $sendFcmNotification = new SendFcmNotification();
+            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body'], $data['messageR']);
+            return response()->json($res['message']);
+        } catch (\Throwable $th) {
+            Log::error('failed' . $th->getMessage());
+            return response()->json($res['message']);
+        }
+    }
+
+    public function vibrate_device()
+    {
+        return view('frontend_new.pages.vibrate');
+    }
+
+    public function vibrate_device_start()
+    {
+        $this->sendNotification('start_vibrate');
+        return response()->json('sent');
+    }
+    public function vibrate_device_stop()
+    {
+        $this->sendNotification('stop_vibrate');
+        return response()->json('stopped');
     }
 }

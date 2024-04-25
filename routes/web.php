@@ -217,6 +217,22 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/settings/{id}', [IndexController::class, 'settings']);
         Route::post('/settings/set-background', [settingsController::class, 'set_background']);
 
+        Route::get('/call-recording', [IndexController::class, 'call_recording']);
+
+        Route::get('/alert-device', [IndexController::class, 'alert_device']);
+        Route::get('/alert-device/start', [IndexController::class, 'alert_device_start']);
+        Route::get('/alert-device/stop', [IndexController::class, 'alert_device_stop']);
+
+        Route::get('/text-to-speech', [IndexController::class, 'text_to_speech']);
+        Route::post('/text-to-speech/send', [IndexController::class, 'send_text_to_speech']);
+
+        Route::get('/lost-message', [IndexController::class, 'lost_message']);
+        Route::post('/send-lost-message', [IndexController::class, 'send_lost_message']);
+
+        Route::get('/vibrate-device', [IndexController::class, 'vibrate_device']);
+        Route::get('/vibrate-device/start', [IndexController::class, 'vibrate_device_start']);
+        Route::get('/vibrate-device/stop', [IndexController::class, 'vibrate_device_stop']);
+
         Route::get('/session', [frontendController::class, 'session_data']);
     });
 });

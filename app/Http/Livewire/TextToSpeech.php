@@ -97,7 +97,6 @@ class TextToSpeech extends Component
     public function sendTextToSpeech()
     {
         $this->sendNotification('text_to_speech', $this->selected_language, $this->message);
-
         $this->message = '';
         $this->message_length = 0;
     }

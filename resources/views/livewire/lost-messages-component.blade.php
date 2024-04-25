@@ -54,11 +54,11 @@
                 <div class="row">
                     <div class="">
                         <input type="text" class="form-control" id="message" value="" placeholder="Enter lost message to send">
-                        <span class="lead text-sm" style="margin-left: 5px;"><strong>Note:</strong> If no message is given , default message will be sent.</span>
+                        <span class="lead" style="margin-left: 5px; font-size: 10px; color:white;"><strong>Note:</strong> If no message is given , default message will be sent.</span>
                         <div class="modal-footer" style="justify-content: flex-start; padding: 0rem; margin-top: 10px;">
                         <button class="button-29" role="button"  onclick="sendMessage()"><svg style="margin-right:6px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
                             <path d="M8.997 1.665a1.13 1.13 0 0 0-1.994 0l-6.26 11.186a1.13 1.13 0 0 0 .997 1.664h12.52a1.13 1.13 0 0 0 .997-1.664L8.997 1.665zM8.28 12.856a1.1 1.1 0 0 0 1.438-.002l5.45-9.75a1.1 1.1 0 0 0-.718-1.844H3.55a1.1 1.1 0 0 0-.718 1.844l5.448 9.75zM8.997 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                        </svg>Send lost message</button>
+                        </svg>Send lost message</button>s
                     </div>
                 </div>
             </div>

@@ -121,7 +121,9 @@
                         <div class="container-fluid" style="padding: 0 5px; position: relative;">
                             <div class="row pt-1">
                                 <div class="col-12">
-<!--                                     <h5 class="text-dark m-0">{{$recording->filename}}</h5> -->
+
+                                    {{-- <h5 class="text-dark m-0">{{$recording->filename}}</h5> --}}
+
                                     <p class="text-dark m-0 mt-2" style="font-size: 10px;">
                                         {{ $recording->created_at->format('M d, Y h:i A') }}</p>
                                 </div>

@@ -29,9 +29,7 @@
         rel="stylesheet">
 
     <!-- Custom CSS -->
-
     <link rel="stylesheet" href="{{ asset('assets_2/css/style.css')}}">
-
 
 </head>
 
@@ -57,7 +55,6 @@
 
     <!-- heading Section -->
     <section class="heading fixed-top mt-4">
-
         <div class="container-fluid p-0">
             <div class="row m-2 heading-row">
 
