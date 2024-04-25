@@ -26,72 +26,33 @@ class adminController extends Controller
 {
     public function index()
     {
-        if ((session('admin_name') == 'admin') || (session('admin_name') == 'Privatech management admin')) {
-            $query1 = DB::table('clients')
-                ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
-                ->get();
-            $query2 = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription')
-                ->leftJoin('subscriptions', function ($join) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->where('subscriptions.status', 1)
-                ->where('subscriptions.ends_on', '>=', date('Y-m-d'))
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-            $query3 = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
-                ->leftJoin('subscriptions', function ($join) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id')
-                        ->where('subscriptions.validity_days', null);
-                })
-                ->havingRaw('COUNT(subscriptions.client_id) > 0')
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-            $query4 = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
-                ->leftJoin('subscriptions', function ($join) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id')
-                        ->where('subscriptions.ends_on', '<', date('Y-m-d'));
-                })
-                ->havingRaw('COUNT(subscriptions.client_id) > 0')
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-        } else {
-            $query1 = DB::table('clients')
-                ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->get();
-            $query2 = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription')
-                ->leftJoin('subscriptions', function ($join) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id');
-                })
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->where('subscriptions.status', 1)
-                ->where('subscriptions.ends_on', '>=', date('Y-m-d'))
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-            $query3 = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
-                ->leftJoin('subscriptions', function ($join) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id')
-                        ->where('subscriptions.validity_days', null);
-                })
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->havingRaw('COUNT(subscriptions.client_id) > 0')
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-            $query4 = DB::table('clients')
-                ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
-                ->leftJoin('subscriptions', function ($join) {
-                    $join->on('clients.client_id', '=', 'subscriptions.client_id')
-                        ->where('subscriptions.ends_on', '<', date('Y-m-d'));
-                })
-                ->leftJoin('user_clients', 'clients.client_id', '=', 'user_clients.client_id')
-                ->where('user_clients.user_id', session('admin_id'))
-                ->havingRaw('COUNT(subscriptions.client_id) > 0')
-                ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-        }
-
+        $query1 = DB::table('clients')
+            ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
+            ->get();
+        $query2 = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status as subscription')
+            ->leftJoin('subscriptions', function ($join) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id');
+            })
+            ->where('subscriptions.status', 1)
+            ->where('subscriptions.ends_on', '>=', date('Y-m-d'))
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
+        $query3 = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
+            ->leftJoin('subscriptions', function ($join) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id')
+                    ->where('subscriptions.validity_days', null);
+            })
+            ->havingRaw('COUNT(subscriptions.client_id) > 0')
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
+        $query4 = DB::table('clients')
+            ->select('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status')
+            ->leftJoin('subscriptions', function ($join) {
+                $join->on('clients.client_id', '=', 'subscriptions.client_id')
+                    ->where('subscriptions.ends_on', '<', date('Y-m-d'));
+            })
+            ->havingRaw('COUNT(subscriptions.client_id) > 0')
+            ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
 
         $total_count_all = $query1->toArray();
         $total_count_active = $query2->get();
@@ -143,6 +104,7 @@ class adminController extends Controller
             }
         } catch (\Exception $e) {
             Log::error('Error during login: ' . $e->getMessage());
+
             return redirect()->back()->withErrors(['error' => 'An error occurred. Please try again.'])->withInput();
         }
     }
