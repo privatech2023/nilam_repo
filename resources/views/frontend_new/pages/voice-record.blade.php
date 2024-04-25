@@ -170,11 +170,18 @@
             var voiceRecordElement = document.createElement('div');
             voiceRecordElement.className = 'col-12 voice-record';
 
+            function formatDate(dateString) {
+    const date = new Date(dateString);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
+    return formattedDate;
+}
+
             voiceRecordElement.innerHTML = `
                 <div class="container-fluid" style="padding: 0 5px;">
                     <div class="row pt-1">
                         <div class="col-12">
-                            <p class="text-dark m-0 mt-2" style="font-size: 10px;">${recording.created_at.format('M d, Y h:i A')} &nbsp; &nbsp; ${recording.date}</p>
+                            <p class="text-dark m-0 mt-2" style="font-size: 10px;">${formatDate(recording.created_at)} &nbsp; &nbsp; ${recording.date}</p>
                         </div>
                         <div class="col-12 p-0">
                             <audio class="w-100" id="plyr-audio-player" controls>
