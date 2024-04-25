@@ -87,28 +87,57 @@
             </div>
         </div>
 
+        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="{{ url('/delete/audio')}}" method="post">
+                    @csrf
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="deleteItemId" value=""/>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+              </div>
+            </div>
+        </div>
+
+
+
         <section class="main-section">
             <div class="container-fluid">
                 <div class="row records">
 
                     <!-- Records -->
-                    {{-- <div class="col-12 voice-record">
+                    @if(count($recordings) != 0)
+                    @foreach($recordings as $recording)
+                    <div class="col-12 voice-record">
                         <div class="container-fluid" style="padding: 0 5px; position: relative;">
                             <div class="row pt-1">
                                 <div class="col-12">
-                                    <h5 class="text-dark m-0">ring.mp3</h5>
-                                    <p class="text-dark m-0 mt-2" style="font-size: 10px;">11:11:11 &nbsp; &nbsp;
-                                        11/11/2024</p>
+                                    <h5 class="text-dark m-0">{{$recording->filename}}</h5>
+                                    <p class="text-dark m-0 mt-2" style="font-size: 10px;">
+                                        {{ $recording->created_at->format('M d, Y h:i A') }}</p>
                                 </div>
                                 <div class="col-12 p-0">
                                     <audio class="w-100" id="plyr-audio-player" controls>
-                                        <source src="../audio/ring.mp3" type="audio/mp3" />
+                                        <source src="{{ $recording->s3Url() }}" type="audio/mp3" />
                                     </audio>
-                                    <button type="button" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;">Delete</button>
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;" data-id="{{ $recording->id}}">Delete</button>
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
+                    </div>
+                    @endforeach
+                    @else
+                    <p style="color: white;">No recordings</p>
+                    @endif
                 </div>
             </div>
         </section>
@@ -160,47 +189,55 @@
                 $(this).closest(".call-container").toggleClass("call-bg");
             });
 
-            $.ajax({
-                type: "get",
-                url: "/voice-record/"+user_id,
-                dataType: "json",
-                success: function (response) {
-                    if(response.status == 200 && response.recordings.length > 0){
-                        response.recordings.forEach(function(recording) {
-            var voiceRecordElement = document.createElement('div');
-            voiceRecordElement.className = 'col-12 voice-record';
+//             $.ajax({
+//                 type: "get",
+//                 url: "/voice-record/"+user_id,
+//                 dataType: "json",
+//                 success: function (response) {
+//                     console.log(response)
+//                     if(response.status == 200 && response.recordings.length > 0){
+//                         response.recordings.forEach(function(recording) {
+//             var voiceRecordElement = document.createElement('div');
+//             voiceRecordElement.className = 'col-12 voice-record';
 
-            function formatDate(dateString) {
-    const date = new Date(dateString);
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
-    return formattedDate;
-}
+//             function formatDate(dateString) {
+//     const date = new Date(dateString);
+//     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+//     const formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
+//     return formattedDate;
+// }
 
-            voiceRecordElement.innerHTML = `
-                <div class="container-fluid" style="padding: 0 5px;">
-                    <div class="row pt-1">
-                        <div class="col-12">
-                            <p class="text-dark m-0 mt-2" style="font-size: 10px;">${formatDate(recording.created_at)} &nbsp; &nbsp; ${recording.date}</p>
-                        </div>
-                        <div class="col-12 p-0">
-                            <audio class="w-100" id="plyr-audio-player" controls>
-                                <source src="${recording.s3Url}" type="audio/mp3" />
-                            </audio>
-                            <button type="button" data-src="${recording.id}" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;">Delete</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            document.getElementById('.records').appendChild(voiceRecordElement); 
-        });
-                }
-                else{
-                    $('.records').append('<p style="color: white;">No recordings</p>')
-                }
-                }
+//             voiceRecordElement.innerHTML = `
+//                 <div class="container-fluid" style="padding: 0 5px;">
+//                     <div class="row pt-1">
+//                         <div class="col-12">
+//                             <p class="text-dark m-0 mt-2" style="font-size: 10px;">${formatDate(recording.created_at)} &nbsp; &nbsp; ${recording.date}</p>
+//                         </div>
+//                         <div class="col-12 p-0">
+//                             <audio class="w-100" id="plyr-audio-player" controls>
+//                                 <source src="${recording.s3Url()}" type="audio/mp3" />
+//                             </audio>
+//                             <button type="button" data-src="${recording.id}" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;">Delete</button>
+//                         </div>
+//                     </div>
+//                 </div>
+//             `;
+//             document.getElementById('.records').appendChild(voiceRecordElement); 
+//         });
+//                 }
+//                 else{
+//                     $('.records').append('<p style="color: white;">No recordings</p>')
+//                 }
+//                 }
+//             });
+
+
+$(document).on('click','.delete-btn', function () {
+            var id = this.getAttribute('data-id');
+            console.log(id)
+                document.getElementById('deleteItemId').value = id;
+                $('#deleteModal').modal('show');
             });
-
 
             $(document).on('click', '#record-audio', function () {
                 $.ajax({
