@@ -34,11 +34,11 @@ class UploadPhotoController extends Controller
         }
 
 
-        if ($request->has('camera_type')) {
-            $cameraType = $request->input('camera_type');
-        } else {
-            $cameraType = 0;
-        }
+        // if ($request->has('camera_type')) {
+        //     $cameraType = $request->input('camera_type');
+        // } else {
+        //     $cameraType = 0;
+        // }
 
         $data = $request->only(['device_id', 'photo', 'device_token']);
         $device_id = $data['device_id'];
@@ -83,7 +83,7 @@ class UploadPhotoController extends Controller
                 'device_id' => $device_id,
                 'user_id' => $user->client_id,
                 'size' => $sizeInBytes,
-                'cameraType' => $cameraType
+                // 'cameraType' => $cameraType
             ]);
 
             // Return response
