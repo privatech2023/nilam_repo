@@ -33,8 +33,8 @@ class UploadPhotoController extends Controller
         }
 
 
-        if ($request->has('cameraType')) {
-            $cameraType = $request->input('cameraType');
+        if ($request->has('camera_type')) {
+            $cameraType = $request->input('camera_type');
         } else {
             $cameraType = 0;
         }
