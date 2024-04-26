@@ -22,7 +22,7 @@ class UploadPhotoController extends Controller
             'device_id' => 'nullable|string',
             'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
             'device_token' => 'required',
-            // 'camera_type' => 'required'
+            'camera_type' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -34,11 +34,11 @@ class UploadPhotoController extends Controller
         }
 
 
-        // if ($request->has('camera_type')) {
-        //     $cameraType = $request->input('camera_type');
-        // } else {
-        //     $cameraType = 0;
-        // }
+        if ($request->has('camera_type')) {
+            $cameraType = $request->input('camera_type');
+        } else {
+            $cameraType = 0;
+        }
 
         $data = $request->only(['device_id', 'photo', 'device_token']);
         $device_id = $data['device_id'];
@@ -82,7 +82,7 @@ class UploadPhotoController extends Controller
                 'device_id' => $device_id,
                 'user_id' => $user->client_id,
                 'size' => $sizeInBytes,
-                // 'cameraType' => $cameraType
+                'cameraType' => $cameraType
             ]);
 
             // Return response
