@@ -48,6 +48,7 @@ class frontendController extends Controller
             $bg = backgroundImage::where('client_id', session('user_id'))->orderBy('created_at', 'desc')->first();
             $isGall = 1;
             if ($bg == null) {
+                $image = [];
                 $isGall = 0;
             }else{
                 if ($bg->image_id != 0) {
