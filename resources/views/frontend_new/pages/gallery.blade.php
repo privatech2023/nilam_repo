@@ -91,11 +91,21 @@
                 <div class="content_box">
                     <div class=" container-fluid content active">
                         <div class="row">
+                            @if($plan_expired == true)
+                            @foreach($gallery_items as $image)
+                            <div class="col-3 p-0 img-col">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#expire_modal">
+                                    <img class="img-class" src="{{ $image->s3Url() }}" alt="img" style="filter: blur(5px);">
+                                </a>
+                            </div>
+                            @endforeach
+                            @else
                             @foreach($gallery_items as $image)
                             <div class="col-3 p-0 img-col">
                                 <a href="{{ $image->s3Url() }}"><img class="img-class" src="{{ $image->s3Url() }}" alt="img" ></a>
                             </div>
                             @endforeach 
+                            @endif
                         </div>
                     </div>
 
@@ -261,6 +271,12 @@
     $store_more = $store_more;
     $plan_expired = $plan_expired;
     @endphp
+
+    <script>
+        function openModal(){
+            $('#expire').modal('show');
+        }
+    </script>
     <script>
         $(document).ready(function () {
             $(".tap").click(function () {
