@@ -27,6 +27,7 @@ class frontendController extends Controller
 
     public function home()
     {
+        $isGall = 0;
         if (session('user_id') != null) {
             $subs = subscriptions::where('client_id', session('user_id'))
                 ->where('status', 1)
@@ -44,12 +45,16 @@ class frontendController extends Controller
             Session::put('plan_expired', $this->plan_expired);
             Session::put('store_more', $this->store_more);
             // dd(session::all());
+            $bg = backgroundImage::where('client_id', session('user_id'))->orderBy('created_at', 'desc')->first();
+            $isGall = 1;
+            if ($bg == null) {
+                $isGall = 0;
+            }
+        } else {
+            $bg = 0;
         }
         Session::forget('user_data');
-
-        $bg = backgroundImage::first();
-
-        return view('frontend/pages/index')->with(['bg' => $bg]);
+        return view('frontend/pages/index')->with(['bg' => $bg, 'isGall' => $isGall]);
     }
 
     public function sendOTP($number, $message)

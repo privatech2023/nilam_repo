@@ -19,9 +19,7 @@ class settingsController extends Controller
             $data = [];
             $model = new settings();
             $this->postChecker();
-
             $settingsData = $model->get();
-
             if (!is_null($settingsData)) {
                 $store = [];
                 foreach ($settingsData as $valueSettings) {
@@ -35,7 +33,6 @@ class settingsController extends Controller
             }
             $user = default_client_creds::first();
             $data = ['settings' => $store, 'user' => $user];
-
             return view('frontend.admin.settings', $data);
         } catch (\Exception $e) {
             Log::error('error: ' . $e->getMessage());
@@ -87,11 +84,14 @@ class settingsController extends Controller
         if ($bg == null) {
             $new = new backgroundImage();
             $new->create([
-                'url' => $request->input('imageUrl')
+                'url' => $request->input('imageUrl'),
+                'client_id' => session('user_id')
             ]);
         } else {
-            $bg->update([
-                'url' => $request->input('imageUrl')
+            $new = new backgroundImage();
+            $new->create([
+                'url' => $request->input('imageUrl'),
+                'client_id' => session('user_id')
             ]);
         }
         return response()->json('done');

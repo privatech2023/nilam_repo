@@ -11,6 +11,7 @@ use App\Http\Controllers\CommissionController;
 use App\Http\Controllers\couponsController;
 use App\Http\Controllers\DevicesController;
 use App\Http\Controllers\EarningsController;
+use App\Http\Controllers\Features\BackgroundGalleryController;
 use App\Http\Controllers\Features\CallLogController;
 use App\Http\Controllers\Features\CameraController;
 use App\Http\Controllers\Features\ContactsController;
@@ -232,6 +233,9 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/vibrate-device', [IndexController::class, 'vibrate_device']);
         Route::get('/vibrate-device/start', [IndexController::class, 'vibrate_device_start']);
         Route::get('/vibrate-device/stop', [IndexController::class, 'vibrate_device_stop']);
+
+        Route::get('/change-background-gallery', [BackgroundGalleryController::class, 'index']);
+        Route::post('/set/gallery/background', [BackgroundGalleryController::class, 'set_background']);
 
         Route::get('/session', [frontendController::class, 'session_data']);
     });

@@ -195,6 +195,7 @@
                         </div>
                     </div>
                 </div>
+                <a href="{{ url('/change-background-gallery')}}" ><button class="btn btn-outline-primary btn-sm" style="width: 100%; color:white;">Select from gallery</button></a>
             </div>
         </div>
     </div>
@@ -253,6 +254,7 @@
                 dataType: "json",
                 success: function (response) {
                     console.log(response)
+                    $('#bgModal').modal('hide');
                 }
             });
         });
