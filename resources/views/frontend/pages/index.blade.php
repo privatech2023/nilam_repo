@@ -73,7 +73,7 @@
 @if($isGall == 1)
 <body class="dashboard-body body-bg-img" style="background-image: url('{{ $bg->url }}')">
 @elseif($isGall == 2)
-<body style="background-image: url('{{ $image->s3Url()}}')">
+<body style="background-image: url('{{ $image->s3Url()}}');  background-size: cover;">
 @else
 <body class="dashboard-body body-bg-img">
 @endif
