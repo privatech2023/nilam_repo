@@ -10,6 +10,8 @@ class backgroundImage extends Model
     use HasFactory;
 
     public $fillable = [
-        'url'
+        'url',
+        'client_id',
+        'is_gallery'
     ];
 }

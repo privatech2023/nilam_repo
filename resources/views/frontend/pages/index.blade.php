@@ -49,7 +49,7 @@
     <style>
         /*dynamically generated from backend-code*/
 
-        @if($bg)
+        @if($isGall == 1)
         .body-bg-img {
             background-image: url("{{ $bg->url }}")!important;
         }
@@ -58,7 +58,6 @@
             background-image: url("assets_2/img/billy-huynh-W8KTS-mhFUE-unsplash.jpg")!important;
         }
         @endif
-
         .timer {
             font-size: 20px;
             text-align: center;
@@ -91,7 +90,7 @@
     $user_id = session('user_id')
     @endphp
         <!--  Header Section -->
-<nav class="navbar main-navbar fixed-top">
+<nav class="navbar main-navbar fixed-top" id="main-navbar">
     <div class="container">
         <div class="left-div text-light">
             <h4>PRIVATECH</h4>
@@ -193,6 +192,7 @@
     @else 
     <div class="container">
         <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
+        <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a>
     </div>
     <div class="container">
         @if(session('remaining_days') == 'DEFAULT PACK')
@@ -200,6 +200,7 @@
         @else
         <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">{{session('remaining_days')}} DAYS</span>
         @endif
+        <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a>
     </div>
     @endif
 
@@ -207,9 +208,7 @@
 
 </div>
 @endif
-<div class="timer" style="z-index: 1000;">
-                <strong>Upcoming features, May 21, 2024: </strong><span id="countdown" class="text-sm"></span>
-            </div>
+            
 
 
             
@@ -455,19 +454,15 @@
                                     </div>
                                     @endif
 
-
-
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Device Status</p>
                                             </div>
-                                        
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
@@ -484,32 +479,25 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Device Status</p>
                                             </div>
-                                        
                                     </div>
                                     @endif
 
-                                    
-
-                                    
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Screen Record</p>
                                             </div>
-                                        
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
@@ -526,28 +514,24 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Screen Record</p>
                                             </div>
-                                        
                                     </div>
                                     @endif
                                     
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Location</p>
                                             </div>
-                                        
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
@@ -564,21 +548,18 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col "  data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Location</p>
                                             </div>
-                                        
                                     </div>
                                     @endif
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
                                             </div>
@@ -601,7 +582,6 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
                                             </div>
@@ -646,7 +626,6 @@
                                     </div>
                                     @endif
 
-
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
@@ -680,7 +659,6 @@
                                             </div>
                                     </div>
                                     @endif
-
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
@@ -716,7 +694,6 @@
                                     </div>
                                     @endif
 
-
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
@@ -750,7 +727,6 @@
                                             </div>
                                     </div>
                                     @endif
-
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
@@ -786,12 +762,11 @@
                                     </div>
                                     @endif
 
-
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
+                                        <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
@@ -802,7 +777,7 @@
                                         <!-- buttons -->
                                         <a href="https://www.facebook.com/">
                                             <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
@@ -812,8 +787,8 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="facebook">
+                                        <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Facebook</p>
@@ -855,12 +830,9 @@
                                     </div>
                                     @endif
 
-
-
-
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
-                                        <a href="assets/pages/apps.html">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/user-interface.png')}}" alt="logos">
                                             </div>
@@ -870,11 +842,9 @@
                                         </a>
                                     </div>
 
-                                    
-
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled ">
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
-                                        <a href="{{ asset('assets_2/pages/sim-details.html')}}">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="icon">
                                             </div>
@@ -883,9 +853,9 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
-                                        <a href="index.html">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/smart-tv.png')}}" alt="logos">
                                             </div>
@@ -894,9 +864,9 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
-                                        <a href="{{ asset('assets_2/pages/gmail.html')}}">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/gmail.png')}}" alt="facebook">
                                             </div>
@@ -905,9 +875,9 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled ">
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
-                                        <a href="index.html">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/remote-control.png')}}" alt="facebook">
                                             </div>
@@ -929,9 +899,9 @@
                                     </div>
 
                                     
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
-                                        <a href="{{ asset('assets_2/pages/files.html')}}">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/folder.png')}}" alt="icon">
                                             </div>
@@ -940,7 +910,6 @@
                                             </div>
                                         </a>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
@@ -1120,6 +1089,22 @@
 </div>
 
 
+<div class="modal fade" id="timerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="timer" style="z-index: 1000;">
+                <strong>Upcoming features, May 21, 2024: </strong><span id="countdown" class="text-sm"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Bootstrap Script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
@@ -1129,8 +1114,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
         integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    
 
         <script>
         var errors = @json($errors->all());
@@ -1145,6 +1128,32 @@
         toastr.warning('{{session('error')}}')
     </script>
 @endif
+
+<script>
+    // Get the navbar
+    var navbar = document.getElementById("main-navbar");
+    
+    // Initialize variable to keep track of the last scroll position
+    var lastScrollTop = 0;
+
+    // Function to handle scroll events
+    window.addEventListener("scroll", function() {
+        // Get the current scroll position
+        var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+        // If the current scroll position is greater than the last scroll position, hide the navbar
+        if (currentScroll > lastScrollTop){
+            navbar.style.transform = "translateY(-100%)";
+        } else {
+            // Otherwise, show the navbar
+            navbar.style.transform = "translateY(0)";
+        }
+
+        // Update last scroll position
+        lastScrollTop = currentScroll;
+    });    
+</script>
+
     <script>
         $(document).ready(function () {
             

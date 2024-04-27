@@ -66,11 +66,8 @@
                 <div class="col-11 p-0">
                     <div class="container">
                         <div class="tab_box">
-                            <div class="tab_btn active">Front Camera</div>
+                            <div class="tab_btn active">Gallery</div>
                             <div class="line"></div>
-                            <div style="display: flex; justify-content: center;">
-                                <button class="btn btn-outline-primary btn-sm" id="take-picture">Take picture</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,8 +85,8 @@
                 <div class="content_box">
                     <div class=" container-fluid content active">
                         <div class="row">
-                            @if($images->count() > 0)
-                            @foreach($images as $image)
+                            @if($gallery_items->count() > 0)
+                            @foreach($gallery_items as $image)
                             <div class="col-3 p-0 img-col img-open" data-src="{{$image->s3Url()}}" data-id="{{$image->id}}">
                                 <img src="{{$image->s3Url()}}" alt="img">
                             </div>
@@ -120,10 +117,10 @@
             <div class="modal-body">
               <img id="modalImage" src="" class="img-fluid" alt="Image">
             </div>
-            <form method="post" action="{{ url('/delete/image')}}">
+            <form method="post" action="{{ url('/set/gallery/background')}}">
                 @csrf
                 <input type="hidden" name="id" id="deleteItemId" value=""/>
-                <button type="submit" style="width:100%;" class="btn btn-outline-danger btn-sm">Delete</button>
+                <button type="submit" style="width:100%;" class="btn btn-outline-primary ">Set as background</button>
             </form>
           </div>
         </div>
@@ -182,19 +179,6 @@
                 $('#imageModal').modal('hide');
             });
 
-            $('#take-picture').on('click', function(){
-                $.ajax({
-                    type: "get",
-                    url: "/camera/take-picture",
-                    dataType: "json",
-                    success: function (response) {
-                        console.log(response.message);
-                        setTimeout(function() {
-                        location.reload();
-                        }, 2000);
-                    }
-                });
-            });
         });
     </script>
 
