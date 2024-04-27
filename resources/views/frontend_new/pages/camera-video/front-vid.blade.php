@@ -66,7 +66,9 @@
         }
     
         .delete-btn{
-        margin-left: 30%;
+
+        margin-left: auto;
+
         border-radius: 15px;
     }
     }
