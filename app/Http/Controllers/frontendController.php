@@ -50,7 +50,7 @@ class frontendController extends Controller
             if ($bg == null) {
                 $isGall = 0;
             }
-            if ($bg->image_id != 0) {
+            if ($bg->image_id != 0 && $bg->image_id != null) {
                 $isGall = 2;
                 $image = gallery_items::where('id', $bg->image_id)->first();
                 if ($image == null) {
