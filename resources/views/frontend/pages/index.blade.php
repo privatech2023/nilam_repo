@@ -196,7 +196,7 @@
     @else 
     <div class="container">
         <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
-        /* <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a> */
+
     </div>
     <div class="container">
         @if(session('remaining_days') == 'DEFAULT PACK')
@@ -1157,6 +1157,7 @@
         lastScrollTop = currentScroll;
     });    
 </script>
+
 
     <script>
         $(document).ready(function () {
