@@ -122,8 +122,15 @@ class IndexController extends Controller
     public function video_front()
     {
         $client = clients::where('client_id', session('user_id'))->first();
-        $recording = videos::where('user_id', $client->client_id)->where('device_id', $client->device_id)->latest()->get();
+        $recording = videos::where('user_id', $client->client_id)->where('device_id', $client->device_id)->where('cameraType', '0')->get();
         return view('frontend_new.pages.camera-video.front-vid')->with(['recordings' => $recording]);
+    }
+
+    public function video_back()
+    {
+        $client = clients::where('client_id', session('user_id'))->first();
+        $recording = videos::where('user_id', $client->client_id)->where('device_id', $client->device_id)->where('cameraType', '1')->get();
+        return view('frontend_new.pages.camera-video.back-vid')->with(['recordings' => $recording]);
     }
 
     public function device_status()
