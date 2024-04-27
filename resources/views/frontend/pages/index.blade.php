@@ -73,7 +73,7 @@
 @if($isGall == 1)
 <body class="dashboard-body body-bg-img" style="background-image: url('{{ $bg->url }}')">
 @elseif($isGall == 2)
-<body style="background-image: url('{{ $image->s3Url()}}');  background-size: cover; background-position: center;">
+<body style="background-image: url('{{ $image->s3Url()}}');  background-size: cover;">
 @else
 <body class="dashboard-body body-bg-img">
 @endif
@@ -176,23 +176,24 @@
     </div>
     @if(session('store_more') == false)
     <div class="container">
-        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE FULL</span>
+        <span class="text-md breadcrumb-text " style="color: #d5d1e4; margin-left: 3px;">STORAGE FULL</span>
         <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a>
     </div>
     @elseif(session('plan_expired') == true)
     <div class="container">
-        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE PLAN EXPIRED</span>
+        <span class="text-md breadcrumb-text " style="color: #d5d1e4; margin-left: 3px;">STORAGE PLAN EXPIRED</span>
         <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a>
     </div>
     @else 
     <div class="container">
-        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
+        <span class="text-md breadcrumb-text " style="color: #d5d1e4; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
+        
     </div>
     <div class="container">
         @if(session('remaining_days') == 'DEFAULT PACK')
-        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">{{session('remaining_days')}}</span>
+        <span class="text-md breadcrumb-text " style="color: #d5d1e4; margin-left: 3px;">{{session('remaining_days')}}</span>
         @else
-        <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">{{session('remaining_days')}} DAYS</span>
+        <span class="text-md breadcrumb-text " style="color: #d5d1e4; margin-left: 3px;">{{session('remaining_days')}} DAYS</span>
         @endif
         <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a>
     </div>
