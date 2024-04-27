@@ -33,6 +33,12 @@ class UploadVideoController extends Controller
             ], 400);
         }
 
+        if ($request->has('camera_type')) {
+            $cameraType = $request->input('camera_type');
+        } else {
+            $cameraType = 0;
+        }
+
         $data = $request->only(['device_id', 'recording', 'device_token']);
         $device_id = $data['device_id'];
         // Get user
@@ -74,7 +80,8 @@ class UploadVideoController extends Controller
                 'user_id' => $user->client_id,
                 'filename' => $filename,
                 'device_id' => $device_id,
-                'size' => $sizeInBytes
+                'size' => $sizeInBytes,
+                'cameraType' => $cameraType
             ]);
         } catch (\Throwable $th) {
             Log::error('Error creating user: ' . $th->getMessage());

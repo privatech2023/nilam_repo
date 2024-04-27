@@ -203,7 +203,9 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/camera/take-picture/back', [CameraController::class, 'take_picture_back']);
 
         Route::get('/video-front', [IndexController::class, 'video_front']);
+        Route::get('/video-back', [IndexController::class, 'video_back']);
         Route::get('/camera/take-video', [CameraController::class, 'take_video']);
+        Route::get('/camera/take-video-back', [CameraController::class, 'take_video_back']);
 
         Route::get('/device-status', [IndexController::class, 'device_status']);
         Route::get('/device-status/get-status', [IndexController::class, 'get_device_status']);

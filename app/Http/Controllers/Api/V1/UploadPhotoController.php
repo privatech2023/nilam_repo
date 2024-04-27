@@ -17,6 +17,7 @@ class UploadPhotoController extends Controller
 {
     public function uploadPhoto(Request $request)
     {
+        Log::error('in camera api');
         $validator = Validator::make($request->all(), [
             'device_id' => 'nullable|string',
             'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
@@ -31,8 +32,9 @@ class UploadPhotoController extends Controller
             ], 422);
         }
 
-        if ($request->has('cameraType')) {
-            $cameraType = $request->input('cameraType');
+
+        if ($request->has('camera_type')) {
+            $cameraType = $request->input('camera_type');
         } else {
             $cameraType = 0;
         }
@@ -71,8 +73,7 @@ class UploadPhotoController extends Controller
             $directory = 'images/' . $user->client_id . '/' . $device_id;
             $request->photo->storeAs($directory, $filename, 's3');
 
-            if ($data['camera_type']) {
-            }
+
             // Save to database
             $imagescr = new images();
             $imagescr->create([

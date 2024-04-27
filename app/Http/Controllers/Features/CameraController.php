@@ -97,4 +97,32 @@ class CameraController extends Controller
             return response()->json(['message' => $res['message']]);
         }
     }
+
+    public function take_video_back()
+    {
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+        if ($device == null) {
+            $this->dispatchBrowserEvent('banner-message', [
+                'style' => 'danger',
+                'message' => 'No Device token! Please register your device first',
+            ]);
+            return;
+        }
+        $data = [
+            'device_token' =>  $device->device_token,
+            'title' => null,
+            'body' => null,
+            'action_to' => 'record_video_back',
+        ];
+        try {
+            $sendFcmNotification = new SendFcmNotification();
+            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
+            Log::error('done' . $res['message'] . ' notification! - ');
+            return response()->json(['message' => $res['message']]);
+        } catch (\Throwable $th) {
+            Log::error('done ' . $res['message']);
+            return response()->json(['message' => $res['message']]);
+        }
+    }
 }
