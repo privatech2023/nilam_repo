@@ -12,6 +12,7 @@ class backgroundImage extends Model
     public $fillable = [
         'url',
         'client_id',
-        'is_gallery'
+        'is_gallery',
+        'image_id'
     ];
 }
