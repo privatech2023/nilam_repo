@@ -53,6 +53,10 @@
         .body-bg-img {
             background-image: url("{{ $bg->url }}")!important;
         }
+        @elseif($isGall == 2)
+        .body-bg-img {
+            background-image: url("{{ $image->s3Url() }}")!important;
+        }
         @else
         .body-bg-img {
             background-image: url("assets_2/img/billy-huynh-W8KTS-mhFUE-unsplash.jpg")!important;
@@ -192,7 +196,7 @@
     @else 
     <div class="container">
         <span class="text-md breadcrumb-text " style="color: #6e668d; margin-left: 3px;">STORAGE LEFT: {{session('storage_left')}}MB</span>
-<!--         <a href="{{ url('/storage-plan')}}" style="margin-left: 5px;"><button class="btn-sm btn-primary">Buy storage</button></a> -->
+
     </div>
     <div class="container">
         @if(session('remaining_days') == 'DEFAULT PACK')

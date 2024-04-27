@@ -32,7 +32,8 @@ class BackgroundGalleryController extends Controller
         $bg->create([
             'url' => $url,
             'client_id' => session('user_id'),
-            'is_gallery' => 1
+            'is_gallery' => 1,
+            'image_id' => $data->id
         ]);
         return redirect()->route('home');
     }

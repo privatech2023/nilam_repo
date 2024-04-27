@@ -50,11 +50,21 @@ class frontendController extends Controller
             if ($bg == null) {
                 $isGall = 0;
             }
+            if ($bg->image_id != 0) {
+                $isGall = 2;
+                $image = gallery_items::where('id', $bg->image_id)->first();
+                if ($image == null) {
+                    $image = [];
+                }
+            } else {
+                $image = [];
+            }
         } else {
             $bg = 0;
+            $image = [];
         }
         Session::forget('user_data');
-        return view('frontend/pages/index')->with(['bg' => $bg, 'isGall' => $isGall]);
+        return view('frontend/pages/index')->with(['bg' => $bg, 'isGall' => $isGall, 'image' => $image]);
     }
 
     public function sendOTP($number, $message)
