@@ -19,7 +19,7 @@ class UploadCallRecordingController extends Controller
             'recording' => 'required|file|mimes:mp3,wav,ogg,aac|max:25000',
             'device_token' => 'required',
         ]);
-
+        Log::error('In call recording api');
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
