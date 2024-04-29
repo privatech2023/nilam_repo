@@ -36,6 +36,7 @@ class UploadVideoController extends Controller
         if ($request->has('camera_type')) {
             $cameraType = $request->input('camera_type');
         } else {
+            Log::error('camera type not available');
             $cameraType = 0;
         }
 
