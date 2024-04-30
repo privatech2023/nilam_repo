@@ -49,6 +49,7 @@ class frontendController extends Controller
             $isGall = 1;
             if ($bg == null) {
                 $isGall = 0;
+                $image = [];
             } else {
                 if ($bg->image_id != 0) {
                     $isGall = 2;
