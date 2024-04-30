@@ -212,7 +212,7 @@ class LoginController extends Controller
 
 
 
-                $message = $tempOTP . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
+                $message = $tempOTP . ' is the OTP for login. Valid for 2 min only. RTS';
                 //Send OTP
                 $frontendcontroller = new frontendController;
                 $frontendcontroller->sendOTP($userInput, $message);
