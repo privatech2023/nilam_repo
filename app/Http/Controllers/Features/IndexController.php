@@ -500,7 +500,7 @@ class IndexController extends Controller
         }
     }
 
-    public function unhide_app_hide()
+    public function hide_app_unhide()
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
         $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
