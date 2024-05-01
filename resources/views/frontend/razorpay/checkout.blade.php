@@ -34,7 +34,6 @@
                         <script>
                             var url = "{{ route('razorpay.payment.success')}}"
                             var options = {
-                                
                                 "key": "{{ getenv('RAZORPAY_KEY')}}",
                                 "amount": "{{ $razorPay['amount'] }}",
                                 "currency": "INR",
@@ -42,13 +41,15 @@
                                 "description": "Test Transaction",
                                 "image": "{{ asset('assets/frontend/images/web-logo.png') }}",
                                 "order_id": "{{ $razorPay['id'] }}",
-                                // "callback_url": "{{ url('/razorpay/success') }}",
-                                "handler": function (response) {
-                                    window.location.href = url + 
-                                    '?razorpay_payment_id=' + response.razorpay_payment_id + 
-                                    '&razorpay_order_id=' + response.razorpay_order_id +
-                                    '&razorpay_signature=' + response.razorpay_signature;
-                                },
+                                "callback_url": "{{ url('/razorpay/success') }}",
+                                // "handler": function () {
+                                //     window.location.href = url + 
+                                //     '?razorpay_payment_id=' + response.razorpay_payment_id + 
+                                //     '&razorpay_order_id=' + response.razorpay_order_id +
+                                //     '&razorpay_signature=' + response.razorpay_signature;
+
+                                    
+                                // },
                                 "prefill": {
                                     "name": "{{ session('name') }}",
                                     "email": "{{ session('email') }}",

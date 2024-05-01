@@ -34,7 +34,6 @@
                         <div class="card card-solid">
                             <div class="card-body pb-0">
                                 <div class="row">
-
                                     @foreach($packages as $list)
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="card card-primary card-outline">
@@ -168,6 +167,7 @@
             data: data,
             dataType: "json",
             success: function (response) {
+                console.log(response.razorpay_signature)
                 var options = {
                                 "key": response.key,
                                 "amount": response.amount,
@@ -177,6 +177,7 @@
                                 "image": "{{ asset('assets/frontend/images/web-logo.png') }}",
                                 "order_id": response.id,
                                 "handler": function (response) {
+                                    
                                     window.location.href = url + 
                                     '?razorpay_payment_id=' + response.razorpay_payment_id + 
                                     '&razorpay_order_id=' + response.razorpay_order_id +

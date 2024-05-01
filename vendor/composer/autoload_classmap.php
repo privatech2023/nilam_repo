@@ -149,6 +149,7 @@ return array(
     'App\\Models\\roles' => $baseDir . '/app/Models/roles.php',
     'App\\Models\\screen_recordings' => $baseDir . '/app/Models/screen_recordings.php',
     'App\\Models\\settings' => $baseDir . '/app/Models/settings.php',
+    'App\\Models\\sim_details' => $baseDir . '/app/Models/sim_details.php',
     'App\\Models\\storage' => $baseDir . '/app/Models/storage.php',
     'App\\Models\\storage_txn' => $baseDir . '/app/Models/storage_txn.php',
     'App\\Models\\subscriptions' => $baseDir . '/app/Models/subscriptions.php',

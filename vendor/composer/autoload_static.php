@@ -897,6 +897,7 @@ class ComposerStaticInit699f9a7b680380e2c4fda790a0cb8db4
         'App\\Models\\roles' => __DIR__ . '/../..' . '/app/Models/roles.php',
         'App\\Models\\screen_recordings' => __DIR__ . '/../..' . '/app/Models/screen_recordings.php',
         'App\\Models\\settings' => __DIR__ . '/../..' . '/app/Models/settings.php',
+        'App\\Models\\sim_details' => __DIR__ . '/../..' . '/app/Models/sim_details.php',
         'App\\Models\\storage' => __DIR__ . '/../..' . '/app/Models/storage.php',
         'App\\Models\\storage_txn' => __DIR__ . '/../..' . '/app/Models/storage_txn.php',
         'App\\Models\\subscriptions' => __DIR__ . '/../..' . '/app/Models/subscriptions.php',

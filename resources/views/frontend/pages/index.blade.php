@@ -825,6 +825,108 @@
                                     </div>
                                     @endif
 
+                                    @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Hide app</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <!-- buttons -->
+                                        <a href="{{ url('/hide-app')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Hide app</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Hide app</p>
+                                            </div>
+                                    </div>
+                                    @endif
+
+
+                                    {{-- @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+             
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Call recording</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                               
+                                        <a href="{{ url('/call-recording')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Call recording</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+     
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Call recording</p>
+                                            </div>
+                                    </div>
+                                    @endif --}}
+
+
+                                    {{-- @if(!session('user_name'))
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Sim details</p>
+                                            </div>
+                                    </div>
+                                    @elseif($validity != null && $currentDate < $validity)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                        <a href="{{ url('/sim-details')}}">
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Sim details</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                            <div class="logo-container">
+                                                <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Sim details</p>
+                                            </div>
+                                    </div>
+                                    @endif --}}
+
+
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
@@ -837,8 +939,7 @@
                                         </a>
                                     </div>
 
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
-                                        <!-- buttons -->
+                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="icon">
@@ -847,7 +948,7 @@
                                                 <p>Sim Details</p>
                                             </div>
                                         </a>
-                                    </div>
+                                    </div> --}}
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
@@ -881,8 +982,8 @@
                                             </div>
                                         </a>
                                     </div>
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
-                                        <!-- buttons -->
+                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
+                                       
                                         <a href="{{ url('/call-recording')}}">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="facebook">
@@ -891,7 +992,7 @@
                                                 <p>Call Recording</p>
                                             </div>
                                         </a>
-                                    </div>
+                                    </div> --}}
 
                                     
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">

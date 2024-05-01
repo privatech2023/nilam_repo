@@ -4,11 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Call Recording</title>
+    <title>Call recording</title>
 
     <!-- Favicons -->
     <link href="{{ asset('assets/frontend/images/favicon-32x32.png')}}" rel="icon">
-    <link href="{{ asset('assets_2/img/apple-touch-icon.png" rel="apple-touch-icon')}}" rel="apple-touch-icon">
+    <link href="{{ asset('assets_2/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
     <!-- bootstrap CDN -->
 
@@ -16,24 +16,29 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <!-- Fontawesome CDN -->
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Poppins CDN -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
 
     <!-- Custom CSS -->
+
     <link rel="stylesheet" href="{{ asset('assets_2/css/style.css')}}">
 
 
 </head>
+
 <body class="page-body">
+
     <!--  Header Section -->
-    <!-- <nav class="navbar main-navbar fixed-top">
+    {{-- <nav class="navbar main-navbar fixed-top">
         <div class="container">
             <div class="left-div text-light">
                 <b>11:11 AM </b>
@@ -46,8 +51,10 @@
                 <b>99%</b>
             </div>
         </div>
-    </nav> -->
+    </nav> --}}
 
+
+    
     <!--  Header Section Ends -->
 
     <!-- heading Section -->
@@ -56,10 +63,10 @@
             <div class="row m-2 heading-row">
                 <div class="col-1 p-0 d-flex align-items-center justify-content-center">
                     <button onclick="history.back()" class="btn btn-sm text-light"><i
-                            class="fa-solid fa-arrow-left text-light"></i></button>
+                        class="fa-solid fa-arrow-left text-light"></i></button>
                 </div>
                 <div class="col-10 d-flex align-items-center justify-content-center text-light">
-                    <h4>Call Recording</h4>
+                    <h5>Call Recording</h5>
                 </div>
             </div>
         </div>
@@ -70,29 +77,60 @@
 
     <!-- Main Section -->
     <main class="main">
+        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h6 class="modal-title text-md">Are you sure you want to delete this item ?</h6>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form action="{{ url('/delete/call-record')}}" method="post">
+                    @csrf
+                <div class="modal-footer">
+                    <input type="hidden" name="id" id="deleteItemId" value=""/>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                  <button type="submit" class="btn btn-primary">Yes</button>
+                </div>
+            </form>
+              </div>
+            </div>
+        </div>
+
+
+
         <section class="main-section">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row records">
+
                     <!-- Records -->
+                    @if(count($recordings) != 0)
+                    @foreach($recordings as $recording)
                     <div class="col-12 voice-record">
-                        <div class="container-fluid" style="padding: 0 5px;">
+                        <div class="container-fluid" style="padding: 0 5px; position: relative;">
                             <div class="row pt-1">
                                 <div class="col-12">
-                                    <h5 class="text-dark m-0">ring.mp3</h5>
-                                    <p class="text-dark m-0 mt-2" style="font-size: 10px;">11:11:11 &nbsp; &nbsp;
-                                        11/11/2024</p>
+                                    <p class="text-dark m-0 mt-2" style="font-size: 10px;">
+                                        {{ $recording->created_at->format('M d, Y h:i A') }}</p>
                                 </div>
                                 <div class="col-12 p-0">
                                     <audio class="w-100" id="plyr-audio-player" controls>
-                                        <source src="../audio/ring.mp3" type="audio/mp3" />
+                                        <source src="{{ $recording->s3Url() }}" type="audio/mp3" />
                                     </audio>
+                                    <button type="button" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;" data-id="{{ $recording->id}}">Delete</button>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endforeach
+                    @else
+                    <p style="color: white;">No recordings</p>
+                    @endif
                 </div>
             </div>
         </section>
+        
     </main>
 
     <!-- Main Section Ends -->
@@ -122,18 +160,88 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-
+        @php
+        $user_id = session('user_id');
+        @endphp
     <script>
         $(document).ready(function () {
+            var user_id = {!! json_encode($user_id) !!};
             $(".tap").click(function () {
                 var act = $(this).closest(".call-container").hasClass("call-bg");
                 console.log(act);
                 if (act == 0) {
+
                     $(".show").slideUp();
                     $(".call-container").removeClass("call-bg");
                 }
                 $(this).next(".show").slideToggle("slow");
                 $(this).closest(".call-container").toggleClass("call-bg");
+            });
+
+//             $.ajax({
+//                 type: "get",
+//                 url: "/voice-record/"+user_id,
+//                 dataType: "json",
+//                 success: function (response) {
+//                     console.log(response)
+//                     if(response.status == 200 && response.recordings.length > 0){
+//                         response.recordings.forEach(function(recording) {
+//             var voiceRecordElement = document.createElement('div');
+//             voiceRecordElement.className = 'col-12 voice-record';
+
+//             function formatDate(dateString) {
+//     const date = new Date(dateString);
+//     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+//     const formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()} ${date.getHours()}:${('0' + date.getMinutes()).slice(-2)} ${date.getHours() >= 12 ? 'PM' : 'AM'}`;
+//     return formattedDate;
+// }
+
+//             voiceRecordElement.innerHTML = `
+//                 <div class="container-fluid" style="padding: 0 5px;">
+//                     <div class="row pt-1">
+//                         <div class="col-12">
+//                             <p class="text-dark m-0 mt-2" style="font-size: 10px;">${formatDate(recording.created_at)} &nbsp; &nbsp; ${recording.date}</p>
+//                         </div>
+//                         <div class="col-12 p-0">
+//                             <audio class="w-100" id="plyr-audio-player" controls>
+//                                 <source src="${recording.s3Url()}" type="audio/mp3" />
+//                             </audio>
+//                             <button type="button" data-src="${recording.id}" class="btn btn-sm btn-danger delete-btn" style="margin-left: 1rem; margin-top:3px; border-radius: 7px; position: absolute; top: 0; right: 0; z-index: 1;">Delete</button>
+//                         </div>
+//                     </div>
+//                 </div>
+//             `;
+//             document.getElementById('.records').appendChild(voiceRecordElement); 
+//         });
+//                 }
+//                 else{
+//                     $('.records').append('<p style="color: white;">No recordings</p>')
+//                 }
+//                 }
+//             });
+
+
+$(document).on('click','.delete-btn', function () {
+            var id = this.getAttribute('data-id');
+            console.log(id)
+                document.getElementById('deleteItemId').value = id;
+                $('#deleteModal').modal('show');
+            });
+
+            $(document).on('click', '#record-audio', function () {
+                $.ajax({
+                    type: "get",
+                    url: "/record-voice/"+user_id,
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response.message);
+                        $('.loader').show();
+                        setTimeout(function() {
+                        $('.loader').hide();
+                        location.reload();
+                        }, 10000);
+                    }
+                });
             });
         });
     </script>

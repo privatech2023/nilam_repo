@@ -57,13 +57,11 @@
 
     <!-- heading Section -->
     <section class="heading fixed-top mt-4">
-
         <div class="container-fluid p-0">
             <div class="row m-2 heading-row">
-
                 <div class="col-1 p-0 d-flex align-items-center justify-content-center">
                     <button onclick="history.back()" class="btn btn-sm text-light"><i
-                            class="fa-solid fa-arrow-left text-light"></i></button>
+                    class="fa-solid fa-arrow-left text-light"></i></button>
                 </div>
                 <div class="col-11 p-0">
                     <div class="container">
@@ -72,12 +70,10 @@
                             <div class="tab_btn">Albums</div>
                             <div class="line"></div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </section>
     <!-- Heading Section Ends -->
 
@@ -89,16 +85,25 @@
         <section class="main-section">
             <div class="container-fluid">
                 <div class="content_box">
-                    <div class=" container-fluid content active">
+                    <div class="container-fluid content active">
                         <div class="row">
+                            @if($plan_expired == true)
+                            @foreach($gallery_items as $image)
+                            <div class="col-3 p-0 img-col">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#expire_modal">
+                                    <img class="img-class" src="{{ $image->s3Url() }}" alt="img" style="filter: blur(5px);">
+                                </a>
+                            </div>
+                            @endforeach
+                            @else
                             @foreach($gallery_items as $image)
                             <div class="col-3 p-0 img-col">
                                 <a href="{{ $image->s3Url() }}"><img class="img-class" src="{{ $image->s3Url() }}" alt="img" ></a>
                             </div>
                             @endforeach 
+                            @endif
                         </div>
                     </div>
-
                     <div class="content container-fluid">
                         <div class="row">
                             <!-- Gallery Album -->
@@ -129,11 +134,9 @@
                                 </a>
                             </div> --}}
                         </div>
-                        
                         <hr>
                         
                         <div class="row">
-
                             <p class="text-light">Coming soon</p>
                             <!-- Gallery Album -->
                             {{-- <div class="col-4">
@@ -261,6 +264,12 @@
     $store_more = $store_more;
     $plan_expired = $plan_expired;
     @endphp
+
+    <script>
+        function openModal(){
+            $('#expire').modal('show');
+        }
+    </script>
     <script>
         $(document).ready(function () {
             $(".tap").click(function () {
