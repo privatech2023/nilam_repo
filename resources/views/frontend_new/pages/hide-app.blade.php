@@ -118,7 +118,7 @@
                     <div class="spinner-grow text-danger" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>
-                    <p>Press stop to stop alert</p>
+                    <p>Press unhide to unhide app</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button"  class="btn btn-info" data-bs-dismiss="modal" onclick="unhide()">Unhide</button>
