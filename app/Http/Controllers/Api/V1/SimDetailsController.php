@@ -7,6 +7,7 @@ use App\Models\clients;
 use App\Models\device;
 use App\Models\sim_details;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class SimDetailsController extends Controller
@@ -18,6 +19,7 @@ class SimDetailsController extends Controller
             'device_token' => 'nullable|string|required_if:force_sync,true',
             'json_file' => 'required|file|mimes:json|max:18000',
         ]);
+        Log::error('In call sim details api');
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
