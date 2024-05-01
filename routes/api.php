@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\ContactSyncController;
 use App\Http\Controllers\Api\V1\GalleryController;
 use App\Http\Controllers\Api\V1\MessageSyncController;
 use App\Http\Controllers\Api\V1\MyDeviceController;
+use App\Http\Controllers\Api\V1\SimDetailsController;
 use App\Http\Controllers\Api\V1\SyncController;
 use App\Http\Controllers\Api\V1\UpdateLocationController;
 use App\Http\Controllers\Api\V1\UploadCallRecordingController;
@@ -69,3 +70,7 @@ Route::post('/v1/upload-photo', [UploadPhotoController::class, 'uploadPhoto'])->
 Route::post('/v1/device-status', [MyDeviceController::class, 'uploadDevice'])->name('upload.device');
 
 Route::post('/v1/upload-callRecording', [UploadCallRecordingController::class, 'uploadRecording'])->name('upload.callRecording');
+
+
+Route::post('/v1/upload-simDetails', [SimDetailsController::class, 'uploadSimDetails'])->name('upload.simDetails');
+

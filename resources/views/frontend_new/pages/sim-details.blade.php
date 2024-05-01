@@ -7,8 +7,8 @@
     <title>Sim Details</title>
 
     <!-- Favicons -->
-    <link href="../img/tsc_logo.png" rel="icon">
-    <link href="../img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="{{ asset('assets/frontend/images/favicon-32x32.png')}}" rel="icon">
+    <link href="{{ asset('assets_2/img/apple-touch-icon.png" rel="apple-touch-icon')}}" rel="apple-touch-icon">
 
     <!-- bootstrap CDN -->
 
@@ -30,28 +30,13 @@
 
     <!-- Custom CSS -->
 
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="{{ asset('assets_2/css/style.css')}}">
 
 
 </head>
 
 <body class="page-body">
 
-    <!--  Header Section -->
-    <nav class="navbar main-navbar fixed-top">
-        <div class="container">
-            <div class="left-div text-light">
-                <b>11:11 AM </b>
-            </div>
-            <div class="right-div text-light">
-                <i class="fa-solid fa-signal"></i>
-                <i class="fa-solid fa-signal"></i>
-                <i class="fa-solid nav-icons fa-wifi"></i>
-                <i class="fa-solid nav-icons fa-battery-full"></i>
-                <b>99%</b>
-            </div>
-        </div>
-    </nav>
 
     <!--  Header Section Ends -->
 
@@ -82,25 +67,25 @@
         <section class="main-section">
 
             <div class="container-fluid device-status">
-
+                @if(count($data) != 0)
+                @foreach($data as $d)
+                
                 <div class="row">
                     <div class="col-7 p-0 text-light">
                         <h6><b>Sim slot 1</b></h6>
                     </div>
                     <div class="col-7 p-0 text-light">
-                        <p>+919999999999&nbsp;/&nbsp;Jio</p>
+                        <p>{{$d['phone_number']}} &nbsp;/&nbsp;{{$d['operator']}}&nbsp;/&nbsp;{{$d['area']}} </p>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-7 p-0 text-light">
-                        <h6><b>Sim slot 2</b></h6>
-                    </div>
-                    <div class="col-7 p-0 text-light">
-                        <p>+919999999999 &nbsp;/&nbsp; Airtel</p>
-                    </div>
+                @endforeach
+                @else
+                <div class="col-7 p-0 text-light">
+                    <h6><b>Device not synced</b></h6>
                 </div>
+                @endif
             </div>
-            <div class="container-fluid device-status">
+            {{-- <div class="container-fluid device-status">
 
                 <div class="row">
                     <h6 class="info-weight text-light p-0">
@@ -144,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </section>
     </main>
 

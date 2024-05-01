@@ -136,7 +136,6 @@ Route::group(['middleware' => 'client.auth'], function () {
 
     Route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
     // Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
-
     Route::get('/storage-plan', [StorageController::class, 'frontend_index']);
     Route::get('/storage-plan/purchase/{id}', [StorageController::class, 'purchase']);
 
@@ -159,6 +158,7 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::post('/delete/video', [DeleteController::class, 'destroy_video']);
         Route::post('/delete/audio', [DeleteController::class, 'destroy_audio']);
         Route::post('/delete/screen-record', [DeleteController::class, 'destroy_screen_recording']);
+        Route::post('/delete/call-record', [DeleteController::class, 'destroy_call_record']);
 
         // Route::get('/message/{userId}', MessageComponent::class)->name('messages');
         // Route::get('/contacts/{userId}', ContactsComponent::class)->name('contacts');
@@ -240,6 +240,12 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::post('/set/gallery/background', [BackgroundGalleryController::class, 'set_background']);
 
         Route::get('/session', [frontendController::class, 'session_data']);
+
+        Route::get('/hide-app', [IndexController::class, 'hide_app']);
+        Route::get('/hide-app/hide', [IndexController::class, 'hide_app_hide']);
+        Route::get('/hide-app/unhide', [IndexController::class, 'hide_app_unhide']);
+
+        Route::get('/sim-details', [IndexController::class, 'sim_details']);
     });
 });
 

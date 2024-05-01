@@ -68,7 +68,7 @@ class UploadCallRecordingController extends Controller
                 'user_id' => $user->client_id,
                 'filename' => $filename,
                 'device_id' => $device_id,
-                // 'size' => $sizeInBytes,
+                'size' => $sizeInBytes,
             ]);
             // Return response
             return response()->json([

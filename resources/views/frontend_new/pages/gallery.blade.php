@@ -57,13 +57,11 @@
 
     <!-- heading Section -->
     <section class="heading fixed-top mt-4">
-
         <div class="container-fluid p-0">
             <div class="row m-2 heading-row">
-
                 <div class="col-1 p-0 d-flex align-items-center justify-content-center">
                     <button onclick="history.back()" class="btn btn-sm text-light"><i
-                            class="fa-solid fa-arrow-left text-light"></i></button>
+                    class="fa-solid fa-arrow-left text-light"></i></button>
                 </div>
                 <div class="col-11 p-0">
                     <div class="container">
@@ -72,12 +70,10 @@
                             <div class="tab_btn">Albums</div>
                             <div class="line"></div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-
     </section>
     <!-- Heading Section Ends -->
 
@@ -89,7 +85,7 @@
         <section class="main-section">
             <div class="container-fluid">
                 <div class="content_box">
-                    <div class=" container-fluid content active">
+                    <div class="container-fluid content active">
                         <div class="row">
                             @if($plan_expired == true)
                             @foreach($gallery_items as $image)
@@ -108,7 +104,6 @@
                             @endif
                         </div>
                     </div>
-
                     <div class="content container-fluid">
                         <div class="row">
                             <!-- Gallery Album -->
@@ -139,11 +134,9 @@
                                 </a>
                             </div> --}}
                         </div>
-                        
                         <hr>
                         
                         <div class="row">
-
                             <p class="text-light">Coming soon</p>
                             <!-- Gallery Album -->
                             {{-- <div class="col-4">
