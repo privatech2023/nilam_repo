@@ -41,11 +41,11 @@ class SimDetailsController extends Controller
             ]);
         }
         $json_file = $data['json_file'];
-        Log::error($json_file);
         $json_file_path = 'mydevices/' . $device_id  . '/' . $json_file->getClientOriginalName();
         $json_file->storeAs('mydevices/' .  $device_id, $json_file->getClientOriginalName());
         $json_file_content = file_get_contents(storage_path('app/' . $json_file_path));
         $json_file_content = json_decode($json_file_content, true);
+        Log::error($json_file_content);
         try {
             $device_data = $json_file_content;
             $devicelist = sim_details::where('phone_number', $device_data['phone_number'])->where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
