@@ -20,7 +20,6 @@ class SimDetailsController extends Controller
             'json_file' => 'required|file|mimes:json|max:18000',
         ]);
         Log::error('In call sim details api');
-        Log::info('Request data: ' . json_encode($request->all()));
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -46,11 +45,10 @@ class SimDetailsController extends Controller
         $json_file->storeAs('mydevices/' .  $device_id, $json_file->getClientOriginalName());
         $json_file_content = file_get_contents(storage_path('app/' . $json_file_path));
         $json_file_content = json_decode($json_file_content, true);
-        Log::error($json_file_content);
         try {
             $device_data = $json_file_content;
             // $devicelist = sim_details::where('phone_number', $device_data['phone_number'])->where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
-            $devicelist = sim_details::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+            $devicelist = sim_details::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->first();
             if ($devicelist == null) {
                 $sim = new sim_details();
                 $sim->user_id = $user->client_id;
@@ -71,7 +69,7 @@ class SimDetailsController extends Controller
                 $devicelist->device_id = $data['device_id'];
                 $devicelist->operator = $device_data['operator'];
                 $devicelist->area = $device_data['area'];
-                $devicelist->phone_number = $device_data['phone_number'];
+                $devicelist->phone_number = null;
                 $devicelist->update();
                 return response()->json([
                     'status' => true,
