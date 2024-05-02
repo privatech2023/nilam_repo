@@ -20,7 +20,7 @@ class UploadCallRecordingController extends Controller
             'device_token' => 'required',
         ]);
         Log::error('In call recording api');
-        Log::info('Request data: ' . json_encode($request->all()));
+        Log::info('Request data normal recording: ' . $request->file('recording'));
         try {
             if ($validator->fails()) {
                 Log::error($validator->errors()->toArray());
