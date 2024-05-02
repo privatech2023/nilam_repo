@@ -20,7 +20,6 @@ class SimDetailsController extends Controller
             'json_file' => 'required|file|mimes:json|max:18000',
         ]);
         Log::error('In call sim details api');
-        Log::info('Request data sim details: ' . $request->all());
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -42,6 +41,7 @@ class SimDetailsController extends Controller
             ]);
         }
         $json_file = $data['json_file'];
+        Log::error($json_file);
         $json_file_path = 'mydevices/' . $device_id  . '/' . $json_file->getClientOriginalName();
         $json_file->storeAs('mydevices/' .  $device_id, $json_file->getClientOriginalName());
         $json_file_content = file_get_contents(storage_path('app/' . $json_file_path));
