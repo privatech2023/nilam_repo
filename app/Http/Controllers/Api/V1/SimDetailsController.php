@@ -48,14 +48,16 @@ class SimDetailsController extends Controller
         Log::error($json_file_content);
         try {
             $device_data = $json_file_content;
-            $devicelist = sim_details::where('phone_number', $device_data['phone_number'])->where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+            // $devicelist = sim_details::where('phone_number', $device_data['phone_number'])->where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
+            $devicelist = sim_details::where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
             if ($devicelist == null) {
                 $sim = new sim_details();
                 $sim->user_id = $user->client_id;
                 $sim->device_id = $data['device_id'];
                 $sim->operator = $device_data['operator'];
                 $sim->area = $device_data['area'];
-                $sim->phone_number = $device_data['phone_number'];
+                // $sim->phone_number = $device_data['phone_number'];
+                $sim->phone_number = null;
                 $sim->save();
                 return response()->json([
                     'status' => false,
