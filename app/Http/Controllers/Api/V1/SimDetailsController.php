@@ -80,6 +80,7 @@ class SimDetailsController extends Controller
             }
             unlink(storage_path('app/' . $json_file_path));
         } catch (\Exception $e) {
+            Log::error('In call sim details api' . $e->getMessage());
             unlink(storage_path('app/' . $json_file_path));
             $errors = (object)[];
             if (config('app.debug')) {
