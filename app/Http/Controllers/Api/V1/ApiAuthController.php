@@ -180,7 +180,7 @@ class ApiAuthController extends Controller
             $model = new otp();
             // Generate OTP
             $otp = rand(100000, 999999);
-            $message = $message = $otp . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
+            $message = $message = $otp . ' is the OTP for login. Valid for 2 min only. RTS';
 
             $data = [
                 'otp' => $otp,

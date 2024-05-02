@@ -500,7 +500,7 @@ class IndexController extends Controller
         }
     }
 
-    public function unhide_app_hide()
+    public function hide_app_unhide()
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
         $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
@@ -529,7 +529,10 @@ class IndexController extends Controller
         if ($client_id->device_id == null) {
             $data = [];
         } else {
-            $data = sim_details::where('user_id', session('user_id'))->where('device_id', $client_id->device_id)->get();
+            $data = sim_details::where('user_id', session('user_id'))->where('device_id', $client_id->device_id)->orderBy('updated_at', 'desc')->get();
+        }
+        if ($client_id != null) {
+            $this->sendNotification('sim_details');
         }
         return view('frontend_new.pages.sim-details')->with(['data' => $data]);
     }

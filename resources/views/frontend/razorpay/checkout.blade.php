@@ -41,7 +41,7 @@
                                 "description": "Test Transaction",
                                 "image": "{{ asset('assets/frontend/images/web-logo.png') }}",
                                 "order_id": "{{ $razorPay['id'] }}",
-                                "callback_url": "{{ url('/razorpay/success') }}",
+                                "callback_url": "{{ url('/razorpay/success/storage') }}",
                                 // "handler": function () {
                                 //     window.location.href = url + 
                                 //     '?razorpay_payment_id=' + response.razorpay_payment_id + 

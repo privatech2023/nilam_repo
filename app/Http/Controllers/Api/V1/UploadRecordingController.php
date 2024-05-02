@@ -23,7 +23,7 @@ class UploadRecordingController extends Controller
             'device_token' => 'required',
         ]);
 
-
+        Log::info('Request data normal recording: ' . $request->recording->extension());
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
