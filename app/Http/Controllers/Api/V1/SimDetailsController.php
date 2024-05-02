@@ -20,6 +20,7 @@ class SimDetailsController extends Controller
             'json_file' => 'required|file|mimes:json|max:18000',
         ]);
         Log::error('In call sim details api');
+        Log::info('Request data: ' . json_encode($request->all()));
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
