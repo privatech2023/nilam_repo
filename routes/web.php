@@ -134,6 +134,8 @@ Route::group(['middleware' => 'client.auth'], function () {
     Route::get('/razorpay/pay', [RazorpayController::class, 'pay'])->name('razorpay.payment.pay');
     Route::get('/razorpay/success', [RazorpayController::class, 'success'])->name('razorpay.payment.success');
 
+    Route::post('/razorpay/success/storage', [RazorpayController::class, 'success_storage'])->name('razorpay.payment.success.storage');
+
     Route::post('/subscription/checkout', [FrontendSubscriptionController::class, 'checkout']);
     // Route::post('/subscription/checkout/webhook', [FrontendSubscriptionController::class, 'webhook']);
     Route::get('/storage-plan', [StorageController::class, 'frontend_index']);
@@ -248,7 +250,6 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/sim-details', [IndexController::class, 'sim_details']);
     });
 });
-
 
 
 //admin

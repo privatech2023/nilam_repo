@@ -46,7 +46,6 @@ class StorageController extends Controller
             'currency' => 'INR',
             'notes' => array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3')
         ));
-
         $transaction = new transactions();
         $transaction->txn_id = $receipt;
         $transaction->client_id = session('user_id');
@@ -91,9 +90,7 @@ class StorageController extends Controller
                 ->select('*')
                 ->where('name', 'like', '%' . $search_value . '%')
                 ->get();
-
             $total_count = count($query);
-
             $data = DB::table('storages')
                 ->select('*')
                 ->where('name', 'like', '%' . $search_value . '%')
@@ -107,7 +104,6 @@ class StorageController extends Controller
                 ->get();
 
             $total_count = count($query);
-
             $data = DB::table('storages')
                 ->select('*')
                 ->where('status', $valueStatus)
@@ -128,7 +124,6 @@ class StorageController extends Controller
             "recordsFiltered" => $total_count,
             "data" => $data,
         ];
-
         return response()->json($json_data);
     }
 

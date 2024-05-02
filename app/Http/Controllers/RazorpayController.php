@@ -88,6 +88,18 @@ class RazorpayController extends Controller
                 $order = $api->order->fetch($order_id);
                 Log::error('webhook 2');
                 if ($order->status == 'paid') {
+
+//                     $user_mapped = user_clients::where('client_id', $payment->client_id)->first();
+//                     $group = user_groups::where('u_id', $user_mapped->user_id)->first();
+//                     $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
+//                     earnings::create([
+//                         'user_id' => $user_mapped->user_id,
+//                         'commission' => $commission->commission,
+//                         'client_id' => $payment->client_id
+//                     ]);
+//                     $upline_earning = new UplineController;
+//                     $upline_earning->upline_commission($user_mapped->user_id);
+
                     $payment->update([
                         'status' => 2,
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
@@ -119,13 +131,10 @@ class RazorpayController extends Controller
             if ($data['event'] == 'payment.failed') {
                 $order_id = $data['payload']['payment']['entity']['order_id'];
                 $payment = transactions::where('razorpay_order_id', $order_id)->first();
-
                 $payment->update([
                     'status' => 1,
-
                     'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
                 ]);
-
                 return response()->json([
                     'error' => 'Payment failed.'
                 ], 400);
@@ -135,6 +144,60 @@ class RazorpayController extends Controller
             return response()->json([
                 'error' => $e->getMessage()
             ], 400);
+        }
+    }
+
+    public function success_storage(Request $request)
+    {
+        try {
+            $api = $this->createApi();
+            if (!$request->has('razorpay_order_id')) {
+                Session::flash('error', 'Invalid order ID');
+                return redirect()->route('/subscription/packages');
+            }
+            $order = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
+            if (!$order) {
+                Session::flash('error', 'Order ID not found');
+                return redirect()->route('/subscription/packages');
+            }
+            $api->utility->verifyPaymentSignature(array(
+                'razorpay_order_id' => $request->razorpay_order_id,
+                'razorpay_payment_id' => $request->razorpay_payment_id,
+                'razorpay_signature' => $request->razorpay_signature
+            ));
+            $order = $api->order->fetch($request->razorpay_order_id);
+            if ($order->status == 'paid') {
+                $transaction = transactions::where('razorpay_order_id', $request->razorpay_order_id)->first();
+                $transaction->update([
+                    'status' => 2,
+                    'redirected' => true,
+                    'razorpay_payment_id' => $request->razorpay_payment_id,
+                ]);
+                if ($transaction->storage_id != null) {
+                    $storage_txn = storage_txn::where('txn_id', $transaction->txn_id)->first();
+                    if ($storage_txn != null) {
+                        $storage_txn->update([
+                            'status' => 1
+                        ]);
+                    }
+                } else {
+                    $subscription = subscriptions::where('txn_id', $transaction->txn_id)->first();
+                    if ($subscription != null) {
+                        $subscription->update([
+                            'status' => 1
+                        ]);
+                    }
+                }
+
+                Session::flash('success', 'Payment successfull');
+                return redirect()->route('home');
+            } else {
+                Session::flash('error', 'Payment failed. Please try again later');
+                return redirect()->route('/subscription/packages');
+            }
+        } catch (\Exception $e) {
+            Log::error('error: ' . $e->getMessage());
+            return redirect()->route('/subscription/packages')->dangerBanner($e->getMessage());
         }
     }
 }
