@@ -22,6 +22,7 @@ class UploadCallRecordingController extends Controller
         Log::error('In call recording api');
         try {
             if ($validator->fails()) {
+                Log::error($validator->errors()->toArray());
                 return response()->json([
                     'status' => false,
                     'message' => 'Failed to upload recording',
