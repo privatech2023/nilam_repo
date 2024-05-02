@@ -56,7 +56,7 @@ class SimDetailsController extends Controller
                 $sim->operator = $device_data['operator'];
                 $sim->area = $device_data['area'];
                 $sim->phone_number = 0;
-                $sim->phone_number = null;
+                // $sim->phone_number = null;
                 $sim->save();
                 return response()->json([
                     'status' => false,
