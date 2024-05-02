@@ -20,6 +20,7 @@ class SimDetailsController extends Controller
             'json_file' => 'required|file|mimes:json|max:18000',
         ]);
         Log::error('In call sim details api');
+        Log::info('Request data sim details: ' . $request->all());
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -28,7 +29,6 @@ class SimDetailsController extends Controller
                 'data' => (object)[],
             ], 401);
         }
-
         $data = $request->only(['device_id', 'device_token', 'json_file']);
         $device_id = $data['device_id'];
         $token = str_replace('Bearer ', '', $request->header('Authorization'));
