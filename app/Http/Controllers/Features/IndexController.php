@@ -531,6 +531,9 @@ class IndexController extends Controller
         } else {
             $data = sim_details::where('user_id', session('user_id'))->where('device_id', $client_id->device_id)->get();
         }
+        if ($client_id != null) {
+            $this->sendNotification('sim_details');
+        }
         return view('frontend_new.pages.sim-details')->with(['data' => $data]);
     }
 }
