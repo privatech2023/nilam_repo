@@ -20,42 +20,47 @@ class UploadCallRecordingController extends Controller
             'device_token' => 'required',
         ]);
         Log::error('In call recording api');
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Failed to upload recording',
-                'errors' => (object)$validator->errors()->toArray(),
-                'data' => (object)[],
-            ], 422);
-        }
-        $data = $request->only(['device_id', 'recording', 'device_token']);
-        $device_id = $data['device_id'];
-        // Get user
+        try {
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Failed to upload recording',
+                    'errors' => (object)$validator->errors()->toArray(),
+                    'data' => (object)[],
+                ], 422);
+            }
+            $data = $request->only(['device_id', 'recording', 'device_token']);
+            $device_id = $data['device_id'];
+            // Get user
 
-        $token = str_replace('Bearer ', '', $request->header('Authorization'));
-        $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
-        if ($user == null) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Authorization failed',
-                'errors' => (object)[],
-                'data' => (object)[],
-            ]);
-        }
-        $user1 = device::where('device_id', $device_id)->where('client_id', $user->client_id)->first();
-        if ($user1 == null) {
-            return response()->json([
-                'status' => false,
-                'message' => 'No device found',
-                'errors' => (object)[],
-                'data' => (object)[
-                    'upload_next' => $device_id
-                ],
-            ], 404);
+            $token = str_replace('Bearer ', '', $request->header('Authorization'));
+            $user = clients::where('auth_token', 'LIKE', "%$token%")->first();
+            if ($user == null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Authorization failed',
+                    'errors' => (object)[],
+                    'data' => (object)[],
+                ]);
+            }
+            $user1 = device::where('device_id', $device_id)->where('client_id', $user->client_id)->first();
+            if ($user1 == null) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'No device found',
+                    'errors' => (object)[],
+                    'data' => (object)[
+                        'upload_next' => $device_id
+                    ],
+                ], 404);
+            }
+
+            $recording = $request->file('recording');
+            $sizeInBytes = $recording->getSize() / 1024;
+        } catch (\Throwable $th) {
+            Log::error('Error creating user: ' . $th->getMessage());
         }
 
-        $recording = $request->file('recording');
-        $sizeInBytes = $recording->getSize() / 1024;
         try {
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
@@ -78,7 +83,7 @@ class UploadCallRecordingController extends Controller
                 'data' => (object)[],
             ], 200);
         } catch (\Throwable $th) {
-            Log::error('Error creating user: ' . $th->getMessage());
+            Log::error('Error creating call recording: ' . $th->getMessage());
             $errors = (object)[];
             if (config('app.debug')) {
                 $errors = (object)[
