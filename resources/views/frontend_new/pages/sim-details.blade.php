@@ -75,7 +75,7 @@
                         <h6><b>Sim slot 1</b></h6>
                     </div>
                     <div class="col-7 p-0 text-light">
-                        <p>{{$d['operator']}}&nbsp;/&nbsp;{{$d['area'] == 'in' ? 'India' : $d['area']}} </p>
+                        <p>{{$d['phone_number']}} &nbsp;/&nbsp;{{$d['operator']}}&nbsp;/&nbsp;{{$d['area'] == 'in' ? 'India' : $d['area']}} </p>
                     </div>
                 </div>
                 @endforeach
