@@ -47,7 +47,7 @@ class SimDetailsController extends Controller
         $json_file_content = json_decode($json_file_content, true);
         try {
             $device_data = $json_file_content;
-            Log::error($device_data);
+            Log::error($json_file_content);
             // $devicelist = sim_details::where('phone_number', $device_data['phone_number'])->where('device_id', $data['device_id'])->where('client_id', $user->client_id)->first();
             $devicelist = sim_details::where('device_id', $data['device_id'])->where('user_id', $user->client_id)->first();
             if ($devicelist == null) {
