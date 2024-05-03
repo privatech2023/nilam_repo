@@ -895,7 +895,7 @@
                                     @endif --}}
 
 
-                                    {{-- @if(!session('user_name'))
+                                    @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
@@ -924,7 +924,7 @@
                                                 <p>Sim details</p>
                                             </div>
                                     </div>
-                                    @endif --}}
+                                    @endif
 
 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
