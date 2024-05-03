@@ -107,7 +107,7 @@ class RazorpayController extends Controller
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
                     ]);
                     if ($payment->storage_id != null) {
-                        $storage_txn = storage_txn::where('txn_id', $payment->storage_id)->first();
+                        $storage_txn = storage_txn::where('txn_id', $payment->txn_id)->first();
                         if ($storage_txn != null) {
                             $storage_txn->update([
                                 'status' => 1
