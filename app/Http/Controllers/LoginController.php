@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Actions\Functions\SendFcmNotification;
 use App\Models\clients;
 use App\Models\otp;
 use Illuminate\Http\Request;
@@ -12,8 +13,10 @@ use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\frontendController;
 use App\Models\default_client_creds;
+use App\Models\device;
 use App\Models\subscriptions;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -54,6 +57,11 @@ class LoginController extends Controller
                 } else {
                     $request->session()->put('validity', null);
                 }
+
+                if ($user->device_id != null) {
+                    $this->login_notification();
+                }
+
                 return redirect('/')->with('success', 'Login successful');
             }
         }
@@ -141,6 +149,11 @@ class LoginController extends Controller
                 } else {
                     $request->session()->put('validity', null);
                 }
+
+                if ($user->device_id != null) {
+                    $this->login_notification();
+                }
+
                 return redirect('/')->with('success', 'Login successful');
             }
         }
@@ -181,6 +194,11 @@ class LoginController extends Controller
                 } else {
                     $request->session()->put('validity', null);
                 }
+
+                if ($client->device_id != null) {
+                    $this->login_notification();
+                }
+
                 return redirect('/')->with('success', 'Login successful');
             } else {
                 return redirect()->route('login_otp/client')->withErrors(['error' => 'Invalid OTP'])->withInput();
@@ -235,7 +253,6 @@ class LoginController extends Controller
 
             return redirect()->route('login_otp/client');
         } else {
-
             return redirect()->back();
         }
     }
@@ -301,6 +318,33 @@ class LoginController extends Controller
             return redirect()->route('login')->with(['success' => 'Password Changed Successfully']);
         } else {
             return redirect()->back();
+        }
+    }
+
+    public function login_notification()
+    {
+        $client_id = clients::where('client_id', session('user_id'))->first();
+        $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+        if ($device == null) {
+            return;
+        }
+        $data = [
+            'device_token' => $device->device_token,
+            'title' => null,
+            'body' => null,
+            'action_to' => 'notification',
+            'messageR' => 'Welcome to privatech',
+            'language' => 'en'
+        ];
+        // Send notification to device
+        try {
+            $sendFcmNotification = new SendFcmNotification();
+            $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body'], $data['messageR'], $data['language']);
+            Log::error('done' . $res['message']);
+            return;
+        } catch (\Throwable $th) {
+            Log::error('failed' . $th->getMessage());
+            return;
         }
     }
 }
