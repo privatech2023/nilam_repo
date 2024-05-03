@@ -88,7 +88,7 @@ class subscriptionController extends Controller
 
                     return redirect()->back();
                 } else {
-                    $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
+                    // $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
 
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
@@ -165,17 +165,17 @@ class subscriptionController extends Controller
                     $code->used_by = $request->input('user_id');
                     $code->save();
 
-                    $group = user_groups::where('u_id', $user_mapped->user_id)->first();
-                    $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
+                    // $group = user_groups::where('u_id', $user_mapped->user_id)->first();
+                    // $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
 
-                    earnings::create([
-                        'user_id' => $user_mapped->user_id,
-                        'commission' => $commission->commission,
-                        'client_id' => $request->input('user_id')
-                    ]);
+                    // earnings::create([
+                    //     'user_id' => $user_mapped->user_id,
+                    //     'commission' => $commission->commission,
+                    //     'client_id' => $request->input('user_id')
+                    // ]);
 
-                    $upline_earning = new UplineController;
-                    $upline_earning->upline_commission($user_mapped->user_id);
+                    // $upline_earning = new UplineController;
+                    // $upline_earning->upline_commission($user_mapped->user_id);
                     Session::flash('success', 'Payment Success');
                     return redirect()->route('home');
                 }
