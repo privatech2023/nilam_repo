@@ -28,7 +28,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title m-0">Packages</h5>
+                        <h5 class="card-title m-0">PACKAGE</h5>
                     </div>
                     <div class="card-body">
                         <div class="card card-solid">
@@ -69,12 +69,83 @@
                                             </div>
                                         </div>
                                     @endforeach
+                                    
                                     <button type="button" id="activation_btn" class="btn btn-primary" style="width:100%;">I have an ctivation code</button>
                                 </div>
+                                
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+                {{-- storages --}}
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title m-0">STORAGE</h5><br><br>
+
+                        <h5 class="text-sm" style="margin-left: 0;"><strong class="text-sm">(</strong>Storage plans are not associated with packages <strong>)</strong></h5>
+                    </div>
+                    
+                    <div class="card-body">
+                        <div class="card card-solid">
+                            <div class="card-body pb-0">
+                                <div class="row">
+
+                                    @foreach($storages as $list)
+                                        <div class="col-12 col-sm-6 col-md-4">
+                                            <div class="card card-primary card-outline">
+                                                <div class="card-header elevation-2 lead border-bottom-0">
+                                                    <b>{{ $list['name'] }}</b>
+                                                </div>
+                                                <div class="card-body pt-0">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="bg-info py-2 px-3 mt-4">
+                                                                <h2 class="mb-0">
+                                                                    {{ $list['storage'] }} GB
+                                                                </h2>
+                                                                <h2 class="mb-0">
+                                                                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                                                                    {{ $list['price'] }} /-
+                                                                </h2>
+                                                                <h4 class="mt-1">
+                                                                    <small>
+                                                                        <i class="fa-regular fa-calendar"></i>:
+                                                                        {{ $list['plan_validity'] }}
+                                                                    </small>
+                                                                </h4>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-footer">
+                                                    <div class="text-center">
+                                                        @if(session('storage') != null && session('storage') == 1)
+                                                        <a href="{{ url('storage-plan/purchase/'.$list['id']) }}"
+                                                            class="btn btn-sm btn-primary">
+                                                            <i class="fa-solid fa-cart-shopping"></i> Buy
+                                                        </a>
+                                                        <p>{{session('storage')}}</p>
+                                                        @else
+                                                        <a href="{{ url('storage-plan/purchase/'.$list['id']) }}"
+                                                            class="btn btn-sm btn-primary">
+                                                            <i class="fa-solid fa-cart-shopping"></i> Buy
+                                                        </a> 
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
