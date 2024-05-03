@@ -127,7 +127,7 @@ class subscriptionController extends Controller
                         $lastSubscription->status = 1;
                         $lastSubscription->validity_days = $code->duration_in_days;
                         $lastSubscription->devices = $code->devices;
-                        $lastSubscription->promoter_id = $user_mapped->user_id;
+                        $lastSubscription->promoter_id = 0;
                         $lastSubscription->is_previous = 1;
                         $lastSubscription->save();
                     } else {
@@ -257,7 +257,7 @@ class subscriptionController extends Controller
                 'notes' => array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3')
             ));
 
-            $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
+            // $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
 
             $transaction = new transactions();
             $transaction->txn_id = $receipt;
@@ -290,7 +290,7 @@ class subscriptionController extends Controller
                 $lastSubscription->status = 0;
                 $lastSubscription->validity_days = $package->duration_in_days;
                 $lastSubscription->devices = $package->devices;
-                $lastSubscription->promoter_id = $user_mapped->user_id;
+                $lastSubscription->promoter_id = 0;
                 $lastSubscription->is_previous = 1;
                 $lastSubscription->save();
             } else {
@@ -320,7 +320,7 @@ class subscriptionController extends Controller
                 $subscription->ends_on =  $end_date;
                 $subscription->validity_days = $package->duration_in_days;
                 $subscription->devices = $package->devices;
-                $subscription->promoter_id = $user_mapped->user_id;
+                $subscription->promoter_id = 0;
                 $subscription->is_previous = 1;
                 $subscription->save();
             }
