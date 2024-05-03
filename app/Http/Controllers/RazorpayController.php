@@ -143,6 +143,7 @@ class RazorpayController extends Controller
             }
         } catch (\Exception $e) {
             Log::error('error webhook: ' . $e->getMessage());
+            Log::info($request->all());
             return response()->json([
                 'error' => $e->getMessage()
             ], 400);
