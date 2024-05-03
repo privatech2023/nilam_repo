@@ -88,7 +88,7 @@ class subscriptionController extends Controller
 
                     return redirect()->back();
                 } else {
-                    // $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
+                    
 
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
@@ -157,7 +157,7 @@ class subscriptionController extends Controller
                         $subscription->ends_on = $end_date;
                         $subscription->validity_days = $code->duration_in_days;
                         $subscription->devices = $code->devices;
-                        $subscription->promoter_id = $user_mapped->user_id;
+                        $subscription->promoter_id = 0;
                         $subscription->is_previous = 1;
                         $subscription->save();
                     }
