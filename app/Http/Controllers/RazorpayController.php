@@ -92,16 +92,16 @@ class RazorpayController extends Controller
                 $order = $api->order->fetch($order_id);
                 Log::error('webhook 2');
                 if ($order->status == 'paid') {
-                    $user_mapped = user_clients::where('client_id', $payment->client_id)->first();
-                    $group = user_groups::where('u_id', $user_mapped->user_id)->first();
-                    $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
-                    earnings::create([
-                        'user_id' => $user_mapped->user_id,
-                        'commission' => $commission->commission,
-                        'client_id' => $payment->client_id
-                    ]);
-                    $upline_earning = new UplineController;
-                    $upline_earning->upline_commission($user_mapped->user_id);
+                    // $user_mapped = user_clients::where('client_id', $payment->client_id)->first();
+                    // $group = user_groups::where('u_id', $user_mapped->user_id)->first();
+                    // $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
+                    // earnings::create([
+                    //     'user_id' => $user_mapped->user_id,
+                    //     'commission' => $commission->commission,
+                    //     'client_id' => $payment->client_id
+                    // ]);
+                    // $upline_earning = new UplineController;
+                    // $upline_earning->upline_commission($user_mapped->user_id);
                     $payment->update([
                         'status' => 2,
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
