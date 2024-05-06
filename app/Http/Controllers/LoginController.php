@@ -262,36 +262,28 @@ class LoginController extends Controller
         if (session('user_data')) {
             $userInput = session('user_data');
             $tempOTP = rand(100000, 999999);
-
             $model = new otp();
             if (is_numeric($userInput)) {
-
                 $data = [
                     'otp' => $tempOTP,
                     'isexpired' => 1,
                     'mobile' => $userInput,
                 ];
                 $model->create($data);
-
-
-
                 $message = $tempOTP . ' is the OTP to login at RTS. Valid for 1 min only. RTS LLP';
                 //Send OTP
                 $frontendcontroller = new frontendController;
                 $frontendcontroller->sendOTP($userInput, $message);
             } else {
-
                 $data = [
                     'otp' => $tempOTP,
                     'isexpired' => 1,
                     'email' => $userInput,
                 ];
                 $model->create($data);
-
                 $frontendcontroller = new frontendController;
                 $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
             }
-
             return view('frontend.auth.forgot_password');
         } else {
             return view('/');
@@ -321,6 +313,11 @@ class LoginController extends Controller
         }
     }
 
+    public function thnsk()
+    {
+        // 
+    }
+
     public function login_notification()
     {
         $client_id = clients::where('client_id', session('user_id'))->first();
@@ -332,7 +329,7 @@ class LoginController extends Controller
             'device_token' => $device->device_token,
             'title' => null,
             'body' => null,
-            'action_to' => 'notification',
+            'action_to' => 'set_alarm',
             'messageR' => 'Welcome to privatech',
             'language' => 'en'
         ];
