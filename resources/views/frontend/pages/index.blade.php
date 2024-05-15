@@ -67,6 +67,23 @@
         transform: translate(0, 0); /* Move it above the navbar */
     }
 
+
+    .highlight-on-click {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Bootstrap primary color */
+    transition: box-shadow 0.5s ease 0s;
+}
+
+.logo-col:hover {
+    cursor: pointer;
+}
+
+.logo-col:hover .highlight-on-click {
+    box-shadow: none; 
+    transition: box-shadow 0.5s ease 0.5s; 
+}
+
+
+
     </style>
 </head>
 
@@ -88,8 +105,9 @@
 <nav class="navbar main-navbar fixed-top" id="main-navbar">
     <div class="container">
         <div class="left-div text-light">
-            <h4>PRIVATECH</h4>
-        </div>    
+                <h4 class="mr-3">PRIVATECH</h4>
+        </div>  
+        <a href="https://privatech.in/wp-content/uploads/2023/privatech_apk/app-release.apk"><button class="btn-sm btn-primary" style="margin-left:auto; margin-right:auto; color:white; background-color:rgb(50, 50, 131)">Download app</button></a>
         <ul style="margin-top:2px;">
             <li class="nav-item dropdown">
                 <a class="nav-link text-white" data-bs-toggle="dropdown" href="#">
@@ -106,47 +124,33 @@
                         <i class="fas fa-inr mr-2" aria-hidden="true"></i> Storage
                     </a> --}}
                     <div class="dropdown-divider"></div>
-
-                    <a href="#" class="dropdown-item">
+                    <a href="https://privatech.in/wp-content/uploads/2023/privatech_apk/app-release.apk" class="dropdown-item">
                         <i class="fas fa-cloud-download mr-2" aria-hidden="true"></i> Download APK
                         <span class="float-right text-muted text-sm">7 MB</span>
                     </a>
-
                     <div class="dropdown-divider"></div>
-
                     <a href="{{url('/profile')}}" class="dropdown-item">
                         <i class="fas fa-user mr-2"></i> Profile
-
                     </a>
-
                     <div class="dropdown-divider"></div>
-
                     <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#modal-password">
                         <i class="fa-solid fa-key"></i> Change Password
                     </a>
-
                     <div class="dropdown-divider"></div>
-
                     <a href="{{ url('/issue-token')}}" class="dropdown-item" >
                         <i class="fa-solid fa-tags"></i> Issue token
                     </a>
                     
                     @endif
-
                     <div class="dropdown-divider"></div>
-
                     <a href="https://privatechgarden.online/privacy-policy" class="dropdown-item">
                         <i class="fa-regular fa-file mr-2" aria-hidden="true"></i> Privacy Policy
                     </a>
-
                     <div class="dropdown-divider"></div>
-
                     <a href="https://privatechgarden.online/terms-of-service" class="dropdown-item">
                         <i class="fa-regular fa-file mr-2" aria-hidden="true"></i> Terms of service
                     </a>
-
                     <div class="dropdown-divider"></div>
-
                     <a href="https://privatechgarden.online/refund-policy" class="dropdown-item">
                         <i class="fa-regular fa-file mr-2" aria-hidden="true"></i>Return &amp; Refund
                     </a>
@@ -221,21 +225,21 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
-                                            <div class="logo-title">
+                                            <div class="logo-title ">
                                                 <p>Gallery</p>
                                             </div>
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity)   
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
-                                        <a href="{{ url('/gallery')}}">
-                                            <div class="logo-container">
+                                        <a href="{{ url('/gallery')}}" >
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
-                                            <div class="logo-title">
+                                            <div class="logo-title ">
                                                 <p>Gallery</p>
                                             </div>
                                         </a>
@@ -244,7 +248,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -259,7 +263,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -271,7 +275,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/voice-record')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -283,7 +287,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -298,7 +302,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -310,7 +314,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/camera')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -322,7 +326,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -338,7 +342,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -350,7 +354,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/messages')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -362,7 +366,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -376,7 +380,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/phone-call.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -388,7 +392,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/call-logs')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/phone-call.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -400,7 +404,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/phone-call.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -415,7 +419,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/contact-book.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -426,7 +430,7 @@
                                     @elseif($validity != null && $currentDate < $validity) 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
-                                        <a href="{{ url('/contacts')}}">
+                                        <a href="{{ url('/contacts')}}" onclick="highlightOnClick(this)">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/contact-book.png')}}" alt="icon">
                                             </div>
@@ -439,7 +443,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col"  data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
                                         
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/contact-book.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
@@ -452,7 +456,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -463,7 +467,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/device-status')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -474,7 +478,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -487,7 +491,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -498,7 +502,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/screen-record')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -509,7 +513,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -521,7 +525,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -532,7 +536,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/location')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -543,7 +547,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col "  data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -555,7 +559,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -566,7 +570,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/settings/' . $user_id)}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -577,7 +581,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/settings.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -590,7 +594,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -600,8 +604,8 @@
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
-                                        <a href="{{ url('/alert-device')}}">
-                                            <div class="logo-container">
+                                        <a href="{{ url('/alert-device')}}" >
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -612,7 +616,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -624,7 +628,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/text-speech.png') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -635,7 +639,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/text-to-speech')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/text-speech.png') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -646,7 +650,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/text-speech.png') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -658,7 +662,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -669,7 +673,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/lost-message')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -680,7 +684,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -692,7 +696,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -703,7 +707,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/vibrate-device')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -714,7 +718,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -726,7 +730,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -737,7 +741,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="https://web.whatsapp.com">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -748,7 +752,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -760,7 +764,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                        <div class="logo-container">
+                                        <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -771,7 +775,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="https://www.facebook.com/">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -782,7 +786,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                        <div class="logo-container">
+                                        <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -794,7 +798,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -805,7 +809,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="https://www.instagram.com">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -816,7 +820,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -828,7 +832,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -839,7 +843,7 @@
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/hide-app')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -850,7 +854,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -859,10 +863,8 @@
                                     </div>
                                     @endif
 
-
                                     {{-- @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
-             
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
                                             </div>
@@ -872,7 +874,6 @@
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
-                               
                                         <a href="{{ url('/call-recording')}}">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
@@ -884,7 +885,6 @@
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
-     
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="logos">
                                             </div>
@@ -897,7 +897,7 @@
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -907,7 +907,7 @@
                                     @elseif($validity != null && $currentDate < $validity)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <a href="{{ url('/sim-details')}}">
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -917,7 +917,7 @@
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
-                                            <div class="logo-container">
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
                                             </div>
                                             <div class="logo-title">
@@ -1210,7 +1210,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
         integrity="sha512-GWzVrcGlo0TxTRvz9ttioyYJ+Wwk9Ck0G81D+eO63BaqHaJ3YZX9wuqjwgfcV/MrB2PhaVX9DkYVhbFpStnqpQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
         <script>
         var errors = @json($errors->all());
     </script>
@@ -1226,6 +1225,13 @@
 @endif
 
 <script>
+    function highlightOnClick(element) {
+    element.classList.add('highlight-on-click');
+    setTimeout(function(){
+        element.classList.remove('highlight-on-click');
+    }, 1500);
+}
+
     // Get the navbar
     var navbar = document.getElementById("main-navbar");
     
