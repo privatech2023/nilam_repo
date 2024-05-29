@@ -213,7 +213,6 @@
                                 <div class="row">
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
-
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
@@ -221,10 +220,8 @@
                                                 <p>Gallery</p>
                                             </div>
                                     </div>
-
                                     @elseif($validity != null && $currentDate < $validity && count($features) == 0)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
-
                                         <a href="{{ url('/gallery')}}" >
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
@@ -234,9 +231,17 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;" >
+                                        <div class="logo-container" onclick="highlightOnClick(this)">
+                                            <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
+                                        </div>
+                                        <div class="logo-title">
+                                            <p>Gallery</p>
+                                        </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
-
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
@@ -248,7 +253,6 @@
                                     
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
-
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
@@ -267,10 +271,19 @@
                                             </div>
                                         </a>
                                     </div> 
+                                    @elseif(count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;" >
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Voice Recording</p>
+                                            </div>
+                                    </div> 
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
@@ -283,7 +296,6 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
@@ -303,10 +315,19 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Camera</p>
+                                            </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
@@ -319,7 +340,6 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
                                             </div>
@@ -339,17 +359,25 @@
                                             </div>
                                         </a>
                                     </div>
-                                    @else
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                    @elseif(in_array('message',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Message</p>
                                             </div>
-                                        
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Message</p>
+                                            </div>
                                     </div>
                                     @endif
                                     
@@ -377,17 +405,25 @@
                                             </div>
                                         </a>
                                     </div>
-                                    @else
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
+                                    @elseif(in_array('callLog',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;" >
                                         <!-- buttons -->
-                                        
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/phone-call.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Call Logs</p>
                                             </div>
-                                        
+                                    </div>
+                                    @else
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/phone-call.png')}}" alt="icon">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Call Logs</p>
+                                            </div>
                                     </div>
                                     @endif
 
@@ -415,6 +451,18 @@
                                                 <p>Contacts</p>
                                             </div>
                                         </a>
+                                    </div>
+                                    @elseif(in_array('contact',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col"  data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                        
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/contact-book.png')}}" alt="icon">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Contacts</p>
+                                            </div>
+                                        
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col"  data-bs-toggle="modal" data-bs-target="#modalSubs" >
@@ -452,6 +500,16 @@
                                             </div>
                                         </a>
                                     </div> 
+                                    @elseif(in_array('deviceStatus',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/battery.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Device Status</p>
+                                            </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
@@ -487,6 +545,16 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(in_array('screenRecord',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/image.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Screen Record</p>
+                                            </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
@@ -520,6 +588,16 @@
                                                 <p>Location</p>
                                             </div>
                                         </a>
+                                    </div>
+                                    @elseif(in_array('location',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col "  data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/map.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Location</p>
+                                            </div>
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col "  data-bs-toggle="modal" data-bs-target="#modalSubs" >
@@ -590,8 +668,18 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(in_array('alertDevice',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Alert device</p>
+                                            </div>
+                                    </div>
                                     @else
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" >
                                         <!-- buttons -->
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets/frontend/images/icons/android-alert.svg') }}" alt="logos">
@@ -624,6 +712,16 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(in_array('textToSpeech',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets/frontend/images/icons/text-speech.png') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Text to speech</p>
+                                            </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
@@ -647,7 +745,7 @@
                                             </div>
                                     </div>
                                     @elseif($validity != null && $currentDate < $validity && (in_array('lostMessage', $features) == true || count($features) == 0))
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/lost-message')}}">
                                             <div class="logo-container" onclick="highlightOnClick(this)">
@@ -657,6 +755,16 @@
                                                 <p>Lost message</p>
                                             </div>
                                         </a>
+                                    </div>
+                                    @elseif(in_array('lostMessage',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-lostmessage.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Lost message</p>
+                                            </div>
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
@@ -692,6 +800,16 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(in_array('vibrate',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets/frontend/images/icons/android-vibrate.svg') }}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Vibrate</p>
+                                            </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
@@ -726,6 +844,16 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(in_array('whatsapp',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/whatsapp.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Whatsapp</p>
+                                            </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
@@ -758,6 +886,16 @@
                                                 <p>Facebook</p>
                                             </div>
                                         </a>
+                                    </div>
+                                    @elseif(in_array('facebook',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                        <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/fb.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Facebook</p>
+                                            </div>
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
@@ -793,6 +931,16 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(in_array('instagram',$features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/instagram.avif')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Instagram</p>
+                                            </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
@@ -826,6 +974,16 @@
                                                 <p>Hide app</p>
                                             </div>
                                         </a>
+                                    </div>
+                                    @elseif(count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <!-- buttons -->
+                                            <div class="logo-container" onclick="highlightOnClick(this)">
+                                                <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
+                                            </div>
+                                            <div class="logo-title">
+                                                <p>Hide app</p>
+                                            </div>
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
@@ -891,6 +1049,15 @@
                                             </div>
                                         </a>
                                     </div>
+                                    @elseif(in_array('simDetails', $features) == false && count($features) != 0)
+                                    <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs" style="opacity: 0.4;">
+                                        <div class="logo-container" onclick="highlightOnClick(this)">
+                                            <img src="{{ asset('assets_2/img/icons/dual.png')}}" alt="logos">
+                                        </div>
+                                        <div class="logo-title">
+                                            <p>Sim details</p>
+                                        </div>
+                                </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                             <div class="logo-container" onclick="highlightOnClick(this)">
