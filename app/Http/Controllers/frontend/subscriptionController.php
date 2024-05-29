@@ -13,6 +13,7 @@ use App\Models\packages;
 use App\Models\storage;
 use App\Models\subscriptions;
 use App\Models\transactions;
+use App\Models\trial_package;
 use App\Models\user_clients;
 use App\Models\user_groups;
 use Carbon\Carbon;
@@ -37,12 +38,17 @@ class subscriptionController extends Controller
 
         $storages = storage::where('status', 1)->get();
 
+        $trial = trial_package::where('is_active', 1)->get();
+
+
         $packages = packages::where('is_active', 1)->get();
         $data = [
             'pageTitle' => 'PRIVATECH-SUBSCRIPTION',
             'packages' => $packages,
         ];
-        return view('frontend.pages.subscription.packages', $data)->with(['storages' => $storages]);
+
+        return view('frontend.pages.subscription.packages', $data)->with(['storages' => $storages, 'trial_package' => $trial]);
+
     }
     // public function packages()
     // {
@@ -72,6 +78,7 @@ class subscriptionController extends Controller
     }
     public function checkout_activation_code(Request $request)
     {
+        $user = session('user_id');
         try {
             if ($request->input('code_name') != "") {
                 $code = activation_codes::whereRaw('BINARY code = ?', [$request->input('code_name')])->first();
@@ -88,7 +95,9 @@ class subscriptionController extends Controller
 
                     return redirect()->back();
                 } else {
-                    
+
+                    // $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
+
 
                     if ($code->is_active == 0) {
                         Session::flash('error', 'Activation code is already used');
@@ -127,7 +136,11 @@ class subscriptionController extends Controller
                         $lastSubscription->status = 1;
                         $lastSubscription->validity_days = $code->duration_in_days;
                         $lastSubscription->devices = $code->devices;
+
+                        // $lastSubscription->promoter_id = $user_mapped->user_id;
+
                         $lastSubscription->promoter_id = 0;
+
                         $lastSubscription->is_previous = 1;
                         $lastSubscription->save();
                     } else {
@@ -157,7 +170,11 @@ class subscriptionController extends Controller
                         $subscription->ends_on = $end_date;
                         $subscription->validity_days = $code->duration_in_days;
                         $subscription->devices = $code->devices;
+
+                        // $subscription->promoter_id = $user_mapped->user_id;
+
                         $subscription->promoter_id = 0;
+
                         $subscription->is_previous = 1;
                         $subscription->save();
                     }
@@ -241,15 +258,18 @@ class subscriptionController extends Controller
 
     public function checkout(Request $request)
     {
+        $trial_id = NULL;
         try {
             $client = clients::where('client_id', session('user_id'))->first();
             $receipt = (string) str::uuid();
             $package = packages::where('id', $request->input('package_id'))->first();
-
+            if ($request->input('is_trial') != 'false') {
+                $package = trial_package::where('id', $request->input('package_id'))->first();
+                $trial_id = $package->id;
+            }
             $amountInPaise = (int)($request->input('pay_amount') * 100);
 
             $api = new Api(getenv('RAZORPAY_KEY'), getenv('RAZORPAY_SECRET'));
-            // $api = new Api('rzp_test_MybG7Zi1r7BIIZ', 'mP17Yqy2Y10qgkbsE9QjhVeF');
             $razorCreate = $api->order->create(array(
                 'receipt' => $receipt,
                 'amount' => $amountInPaise,
@@ -257,7 +277,9 @@ class subscriptionController extends Controller
                 'notes' => array('key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3')
             ));
 
+
             // $user_mapped = user_clients::where('client_id', $request->input('user_id'))->first();
+
 
             $transaction = new transactions();
             $transaction->txn_id = $receipt;
@@ -269,16 +291,23 @@ class subscriptionController extends Controller
             $transaction->paid_amt =  $request->input('pay_amount');
             $transaction->plan_validity_days = $package->duration_in_days;
             $transaction->package_name = $package->name;
+
+            if ($trial_id != NULL) {
+                $transaction->trial_id = $package->id;
+            } else {
+                $transaction->package_id = $package->id;
+            }
+
             $transaction->activation_code = null;
             $transaction->status = 1;
             $transaction->price = $package->price;
             $transaction->created_by = session()->get('user_id');
             $transaction->razorpay_order_id = $razorCreate->id;
             $transaction_id = $transaction->txn_id;
+
             $transaction->save();
 
             $daysToAdd = $package->duration_in_days;
-
             $lastSubscription = Subscriptions::where('client_id', $request->input('user_id'))
                 ->whereNull('validity_days')
                 ->latest()
@@ -328,12 +357,11 @@ class subscriptionController extends Controller
                 'amount' => $razorCreate['amount'],
                 'id' => $razorCreate['id'],
                 'key' => getenv('RAZORPAY_KEY'),
-                // 'key' => "rzp_test_MybG7Zi1r7BIIZ"
             ];
             return response()->json($data);
         } catch (Exception $e) {
+            dd($e->getMessage());
             Log::error('Error : ' . $e->getMessage());
-
             return redirect()->back();
         }
     }

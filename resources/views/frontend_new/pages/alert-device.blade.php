@@ -31,6 +31,17 @@
 
 
 </head>
+<style>
+    .highlight-on-click:focus,
+.highlight-on-click:active {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Bootstrap primary color */
+    transition: box-shadow 0.3s ease;
+}
+
+.highlight-on-click:hover {
+    box-shadow: none; /* Remove hover effect */
+}
+</style>
 <body class="page-body">
     <!--  Header Section -->
     <!-- <nav class="navbar main-navbar fixed-top">
@@ -73,23 +84,12 @@
         <section class="main-section" style="margin-top: 3rem;">
             <div class="container-fluid">
                 <div class="row" >
-
-                    <!-- HTML !-->
-    {{-- <button class="button-30" role="button" wire:click="alertDeviceStart"><svg style="margin-right:6px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
-        <path d="M8.997 1.665a1.13 1.13 0 0 0-1.994 0l-6.26 11.186a1.13 1.13 0 0 0 .997 1.664h12.52a1.13 1.13 0 0 0 .997-1.664L8.997 1.665zM8.28 12.856a1.1 1.1 0 0 0 1.438-.002l5.45-9.75a1.1 1.1 0 0 0-.718-1.844H3.55a1.1 1.1 0 0 0-.718 1.844l5.448 9.75zM8.997 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-    </svg>  Alert device start</button> --}}
-    
-        <button type="button" class="btn btn-md btn-outline-primary" onclick="alertDeviceStart()">
+        <button type="button" class="btn btn-primary highlight-on-click" onclick="alertDeviceStart()">
             Alert device start
         </button>
                 </div>
                 <div class="row" style="margin-top: 16px;">
-                    {{-- <div class="">
-                        <button class="button-30" role="button" wire:click="alertDeviceStop"><svg style="margin-right:6px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
-                            <path d="M8.997 1.665a1.13 1.13 0 0 0-1.994 0l-6.26 11.186a1.13 1.13 0 0 0 .997 1.664h12.52a1.13 1.13 0 0 0 .997-1.664L8.997 1.665zM8.28 12.856a1.1 1.1 0 0 0 1.438-.002l5.45-9.75a1.1 1.1 0 0 0-.718-1.844H3.55a1.1 1.1 0 0 0-.718 1.844l5.448 9.75zM8.997 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-                        </svg>  Alert device stop</button>
-                    </div> --}}
-                    <button type="button" class="btn btn-md btn-outline-warning" onclick="alertDeviceStop()">
+                    <button type="button" class="btn btn-md btn-warning highlight-on-click" onclick="alertDeviceStop()">
                         Alert device stop
                     </button>
                 </div>
@@ -98,7 +98,6 @@
     </main>
 
     {{-- <button data-bs-toggle="modal" data-bs-target="#myModalconf">hey</button> --}}
-
     <div id="myModalconf" class="modal fade">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

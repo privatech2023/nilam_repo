@@ -26,4 +26,16 @@ class screen_recordings extends Model
         );
         return $url;
     }
+
+    public function s3Url2($id)
+    {
+        $mins = 5;
+        $gal = screen_recordings::where('id', $id)->first();
+        $cl = clients::where('client_id', $gal->user_id)->first();
+        $url = Storage::disk('s3')->temporaryUrl(
+            'screen-recordings/' . $gal->user_id . '/' . $cl->device_id . '/' . $this->filename,
+            now()->addMinutes($mins)
+        );
+        return $url;
+    }
 }

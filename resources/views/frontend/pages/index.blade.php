@@ -37,10 +37,8 @@
 
     <script type="text/javascript" src="{{ url('assets/common/plugins/jquery/jquery.min.js') }}"> </script> 
 
-
         <script type="text/javascript" src="{{ url('assets/common/plugins/jquery-ui/jquery-ui.min.js') }}"> </script> 
-    
-     <!-- Sweet Alert  -->
+    <!-- Sweet Alert  -->
     <script type="text/javascript" src="{{ url('assets/common/plugins/sweetalert2/sweetalert2.min.js') }}"> </script> 
     <!-- Toastr -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
@@ -49,7 +47,6 @@
     <style>
         /*dynamically generated from backend-code*/
 
-        
         .timer {
             font-size: 20px;
             text-align: center;
@@ -207,16 +204,8 @@
 
 </div>
 @endif
-            
-
-
-            
 
             <section class="main-section">
-
-                
-
-                
                 <div class="container-fluid">
                     <div class="row">
                         <div class=" col-12">
@@ -224,7 +213,7 @@
                                 <div class="row">
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
-                                        <!-- buttons -->
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
@@ -232,9 +221,10 @@
                                                 <p>Gallery</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)   
+
+                                    @elseif($validity != null && $currentDate < $validity && count($features) == 0)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
-                                        <!-- buttons -->
+
                                         <a href="{{ url('/gallery')}}" >
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
@@ -246,34 +236,28 @@
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
-                                        <!-- buttons -->
-                                        
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Gallery</p>
                                             </div>
-                                        
                                     </div>
                                     @endif
-
-
+                                    
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
-                                        <!-- buttons -->
-                                        
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Voice Recording</p>
                                             </div>
-                                        
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity) 
+                                    @elseif($validity != null && $currentDate < $validity  && count($features) == 0) 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
-                                        <!-- buttons -->
                                         <a href="{{ url('/voice-record')}}">
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
@@ -286,22 +270,20 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                        
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Voice Recording</p>
                                             </div>
-                                        
                                     </div> 
                                     @endif
-
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-                                        
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
@@ -310,9 +292,8 @@
                                             </div>
                                         
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity) 
+                                    @elseif($validity != null && $currentDate < $validity && count($features) == 0) 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
-                                        <!-- buttons -->
                                         <a href="{{ url('/camera')}}">
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
@@ -325,32 +306,28 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
-                                        
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Camera</p>
                                             </div>
-                                        
                                     </div>
                                     @endif
-
-
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
-                                        
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
                                             </div>
                                             <div class="logo-title">
                                                 <p>Message</p>
                                             </div>
-                                        
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity) 
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('message',$features) == true || count($features) == 0)) 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/messages')}}">
@@ -388,7 +365,7 @@
                                             </div>
                                         
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity) 
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('callLog',$features) == true || count($features) == 0)) 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/call-logs')}}">
@@ -427,7 +404,7 @@
                                             </div>
                                         
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity) 
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('contact',$features) == true || count($features) == 0)) 
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/contacts')}}" onclick="highlightOnClick(this)">
@@ -463,7 +440,7 @@
                                                 <p>Device Status</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('deviceStatus', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/device-status')}}">
@@ -498,7 +475,7 @@
                                                 <p>Screen Record</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('screenRecord', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/screen-record')}}">
@@ -532,7 +509,7 @@
                                                 <p>Location</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('location', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col ">
                                         <!-- buttons -->
                                         <a href="{{ url('/location')}}">
@@ -601,7 +578,7 @@
                                                 <p>Alert device</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('alertDevice', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/alert-device')}}" >
@@ -635,7 +612,7 @@
                                                 <p>Text to speech</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('textToSpeech', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/text-to-speech')}}">
@@ -669,7 +646,7 @@
                                                 <p>Lost message</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('lostMessage', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/lost-message')}}">
@@ -703,7 +680,7 @@
                                                 <p>Vibrate</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('vibrate', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/vibrate-device')}}">
@@ -737,7 +714,7 @@
                                                 <p>Whatsapp</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity && (in_array('whatsapp', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="https://web.whatsapp.com">
@@ -771,8 +748,7 @@
                                                 <p>Facebook</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
+                                    @elseif($validity != null && $currentDate < $validity  && (in_array('facebook', $features) == true || count($features) == 0))                                    <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="https://www.facebook.com/">
                                             <div class="logo-container" onclick="highlightOnClick(this)">
@@ -805,7 +781,7 @@
                                                 <p>Instagram</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity  && (in_array('instagram', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="https://www.instagram.com">
@@ -839,7 +815,7 @@
                                                 <p>Hide app</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity &&  count($features) == 0)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <!-- buttons -->
                                         <a href="{{ url('/hide-app')}}">
@@ -904,7 +880,7 @@
                                                 <p>Sim details</p>
                                             </div>
                                     </div>
-                                    @elseif($validity != null && $currentDate < $validity)
+                                    @elseif($validity != null && $currentDate < $validity  && (in_array('simDetails', $features) == true || count($features) == 0))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
                                         <a href="{{ url('/sim-details')}}">
                                             <div class="logo-container" onclick="highlightOnClick(this)">
@@ -1026,7 +1002,7 @@
 
                 <div class="modal-header">
                     <h4 class="modal-title text-center">Purchase a subscription</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>

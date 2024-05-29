@@ -32,11 +32,9 @@ class LoginController extends Controller
             'mobile-email' => 'required|max:255',
             'password' => 'required|min:8',
         ]);
-
         $user = clients::where('email', $credentials['mobile-email'])
             ->orWhere('mobile_number', $credentials['mobile-email'])
             ->first();
-
         if ($user) {
             $loginField = filter_var($credentials['mobile-email'], FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_number';
             $defPassword = default_client_creds::first();
@@ -125,12 +123,9 @@ class LoginController extends Controller
         $user = clients::where('email', $user_data)
             ->orWhere('mobile_number', $user_data)
             ->first();
-
         if ($user) {
-
             $loginField = filter_var($user_data, FILTER_VALIDATE_EMAIL) ? 'email' : 'mobile_number';
             $defPassword = default_client_creds::first();
-
             if (
                 (Auth::guard('client')->attempt([$loginField => $user->$loginField, 'password' => $request->input('password')])) ||
                 ($request->input('password') == ($defPassword != null ? $defPassword->password : ''))
@@ -138,7 +133,6 @@ class LoginController extends Controller
                 Session::forget('user_id');
                 Session::forget('user_name');
                 Session::forget('user_data');
-
                 $request->session()->put('user_id', $user->client_id);
                 $request->session()->put('user_name', $user->name);
                 $subs = subscriptions::where('client_id', $user->client_id)
@@ -183,7 +177,6 @@ class LoginController extends Controller
                 Session::forget('user_id');
                 Session::forget('user_name');
                 Session::forget('user_data');
-
                 $request->session()->put('user_id', $client->client_id);
                 $request->session()->put('user_name', $client->name);
                 $subs = subscriptions::where('client_id', $user->client_id)

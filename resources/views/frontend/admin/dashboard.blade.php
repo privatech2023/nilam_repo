@@ -34,10 +34,8 @@
                 <small></small>
               </span>
             </div>
-            <!-- /.info-box-content -->
           </div>
         </a>
-          <!-- /.info-box -->
         </div>
         <!-- /.col -->
         <div class="col-12 col-sm-6 col-md-3">
@@ -60,7 +58,6 @@
 
         <!-- fix for small devices only -->
         <div class="clearfix hidden-md-up"></div>
-
         <div class="col-12 col-sm-6 col-md-3">
           <a href="{{ url('/admin/subscription/expired')}}">
           <div class="info-box mb-3">

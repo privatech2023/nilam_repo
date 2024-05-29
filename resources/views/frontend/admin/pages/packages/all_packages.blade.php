@@ -33,6 +33,7 @@
                         <h3 class="card-title">All packages</h3>
                         <div class="card-tools">
                             @if(in_array('createPackage', session('user_permissions')) || session('admin_name') == 'admin')
+                            <button type="button" class="btn btn-block btn-primary btn-sm"><a href="{{ url('/admin/manageTrialPackages')}}" style="text-decoration: none; color:white">Trial packages</a></button>
                             <button type="button" class="btn btn-block btn-success btn-sm" data-toggle="modal"
                                 data-target="#modal-add">Add Package</button>
                             @else

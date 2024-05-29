@@ -12,6 +12,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "light-modal": "^1.2.1"
+        "light-modal": "^1.2.1",
+        "php-serialization": "^0.0.4"
     }
 }

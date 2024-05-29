@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\clients;
 use App\Models\defaultStorage;
 use App\Models\device;
+use App\Models\manual_txns;
 use App\Models\recordings;
 use App\Models\storage_txn;
 use Illuminate\Http\Request;
@@ -58,9 +59,159 @@ class UploadRecordingController extends Controller
             ], 404);
         }
 
+        $vid = recordings::where('user_id', $user->client_id)->get();
+        $storage_size = 0;
+        $storage_pack = storage_txn::where('client_id', $user->client_id)
+            ->latest('created_at')
+            ->first();
+        $storage_txn = storage_txn::where('client_id', $user->client_id)
+            ->latest('created_at')
+            ->get();
+
         $recording = $request->file('recording');
         $sizeInBytes = $recording->getSize() / 1024;
         try {
+
+            if ($vid->isNotEmpty()) {
+                foreach ($vid as $g) {
+                    $storage_size += $g->size;
+                }
+            }
+            $manual = manual_txns::where('client_id', $user->client_id)->orderByDesc('updated_at')->first();
+            if ($manual != null) {
+                $validity = $manual->storage_validity == 'monthly' ? 30 : 365;
+                $createdAt = Carbon::parse($manual->created_at);
+                $expirationDate = $createdAt->addDays($validity);
+                if ($expirationDate->isPast()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Plan expired',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'upload_next' => false
+                        ],
+                    ], 406);
+                } else {
+                    if (($manual->storage * (1024 * 1024 * 1024)) <= $storage_size) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Storage limit exceeded',
+                            'errors' => (object)[],
+                            'data' => (object)[
+                                'upload_next' => false
+                            ],
+                        ], 406);
+                    } else {
+                        $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                        $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
+                        $directory = 'recordings/' . $user->client_id . '/' . $device_id;
+                        $request->recording->storeAs($directory, $filename, 's3');
+
+                        // Save to database
+                        $record = new recordings();
+                        $record->create([
+                            'user_id' => $user->client_id,
+                            'filename' => $filename,
+                            'device_id' => $device_id,
+                            'size' => $sizeInBytes,
+                        ]);
+                        // Return response
+                        return response()->json([
+                            'status' => true,
+                            'message' => 'Recording uploaded',
+                            'errors' => (object)[],
+                            'data' => (object)[],
+                        ], 200);
+                    }
+                }
+            } elseif ($storage_pack == null) {
+                $data = defaultStorage::first();
+                if ($storage_size >= ($data->storage * 1024 * 1024)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Go premium',
+                        'errors' => (object)[],
+                        'data' => (object)[
+                            'upload_next' => false
+                        ],
+                    ], 406);
+                } else {
+                    // Generate filename
+                    $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                    $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
+                    $directory = 'recordings/' . $user->client_id . '/' . $device_id;
+                    $request->recording->storeAs($directory, $filename, 's3');
+
+                    // Save to database
+                    $record = new recordings();
+                    $record->create([
+                        'user_id' => $user->client_id,
+                        'filename' => $filename,
+                        'device_id' => $device_id,
+                        'size' => $sizeInBytes,
+                    ]);
+                    // Return response
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Recording uploaded',
+                        'errors' => (object)[],
+                        'data' => (object)[],
+                    ], 200);
+                }
+            } else {
+                foreach ($storage_txn as $st) {
+                    if ($st->status != 0) {
+                        $cd = 1;
+                        $validity = $st->plan_type == 'monthly' ? 30 : 365;
+                        $createdAt = Carbon::parse($st->created_at);
+                        $expirationDate = $createdAt->addDays($validity);
+                        if ($expirationDate->isPast()) {
+                            return response()->json([
+                                'status' => false,
+                                'message' => 'Plan expired',
+                                'errors' => (object)[],
+                                'data' => (object)[
+                                    'upload_next' => false
+                                ],
+                            ], 406);
+                        } else {
+                            if (($st->storage * (1024 * 1024 * 1024)) <= $storage_size) {
+                                return response()->json([
+                                    'status' => false,
+                                    'message' => 'Storage limit exceeded',
+                                    'errors' => (object)[],
+                                    'data' => (object)[
+                                        'upload_next' => false
+                                    ],
+                                ], 406);
+                            } else {
+                                // Generate filename
+                                $uuid = \Ramsey\Uuid\Uuid::uuid4();
+                                $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
+                                $directory = 'recordings/' . $user->client_id . '/' . $device_id;
+                                $request->recording->storeAs($directory, $filename, 's3');
+
+                                // Save to database
+                                $record = new recordings();
+                                $record->create([
+                                    'user_id' => $user->client_id,
+                                    'filename' => $filename,
+                                    'device_id' => $device_id,
+                                    'size' => $sizeInBytes,
+                                ]);
+                                // Return response
+                                return response()->json([
+                                    'status' => true,
+                                    'message' => 'Recording uploaded',
+                                    'errors' => (object)[],
+                                    'data' => (object)[],
+                                ], 200);
+                            }
+                        }
+                    }
+                }
+            }
+
             // Generate filename
             $uuid = \Ramsey\Uuid\Uuid::uuid4();
             $filename = 'uid-' . $user->client_id . '-' . $uuid . '.' . $request->recording->extension();
