@@ -213,6 +213,7 @@
                                 <div class="row">
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col" data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
@@ -220,8 +221,10 @@
                                                 <p>Gallery</p>
                                             </div>
                                     </div>
+
                                     @elseif($validity != null && $currentDate < $validity && count($features) == 0)
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " >
+
                                         <a href="{{ url('/gallery')}}" >
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
@@ -233,6 +236,7 @@
                                     </div>
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/picture.png')}}" alt="icon">
                                             </div>
@@ -244,6 +248,7 @@
                                     
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
@@ -265,6 +270,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/microphone.png')}}" alt="icon">
                                             </div>
@@ -277,6 +283,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
@@ -299,6 +306,7 @@
                                     @else
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalSubs"  >
                                         <!-- buttons -->
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/photo-camera.png')}}" alt="icon">
                                             </div>
@@ -311,6 +319,7 @@
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt"  >
                                         <!-- buttons -->
+
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/mail.png')}}" alt="icon">
                                             </div>

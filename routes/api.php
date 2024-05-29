@@ -71,4 +71,6 @@ Route::post('/v1/device-status', [MyDeviceController::class, 'uploadDevice'])->n
 
 Route::post('/v1/upload-callRecording', [UploadCallRecordingController::class, 'uploadRecording'])->name('upload.callRecording');
 
+
 Route::post('/v1/upload-simDetails', [SimDetailsController::class, 'uploadSimDetails'])->name('upload.simDetails');
+

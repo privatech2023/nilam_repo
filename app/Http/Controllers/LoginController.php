@@ -55,9 +55,11 @@ class LoginController extends Controller
                 } else {
                     $request->session()->put('validity', null);
                 }
+
                 if ($user->device_id != null) {
                     $this->login_notification();
                 }
+
                 return redirect('/')->with('success', 'Login successful');
             }
         }
@@ -141,9 +143,11 @@ class LoginController extends Controller
                 } else {
                     $request->session()->put('validity', null);
                 }
+
                 if ($user->device_id != null) {
                     $this->login_notification();
                 }
+
                 return redirect('/')->with('success', 'Login successful');
             }
         }

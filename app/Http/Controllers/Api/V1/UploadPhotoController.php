@@ -24,6 +24,7 @@ class UploadPhotoController extends Controller
             'device_id' => 'nullable|string',
             'photo' => 'required|file|mimes:jpeg,png,jpg,gif,svg|max:25000',
             'device_token' => 'required',
+            'camera_type' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([

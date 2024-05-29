@@ -100,6 +100,7 @@ class frontendController extends Controller
         $response = curl_exec($ch);
         curl_close($ch);
         $response = json_decode($response, true);
+        dd($response);
         if ($response['status'] == 'success') {
             return true;
         } else {
