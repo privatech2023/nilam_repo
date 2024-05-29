@@ -35,7 +35,12 @@
 
 
 </head>
-
+<style>
+    .highlight-on-click {
+        background-color: #454444; 
+        /* transition: background-color 0.5s ease;  */
+    }
+</style>
 <body class="page-body">
 
     <!--  Header Section -->
@@ -153,7 +158,7 @@
                     console.log(url);
                     var formattedDate = date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
                     var messageContent = '<div class="col-lg-4 col-md-6 col-12 message-col">'+
-                                        '<div class="message-div">'+
+                                        '<div class="message-div" onclick="highlightOnClick(this)">'+
                                         '<div class="container-fluid">' +
                                         '<a href="'+url+'" style="text-decoration: none;">' +
                                         '<div class="row">' +
@@ -193,6 +198,13 @@
             };
 
             fetchMessageList();
+
+            function highlightOnClick(element) {
+            element.classList.toggle('highlight-on-click');
+            // setTimeout(function(){
+            //     element.classList.remove('highlight-on-click');
+            // }, 1000); 
+        }
         });
     </script>
 </body>

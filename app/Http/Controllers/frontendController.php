@@ -10,6 +10,8 @@ use App\Models\manual_txns;
 use App\Models\settings;
 use App\Models\storage_txn;
 use App\Models\subscriptions;
+use App\Models\transactions;
+use App\Models\trial_package;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,12 +29,26 @@ class frontendController extends Controller
 
     public function home()
     {
+        $features = [];
         $isGall = 0;
         if (session('user_id') != null) {
             $subs = subscriptions::where('client_id', session('user_id'))
                 ->where('status', 1)
                 ->orderBy('updated_at', 'desc')
                 ->first();
+
+            if ($subs != null) {
+                $transaction_id = $subs->txn_id;
+                $transaction_data = transactions::where('txn_id', $transaction_id)->first();
+                if ($transaction_data->trial_id != null) {
+                    $trial = trial_package::where('id', $transaction_data->trial_id)->first();
+                    $features = unserialize($trial->features);
+                } elseif ($transaction_data == null) {
+                    $features = [];
+                } else {
+                    $features = [];
+                }
+            }
             if ($subs != null) {
                 Session::put('validity', $subs->ends_on);
             } else {
@@ -44,7 +60,6 @@ class frontendController extends Controller
             Session::put('remaining_days', $this->remaining_days);
             Session::put('plan_expired', $this->plan_expired);
             Session::put('store_more', $this->store_more);
-            // dd(session::all());
             $bg = backgroundImage::where('client_id', session('user_id'))->orderBy('created_at', 'desc')->first();
             $isGall = 1;
             if ($bg == null) {
@@ -66,12 +81,11 @@ class frontendController extends Controller
             $image = [];
         }
         Session::forget('user_data');
-        return view('frontend/pages/index')->with(['bg' => $bg, 'isGall' => $isGall, 'image' => $image]);
+        return view('frontend/pages/index')->with(['bg' => $bg, 'isGall' => $isGall, 'image' => $image, 'features' => $features]);
     }
 
     public function sendOTP($number, $message)
     {
-
         $apiKey = urlencode(getenv('TL_API_KEY'));
         $numbers = array($number);
         $sender = urlencode(getenv('TL_SENDER'));
@@ -200,7 +214,6 @@ class frontendController extends Controller
                             continue;
                         }
                     }
-                    // if storage_txn status is pending
                     if ($cd == 0) {
                         $data = defaultStorage::first();
                         if ($storage_size >= ($data->storage * 1024 * 1024)) {

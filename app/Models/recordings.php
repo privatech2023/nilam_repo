@@ -27,4 +27,16 @@ class recordings extends Model
         );
         return $url;
     }
+
+    public function s3Url2($id)
+    {
+        $mins = 5;
+        $gal = recordings::where('id', $id)->first();
+        $cl = clients::where('client_id', $gal->user_id)->first();
+        $url = Storage::disk('s3')->temporaryUrl(
+            'recordings/' . $gal->user_id . '/' . $cl->device_id . '/' . $this->filename,
+            now()->addMinutes($mins)
+        );
+        return $url;
+    }
 }

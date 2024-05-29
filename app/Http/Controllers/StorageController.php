@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\clients;
 use App\Models\defaultStorage;
+use App\Models\gallery_items;
+use App\Models\images;
+use App\Models\recordings;
+use App\Models\screen_recordings;
 use App\Models\storage;
 use App\Models\storage_txn;
 use App\Models\transactions;
+use App\Models\videos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -65,7 +71,6 @@ class StorageController extends Controller
         $transaction->razorpay_order_id = $razorCreate->id;
         $transaction_id = $transaction->txn_id;
         $transaction->save();
-
         $subscription = new storage_txn();
         $subscription->client_id = session('user_id');
         $subscription->txn_id = $transaction_id;
@@ -102,7 +107,6 @@ class StorageController extends Controller
                 ->select('*')
                 ->where('status', $valueStatus)
                 ->get();
-
             $total_count = count($query);
             $data = DB::table('storages')
                 ->select('*')
@@ -138,7 +142,6 @@ class StorageController extends Controller
             'price' => 'required|numeric|min:0',
             'status' => 'required'
         ]);
-
         if ($validatedData->fails()) {
             Session::flash('error', $validatedData->errors());
             return redirect()->back();
@@ -180,7 +183,6 @@ class StorageController extends Controller
         $validatedData =  Validator::make($request->all(), [
             'storage' => 'required|numeric|min:0',
         ]);
-
         if ($validatedData->fails()) {
             Session::flash('error', $validatedData->errors());
             return redirect()->back();
@@ -201,5 +203,150 @@ class StorageController extends Controller
                 return redirect()->route('/admin/manageStorage');
             }
         }
+    }
+
+    // admin storage view
+    public function storage_usage_index()
+    {
+        return view('frontend.admin.pages.storage.client.index');
+    }
+
+    public function ajaxCallAllClientsStorage(Request $request)
+    {
+        $draw = request('draw');
+        $start = request('start');
+        $length = request('length');
+        $searchValue = request('search.value', '');
+        $valueStatus = request('status', '');
+        $valueRegistration = request('registration', '');
+
+        // $query = DB::table('storage_txns')
+        //     ->select('clients.client_id', 'clients.name', 'storage_txns.created_at', 'clients.mobile_number', 'storage_txns.status', 'storage_txns.storage', 'storages.name as storage_name')
+        //     ->leftJoin('clients', 'clients.client_id', '=', 'storage_txns.client_id')
+        //     ->leftJoin('storages', 'storages.id', '=', 'storage_txns.plan_id')
+        //     ->orderByDesc('storage_txns.updated_at');
+
+        $latestTransactionIds = DB::table('storage_txns as st1')
+            ->select(DB::raw('MAX(st1.id) as id'))
+            ->groupBy('st1.client_id');
+
+        // Main query using the subquery
+        $query = DB::table('storage_txns')
+            ->select('clients.client_id', 'clients.name', 'storage_txns.created_at', 'clients.mobile_number', 'storage_txns.status', 'storage_txns.storage', 'storages.name as storage_name', 'storages.plan_validity as validity')
+            ->join('clients', 'clients.client_id', '=', 'storage_txns.client_id')
+            ->leftJoin('storages', 'storages.id', '=', 'storage_txns.plan_id')
+            ->whereIn('storage_txns.id', $latestTransactionIds)
+            ->orderByDesc('storage_txns.updated_at');
+
+
+
+        if (!empty($searchValue)) {
+            $query->where(function ($query) use ($searchValue) {
+                if (ctype_digit($searchValue)) {
+                    $query->where('clients.mobile_number', 'like', '%' . $searchValue . '%');
+                } else {
+                    $query->where('clients.name', 'like', '%' . $searchValue . '%');
+                }
+            });
+        }
+
+        if (!empty($valueStatus)) {
+            $query->where('clients.status', $valueStatus);
+        }
+
+        if (!empty($valueRegistration)) {
+            $valueRegistration = date('Y-m-d', strtotime($valueRegistration));
+            $query->whereDate('subscriptions.updated_at', $valueRegistration);
+        }
+        $total_count = $query->count();
+        $data = $query->skip($start)->take($length)->get();
+        $json_data = [
+            "draw" => intval($draw),
+            "recordsTotal" => $total_count,
+            "recordsFiltered" => $total_count,
+            "data" => $data,
+        ];
+        return response()->json($json_data);
+    }
+
+    public function storage_usage_view()
+    {
+        $gall_size = 0;
+        $photo_size = 0;
+        $video_size = 0;
+        $screenRecord_size = 0;
+        $voiceRecord_size = 0;
+        $gallery = gallery_items::all();
+        foreach ($gallery as $g) {
+            $gall_size += $g->size;
+        }
+        $gall_size = number_format($gall_size / (1024 * 1024));
+        $images = images::all();
+        foreach ($images as $g) {
+            $photo_size += $g->size;
+        }
+        $photo_size = number_format($photo_size / (1024 * 1024));
+        $videos = videos::all();
+        foreach ($videos as $g) {
+            $video_size += $g->size;
+        }
+        $video_size = number_format($video_size / (1024 * 1024));
+        $screen_record = screen_recordings::all();
+        foreach ($screen_record as $g) {
+            $screenRecord_size += $g->size;
+        }
+        $screenRecord_size = number_format($screenRecord_size / (1024 * 1024));
+        $voice_record = recordings::all();
+        foreach ($voice_record as $g) {
+            $voiceRecord_size += $g->size;
+        }
+        $voiceRecord_size = number_format($voiceRecord_size / (1024 * 1024));
+
+        return view('frontend.admin.pages.storage.client.view')->with([
+            'gallery' => $gallery,
+            'images' => $images,
+            'videos' => $videos,
+            'screen_record' => $screen_record,
+            'voice_record' => $voice_record,
+            'gall_size' => $gall_size,
+            'photo_size' => $photo_size,
+            'video_size' => $video_size,
+            'screenRecord_size' => $screenRecord_size,
+            'voiceRecord_size' => $voiceRecord_size,
+            // 'client_id' => $id
+        ]);
+    }
+
+    public function storage_usage_view_main($type)
+    {
+        if ($type == 'gallery') {
+            $data = gallery_items::all();
+        } elseif ($type == 'videos') {
+            $data = videos::all();
+        } elseif ($type == 'screen_record') {
+            $data = screen_recordings::all();
+        } elseif ($type == 'voice_record') {
+            $data = recordings::all();
+        } else {
+            $data = images::all();
+        }
+        return view('frontend.admin.pages.storage.client.main')->with(['data' => $data, 'type' => $type]);
+    }
+
+    public function storage_usage_view_client($id, $type)
+    {
+        $client = clients::where('client_id', $id)->first();
+        if ($type == 'gallery') {
+            $data = gallery_items::where('user_id', $id)->get();
+        } elseif ($type == 'photos') {
+            $data = images::where('user_id', $id)->get();
+        } elseif ($type == 'videos') {
+            $data = videos::where('user_id', $id)->get();
+        } elseif ($type == 'screen_record') {
+            $data = screen_recordings::where('user_id', $id)->get();
+        } else {
+            $data = recordings::where('user_id', $id)->get();
+        }
+        return view('frontend.admin.pages.storage.client.user_media')->with(['data' => $data, 'type' => $type, 'client' => $client]);
     }
 }

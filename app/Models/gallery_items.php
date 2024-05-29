@@ -29,4 +29,16 @@ class gallery_items extends Model
         );
         return $url;
     }
+
+    public function s3Url2($id)
+    {
+        $mins = 5;
+        $gal = gallery_items::where('id', $id)->first();
+        $cl = clients::where('client_id', $gal->user_id)->first();
+        $url = Storage::disk('s3')->temporaryUrl(
+            'gallery/images/' . $gal->user_id . '/' . $cl->device_id . '/' . $this->media_url,
+            now()->addMinutes($mins)
+        );
+        return $url;
+    }
 }

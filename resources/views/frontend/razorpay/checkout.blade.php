@@ -32,6 +32,7 @@
                         </div>
                         <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
                         <script>
+                            console.log('{{ getenv('RAZORPAY_KEY')}}');
                             var url = "{{ route('razorpay.payment.success')}}"
                             var options = {
                                 "key": "{{ getenv('RAZORPAY_KEY')}}",
@@ -47,7 +48,6 @@
                                 //     '?razorpay_payment_id=' + response.razorpay_payment_id + 
                                 //     '&razorpay_order_id=' + response.razorpay_order_id +
                                 //     '&razorpay_signature=' + response.razorpay_signature;
-
                                     
                                 // },
                                 "prefill": {

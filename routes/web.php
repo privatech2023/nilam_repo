@@ -277,8 +277,6 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     Route::post('/admin/subscription/update', [clientController::class, 'update_subscription']);
 
-
-
     Route::get('/admin/users', [usersController::class, 'index'])->name('admin_users');
     Route::get('/admin/users/add', [usersController::class, 'add_user_index']);
     Route::post('/admin/users/create', [usersController::class, 'create_user']);
@@ -297,6 +295,12 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/updatePackages', [PackageController::class, 'updatePackage']);
     Route::post('/admin/deletePackages', [PackageController::class, 'deletePackage']);
     Route::post('/admin/packages/ajaxCallAllPackages', [PackageController::class, 'ajaxCallAllPackages']);
+    Route::post('/admin/updateTrialPackages', [PackageController::class, 'updateTrialPackage']);
+
+    Route::get('/admin/manageTrialPackages', [PackageController::class, 'index_trial_package'])->name('/admin/manageTrialPackages');
+    Route::post('/admin/packages/ajaxCallAllTrialPackages', [PackageController::class, 'ajaxCallAllTrialPackages']);
+    Route::post('/admin/createTrialPackages', [PackageController::class, 'createTrialPackage']);
+    Route::post('/admin/deleteTrialPackages', [PackageController::class, 'deleteTrialPackage']);
 
     Route::get('/admin/activationCodes', [activationCodeController::class, 'index'])->name('/admin/activationCodes');
     Route::post('/admin/activationCodes/ajaxCallAllCodes', [activationCodeController::class, 'ajaxCallAllCodes']);
@@ -326,6 +330,8 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/token/get/{id}', [issueTokenController::class, 'token_get']);
     Route::post('/admin/token/update', [issueTokenController::class, 'token_update']);
     Route::post('/admin/delete/token', [issueTokenController::class, 'token_delete']);
+
+
 
     Route::post('/admin/token/ajaxCallAllTokens', [issueTokenController::class, 'ajaxCallAllTokens']);
     Route::post('/admin/token/ajaxCallAllTech', [issueTokenController::class, 'ajaxCallAllTokensTechnical']);
@@ -363,6 +369,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::post('/admin/devices/delete', [DevicesController::class, 'delete']);
 
     Route::post('/admin/devices/create', [DevicesController::class, 'create']);
+
 
     Route::get('/features/control', [FeaturesController::class, 'index']);
     Route::post('/features/control/messages', [FeaturesController::class, 'messages']);
@@ -402,6 +409,14 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     Route::get('/admin/get_direct_earnings/{id}', [EarningsController::class, 'get_direct_earnings']);
     Route::get('/admin/get_upline_earnings/{id}', [EarningsController::class, 'get_upline_earnings']);
+
+    Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_index']);
+    Route::post('/admin/clients/ajaxCallAllClientsStorages', [StorageController::class, 'ajaxCallAllClientsStorage']);
+
+    Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_view']);
+
+    Route::get('/admin/storage_view/{view}', [StorageController::class, 'storage_usage_view_main']);
+    Route::get('/admin/storage_view/client/{id}/{type}', [StorageController::class, 'storage_usage_view_client']);
 });
 
 Route::post('/test-fcm-notification', [FunctionsSendFcmNotification::class, 'sendNotification2']);

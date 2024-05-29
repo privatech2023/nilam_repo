@@ -89,7 +89,7 @@
                         <div class="row">
                             @if($plan_expired == true)
                             @foreach($gallery_items as $image)
-                            <div class="col-3 p-0 img-col">
+                            <div class="col-3 p-0 img-col" data-src="{{$image->s3Url()}}" data-id="{{$image->id}}">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#expire_modal">
                                     <img class="img-class" src="{{ $image->s3Url() }}" alt="img" style="filter: blur(5px);">
                                 </a>
@@ -97,8 +97,8 @@
                             @endforeach
                             @else
                             @foreach($gallery_items as $image)
-                            <div class="col-3 p-0 img-col">
-                                <a href="{{ $image->s3Url() }}"><img class="img-class" src="{{ $image->s3Url() }}" alt="img" ></a>
+                            <div class="col-3 p-0 img-col img-open" data-src="{{$image->s3Url()}}" data-id="{{$image->id}}">
+                                <img class="img-class" src="{{ $image->s3Url() }}" alt="img" >
                             </div>
                             @endforeach 
                             @endif
@@ -106,65 +106,13 @@
                     </div>
                     <div class="content container-fluid">
                         <div class="row">
-                            <!-- Gallery Album -->
-                            {{-- <div class="col-4">
-                                <a href="album.html">
-                                    <div class="album-box d-flex justify-content-center"></div>
-                                    <div class="album-name text-light">
-                                        <p>Album Name</p>
-                                    </div>
-                                </a>
-                            </div>
-                            <!-- Gallery Album -->
-                            <div class="col-4">
-                                <a href="album.html">
-                                    <div class="album-box d-flex justify-content-center"></div>
-                                    <div class="album-name text-light">
-                                        <p>Album Name</p>
-                                    </div>
-                                </a>
-                            </div>
-                            <!-- Gallery Album -->
-                            <div class="col-4">
-                                <a href="album.html">
-                                    <div class="album-box d-flex justify-content-center"></div>
-                                    <div class="album-name text-light">
-                                        <p>Album Name</p>
-                                    </div>
-                                </a>
-                            </div> --}}
+                            {{--  --}}
                         </div>
                         <hr>
                         
                         <div class="row">
                             <p class="text-light">Coming soon</p>
-                            <!-- Gallery Album -->
-                            {{-- <div class="col-4">
-                                <a href="album.html">
-                                    <div class="album-box d-flex justify-content-center"></div>
-                                    <div class="album-name text-light">
-                                        <p>Album Name</p>
-                                    </div>
-                                </a>
-                            </div> --}}
-                            {{-- <!-- Gallery Album -->
-                            <div class="col-4">
-                                <a href="album.html">
-                                    <div class="album-box d-flex justify-content-center"></div>
-                                    <div class="album-name text-light">
-                                        <p>Album Name</p>
-                                    </div>
-                                </a>
-                            </div>
-                            <!-- Gallery Album -->
-                            <div class="col-4">
-                                <a href="album.html">
-                                    <div class="album-box d-flex justify-content-center"></div>
-                                    <div class="album-name text-light">
-                                        <p>Album Name</p>
-                                    </div>
-                                </a>
-                            </div> --}}
+                            {{--  --}}
                         </div>
 
                     </div>
@@ -218,14 +166,19 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="imageModalLabel">Image View</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <p class="modal-title text-sm text-bold" id="imageModalLabel">IMAGE</p>
+            <button type="button" class="close3" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
             <div class="modal-body">
             <img id="modalImage" src="" class="img-fluid" alt="Image">
             </div>
+            <form method="post" action="{{ url('/delete/gallery')}}">
+                @csrf
+                <input type="hidden" name="id" id="deleteItemId" value=""/>
+                <button type="submit" style="width:100%;" class="btn btn-outline-danger btn-sm">Delete</button>
+            </form>
         </div>
         </div>
     </div>
@@ -297,6 +250,20 @@
             $(document).on('click', '.close2', function(){
                 $('#expire_modal').modal('hide');
             });
+            $(document).on('click', '.close3', function(){
+                $('#imageModal').modal('hide');
+            });
+
+            $('.img-open').on('click', function(){
+                var src = $(this).data('src');
+                var id = $(this).data('id');
+                $('#modalImage').empty();
+                $('#deleteItemId').val();
+                $('#modalImage').attr('src', src);
+                $('#deleteItemId').val(id);
+                $('#imageModal').modal('show');
+            });
+
         });
     </script>
 
@@ -319,39 +286,6 @@
             })
         })
     </script>
-
-{{-- <script>
-    document.addEventListener('livewire:load', function () {
-        console.log('hey')
-        const storeMoreValue = {!! json_encode($store_more) !!};
-        const plan = {!! json_encode($plan_expired) !!};
-        if(storeMoreValue == false){
-            $('#store_modal').modal('show');
-        }
-        if(storeMoreValue == true){
-            $('#expire').modal('show');
-        }       
-        $(document).on('click','.delete', function () {
-            var id = this.getAttribute('data-id');
-            document.getElementById('deleteItemId').value = id;
-            $('#deleteModal').modal('show');
-        });
-        Livewire.on('loadmore', function () {
-            if(storeMoreValue == false){
-            $('#store_modal').modal('show');
-            }
-            if(storeMoreValue == true){
-            $('#expire').modal('show');
-            } 
-        });
-
-        $('.view-button').click(function() {
-            var imageUrl = $(this).data('src');
-            $('#modalImage').attr('src', imageUrl);
-        });
-    });
-
-</script> --}}
 
 </body>
 

@@ -92,22 +92,22 @@ class RazorpayController extends Controller
                 $order = $api->order->fetch($order_id);
                 Log::error('webhook 2');
                 if ($order->status == 'paid') {
-                    $user_mapped = user_clients::where('client_id', $payment->client_id)->first();
-                    $group = user_groups::where('u_id', $user_mapped->user_id)->first();
-                    $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
-                    earnings::create([
-                        'user_id' => $user_mapped->user_id,
-                        'commission' => $commission->commission,
-                        'client_id' => $payment->client_id
-                    ]);
-                    $upline_earning = new UplineController;
-                    $upline_earning->upline_commission($user_mapped->user_id);
+                    // $user_mapped = user_clients::where('client_id', $payment->client_id)->first();
+                    // $group = user_groups::where('u_id', $user_mapped->user_id)->first();
+                    // $commission = commissions::where('group_id', $group->g_id)->orderBy('created_at', 'desc')->first();
+                    // earnings::create([
+                    //     'user_id' => $user_mapped->user_id,
+                    //     'commission' => $commission->commission,
+                    //     'client_id' => $payment->client_id
+                    // ]);
+                    // $upline_earning = new UplineController;
+                    // $upline_earning->upline_commission($user_mapped->user_id);
                     $payment->update([
                         'status' => 2,
                         'razorpay_payment_id' => $data['payload']['payment']['entity']['id'],
                     ]);
                     if ($payment->storage_id != null) {
-                        $storage_txn = storage_txn::where('txn_id', $payment->storage_id)->first();
+                        $storage_txn = storage_txn::where('txn_id', $payment->txn_id)->first();
                         if ($storage_txn != null) {
                             $storage_txn->update([
                                 'status' => 1
@@ -142,7 +142,8 @@ class RazorpayController extends Controller
                 ], 400);
             }
         } catch (\Exception $e) {
-            Log::error('error: ' . $e->getMessage());
+            Log::error('error webhook: ' . $e->getMessage());
+            Log::info($request->all());
             return response()->json([
                 'error' => $e->getMessage()
             ], 400);

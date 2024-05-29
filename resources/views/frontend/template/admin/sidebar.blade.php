@@ -137,7 +137,16 @@
                     <i class="far fa-circle nav-icon"></i>
                     <p>Earnings</p>
                   </a>
-                </li>              
+                </li>  
+                @if(session('admin_name') == 'admin')
+                <li class="nav-item">
+                  <a href="{{ url('/admin/storage_usage')}}" class="nav-link" id="clientSubMenuStorageClient">
+                    <i class="far fa-circle nav-icon"></i>
+                    <p>Storage usage</p>
+                  </a>
+                </li>
+                @endif
+                
               </ul>
             </li>
             @endif
