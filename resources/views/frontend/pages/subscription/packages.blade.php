@@ -73,7 +73,6 @@
                                     <button type="button" id="activation_btn" class="btn btn-primary" style="width:100%;">I have an ctivation code</button>
                                 </div>
                                 
-
                             </div>
                         </div>
                     </div>
@@ -81,7 +80,7 @@
 
 
                 {{-- trial packages --}}
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-header">
                         <h5 class="card-title m-0">TRIAL PACKAGE</h5>
                     </div>
@@ -170,26 +169,21 @@
                                         </div>
                                     @endforeach
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                </div>
-
+                </div> --}}
 
                 {{-- storages --}}
-                <div class="card">
+                {{-- <div class="card">
                     <div class="card-header">
                         <h5 class="card-title m-0">STORAGE</h5><br><br>
-
                         <h5 class="text-sm" style="margin-left: 0;"><strong class="text-sm">(</strong>Storage plans are not associated with packages <strong>)</strong></h5>
                     </div>
-
                     <div class="card-body">
                         <div class="card card-solid">
                             <div class="card-body pb-0">
                                 <div class="row">
-
                                     @foreach($storages as $list)
                                         <div class="col-12 col-sm-6 col-md-4">
                                             <div class="card card-primary card-outline">
@@ -237,11 +231,10 @@
                                         </div>
                                     @endforeach
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
 
             </div>
