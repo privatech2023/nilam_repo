@@ -1070,7 +1070,7 @@
                                     @endif
 
 
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
+                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <!-- buttons -->
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
@@ -1080,7 +1080,7 @@
                                                 <p>Apps</p>
                                             </div>
                                         </a>
-                                    </div>
+                                    </div> --}}
 
                                     {{-- <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
@@ -1092,8 +1092,7 @@
                                             </div>
                                         </a>
                                     </div> --}}
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
-                                        <!-- buttons -->
+                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/smart-tv.png')}}" alt="logos">
@@ -1102,9 +1101,8 @@
                                                 <p>Screen Mirroring</p>
                                             </div>
                                         </a>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
-                                        <!-- buttons -->
+                                    </div> --}}
+                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/gmail.png')}}" alt="facebook">
@@ -1113,9 +1111,8 @@
                                                 <p>Gmail</p>
                                             </div>
                                         </a>
-                                    </div>
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
-                                        <!-- buttons -->
+                                    </div> --}}
+                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/remote-control.png')}}" alt="facebook">
@@ -1124,22 +1121,10 @@
                                                 <p>Remote Control</p>
                                             </div>
                                         </a>
-                                    </div>
-                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col disabled">
-                                       
-                                        <a href="{{ url('/call-recording')}}">
-                                            <div class="logo-container">
-                                                <img src="{{ asset('assets_2/img/icons/call-record.png')}}" alt="facebook">
-                                            </div>
-                                            <div class="logo-title">
-                                                <p>Call Recording</p>
-                                            </div>
-                                        </a>
                                     </div> --}}
 
                                     
-                                    <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
-                                        <!-- buttons -->
+                                    {{-- <div class="col-lg-1 col-md-2 col-3 logo-col" style="opacity: 0.4;">
                                         <a href="#" data-bs-toggle="modal" data-bs-target="#timerModal">
                                             <div class="logo-container">
                                                 <img src="{{ asset('assets_2/img/icons/folder.png')}}" alt="icon">
@@ -1148,7 +1133,7 @@
                                                 <p>Files</p>
                                             </div>
                                         </a>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                         </div>
