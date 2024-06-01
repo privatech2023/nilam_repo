@@ -243,7 +243,7 @@
 </div>
 </div>
 <style>
-    .modal-dialog {
+.modal-dialog {
    position:fixed;
    top:auto;
    right:40%;
@@ -261,15 +261,15 @@
 {{-- activation modal --}}
 <div class="modal fade" id="activation-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
+    <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Activation Code</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="exampleModalLongTitle">Activation Code</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-          </button>
+        </button>
         </div>
         <div class="modal-body">
-          <form action="{{ url('subscription/pay') }}" method="post">
+        <form action="{{ url('subscription/pay') }}" method="post">
             @csrf
             <input type="hidden" name="user_id" value="{{ session('user_id') }}"/>
             <input type="hidden" name="package_id" value=""  />
@@ -287,13 +287,13 @@
         </div>
         <input type="hidden" class="form-control" name="total_amount" value="">
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">SUBMIT</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">SUBMIT</button>
         </div>
     </form>
-      </div>
     </div>
-  </div>
+    </div>
+</div>
 
 
 @if(session()->get('success'))
@@ -338,7 +338,6 @@
                                 "image": "{{ asset('assets/frontend/images/web-logo.png') }}",
                                 "order_id": response.id,
                                 "handler": function (response) {
-                                    
                                     window.location.href = url + 
                                     '?razorpay_payment_id=' + response.razorpay_payment_id + 
                                     '&razorpay_order_id=' + response.razorpay_order_id +

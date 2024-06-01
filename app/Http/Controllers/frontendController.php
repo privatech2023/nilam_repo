@@ -275,4 +275,59 @@ class frontendController extends Controller
         $data = Session::all();
         return response()->json('hey');
     }
+
+    public function payment_success_index()
+    {
+        $features = [];
+        $isGall = 0;
+        if (session('user_id') != null) {
+            $subs = subscriptions::where('client_id', session('user_id'))
+                ->where('status', 1)
+                ->orderBy('updated_at', 'desc')
+                ->first();
+            if ($subs != null) {
+                $transaction_id = $subs->txn_id;
+                $transaction_data = transactions::where('txn_id', $transaction_id)->first();
+                if ($transaction_data->trial_id != null) {
+                    $trial = trial_package::where('id', $transaction_data->trial_id)->first();
+                    $features = unserialize($trial->features);
+                } elseif ($transaction_data == null) {
+                    $features = [];
+                } else {
+                    $features = [];
+                }
+            }
+            if ($subs != null) {
+                Session::put('validity', $subs->ends_on);
+            } else {
+                Session::put('validity', null);
+            }
+            $this->storage_count();
+            Session::put('storage_left', $this->storage_left);
+            Session::put('remaining_days', $this->remaining_days);
+            Session::put('plan_expired', $this->plan_expired);
+            Session::put('store_more', $this->store_more);
+            $bg = backgroundImage::where('client_id', session('user_id'))->orderBy('created_at', 'desc')->first();
+            $isGall = 1;
+            if ($bg == null) {
+                $isGall = 0;
+                $image = [];
+            } else {
+                if ($bg->image_id != 0) {
+                    $isGall = 2;
+                    $image = gallery_items::where('id', $bg->image_id)->first();
+                    if ($image == null) {
+                        $image = [];
+                    }
+                } else {
+                    $image = [];
+                }
+            }
+        } else {
+            $bg = 0;
+            $image = [];
+        }
+        Session::forget('user_data');
+        return view('frontend/pages/payment_success')->with(['bg' => $bg, 'isGall' => $isGall, 'image' => $image, 'features' => $features]);;
+    }
 }

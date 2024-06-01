@@ -194,7 +194,7 @@ class subscriptionController extends Controller
                     // $upline_earning = new UplineController;
                     // $upline_earning->upline_commission($user_mapped->user_id);
                     Session::flash('success', 'Payment Success');
-                    return redirect()->route('home');
+                    return redirect()->route('/payment-success/index');
                 }
             }
         } catch (\Exception $e) {

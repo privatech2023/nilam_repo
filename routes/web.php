@@ -248,6 +248,8 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/hide-app/unhide', [IndexController::class, 'hide_app_unhide']);
 
         Route::get('/sim-details', [IndexController::class, 'sim_details']);
+
+        Route::get('/payment-success/index', [frontendController::class, 'payment_success_index'])->name('/payment-success/index');
     });
 });
 

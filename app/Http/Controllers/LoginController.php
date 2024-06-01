@@ -210,32 +210,25 @@ class LoginController extends Controller
 
             $userInput = session('user_data');
             $tempOTP = rand(100000, 999999);
-
             $model = new otp();
             if (is_numeric($userInput)) {
-
                 $data = [
                     'otp' => $tempOTP,
                     'isexpired' => 1,
                     'mobile' => $userInput,
                 ];
                 $model->create($data);
-
-
-
                 $message = $tempOTP . ' is the OTP for login. Valid for 2 min only. RTS';
                 //Send OTP
                 $frontendcontroller = new frontendController;
                 $frontendcontroller->sendOTP($userInput, $message);
             } else {
-
                 $data = [
                     'otp' => $tempOTP,
                     'isexpired' => 1,
                     'email' => $userInput,
                 ];
                 $model->create($data);
-
                 $frontendcontroller = new frontendController;
                 $frontendcontroller->sendEmailOtp($userInput, $tempOTP);
             }

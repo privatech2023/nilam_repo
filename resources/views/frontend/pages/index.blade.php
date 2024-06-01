@@ -955,7 +955,6 @@
 
                                     @if(!session('user_name'))
                                     <div class="col-lg-1 col-md-2 col-3 logo-col " data-bs-toggle="modal" data-bs-target="#modalLoginPrompt" >
-                                        <!-- buttons -->
                                             <div class="logo-container" onclick="highlightOnClick(this)">
                                                 <img src="{{ asset('assets_2/img/icons/search.png')}}" alt="logos">
                                             </div>
