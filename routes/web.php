@@ -248,6 +248,8 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/hide-app/unhide', [IndexController::class, 'hide_app_unhide']);
 
         Route::get('/sim-details', [IndexController::class, 'sim_details']);
+
+        Route::get('/payment-success/index', [frontendController::class, 'payment_success_index'])->name('/payment-success/index');
     });
 });
 
@@ -410,7 +412,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/admin/get_direct_earnings/{id}', [EarningsController::class, 'get_direct_earnings']);
     Route::get('/admin/get_upline_earnings/{id}', [EarningsController::class, 'get_upline_earnings']);
 
-    Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_index']);
+    Route::get('/admin/storage_usages', [StorageController::class, 'storage_usage_index']);
     Route::post('/admin/clients/ajaxCallAllClientsStorages', [StorageController::class, 'ajaxCallAllClientsStorage']);
 
     Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_view']);
