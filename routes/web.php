@@ -414,7 +414,7 @@ Route::group(['middleware' => 'user.auth'], function () {
 
     Route::post('/admin/clients/ajaxCallAllClientsStorages', [StorageController::class, 'ajaxCallAllClientsStorage']);
 
-    Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_viewsss']);
+    Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_view']);
 
     Route::get('/admin/storage_view/{view}', [StorageController::class, 'storage_usage_view_main']);
     Route::get('/admin/storage_view/client/{id}/{type}', [StorageController::class, 'storage_usage_view_client']);
