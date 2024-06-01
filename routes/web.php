@@ -412,7 +412,6 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/admin/get_direct_earnings/{id}', [EarningsController::class, 'get_direct_earnings']);
     Route::get('/admin/get_upline_earnings/{id}', [EarningsController::class, 'get_upline_earnings']);
 
-    // Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_index']);
     Route::post('/admin/clients/ajaxCallAllClientsStorages', [StorageController::class, 'ajaxCallAllClientsStorage']);
 
     Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_view']);
