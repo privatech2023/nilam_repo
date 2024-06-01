@@ -276,7 +276,7 @@ class StorageController extends Controller
             $voiceRecord_size = 0;
 
             try {
-                $gallery = DB::table('gallery_items')->take(1)->get();
+                $gallery = DB::table('gallery_items')->get();
                 dd($gallery);
             } catch (\Exception $e) {
                 dd($e->getMessage());
