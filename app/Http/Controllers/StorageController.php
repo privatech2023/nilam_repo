@@ -268,7 +268,6 @@ class StorageController extends Controller
     public function storage_usage_view()
     {
         try {
-            dd('001');
             $gall_size = 0;
             $photo_size = 0;
             $video_size = 0;
@@ -299,7 +298,7 @@ class StorageController extends Controller
                 $voiceRecord_size += $g->size;
             }
             $voiceRecord_size = number_format($voiceRecord_size / (1024 * 1024));
-
+            dd('002');
             return view('frontend.admin.pages.storage.client.view')->with([
                 'gallery' => $gallery,
                 'images' => $images,
