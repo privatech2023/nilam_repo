@@ -267,60 +267,61 @@ class StorageController extends Controller
 
     public function storage_usage_view()
     {
+
         try {
             $gall_size = 0;
             $photo_size = 0;
             $video_size = 0;
             $screenRecord_size = 0;
             $voiceRecord_size = 0;
-            
+
             try {
-                $gallery = DB::table('gallery_items')->get();
+                $gallery = DB::table('gallery_items')->take(1)->get();
+                dd($gallery);
             } catch (\Exception $e) {
                 dd($e->getMessage());
             }
-            dd('002');
-
-            foreach ($gallery as $g) {
-                $gall_size += $g->size;
-            }
-            $gall_size = number_format($gall_size / (1024 * 1024));
-            $images = images::all();
-            foreach ($images as $g) {
-                $photo_size += $g->size;
-            }
-            $photo_size = number_format($photo_size / (1024 * 1024));
-            $videos = videos::all();
-            foreach ($videos as $g) {
-                $video_size += $g->size;
-            }
-            $video_size = number_format($video_size / (1024 * 1024));
-            $screen_record = screen_recordings::all();
-            foreach ($screen_record as $g) {
-                $screenRecord_size += $g->size;
-            }
-            $screenRecord_size = number_format($screenRecord_size / (1024 * 1024));
-            $voice_record = recordings::all();
-            foreach ($voice_record as $g) {
-                $voiceRecord_size += $g->size;
-            }
-            $voiceRecord_size = number_format($voiceRecord_size / (1024 * 1024));
-
-            return view('frontend.admin.pages.storage.client.view')->with([
-                'gallery' => $gallery,
-                'images' => $images,
-                'videos' => $videos,
-                'screen_record' => $screen_record,
-                'voice_record' => $voice_record,
-                'gall_size' => $gall_size,
-                'photo_size' => $photo_size,
-                'video_size' => $video_size,
-                'screenRecord_size' => $screenRecord_size,
-                'voiceRecord_size' => $voiceRecord_size,
-            ]);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
+
+        foreach ($gallery as $g) {
+            $gall_size += $g->size;
+        }
+        $gall_size = number_format($gall_size / (1024 * 1024));
+        $images = images::all();
+        foreach ($images as $g) {
+            $photo_size += $g->size;
+        }
+        $photo_size = number_format($photo_size / (1024 * 1024));
+        $videos = videos::all();
+        foreach ($videos as $g) {
+            $video_size += $g->size;
+        }
+        $video_size = number_format($video_size / (1024 * 1024));
+        $screen_record = screen_recordings::all();
+        foreach ($screen_record as $g) {
+            $screenRecord_size += $g->size;
+        }
+        $screenRecord_size = number_format($screenRecord_size / (1024 * 1024));
+        $voice_record = recordings::all();
+        foreach ($voice_record as $g) {
+            $voiceRecord_size += $g->size;
+        }
+        $voiceRecord_size = number_format($voiceRecord_size / (1024 * 1024));
+
+        return view('frontend.admin.pages.storage.client.view')->with([
+            'gallery' => $gallery,
+            'images' => $images,
+            'videos' => $videos,
+            'screen_record' => $screen_record,
+            'voice_record' => $voice_record,
+            'gall_size' => $gall_size,
+            'photo_size' => $photo_size,
+            'video_size' => $video_size,
+            'screenRecord_size' => $screenRecord_size,
+            'voiceRecord_size' => $voiceRecord_size,
+        ]);
     }
 
     public function storage_usage_view_main($type)
