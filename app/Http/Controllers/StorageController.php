@@ -268,6 +268,7 @@ class StorageController extends Controller
     public function storage_usage_view()
     {
         try {
+            dd('001');
             $gall_size = 0;
             $photo_size = 0;
             $video_size = 0;
