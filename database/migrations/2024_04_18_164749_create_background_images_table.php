@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('background_images', function (Blueprint $table) {
             $table->id();
-            $table->text('url')->nullable()->default(url('/assets_2/img/billy-huynh-W8KTS-mhFUE-unsplash.jpg'));
+            $table->string('url')->nullable()->default(url('/assets_2/img/billy-huynh-W8KTS-mhFUE-unsplash.jpg'));
             $table->timestamps();
         });
     }
