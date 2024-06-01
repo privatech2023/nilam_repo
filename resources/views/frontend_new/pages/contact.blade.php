@@ -81,6 +81,11 @@
     <!-- Main Section -->
 
     <main class="main">
+        <div class="text-center loader" style="display:none;  background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
+            <div class="spinner-border" role="status">
+            <span class="sr-only" style="color:white;">Loading...</span>
+            </div>
+        </div>
         <section class="main-section">
             <div class="container-fluid">
                 <div class="row">
@@ -154,6 +159,7 @@
                 $(this).closest(".call-container").toggleClass("call-bg");
             });
             var user_id = {!! json_encode($user_id) !!};
+            $('.loader').show();
             $.ajax({
                 type: "get",
                 url: "/get-contacts/"+user_id,
@@ -176,6 +182,7 @@
                     '</div>');
                 $('.contacts-populate').append(div);
             });
+            $('.loader').hide();
                 }
             });
         });

@@ -102,6 +102,11 @@
     <!-- Main Section -->
 
     <main class="main">
+        <div class="text-center loader" style="display:none;  background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
+            <div class="spinner-border" role="status">
+            <span class="sr-only" style="color:white;">Loading...</span>
+            </div>
+        </div>
         <section class="main-section">
             <div class="container-fluid">
                 <div class="row populate">
@@ -141,6 +146,7 @@
     <script>
         $(document).ready(function () {
             function fetchMessageList(){
+                $('.loader').show();
                 var user_id = {!! json_encode($user_id) !!};
                 $.ajax({
                     type: "get",
@@ -186,10 +192,9 @@
                     $('.populate').append(messageContent);
                     arr.push(valueOfElement['number']);
                     }
-                    // else{
-                    //     //
-                    // }
+                    
                 });
+                $('.loader').hide();
             },
             error: function(xhr, status, error) {
                 console.error("Error fetching session data:", error);

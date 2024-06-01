@@ -208,6 +208,7 @@ class StorageController extends Controller
     // admin storage view
     public function storage_usage_index()
     {
+        dd('0001');
         return view('frontend.admin.pages.storage.client.index');
     }
 

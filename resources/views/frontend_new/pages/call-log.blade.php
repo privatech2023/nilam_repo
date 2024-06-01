@@ -37,23 +37,6 @@
 
 <body class="page-body">
 
-    <!--  Header Section -->
-    {{-- <nav class="navbar main-navbar fixed-top">
-        <div class="container">
-            <div class="left-div text-light">
-                <b>11:11 AM </b>
-            </div>
-            <div class="right-div text-light">
-                <i class="fa-solid fa-signal"></i>
-                <i class="fa-solid fa-signal"></i>
-                <i class="fa-solid nav-icons fa-wifi"></i>
-                <i class="fa-solid nav-icons fa-battery-full"></i>
-                <b>99%</b>
-            </div>
-        </div>
-    </nav> --}}
-
-    <!--  Header Section Ends -->
 
     <!-- heading Section -->
     <section class="heading fixed-top mt-4">
@@ -71,20 +54,7 @@
                                 style="color: black;" aria-hidden="true"></i></button>
                     </div>
                 </div>
-                <!-- <div class="col-1 p-0 d-flex align-items-center">
-                    <div class="dropstart">
-                        <a class="btn btn-sm dropdown-toggle text-light w-100" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fa-solid fa-ellipsis-vertical"></i>
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Delete Chat</a></li>
-                            <li><a class="dropdown-item" href="#">Add to Blocklist</a></li>
-                            <li><a class="dropdown-item" href="#">Block and Report</a></li>
-                        </ul>
-                    </div>
-                </div> -->
+                
 
             </div>
         </div>
@@ -97,179 +67,22 @@
     <!-- Main Section -->
 
     <main class="main">
+        <div class="text-center loader" style="display:none;  background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
+            <div class="spinner-border" role="status">
+            <span class="sr-only" style="color:white;">Loading...</span>
+            </div>
+        </div>
         <section class="main-section">
             <div class="container-fluid">
                 <div class="row">
                     <!-- Incoming -->
                     <div class="col-lg-4 col-md-6 col-12 message-col">
                         <div class="call-div">
-                            {{-- <div class="container-fluid call-container">
-                                <div class="row tap">
-                                    <div class="col-2 p-1 d-flex align-items-center">
-                                        <a href="#">
-                                            <img class="w-100" src="{{ asset('assets_2/img/icons/user.png')}}" alt="img">
-                                        </a>
-                                    </div>
-                                    <div class="col-9 p-1">
-                                        <h6 class="m-0">Elon Musk</h6>
-                                        <p class="m-0">+919876543210</p>
-                                        <p class="m-0">Mobile &nbsp;&nbsp;Incoming &nbsp; &nbsp; 11:11 AM</p>
-                                    </div>
-                                    <div class="col-1 p-1 d-flex align-items-center text-light">
-                                        <a href="#" style="text-decoration: none;">
-                                            <i class="fa-solid fa-phone text-light"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row show">
-                                    <hr>
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-3 text-center">
-                                                <a href="#" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-phone text-light"></i>
-                                                    <p class="text-light">Call</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="messageinside.html" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-message text-light"></i>
-                                                    <p class="text-light">Message</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="call-history.html" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-clock-rotate-left text-light"></i>
-                                                    <p class="text-light">History</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="#" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-trash text-light"></i>
-                                                    <p class="text-light">Delete</p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> --}}
+                            {{--  --}}
                         </div>
                     </div>
 
-                    <!-- Outgoing -->
-                    {{-- <div class="col-lg-4 col-md-6 col-12 message-col">
-                        <div class="call-div">
-                            <div class="container-fluid call-container">
-                                <div class="row tap">
-                                    <div class="col-2 p-1 d-flex align-items-center">
-                                        <a href="#">
-                                            <img class="w-100" src="{{ asset('assets_2/img/icons/user.png')}}" alt="img">
-                                        </a>
-                                    </div>
-                                    <div class="col-9 p-1">
-                                        <h6 class="m-0">Elon Musk</h6>
-                                        <p class="m-0">+919876543210</p>
-                                        <p class="m-0">Mobile &nbsp;&nbsp;Outgoing &nbsp; &nbsp; 11:11 AM</p>
-                                    </div>
-                                    <div class="col-1 p-1 d-flex align-items-center text-light">
-                                        <a href="#" style="text-decoration: none;">
-                                            <i class="fa-solid fa-phone text-light"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="row show">
-                                    <hr>
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-3 text-center">
-                                                <a href="#" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-phone text-light"></i>
-                                                    <p class="text-light">Call</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="messageinside.html" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-message text-light"></i>
-                                                    <p class="text-light">Message</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="call-history.html" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-clock-rotate-left text-light"></i>
-                                                    <p class="text-light">History</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="#" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-trash text-light"></i>
-                                                    <p class="text-light">Delete</p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div> --}}
-
-                    <!-- Missed Call -->
-                    {{-- <div class="col-lg-4 col-md-6 col-12 message-col">
-                        <div class="call-div">
-                            <div class="container-fluid call-container">
-                                <div class="row tap">
-                                    <div class="col-2 p-1 d-flex align-items-center">
-                                        <a href="#">
-                                            <img class="w-100" src="{{ asset('assets_2/img/icons/user.png')}}" alt="img">
-                                        </a>
-                                    </div>
-                                    <div class="col-9 p-1">
-                                        <h6 class="m-0">Elon Musk</h6>
-                                        <p class="m-0">+919876543210</p>
-                                        <p class="m-0">Mobile &nbsp;&nbsp;Missed Call &nbsp; &nbsp; 11:11 AM</p>
-                                    </div>
-                                    <div class="col-1 p-1 d-flex align-items-center text-light">
-                                        <a href="#" style="text-decoration: none;">
-                                            <i class="fa-solid fa-phone text-light"></i>
-                                        </a>
-                                    </div>
-                                </div>
-
-                                <div class="row show">
-                                    <hr>
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <div class="col-3 text-center">
-                                                <a href="#" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-phone text-light"></i>
-                                                    <p class="text-light">Call</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="messageinside.html" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-message text-light"></i>
-                                                    <p class="text-light">Message</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="call-history.html" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-clock-rotate-left text-light"></i>
-                                                    <p class="text-light">History</p>
-                                                </a>
-                                            </div>
-                                            <div class="col-3 text-center">
-                                                <a href="#" style="text-decoration: none;">
-                                                    <i class="fa-solid fa-trash text-light"></i>
-                                                    <p class="text-light">Delete</p>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
+                    
                 </div>
             </div>
         </section>
@@ -338,8 +151,8 @@
                 $(this).next(".show").slideToggle("slow");
                 $(this).closest(".call-container").toggleClass("call-bg");
             });
-
             function fetch_messages(){
+                $('.loader').show();
                 $.ajax({
                     type: "get",
                     url: "/get-call-logs/"+user_id,
@@ -416,6 +229,7 @@
                             '</div>';
                 $('.call-div').append(callContent);
             });
+            $('.loader').hide();
                 }
             });
             }

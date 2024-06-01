@@ -67,7 +67,7 @@ class RazorpayController extends Controller
                 }
 
                 Session::flash('success', 'Payment successfull');
-                return redirect()->route('home');
+                return redirect()->route('/payment-success/index');
             } else {
                 Session::flash('error', 'Payment failed. Please try again later');
                 return redirect()->route('/subscription/packages');
