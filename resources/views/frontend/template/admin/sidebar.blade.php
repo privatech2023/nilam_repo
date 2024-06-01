@@ -140,7 +140,7 @@
                 </li>  
                 @if(session('admin_name') == 'admin')
                 <li class="nav-item">
-                  <a href="{{ url('/admin/storage_usage')}}" class="nav-link" id="clientSubMenuStorageClient">
+                  <a href="{{ url('/admin/storage_usages')}}" class="nav-link" id="clientSubMenuStorageClient">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Storage usage</p>
                   </a>
