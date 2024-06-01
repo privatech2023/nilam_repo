@@ -208,6 +208,7 @@ class StorageController extends Controller
     // admin storage view
     public function storage_usage_index()
     {
+        dd('0001');
         return view('frontend.admin.pages.storage.client.index');
     }
 
@@ -220,11 +221,6 @@ class StorageController extends Controller
         $valueStatus = request('status', '');
         $valueRegistration = request('registration', '');
 
-        // $query = DB::table('storage_txns')
-        //     ->select('clients.client_id', 'clients.name', 'storage_txns.created_at', 'clients.mobile_number', 'storage_txns.status', 'storage_txns.storage', 'storages.name as storage_name')
-        //     ->leftJoin('clients', 'clients.client_id', '=', 'storage_txns.client_id')
-        //     ->leftJoin('storages', 'storages.id', '=', 'storage_txns.plan_id')
-        //     ->orderByDesc('storage_txns.updated_at');
 
         $latestTransactionIds = DB::table('storage_txns as st1')
             ->select(DB::raw('MAX(st1.id) as id'))
@@ -271,50 +267,53 @@ class StorageController extends Controller
 
     public function storage_usage_view()
     {
-        $gall_size = 0;
-        $photo_size = 0;
-        $video_size = 0;
-        $screenRecord_size = 0;
-        $voiceRecord_size = 0;
-        $gallery = gallery_items::all();
-        foreach ($gallery as $g) {
-            $gall_size += $g->size;
-        }
-        $gall_size = number_format($gall_size / (1024 * 1024));
-        $images = images::all();
-        foreach ($images as $g) {
-            $photo_size += $g->size;
-        }
-        $photo_size = number_format($photo_size / (1024 * 1024));
-        $videos = videos::all();
-        foreach ($videos as $g) {
-            $video_size += $g->size;
-        }
-        $video_size = number_format($video_size / (1024 * 1024));
-        $screen_record = screen_recordings::all();
-        foreach ($screen_record as $g) {
-            $screenRecord_size += $g->size;
-        }
-        $screenRecord_size = number_format($screenRecord_size / (1024 * 1024));
-        $voice_record = recordings::all();
-        foreach ($voice_record as $g) {
-            $voiceRecord_size += $g->size;
-        }
-        $voiceRecord_size = number_format($voiceRecord_size / (1024 * 1024));
+        try {
+            $gall_size = 0;
+            $photo_size = 0;
+            $video_size = 0;
+            $screenRecord_size = 0;
+            $voiceRecord_size = 0;
+            $gallery = gallery_items::all();
+            foreach ($gallery as $g) {
+                $gall_size += $g->size;
+            }
+            $gall_size = number_format($gall_size / (1024 * 1024));
+            $images = images::all();
+            foreach ($images as $g) {
+                $photo_size += $g->size;
+            }
+            $photo_size = number_format($photo_size / (1024 * 1024));
+            $videos = videos::all();
+            foreach ($videos as $g) {
+                $video_size += $g->size;
+            }
+            $video_size = number_format($video_size / (1024 * 1024));
+            $screen_record = screen_recordings::all();
+            foreach ($screen_record as $g) {
+                $screenRecord_size += $g->size;
+            }
+            $screenRecord_size = number_format($screenRecord_size / (1024 * 1024));
+            $voice_record = recordings::all();
+            foreach ($voice_record as $g) {
+                $voiceRecord_size += $g->size;
+            }
+            $voiceRecord_size = number_format($voiceRecord_size / (1024 * 1024));
 
-        return view('frontend.admin.pages.storage.client.view')->with([
-            'gallery' => $gallery,
-            'images' => $images,
-            'videos' => $videos,
-            'screen_record' => $screen_record,
-            'voice_record' => $voice_record,
-            'gall_size' => $gall_size,
-            'photo_size' => $photo_size,
-            'video_size' => $video_size,
-            'screenRecord_size' => $screenRecord_size,
-            'voiceRecord_size' => $voiceRecord_size,
-            // 'client_id' => $id
-        ]);
+            return view('frontend.admin.pages.storage.client.view')->with([
+                'gallery' => $gallery,
+                'images' => $images,
+                'videos' => $videos,
+                'screen_record' => $screen_record,
+                'voice_record' => $voice_record,
+                'gall_size' => $gall_size,
+                'photo_size' => $photo_size,
+                'video_size' => $video_size,
+                'screenRecord_size' => $screenRecord_size,
+                'voiceRecord_size' => $voiceRecord_size,
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
     }
 
     public function storage_usage_view_main($type)
