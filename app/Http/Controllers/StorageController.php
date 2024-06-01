@@ -273,8 +273,11 @@ class StorageController extends Controller
             $video_size = 0;
             $screenRecord_size = 0;
             $voiceRecord_size = 0;
-            dd('002');
-            $gallery = gallery_items::all();
+            try {
+                $gallery = gallery_items::all();
+            } catch (\Exception $e) {
+                dd($e->getMessage());
+            }
 
             foreach ($gallery as $g) {
                 $gall_size += $g->size;
