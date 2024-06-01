@@ -279,6 +279,7 @@ class StorageController extends Controller
             }
             $gall_size = number_format($gall_size / (1024 * 1024));
             $images = images::all();
+            dd('002');
             foreach ($images as $g) {
                 $photo_size += $g->size;
             }
@@ -298,7 +299,7 @@ class StorageController extends Controller
                 $voiceRecord_size += $g->size;
             }
             $voiceRecord_size = number_format($voiceRecord_size / (1024 * 1024));
-            dd('002');
+
             return view('frontend.admin.pages.storage.client.view')->with([
                 'gallery' => $gallery,
                 'images' => $images,
