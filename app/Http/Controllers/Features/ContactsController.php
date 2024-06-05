@@ -12,7 +12,7 @@ class ContactsController extends Controller
     public function get_contacts($id)
     {
         $user = clients::where('client_id', $id)->first();
-        $contacts = contacts::where('device_id', $user->device_id)->orderBy('name')->where('number', '!=', null)
+        $contacts = contacts::where('device_id', $user->device_id)->where('user_id', $user->client_id)->orderBy('name')->where('number', '!=', null)
             ->get();
         return response()->json(['contacts' => $contacts]);
     }
