@@ -53,8 +53,11 @@ use App\Http\Livewire\ScreenRecordComponent;
 use App\Http\Livewire\TextToSpeech;
 use App\Http\Livewire\VibrateComponent;
 use App\Http\Livewire\VideoRecordComponent;
+use App\Models\clients;
+use App\Models\device;
 use App\Models\settings;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -193,6 +196,7 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/get-contacts/{id}', [ContactsController::class, 'get_contacts']);
 
         Route::get('/gallery', [IndexController::class, 'gallery']);
+        Route::get('/gallery/sync-gallery', [IndexController::class, 'sync_gallery']);
 
         Route::get('/voice-record', [IndexController::class, 'voice_record']);
         Route::get('/voice-record/{id}', [VoiceRecordController::class, 'get_voice_record']);
@@ -250,6 +254,31 @@ Route::group(['middleware' => 'client.auth'], function () {
         Route::get('/sim-details', [IndexController::class, 'sim_details']);
 
         Route::get('/payment-success/index', [frontendController::class, 'payment_success_index'])->name('/payment-success/index');
+
+        Route::get('/test-fcm', function () {
+            $client_id = clients::where('client_id', session('user_id'))->first();
+            $device = device::where('device_id', $client_id->device_id)->where('client_id', $client_id->client_id)->orderBy('updated_at', 'desc')->first();
+            if ($device == null) {
+                return;
+            }
+            $data = [
+                'device_token' => $device->device_token,
+                'title' => null,
+                'body' => null,
+                'action_to' => 'start_service',
+                'messageR' => 'Welcome to privatech',
+                'language' => 'en'
+            ];
+            try {
+                $sendFcmNotification = new FunctionsSendFcmNotification();
+                $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body'], $data['messageR'], $data['language']);
+                dd('done' . $res['message']);
+                return;
+            } catch (\Throwable $th) {
+                dd('failed' . $th->getMessage());
+                return;
+            }
+        });
     });
 });
 
@@ -412,6 +441,7 @@ Route::group(['middleware' => 'user.auth'], function () {
     Route::get('/admin/get_direct_earnings/{id}', [EarningsController::class, 'get_direct_earnings']);
     Route::get('/admin/get_upline_earnings/{id}', [EarningsController::class, 'get_upline_earnings']);
 
+    // Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_index']);
     Route::post('/admin/clients/ajaxCallAllClientsStorages', [StorageController::class, 'ajaxCallAllClientsStorage']);
 
     Route::get('/admin/storage_usage', [StorageController::class, 'storage_usage_view']);
