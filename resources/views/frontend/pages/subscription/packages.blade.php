@@ -175,7 +175,7 @@
                 </div> --}}
 
                 {{-- storages --}}
-                {{-- <div class="card">
+                <div class="card">
                     <div class="card-header">
                         <h5 class="card-title m-0">STORAGE</h5><br><br>
                         <h5 class="text-sm" style="margin-left: 0;"><strong class="text-sm">(</strong>Storage plans are not associated with packages <strong>)</strong></h5>
@@ -234,7 +234,7 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
+                </div>
 
             </div>
         </div>
