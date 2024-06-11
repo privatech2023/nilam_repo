@@ -21,9 +21,13 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class IndexController extends Controller
 {
+    public $start = 12;
+    public $skip;
+
     public $plan_expired = false;
     public $store_more = true;
 
@@ -74,6 +78,8 @@ class IndexController extends Controller
 
     public function gallery()
     {
+        // session()->forget('current_image_count');
+
         $gallery_items = $this->load_gallery_items();
         $this->storage_count();
         return view('frontend_new.pages.gallery')->with(['gallery_items' => $gallery_items, 'plan_expired' => $this->plan_expired, 'store_more' => $this->store_more]);
@@ -82,10 +88,21 @@ class IndexController extends Controller
     public function load_gallery_items()
     {
         $clients = clients::where('client_id', session('user_id'))->first();
-        $gallery_items = gallery_items::where('user_id', session('user_id'))
-            ->where('device_id', $clients->device_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        if (session()->has('current_image_count') && session('current_image_count') > 0) {
+            $gallery_items = gallery_items::where('user_id', session('user_id'))
+                ->where('device_id', $clients->device_id)
+                ->orderBy('created_at', 'desc')
+                ->skip(0)
+                ->take(session('current_image_count'))
+                ->get();
+        } else {
+            $gallery_items = gallery_items::where('user_id', session('user_id'))
+                ->where('device_id', $clients->device_id)
+                ->orderBy('created_at', 'desc')
+                ->skip(0)
+                ->take($this->start)
+                ->get();
+        }
         if (count($gallery_items) == 0) {
             if ($clients->device_id != null) {
                 $this->sendNotification('sync_gallery');
@@ -94,6 +111,8 @@ class IndexController extends Controller
             $gallery_items = gallery_items::where('user_id', session('user_id'))
                 ->where('device_id', $clients->device_id)
                 ->orderBy('created_at', 'desc')
+                ->skip(0)
+                ->take($this->start)
                 ->get();
         }
         return $gallery_items;
@@ -102,11 +121,26 @@ class IndexController extends Controller
     public function sync_gallery()
     {
         $clients = clients::where('client_id', session('user_id'))->first();
+        $gallery_items = gallery_items::where('user_id', session('user_id'))
+            ->where('device_id', $clients->device_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        if (count($gallery_items) != 0) {
+            if (session()->has('current_image_count') && session('current_image_count') > 0) {
+                $this->start = session('current_image_count');
+                $this->start += 12;
+            } else {
+                $this->start += 12;
+            }
+            Session::put('current_image_count', $this->start);
+        }
+
+        $clients = clients::where('client_id', session('user_id'))->first();
         if ($clients->device_id != null) {
             $res = $this->sendNotification('sync_gallery');
         }
         sleep(2);
-        return response()->json($res['message']);
+        return response()->json(session('current_image_count'));
     }
 
     public function voice_record()
