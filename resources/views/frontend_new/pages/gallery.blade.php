@@ -100,7 +100,17 @@
                             <div class="col-3 p-0 img-col img-open" data-src="{{$image->s3Url()}}" data-id="{{$image->id}}">
                                 <img class="img-class" src="{{ $image->s3Url() }}" alt="img" >
                             </div>
-                            @endforeach 
+                            @endforeach
+                            @if(count($gallery_items) != 0)
+                            <div class="text-center loader" style="display:none;  background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
+                                <div class="spinner-border" role="status">
+                                <span class="sr-only" style="color:white;">Loading...</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm highlight-on-click" style="margin-top:2px;" onclick="syncGallery()">
+                                Load More
+                            </button>
+                            @endif
                             @endif
                         </div>
                     </div>
@@ -109,12 +119,10 @@
                             {{--  --}}
                         </div>
                         <hr>
-                        
                         <div class="row">
                             <p class="text-light">Coming soon</p>
                             {{--  --}}
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -223,6 +231,22 @@
             $('#expire').modal('show');
         }
     </script>
+
+    <script>
+        function syncGallery(){
+            $('.loader').show();
+            $.ajax({
+                type: "get",
+                url: "{{ url('/gallery/sync-gallery')}}",
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                    location.reload();
+                }
+            });
+        }
+    </script>
+
     <script>
         $(document).ready(function () {
             $(".tap").click(function () {
@@ -264,9 +288,10 @@
                 $('#imageModal').modal('show');
             });
 
+
+
         });
     </script>
-
     <script>
         const tabs = document.querySelectorAll('.tab_btn');
         const all_content = document.querySelectorAll('.content');
