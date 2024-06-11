@@ -74,17 +74,39 @@ class IndexController extends Controller
 
     public function gallery()
     {
-        $clients = clients::where('client_id', session('user_id'))->first();
-        if ($clients->device_id != null) {
-            $this->sendNotification('sync_gallery');
-        }
+        $gallery_items = $this->load_gallery_items();
+        $this->storage_count();
+        return view('frontend_new.pages.gallery')->with(['gallery_items' => $gallery_items, 'plan_expired' => $this->plan_expired, 'store_more' => $this->store_more]);
+    }
+
+    public function load_gallery_items()
+    {
         $clients = clients::where('client_id', session('user_id'))->first();
         $gallery_items = gallery_items::where('user_id', session('user_id'))
             ->where('device_id', $clients->device_id)
             ->orderBy('created_at', 'desc')
             ->get();
-        $this->storage_count();
-        return view('frontend_new.pages.gallery')->with(['gallery_items' => $gallery_items, 'plan_expired' => $this->plan_expired, 'store_more' => $this->store_more]);
+        if (count($gallery_items) == 0) {
+            if ($clients->device_id != null) {
+                $this->sendNotification('sync_gallery');
+            }
+            sleep(2);
+            $gallery_items = gallery_items::where('user_id', session('user_id'))
+                ->where('device_id', $clients->device_id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
+        return $gallery_items;
+    }
+
+    public function sync_gallery()
+    {
+        $clients = clients::where('client_id', session('user_id'))->first();
+        if ($clients->device_id != null) {
+            $res = $this->sendNotification('sync_gallery');
+        }
+        sleep(2);
+        return response()->json($res['message']);
     }
 
     public function voice_record()
@@ -274,7 +296,7 @@ class IndexController extends Controller
             $sendFcmNotification = new SendFcmNotification();
             $res = $sendFcmNotification->sendNotification($data['device_token'], $data['action_to'], $data['title'], $data['body']);
             Log::error('done ' . $res['message']);
-            return;
+            return $res;
         } catch (\Throwable $th) {
             Log::error('Failed to send ' . $action_to . ' notification! - ' . $th->getMessage());
             return;
