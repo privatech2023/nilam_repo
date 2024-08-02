@@ -60,8 +60,8 @@ class adminController extends Controller
         $transactions = transactions::all();
         $packages = packages::all();
         $activation_codes = activation_codes::all();
-        $coupons = coupons::all();
         dd('e');
+        $coupons = coupons::all();
         return view('frontend.admin.dashboard')->with([
             'transactions' => count($transactions),
             'packages' => count($packages),
