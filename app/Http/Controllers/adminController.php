@@ -65,7 +65,7 @@ class adminController extends Controller
         return view('frontend.admin.dashboard')->with([
             'transactions' => count($transactions),
             'packages' => count($packages),
-            'activation_codes' => count($activation_codes),
+            'activation_codes' => $activation_codes,
             'coupons' => count($coupons),
             'allClients' => count($total_count_all),
             'activeClients' => count($total_count_active),
