@@ -90,14 +90,13 @@ class adminController extends Controller
             $user = User::where('email', $credentials['email'])->first();
             
             if ($user && password_verify($credentials['password'], $user->password)) {
-                dd('he');
                 $request->session()->put('admin_id', $user->id);
                 $request->session()->put('admin_name', $user->name);
                 $group = user_groups::where('u_id', $user->id)->first();
                 $permissions = groups::where('id', $group->g_id)->first();
                 $unserializedPermissions = unserialize($permissions->permissions);
                 session(['user_permissions' => $unserializedPermissions]);
-
+                dd('he');
                 return redirect('/admin')->with('success', 'Login successful');
             } else {
                 Log::info('Login failed for email: ' . $credentials['email']);
