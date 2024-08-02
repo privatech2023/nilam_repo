@@ -54,7 +54,7 @@ class adminController extends Controller
             })
             ->havingRaw('COUNT(subscriptions.client_id) > 0')
             ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-
+        dd('eh');
         $total_count_all = $query1->toArray();
         $total_count_active = $query2->get();
         $total_count_pending = $query3->get();
