@@ -26,6 +26,7 @@ class adminController extends Controller
 {
     public function index()
     {
+        dd('uu');
         $query1 = DB::table('clients')
             ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
             ->get();
