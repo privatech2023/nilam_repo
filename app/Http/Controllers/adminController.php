@@ -59,7 +59,7 @@ class adminController extends Controller
         $total_count_expired = $query4->get();
         $transactions = transactions::all();
         $packages = packages::all();
-        dd(activation_codes::all());
+        dd(activation_codes::first());
         // $activation_codes = activation_codes::all(); 
         
         $coupons = coupons::all();
