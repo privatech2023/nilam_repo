@@ -26,7 +26,6 @@ class adminController extends Controller
 {
     public function index()
     {
-        try{
              $query1 = DB::table('clients')
             ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
             ->get();
@@ -54,7 +53,8 @@ class adminController extends Controller
             })
             ->havingRaw('COUNT(subscriptions.client_id) > 0')
             ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-        $total_count_all = $query1->toArray();
+        try{
+            $total_count_all = $query1->toArray();
         $total_count_active = $query2->get();
         $total_count_pending = $query3->get();
         $total_count_expired = $query4->get();
@@ -62,7 +62,10 @@ class adminController extends Controller
         $packages = packages::all();
         $activation_codes = activation_codes::all();
         $coupons = coupons::all();
-            dd('e');
+        }catch(Exception $e){
+            dd($e->getMessage());
+        }
+        
         return view('frontend.admin.dashboard')->with([
             'transactions' => count($transactions),
             'packages' => count($packages),
@@ -73,9 +76,6 @@ class adminController extends Controller
             'pendingClients' => count($total_count_pending),
             'expiredClients' => count($total_count_expired)
         ]);
-        }catch(Exception $e){
-            dd($e->getMessage());
-        }
        
     }
 
