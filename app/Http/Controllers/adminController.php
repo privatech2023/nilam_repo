@@ -53,18 +53,15 @@ class adminController extends Controller
             })
             ->havingRaw('COUNT(subscriptions.client_id) > 0')
             ->groupBy('clients.client_id', 'clients.name', 'clients.mobile_number', 'clients.email', 'clients.status', 'subscriptions.status');
-        try{
             $total_count_all = $query1->toArray();
         $total_count_active = $query2->get();
         $total_count_pending = $query3->get();
+        dd('e');
         $total_count_expired = $query4->get();
         $transactions = transactions::all();
         $packages = packages::all();
         $activation_codes = activation_codes::all();
         $coupons = coupons::all();
-        }catch(Exception $e){
-            dd($e->getMessage());
-        }
         
         return view('frontend.admin.dashboard')->with([
             'transactions' => count($transactions),
