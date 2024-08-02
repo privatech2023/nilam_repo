@@ -58,8 +58,8 @@ class adminController extends Controller
         $total_count_pending = $query3->get();
         $total_count_expired = $query4->get();
         $transactions = transactions::all();
-        dd('e');
         $packages = packages::all();
+        dd('e');
         $activation_codes = activation_codes::all();
         $coupons = coupons::all();
         return view('frontend.admin.dashboard')->with([
