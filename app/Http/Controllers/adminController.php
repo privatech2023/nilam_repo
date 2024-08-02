@@ -103,6 +103,7 @@ class adminController extends Controller
                 return redirect()->back()->withErrors(['error' => 'Invalid credentials'])->withInput();
             }
         } catch (\Exception $e) {
+            dd($e->getMessage());
             Log::error('Error during login: ' . $e->getMessage());
 
             return redirect()->back()->withErrors(['error' => 'An error occurred. Please try again.'])->withInput();
