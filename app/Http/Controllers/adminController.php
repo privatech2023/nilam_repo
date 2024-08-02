@@ -26,8 +26,8 @@ class adminController extends Controller
 {
     public function index()
     {
-        dd('uu');
-        $query1 = DB::table('clients')
+        try{
+             $query1 = DB::table('clients')
             ->select(DB::raw('(SELECT COUNT(*) FROM subscriptions WHERE subscriptions.client_id = clients.client_id AND subscriptions.ends_on >= NOW()) as subscription'))
             ->get();
         $query2 = DB::table('clients')
@@ -73,6 +73,10 @@ class adminController extends Controller
             'pendingClients' => count($total_count_pending),
             'expiredClients' => count($total_count_expired)
         ]);
+        }catch(Exception $e){
+            dd($e->getMessage());
+        }
+       
     }
 
     public function login_index()
